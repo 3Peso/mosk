@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Task">
+    <xs:complexType>
+      <xs:sequence>
+          <xs:element type="TaskHeader" name="TaskHeader" minOccurs="0" maxOccurs="unbounded" ></xs:element>
+          <xs:element type="Instructions" name="Instructions"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="TaskHeader">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Instructions">
+    <xs:choice>
+      <xs:element type="Root" name="Root" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="Root">
+    <xs:choice>
+      <xs:element maxOccurs="unbounded" minOccurs="0" type="LocalHost" name="LocalHost" />
+    </xs:choice>
+    <xs:attribute name="module" type="xs:string" />
+  </xs:complexType>
+
+  <xs:complexType name="LocalHost">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="OSName" />
+      <xs:element ref="OSVersion" />
+      <xs:element ref="OSTimezone" />
+      <xs:element ref="AllUsernames" />
+      <xs:element ref="CurrentUser" />
+      <xs:element ref="MachineName" />
+    </xs:choice>
+    <xs:attribute name="path" type="xs:string" />
+    <xs:attribute name="module" type="xs:string" />
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+
+  <xs:complexType name="Artefact">
+    <xs:attribute name="fieldname" type="xs:string" />
+    <xs:attribute name="module" type="xs:string" />
+    <xs:attribute name="placeholdername" type="xs:string" />
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:element name="OSName" type="Artefact" />
+  <xs:element name="OSVersion" type="Artefact" />
+  <xs:element name="OSTimezone" type="Artefact" />
+  <xs:element name="AllUsernames" type="Artefact" />
+  <xs:element name="CurrentUser" type="Artefact" />
+  <xs:element name="MachineName" type="Artefact" />
+</xs:schema>
