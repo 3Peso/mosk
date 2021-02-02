@@ -3,7 +3,7 @@ from xml.dom.minidom import Element, NamedNodeMap
 
 # TODO Find a better name for that class
 class SourceOrArtefactWrapper:
-    def __init__(self, element: Element, soaelement, soaparent, elementid: int, placeholdername: str = ''):
+    def __init__(self, element: Element, soaelement, soaparent, elementid: 'int > 0', placeholdername: str = ''):
         self._element = element
         self._soaelement = soaelement
         self._soaparent = soaparent

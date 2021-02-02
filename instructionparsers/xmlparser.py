@@ -92,7 +92,7 @@ class XmlParser:
 
         soawrapper = SourceOrArtefactWrapper(element=current, soaelement=currentsoa,
                                              soaparent=soaparent, elementid=elementid,
-                                             placeholdername=self._get_placeholder_name(current))
+                                             placeholdername=XmlParser._get_placeholder_name(current))
 
         for child in current.childNodes:
             if type(child) is Element:
@@ -124,7 +124,8 @@ class XmlParser:
 
         return firstinstructionelement
 
-    def _get_placeholder_name(self, current: Element):
+    @staticmethod
+    def _get_placeholder_name(current: Element):
         placeholdername = ''
         if XmlParser.PLACEHOLDERNAME_ATTRIBUTE in current.attributes.keys():
             placeholdername = current.attributes[XmlParser.PLACEHOLDERNAME_ATTRIBUTE].nodeValue
