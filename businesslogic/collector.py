@@ -26,6 +26,12 @@ class Collector:
         self._document_metadata()
         self._collect_from_instrcutions(self._parser.instructions)
 
+    def _document_metadata(self):
+        for metafield in self._parser.metadatafields:
+            self._protocol.writer_protocol_entry(entryheader='',
+                                                 entrydata="{}: {}"
+                                                 .format(metafield, self._parser.get_metadata(metafield)))
+
     def _collect_from_instrcutions(self, current_instruction: SourceOrArtefactWrapper, callpath: str = ''):
         if callpath == '':
             callpath = str(current_instruction)
@@ -59,12 +65,6 @@ class Collector:
         self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')
         self._protocol.writer_protocol_entry(entrydata=soa.data, entryheader='')
         self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')
-
-    def _document_metadata(self):
-        for metafield in self._parser.metadatafields:
-            self._protocol.writer_protocol_entry(entryheader='',
-                                                 entrydata="{}: {}"
-                                                 .format(metafield, self._parser.get_metadata(metafield)))
 
     # TODO document start date
     # TODO document start time
