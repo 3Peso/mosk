@@ -30,11 +30,11 @@
             Only requirement in this case would be, that the machinename can only be looked up, after the collection
             of the above "MachineName" artefact has taken place.-->
             <LocalHost path="!@machinename@!" module="source.localhost">
-                <OSName module="artefact.localhost.osinformation" fieldname="osname" />
-                <OSVersion module="artefact.localhost.osinformation" fieldname="osversion" />
-                <OSTimezone module="artefact.localhost.osinformation" fieldname="ostimezone" />
-                <AllUsernames module="artefact.localhost.allusernames" fieldname="users" />
-                <CurrentUser module="artefact.localhost.currentuser" fieldname="currentuser" />
+                <OSName module="artefact.localhost.osinformation" />
+                <OSVersion module="artefact.localhost.osinformation" />
+                <OSTimezone module="artefact.localhost.osinformation" />
+                <AllUsernames module="artefact.localhost.allusernames" />
+                <CurrentUser module="artefact.localhost.currentuser" />
             </LocalHost>
         </Root>
     </Instructions>

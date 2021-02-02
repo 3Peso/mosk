@@ -20,7 +20,7 @@ class XmlParser:
     INSTRUCTIONS_ELEMENT = "Instructions"
     XMLSCHEMA_PATH = './instructionparsers/xmlparser.xsd'
     _none_parameter_attributes = frozenset(
-        [MODULE_ATTRIBUTE, 'title', 'fieldname', PLACEHOLDERNAME_ATTRIBUTE]
+        [MODULE_ATTRIBUTE, 'title', PLACEHOLDERNAME_ATTRIBUTE]
     )
 
     def __init__(self, instructionspath: str, protocol: ProtocolBase):

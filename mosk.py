@@ -27,6 +27,8 @@ def main(argv):
             examiner = arg
 
     try:
+        # TODO There needs to be a central, controlling instance where to start. Currently there is no
+        # such instance. So, for example, is a problem when it comes to define the phase we are in.
         protocol = LogFileProtocol(examiner)
         xmlparser = XmlParser(instructionsfile, protocol)
         collector = Collector(parser=xmlparser, protocol=protocol)

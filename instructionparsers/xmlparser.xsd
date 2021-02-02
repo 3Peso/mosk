@@ -43,7 +43,6 @@
   </xs:complexType>
 
   <xs:complexType name="Artefact">
-    <xs:attribute name="fieldname" type="xs:string" />
     <xs:attribute name="module" type="xs:string" />
     <xs:attribute name="placeholdername" type="xs:string" />
     <xs:anyAttribute processContents="lax" />

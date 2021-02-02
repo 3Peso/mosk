@@ -15,14 +15,9 @@ class Collector:
         self._parser = parser
         self._protocol = protocol
 
-    # This is meant as a callback function for an artefact
-    # in case an artefact needs some values from higher up
-    # parents
-    def call_for_parameter(self, parametername: str):
-        # TODO
-        return
-
     def collect(self):
+        # TODO This currently is only a hack. Needs to be refactored.
+        PlaceholderReplacer.set_collect_phase()
         self._document_metadata()
         self._collect_from_instrcutions(self._parser.instructions)
 
