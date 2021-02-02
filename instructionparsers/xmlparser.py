@@ -16,6 +16,10 @@ from businesslogic.placeholders import PlaceholderReplacer
 class XmlParser:
     PATH_ATTRIBUTE = 'path'
     MODULE_ATTRIBUTE = 'module'
+    # The placeholdername tells the parser to store
+    # the result of the artefact collection in a placeholder in memory for later use
+    # In the end, the collector will trigger the mechanism to store the artefact results
+    # in the placeholder dictionary.
     PLACEHOLDERNAME_ATTRIBUTE = "placeholdername"
     INSTRUCTIONS_ELEMENT = "Instructions"
     XMLSCHEMA_PATH = './instructionparsers/xmlparser.xsd'
@@ -103,9 +107,6 @@ class XmlParser:
                     soawrapper.element.tagName, soawrapper.soawrapperid
                 ))
                 soawrapper.addchild(soawrapper_child)
-                mosk_logger.debug("Child count of soawrapper with id {} is {}.".format(
-                    soawrapper.soawrapperid, len(soawrapper.wrapperchildren)
-                ))
 
         return soawrapper
 
@@ -133,12 +134,12 @@ class XmlParser:
 
     @staticmethod
     def _get_parameter_attributes(attributes: NamedNodeMap) -> UserDict:
+        """Stores attributes of xml element in user dictionary, als long as they are not
+        in the set of reserved attributes with special meaning."""
         parameters = UserDict()
-        for parametername in attributes.keys():
-            if parametername not in XmlParser._none_parameter_attributes:
-                parameters[parametername] = attributes[parametername]
-
-        # parameters = ({parametername: attributes[parametername]} for parametername in attributes.keys()
-        # if parametername not in XmlParser._none_parameter_attributes)
+        # Just add parameters which are not in the intersection of the set with the
+        # reserved names and the attributes of the provided node map.
+        for parametername in attributes.keys() - XmlParser._none_parameter_attributes:
+            parameters[parametername] = attributes[parametername]
 
         return parameters

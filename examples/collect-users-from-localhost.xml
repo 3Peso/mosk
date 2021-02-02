@@ -21,8 +21,7 @@
             <LocalHost module="source.localhost">
                 <!-- The placeholder name implies, that the data collected by the artefact should be
                 stored in memory for later use in following artefacts in the tree as parameters -->
-                <MachineName module="artefact.localhost.machineinformation" fieldname="machinename"
-                             placeholdername="machinename" />
+                <MachineName module="artefact.localhost.machineinformation" placeholdername="machinename" />
             </LocalHost>
             <!--Problem is, the machinename will not be replaced because the machine name is only collected
             at collection phase not initializition phase. So there must be a mechanism which automatically looks
