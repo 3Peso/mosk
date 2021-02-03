@@ -7,16 +7,15 @@ from baseclasses.protocol import ProtocolBase
 
 
 class LogFileProtocol(ProtocolBase):
-    _protocolfilename = ''
-    _date = None
-    _artefactlogger: logging.Logger = logging.getLogger('LogFile Protocol Artefact')
-    _messagelogger: logging.Logger = logging.getLogger('LogFile Protocol Message')
-    _protocolfiletype = 'txt'
-
     def __init__(self, examiner, artifactid='', filedate=date.today(), taskid=''):
         super().__init__(artifactid=artifactid, examiner=examiner, taskid=taskid)
         self._date = filedate
+        self._protocolfilename = ''
+        self._protocolfiletype = 'txt'
         self._protocolfilename = self.protocol_filename
+
+        self._artefactlogger = logging.getLogger('LogFile Protocol Artefact')
+        self._messagelogger = logging.getLogger('LogFile Protocol Message')
 
         self._setup_protocol_logging(self._artefactlogger, self._protocolfilename, formatstring='')
         self._setup_protocol_logging(self._messagelogger, self._protocolfilename, formatstring='')

@@ -8,6 +8,7 @@ from businesslogic.collector import Collector
 from protocol.logfileprotocol import LogFileProtocol
 
 
+# TODO Refactoring run with logging in focus
 def main(argv):
     try:
         opts, args = getopt.getopt(argv, 'i:l:e:', ['instructions=', 'loglevel=', 'examiner='])
@@ -27,11 +28,7 @@ def main(argv):
             examiner = arg
 
     try:
-        # TODO There needs to be a central, controlling instance where to start. Currently there is no
-        # such instance. So, for example, is a problem when it comes to define the phase we are in.
-        protocol = LogFileProtocol(examiner)
-        xmlparser = XmlParser(instructionsfile, protocol)
-        collector = Collector(parser=xmlparser, protocol=protocol)
+        collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner)
         collector.collect()
         mosk_logger.info("Collcetion complete.")
     except FileNotFoundError:

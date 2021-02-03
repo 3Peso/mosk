@@ -5,6 +5,7 @@ from instructionparsers.wrapper import SourceOrArtefactWrapper
 from baseclasses.artefact import ArtefactBase
 from baseclasses.protocol import ProtocolBase
 from businesslogic.placeholders import PlaceholderReplacer
+from protocol.logfileprotocol import LogFileProtocol
 
 
 class Collector:
@@ -14,6 +15,13 @@ class Collector:
     def __init__(self, parser: XmlParser, protocol: ProtocolBase):
         self._parser = parser
         self._protocol = protocol
+
+    @staticmethod
+    def get_collector(instructionsfile: str, examiner: str = ''):
+        protocol = LogFileProtocol(examiner)
+        xmlparser = XmlParser(instructionsfile, protocol)
+        collector = Collector(parser=xmlparser, protocol=protocol)
+        return collector
 
     def collect(self):
         # TODO This currently is only a hack. Needs to be refactored.

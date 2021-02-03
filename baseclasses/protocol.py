@@ -15,11 +15,7 @@ class Protocol(metaclass=ABCMeta):
 
 
 class ProtocolBase(Protocol):
-    _examiner = ''
-    _taskid = ''
-    _artifactid = ''
-
-    def __init__(self, examiner, taskid, artifactid):
+    def __init__(self, examiner='', taskid='', artifactid=''):
         self._examiner = examiner
         self._taskid = taskid
         self._artifactid = artifactid
