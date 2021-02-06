@@ -8,7 +8,7 @@ from collections import OrderedDict, UserDict
 import xmlschema
 
 from businesslogic.log import mosk_logger
-from instructionparsers.wrapper import SourceOrArtefactWrapper
+from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.protocol import ProtocolBase
 from businesslogic.placeholders import PlaceholderReplacer
 
@@ -84,31 +84,32 @@ class XmlParser:
             if type(child) is Element:
                 self._initializemetadata(child)
 
-    def _initializesourcesandartefacts(self, current: Element = None, soaparent=None,
-                                       elementid: int = 0):
+    def _initializesourcesandartefacts(self, current: Element = None, parentinstruction=None,
+                                       instructionid: int = 0):
         if current is None:
             current = self._get_first_instruction_element()
 
-        currentsoa = getattr(importlib.import_module(current.attributes[XmlParser.MODULE_ATTRIBUTE].nodeValue),
-                             current.tagName)(parent=soaparent,
-                                              parameters=XmlParser._get_parameter_attributes(current.attributes))
-        currentsoa.protocol = self._protocol
+        currentinstruction = getattr(importlib.import_module(current.attributes[XmlParser.MODULE_ATTRIBUTE].nodeValue),
+                                     current.tagName)(parent=parentinstruction,
+                                                      parameters=XmlParser._get_parameter_attributes(current.attributes))
+        currentinstruction.protocol = self._protocol
 
-        soawrapper = SourceOrArtefactWrapper(element=current, soaelement=currentsoa,
-                                             soaparent=soaparent, elementid=elementid,
-                                             placeholdername=XmlParser._get_placeholder_name(current))
+        instructionwrapper = InstructionWrapper(instruction=currentinstruction, parentinstrutction=parentinstruction,
+                                                instructionid=instructionid,
+                                                placeholdername=XmlParser._get_placeholder_name(current))
 
         for child in current.childNodes:
             if type(child) is Element:
-                soawrapper_child = self._initializesourcesandartefacts(current=child, soaparent=currentsoa,
-                                                                       elementid=elementid + 1)
+                instructionwrapper_child = self._initializesourcesandartefacts(current=child,
+                                                                               parentinstruction=currentinstruction,
+                                                                               instructionid=instructionid + 1)
                 mosk_logger.debug("Adding '{}' with id {} as child of '{}' with id {}.".format(
-                    soawrapper_child.element.tagName, soawrapper_child.soawrapperid,
-                    soawrapper.element.tagName, soawrapper.soawrapperid
+                    instructionwrapper_child.instructionname, instructionwrapper_child.instructionid,
+                    instructionwrapper.instructionname, instructionwrapper.instructionid
                 ))
-                soawrapper.addchild(soawrapper_child)
+                instructionwrapper.addchild(instructionwrapper_child)
 
-        return soawrapper
+        return instructionwrapper
 
     def _get_first_instruction_element(self):
         # The first element in the xml branch could be a text element, if there
