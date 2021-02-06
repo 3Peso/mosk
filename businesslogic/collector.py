@@ -1,7 +1,7 @@
 from instructionparsers.xmlparser import XmlParser
 
 from businesslogic.log import mosk_logger
-from instructionparsers.wrapper import SourceOrArtefactWrapper
+from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.artefact import ArtefactBase
 from baseclasses.protocol import ProtocolBase
 from businesslogic.placeholders import PlaceholderReplacer
@@ -35,7 +35,7 @@ class Collector:
                                                  entrydata="{}: {}"
                                                  .format(metafield, self._parser.get_metadata(metafield)))
 
-    def _collect_from_instrcutions(self, current_instruction: SourceOrArtefactWrapper, callpath: str = ''):
+    def _collect_from_instrcutions(self, current_instruction: InstructionWrapper, callpath: str = ''):
         if callpath == '':
             callpath = str(current_instruction)
         else:
@@ -43,17 +43,17 @@ class Collector:
 
         # travel down to the leaf elements of the instruction tree
         # which are artefacts
-        for child in current_instruction.wrapperchildren:
+        for child in current_instruction.instructionchildren:
             self._collect_from_instrcutions(child, callpath)
 
-        if isinstance(current_instruction.soaelement, ArtefactBase):
-            self._collect_and_document(current_instruction.soaelement, callpath=callpath)
+        if isinstance(current_instruction.instruction, ArtefactBase):
+            self._collect_and_document(current_instruction.instruction, callpath=callpath)
 
             if current_instruction.placeholdername != '':
                 PlaceholderReplacer.update_placeholder(current_instruction.placeholdername,
-                                                       current_instruction.soaelement.data)
+                                                       current_instruction.instruction.data)
                 mosk_logger.info("Stored artefact data '{}' as placeholder '{}'."
-                                 .format(current_instruction.soaelement.data,
+                                 .format(current_instruction.instruction.data,
                                          current_instruction.placeholdername))
         else:
             mosk_logger.debug(callpath)
