@@ -58,15 +58,15 @@ class Collector:
         else:
             mosk_logger.debug(callpath)
 
-    def _collect_and_document(self, soa: ArtefactBase, callpath: str):
+    def _collect_and_document(self, artefact: ArtefactBase, callpath: str):
         # The following implicitly calls ArtefactBase.collect() because
         # ArtefactBase implements __call__.
-        soa()
+        artefact()
         mosk_logger.debug("{} - collected data".format(callpath))
-        self._protocol.writer_protocol_entry(entrydata=soa.getdocumentation(),
+        self._protocol.writer_protocol_entry(entrydata=artefact.getdocumentation(),
                                              entryheader=callpath)
         self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')
-        self._protocol.writer_protocol_entry(entrydata=soa.data, entryheader='')
+        self._protocol.writer_protocol_entry(entrydata=str(artefact), entryheader='')
         self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')
 
     # TODO document start date

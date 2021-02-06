@@ -32,7 +32,7 @@
                 <OSName module="artefact.localhost.osinformation" />
                 <OSVersion module="artefact.localhost.osinformation" />
                 <OSTimezone module="artefact.localhost.osinformation" />
-                <AllUsernames module="artefact.localhost.allusernames" />
+                <AllUsernames module="artefact.localhost.allusernames" properties="pw_name,pw_gecos,pw_dir" />
                 <CurrentUser module="artefact.localhost.currentuser" />
             </LocalHost>
         </Root>
