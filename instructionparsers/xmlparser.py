@@ -45,7 +45,7 @@ class XmlParser:
         if path.isfile(newpath):
             self._validate_schema(newpath)
             self._instructionspath = newpath
-            self._sourcesandartefactsTree = self._initializesourcesandartefacts()
+            self._sourcesandartefactsTree = self._init_instructions()
             self._initializemetadata()
         else:
             raise FileNotFoundError("'{}' does not exist.".format(newpath))
@@ -84,8 +84,8 @@ class XmlParser:
             if type(child) is Element:
                 self._initializemetadata(child)
 
-    def _initializesourcesandartefacts(self, current: Element = None, parentinstruction=None,
-                                       instructionid: int = 0):
+    def _init_instructions(self, current: Element = None, parentinstruction=None,
+                           instructionid: int = 0):
         if current is None:
             current = self._get_first_instruction_element()
 
@@ -101,9 +101,9 @@ class XmlParser:
 
         for child in current.childNodes:
             if type(child) is Element:
-                instructionwrapper_child = self._initializesourcesandartefacts(current=child,
-                                                                               parentinstruction=currentinstruction,
-                                                                               instructionid=instructionid + 1)
+                instructionwrapper_child = self._init_instructions(current=child,
+                                                                   parentinstruction=currentinstruction,
+                                                                   instructionid=instructionid + 1)
                 mosk_logger.debug("Adding '{}' with id {} as child of '{}' with id {}.".format(
                     instructionwrapper_child.instructionname, instructionwrapper_child.instructionid,
                     instructionwrapper.instructionname, instructionwrapper.instructionid
