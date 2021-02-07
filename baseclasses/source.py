@@ -23,12 +23,12 @@ class Source(metaclass=ABCMeta):
 
 
 class SourceBase(Source):
-    _protocol: ProtocolBase = None
-
-    def __init__(self, parent, parameters, path: str = ''):
+    def __init__(self, parent, parameters, path: str = '', *args, **kwargs):
+        Source.__init__(self, *args, **kwargs)
         self._parent = parent
         self._path = path
         self._parameters = parameters
+        self._protocol = None
         SourceBase.cache_parameters(self._parameters)
 
     # get_path currently has the soule purpose to document the complete path

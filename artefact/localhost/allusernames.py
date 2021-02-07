@@ -5,7 +5,7 @@ from baseclasses.artefact import ArtefactBase
 
 # TODO Implement switch to collect only users with a folder in '/users/*'
 class AllUsernames(ArtefactBase):
-    def __init__(self, properties: str = '', *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
         self._title = 'AllUsernames'
         self._collectionmethod = 'pwd.getpwall'

@@ -9,9 +9,6 @@ from protocol.logfileprotocol import LogFileProtocol
 
 
 class Collector:
-    _parser: XmlParser
-    _protocol: ProtocolBase
-
     def __init__(self, parser: XmlParser, protocol: ProtocolBase):
         self._parser = parser
         self._protocol = protocol

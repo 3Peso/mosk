@@ -34,15 +34,12 @@ _platform_lookup = {
 
 
 class OSName(ArtefactBase):
-    _title = 'OS Name'
-    _collectionmethod = ''
-    _description = ''
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         documentation = self._collect_documentation()
         self._collectionmethod = documentation[METHOD_KEY]
         self._description = documentation[DESCRIPTION_KEY]
+        self._title = 'OS Name'
 
     def collect(self):
         if sys.platform == 'darwin':
@@ -72,15 +69,12 @@ class OSName(ArtefactBase):
 
 
 class OSVersion(ArtefactBase):
-    _title = 'OS Version'
-    _collectionmethod = ''
-    _description = ''
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         documentation = self._collect_documentation()
         self._collectionmethod = documentation[METHOD_KEY]
         self._description = documentation[DESCRIPTION_KEY]
+        self._title = 'OS Version'
 
     def collect(self):
         if sys.platform == 'darwin':
@@ -109,9 +103,11 @@ class OSVersion(ArtefactBase):
 
 
 class OSTimezone(ArtefactBase):
-    _title = 'OS Timezone'
-    _collectionmethod = 'datetime.now astimezone'
-    _description = 'Collect the local timezone by using the Python module datetime.'
+    def __init__(self, *args, **kwargs):
+        ArtefactBase.__init__(self, *args, **kwargs)
+        self._title = 'OS Timezone'
+        self._collectionmethod = 'datetime.now astimezone'
+        self._description = 'Collect the local timezone by using the Python module datetime.'
 
     def collect(self):
         self._collecteddata = datetime.now().astimezone().tzname()

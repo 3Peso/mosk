@@ -89,6 +89,7 @@ class XmlParser:
         if current is None:
             current = self._get_first_instruction_element()
 
+        # TODO Implement a way to create source objects so that they also get their path attribute.
         currentinstruction = getattr(importlib.import_module(current.attributes[XmlParser.MODULE_ATTRIBUTE].nodeValue),
                                      current.tagName)(parent=parentinstruction,
                                                       parameters=XmlParser._get_parameter_attributes(current.attributes))

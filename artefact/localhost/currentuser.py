@@ -4,9 +4,11 @@ from baseclasses.artefact import ArtefactBase
 
 
 class CurrentUser(ArtefactBase):
-    _title = 'Current User'
-    _collectionmethod = 'getpass.getuser'
-    _description = 'Collects the current user with the Python module getpass.'
+    def __init__(self, *args, **kwargs):
+        ArtefactBase.__init__(self, *args, **kwargs)
+        self._title = 'Current User'
+        self._collectionmethod = 'getpass.getuser'
+        self._description = 'Collects the current user with the Python module getpass.'
 
     def collect(self):
         self._collecteddata = getuser()
