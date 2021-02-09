@@ -13,11 +13,11 @@ class Collector:
         self._parser = parser
         self._protocol = protocol
 
-    @staticmethod
-    def get_collector(instructionsfile: str, examiner: str = ''):
+    @classmethod
+    def get_collector(cls, instructionsfile: str, examiner: str = ''):
         protocol = LogFileProtocol(examiner)
         xmlparser = XmlParser(instructionsfile, protocol)
-        collector = Collector(parser=xmlparser, protocol=protocol)
+        collector = cls(parser=xmlparser, protocol=protocol)
         return collector
 
     def collect(self):

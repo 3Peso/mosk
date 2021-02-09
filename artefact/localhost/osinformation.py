@@ -55,8 +55,8 @@ class OSName(ArtefactBase):
     def getdescription(self) -> str:
         return self._description
 
-    @staticmethod
-    def _collect_documentation():
+    @classmethod
+    def _collect_documentation(cls):
         documentation = {}
         if sys.platform not in _platform_lookup.keys():
             documentation[METHOD_KEY] = "Platform '{}' is currently not supported.".format(sys.platform)

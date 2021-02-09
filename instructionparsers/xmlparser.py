@@ -64,8 +64,8 @@ class XmlParser:
     def get_metadata(self, metadatafield):
         return self._metadata[metadatafield]
 
-    @staticmethod
-    def _validate_schema(xmlfilepath: str):
+    @classmethod
+    def _validate_schema(cls, xmlfilepath: str):
         mosk_logger.info("Validating '{}' against xml schema '{}'...".format(xmlfilepath, XmlParser.XMLSCHEMA_PATH))
         schema = xmlschema.XMLSchema(XmlParser.XMLSCHEMA_PATH)
         schema.validate(xmlfilepath)
@@ -127,21 +127,21 @@ class XmlParser:
 
         return firstinstructionelement
 
-    @staticmethod
-    def _get_placeholder_name(current: Element):
+    @classmethod
+    def _get_placeholder_name(cls, current: Element):
         placeholdername = ''
-        if XmlParser.PLACEHOLDERNAME_ATTRIBUTE in current.attributes.keys():
-            placeholdername = current.attributes[XmlParser.PLACEHOLDERNAME_ATTRIBUTE].nodeValue
+        if cls.PLACEHOLDERNAME_ATTRIBUTE in current.attributes.keys():
+            placeholdername = current.attributes[cls.PLACEHOLDERNAME_ATTRIBUTE].nodeValue
         return placeholdername
 
-    @staticmethod
-    def _get_parameter_attributes(attributes: NamedNodeMap) -> UserDict:
+    @classmethod
+    def _get_parameter_attributes(cls, attributes: NamedNodeMap) -> UserDict:
         """Stores attributes of xml element in user dictionary, als long as they are not
         in the set of reserved attributes with special meaning."""
         parameters = UserDict()
         # Just add parameters which are not in the intersection of the set with the
         # reserved names and the attributes of the provided node map.
-        for parametername in attributes.keys() - XmlParser._none_parameter_attributes:
+        for parametername in attributes.keys() - cls._none_parameter_attributes:
             parameters[parametername] = attributes[parametername]
 
         return parameters

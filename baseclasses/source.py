@@ -48,8 +48,8 @@ class SourceBase(Source):
     def getparameter(self, parametername: str):
         return self._parameters[parametername]
 
-    @staticmethod
-    def cache_parameters(attributes: UserDict):
+    @classmethod
+    def cache_parameters(cls, attributes: UserDict):
         for attributename in attributes.keys():
             attributevalue = PlaceholderReplacer.replace_placeholders(attributes[attributename].nodeValue)
             PlaceholderReplacer.update_placeholder(attributename, attributevalue)
