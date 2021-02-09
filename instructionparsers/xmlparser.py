@@ -44,7 +44,7 @@ class XmlParser:
     def instructionspath(self, newpath: str):
         if path.isfile(newpath):
             self._validate_schema(newpath)
-            self._instructionspath = newpath
+            self._instructionspath = str(newpath)
             self._sourcesandartefactsTree = self._init_instructions()
             self._initializemetadata()
         else:

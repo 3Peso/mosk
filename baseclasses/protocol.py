@@ -16,9 +16,9 @@ class Protocol(metaclass=ABCMeta):
 
 class ProtocolBase(Protocol):
     def __init__(self, examiner='', taskid='', artifactid=''):
-        self._examiner = examiner
-        self._taskid = taskid
-        self._artifactid = artifactid
+        self._examiner = str(examiner)
+        self._taskid = str(taskid)
+        self._artifactid = str(artifactid)
 
     @abstractmethod
     def writer_protocol_entry(self, entryheader: str, entrydata: str):

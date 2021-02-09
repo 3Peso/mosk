@@ -1,8 +1,9 @@
 class InstructionWrapper:
+    # TODO parentinstrcution currently is not used anywhere. Is it really needed?
     def __init__(self, instruction, parentinstrutction, instructionid: 'int > 0', placeholdername: str = ''):
         self._instruction = instruction
         self._parentinstruction = parentinstrutction
-        self._instructionid = instructionid
+        self._instructionid = int(instructionid)
         self._instructionchildren = []
         # The placeholder name will be used in the placeholder cache to store the results of the
         # collection of the instruction in the objects of the wrapper class. The results should be
