@@ -3,15 +3,20 @@ import logging
 import getopt
 import sys
 
-import businesslogic.log
-from businesslogic.log import LOG_LEVEL
 from businesslogic.collector import Collector
 
 
-module_logger = logging.getLogger(__name__)
+LOG_LEVEL = {
+    'CRITICAL': logging.CRITICAL,
+    'ERROR': logging.ERROR,
+    'WARNING': logging.WARNING,
+    'INFO': logging.INFO,
+    'DEBUG': logging.DEBUG
+}
 
 
-# TODO Refactoring run with logging in focus
+# TODO Refactoring run with logging in focus.
+# Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
 def main(argv):
     try:
         opts, args = getopt.getopt(argv, 'i:l:e:', ['instructions=', 'loglevel=', 'examiner='])
@@ -24,16 +29,17 @@ def main(argv):
             instructionsfile = arg
         elif opt in ('-l', '--loglevel'):
             if arg in LOG_LEVEL.keys():
-                logging.basicConfig(level=LOG_LEVEL[arg])
+                logging.basicConfig(level=LOG_LEVEL[arg], format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
             else:
                 raise KeyError("'{}' not a valid log level.".format(arg))
         elif opt in ('-e', '--examiner'):
             examiner = arg
 
     try:
+        logger = logging.getLogger(__name__)
         collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner)
         collector.collect()
-        module_logger.info("Collection complete.")
+        logger.info("Collection complete.")
     except FileNotFoundError:
         print('Could not initialize parser.')
         sys.exit(2)
