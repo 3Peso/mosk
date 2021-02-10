@@ -30,8 +30,8 @@ _platform_lookup = {
             '11.2.1': 'BigSur'
         },
         METHOD_KEY: 'platform.mac_ver()',
-        DESCRIPTION_KEY: 'Collects MacOS version number with platform module and uses this '
-                         'combined with an internal lookup table of the collector artefact '
+        DESCRIPTION_KEY: 'Collects MacOS version number with platform module and uses this \r\n'
+                         'combined with an internal lookup table of the collector artefact \r\n'
                          'to determine the MacOS marekting name.'
     }
 }
@@ -131,9 +131,10 @@ class SudoVersion(ArtefactBase):
         ArtefactBase.__init__(self, *args, **kwargs)
         self.__title = 'Sudo Version Collector'
         self.__collectionmethod = 'sudo -V in Shell'
-        self.__description = "Collects all information about the current SUDO version. According to CVE-2021-3156\r\n" \
-                             "the versions 1.7.7 through 1.7.10p9, 1.8.2 through 1.8.31p2, and 1.9.0 through 1.9.5p1\r\n" \
-                             "are vulnurable to get root level access if you have access to the machine."
+        self.__description = \
+            "Collects all information about the current SUDO version. According to CVE-2021-3156\r\n" \
+            "the versions 1.7.7 through 1.7.10p9, 1.8.2 through 1.8.31p2, and 1.9.0 through 1.9.5p1\r\n" \
+            "are vulnurable to get root level access if you have access to the machine."
 
     def __str__(self):
         return self._collecteddata[0]
