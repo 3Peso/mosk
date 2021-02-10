@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
+import logging
 import getopt
 import sys
 
-from businesslogic.log import LOG_LEVEL, setup_logging, mosk_logger
-from instructionparsers.xmlparser import XmlParser
+import businesslogic.log
+from businesslogic.log import LOG_LEVEL
 from businesslogic.collector import Collector
-from protocol.logfileprotocol import LogFileProtocol
+
+
+module_logger = logging.getLogger(__name__)
 
 
 # TODO Refactoring run with logging in focus
@@ -21,7 +24,7 @@ def main(argv):
             instructionsfile = arg
         elif opt in ('-l', '--loglevel'):
             if arg in LOG_LEVEL.keys():
-                setup_logging(arg)
+                logging.basicConfig(level=LOG_LEVEL[arg])
             else:
                 raise KeyError("'{}' not a valid log level.".format(arg))
         elif opt in ('-e', '--examiner'):
@@ -30,7 +33,7 @@ def main(argv):
     try:
         collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner)
         collector.collect()
-        mosk_logger.info("Collcetion complete.")
+        module_logger.info("Collection complete.")
     except FileNotFoundError:
         print('Could not initialize parser.')
         sys.exit(2)

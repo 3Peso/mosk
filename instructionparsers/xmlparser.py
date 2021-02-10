@@ -1,4 +1,5 @@
 import importlib
+import logging
 from os import path
 from xml.dom.minidom import parse, Element, NamedNodeMap
 from collections import OrderedDict, UserDict
@@ -7,13 +8,14 @@ from collections import OrderedDict, UserDict
 # needed for xml schema validation of instructions files
 import xmlschema
 
-from businesslogic.log import mosk_logger
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.protocol import ProtocolBase
 from businesslogic.placeholders import PlaceholderReplacer
 
 
 class XmlParser:
+    _logger = logging.getLogger(__name__)
+
     PATH_ATTRIBUTE = 'path'
     MODULE_ATTRIBUTE = 'module'
     # The placeholdername tells the parser to store
@@ -66,7 +68,7 @@ class XmlParser:
 
     @classmethod
     def _validate_schema(cls, xmlfilepath: str):
-        mosk_logger.info("Validating '{}' against xml schema '{}'...".format(xmlfilepath, XmlParser.XMLSCHEMA_PATH))
+        XmlParser._logger.info("Validating '{}' against xml schema '{}'...".format(xmlfilepath, XmlParser.XMLSCHEMA_PATH))
         schema = xmlschema.XMLSchema(XmlParser.XMLSCHEMA_PATH)
         schema.validate(xmlfilepath)
 
@@ -104,7 +106,7 @@ class XmlParser:
                 instructionwrapper_child = self._init_instructions(current=child,
                                                                    parentinstruction=currentinstruction,
                                                                    instructionid=instructionid + 1)
-                mosk_logger.debug("Adding '{}' with id {} as child of '{}' with id {}.".format(
+                XmlParser._logger.debug("Adding '{}' with id {} as child of '{}' with id {}.".format(
                     instructionwrapper_child.instructionname, instructionwrapper_child.instructionid,
                     instructionwrapper.instructionname, instructionwrapper.instructionid
                 ))

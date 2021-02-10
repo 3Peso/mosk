@@ -6,7 +6,6 @@ import subprocess
 from datetime import datetime
 
 from baseclasses.artefact import ArtefactBase
-from businesslogic.log import mosk_logger
 
 
 METHOD_KEY = 'CollectionMethod'

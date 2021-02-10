@@ -8,15 +8,11 @@ LOG_LEVEL = {
     'INFO': logging.INFO,
     'DEBUG': logging.DEBUG
 }
-MOSK_LOGGER_NAME: str = 'mosk'
-# Here implicitely the handler of the parent is used,
-# which is the StreamHandler for console logging
-# Don't use the root logger. Setup your own logger
-mosk_logger = logging.getLogger(MOSK_LOGGER_NAME)
+selected_loglevel = "WARNING"
 
 
-def setup_logging(loglevel, logger=mosk_logger):
-    global mosk_logger, LOG_LEVEL
+def setup_logging(logger, loglevel=selected_loglevel):
+    global LOG_LEVEL
     if loglevel in LOG_LEVEL.keys():
         logger.setLevel(LOG_LEVEL[loglevel])
         # Prevent the root logger from propagating from here on.
@@ -31,6 +27,3 @@ def setup_logging(loglevel, logger=mosk_logger):
 
         logger.addHandler(consolehandler)
         logger.debug('Logging has been initialized.')
-    else:
-        logging.error(f"Cannot set log level '{loglevel}'. Log level does not exist.", exc_info=True)
-        mosk_logger = logging.getLogger('mosk_fallbacklogging')

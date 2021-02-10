@@ -1,6 +1,6 @@
+import logging
 from instructionparsers.xmlparser import XmlParser
 
-from businesslogic.log import mosk_logger
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.artefact import ArtefactBase
 from baseclasses.protocol import ProtocolBase
@@ -9,6 +9,8 @@ from protocol.logfileprotocol import LogFileProtocol
 
 
 class Collector:
+    _logger = logging.getLogger(__name__)
+
     def __init__(self, parser: XmlParser, protocol: ProtocolBase):
         self._parser = parser
         self._protocol = protocol
@@ -49,17 +51,17 @@ class Collector:
             if current_instruction.placeholdername != '':
                 PlaceholderReplacer.update_placeholder(current_instruction.placeholdername,
                                                        current_instruction.instruction.data)
-                mosk_logger.info("Stored artefact data '{}' as placeholder '{}'."
+                Collector._logger.info("Stored artefact data '{}' as placeholder '{}'."
                                  .format(current_instruction.instruction.data,
                                          current_instruction.placeholdername))
         else:
-            mosk_logger.debug(callpath)
+            Collector._logger.debug(callpath)
 
     def _collect_and_document(self, artefact: ArtefactBase, callpath: str):
         # The following implicitly calls ArtefactBase.collect() because
         # ArtefactBase implements __call__.
         artefact()
-        mosk_logger.debug("{} - collected data".format(callpath))
+        Collector._logger.debug("{} - collected data".format(callpath))
         self._protocol.writer_protocol_entry(entrydata=artefact.getdocumentation(),
                                              entryheader=callpath)
         self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')

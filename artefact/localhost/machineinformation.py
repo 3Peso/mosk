@@ -1,10 +1,12 @@
+import logging
 import socket
 
 from baseclasses.artefact import ArtefactBase
-from businesslogic.log import mosk_logger
 
 
 class MachineName(ArtefactBase):
+    _logger = logging.getLogger(__name__)
+
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
         self.__title = 'Machine Name'
@@ -14,10 +16,10 @@ class MachineName(ArtefactBase):
     def collect(self):
         self._collecteddata = socket.gethostname()
         if self._collecteddata is not None:
-            mosk_logger.debug("artefact.localhost.machineinformation: Machine name '{}' has been collected.".
-                              format(self._collecteddata))
+            MachineName._logger.debug("Machine name '{}' has been collected.".
+                                      format(self._collecteddata))
         else:
-            mosk_logger.info("artefact.localhost.machineinformation: Could not colelct machine name.")
+            MachineName._logger.info("Could not colelct machine name.")
 
     def gettitle(self):
         return self.__title

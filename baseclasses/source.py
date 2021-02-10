@@ -1,9 +1,9 @@
+import logging
 from collections import UserDict
 from abc import ABCMeta
 
 from baseclasses.protocol import ProtocolBase
 from businesslogic.placeholders import PlaceholderReplacer
-from businesslogic.log import mosk_logger
 
 
 class Source(metaclass=ABCMeta):
@@ -23,6 +23,8 @@ class Source(metaclass=ABCMeta):
 
 
 class SourceBase(Source):
+    _logger = logging.getLogger(__name__)
+
     def __init__(self, parent, parameters, path: str = '', *args, **kwargs):
         Source.__init__(self, *args, **kwargs)
         self._parent = parent
@@ -53,8 +55,8 @@ class SourceBase(Source):
         for attributename in attributes.keys():
             attributevalue = PlaceholderReplacer.replace_placeholders(attributes[attributename].nodeValue)
             PlaceholderReplacer.update_placeholder(attributename, attributevalue)
-            mosk_logger.debug("Source: Cached source parameter '{}'. Parameter value: '{}'".format(attributename,
-                                                                                                   attributevalue))
+            SourceBase._logger.debug("Source: Cached source parameter '{}'. Parameter value: '{}'"
+                                     .format(attributename, attributevalue))
 
     @property
     def protocol(self):
