@@ -34,6 +34,7 @@
                 <OSTimezone module="artefact.localhost.osinformation" />
                 <AllUsernames module="artefact.localhost.allusernames" properties="pw_name,pw_gecos,pw_dir" />
                 <CurrentUser module="artefact.localhost.currentuser" />
+                <SudoVersion module="artefact.localhost.osinformation" />
             </LocalHost>
         </Root>
     </Instructions>

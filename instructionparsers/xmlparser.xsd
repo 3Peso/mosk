@@ -36,6 +36,7 @@
       <xs:element ref="AllUsernames" />
       <xs:element ref="CurrentUser" />
       <xs:element ref="MachineName" />
+      <xs:element ref="SudoVersion" />
     </xs:choice>
     <xs:attribute name="path" type="xs:string" />
     <xs:attribute name="module" type="xs:string" />
@@ -53,4 +54,5 @@
   <xs:element name="AllUsernames" type="Artefact" />
   <xs:element name="CurrentUser" type="Artefact" />
   <xs:element name="MachineName" type="Artefact" />
+  <xs:element name="SudoVersion" type="Artefact" />
 </xs:schema>
