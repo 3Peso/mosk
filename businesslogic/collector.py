@@ -50,6 +50,8 @@ class Collector:
             self._collect_and_document(current_instruction.instruction, callpath=callpath)
 
             if current_instruction.placeholdername != '':
+                # TODO: The name "PlaceholderReplacer" does not strike me as been able to tell me
+                # what it really does. Name should be refactored.
                 PlaceholderReplacer.update_placeholder(current_instruction.placeholdername,
                                                        current_instruction.instruction.data)
                 Collector._logger.info("Stored artefact data '{}' as placeholder '{}'.".
