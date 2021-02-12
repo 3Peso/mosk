@@ -45,6 +45,7 @@ class Collector:
         for child in current_instruction.instructionchildren:
             self._collect_from_instrcutions(child, callpath)
 
+        # TODO Avoid "isinstance"
         if isinstance(current_instruction.instruction, ArtefactBase):
             self._collect_and_document(current_instruction.instruction, callpath=callpath)
 

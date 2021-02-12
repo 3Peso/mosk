@@ -102,6 +102,7 @@ class XmlParser:
                                                 placeholdername=XmlParser._get_placeholder_name(current))
 
         for child in current.childNodes:
+            # TODO: can "is" be avoided here?
             if type(child) is Element:
                 instructionwrapper_child = self._init_instructions(current=child,
                                                                    parentinstruction=currentinstruction,
