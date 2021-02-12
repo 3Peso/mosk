@@ -52,9 +52,9 @@ class Collector:
             if current_instruction.placeholdername != '':
                 PlaceholderReplacer.update_placeholder(current_instruction.placeholdername,
                                                        current_instruction.instruction.data)
-                Collector._logger.info("Stored artefact data '{}' as placeholder '{}'."
-                                 .format(current_instruction.instruction.data,
-                                         current_instruction.placeholdername))
+                Collector._logger.info("Stored artefact data '{}' as placeholder '{}'.".
+                                       format(current_instruction.instruction.data,
+                                              current_instruction.placeholdername))
         else:
             Collector._logger.debug(callpath)
 
