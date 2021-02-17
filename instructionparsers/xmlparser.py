@@ -10,7 +10,7 @@ import xmlschema
 
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.protocol import ProtocolBase
-from businesslogic.placeholders import PlaceholderReplacer
+from businesslogic.placeholders import Placeholder
 
 
 class XmlParser:
@@ -62,7 +62,7 @@ class XmlParser:
     def metadatafields(self):
         return self._metadata.keys()
 
-    @PlaceholderReplacer
+    @Placeholder
     def get_metadata(self, metadatafield):
         return self._metadata[metadatafield]
 

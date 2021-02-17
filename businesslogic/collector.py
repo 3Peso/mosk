@@ -4,7 +4,7 @@ from instructionparsers.xmlparser import XmlParser
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.artefact import ArtefactBase
 from baseclasses.protocol import ProtocolBase
-from businesslogic.placeholders import PlaceholderReplacer
+from businesslogic.placeholders import Placeholder
 from protocol.logfileprotocol import LogFileProtocol
 
 
@@ -24,7 +24,7 @@ class Collector:
 
     def collect(self):
         # TODO This currently is only a hack. Needs to be refactored.
-        PlaceholderReplacer.set_collect_phase()
+        Placeholder.set_collect_phase()
         self._document_metadata()
         self._collect_from_instrcutions(self._parser.instructions)
 
@@ -45,15 +45,15 @@ class Collector:
         for child in current_instruction.instructionchildren:
             self._collect_from_instrcutions(child, callpath)
 
-        # TODO Avoid "isinstance"
-        if isinstance(current_instruction.instruction, ArtefactBase):
+        # HACK: This is a rather whaky way of determining if the object is right
+        # Another way would be to use 'isinstance' which I try not to use to
+        # avoid implementing my own ABC.
+        if 'collect' in dir(current_instruction.instruction):
             self._collect_and_document(current_instruction.instruction, callpath=callpath)
 
             if current_instruction.placeholdername != '':
-                # TODO: The name "PlaceholderReplacer" does not strike me as been able to tell me
-                # what it really does. Name should be refactored.
-                PlaceholderReplacer.update_placeholder(current_instruction.placeholdername,
-                                                       current_instruction.instruction.data)
+                Placeholder.update_placeholder(current_instruction.placeholdername,
+                                               current_instruction.instruction.data)
                 Collector._logger.info("Stored artefact data '{}' as placeholder '{}'.".
                                        format(current_instruction.instruction.data,
                                               current_instruction.placeholdername))

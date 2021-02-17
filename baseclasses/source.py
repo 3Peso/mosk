@@ -1,32 +1,14 @@
 import logging
 from collections import UserDict
-from abc import ABCMeta
 
 from baseclasses.protocol import ProtocolBase
-from businesslogic.placeholders import PlaceholderReplacer
+from businesslogic.placeholders import Placeholder
 
 
-class Source(metaclass=ABCMeta):
-    @classmethod
-    def __subclasshook(cls, subclass):
-        return (hasattr(subclass, 'getpath') and
-                callable(subclass.getpath) and
-                hasattr(subclass, 'getparameter') and
-                callable(subclass.getparameter) and
-                hasattr(subclass, 'protocol') and
-                callable(subclass.protocol) and
-                hasattr(subclass, 'cache_parameters') and
-                callable(subclass.cache_parameters))
-
-    def __init__(self, *args, **kwargs):
-        return
-
-
-class SourceBase(Source):
+class SourceBase:
     _logger = logging.getLogger(__name__)
 
     def __init__(self, parent, parameters, path: str = '', *args, **kwargs):
-        Source.__init__(self, *args, **kwargs)
         self._parent = parent
         self._path = path
         self._parameters = parameters
@@ -53,8 +35,8 @@ class SourceBase(Source):
     @classmethod
     def cache_parameters(cls, attributes: UserDict):
         for attributename in attributes.keys():
-            attributevalue = PlaceholderReplacer.replace_placeholders(attributes[attributename].nodeValue)
-            PlaceholderReplacer.update_placeholder(attributename, attributevalue)
+            attributevalue = Placeholder.replace_placeholders(attributes[attributename].nodeValue)
+            Placeholder.update_placeholder(attributename, attributevalue)
             SourceBase._logger.debug("Source: Cached source parameter '{}'. Parameter value: '{}'"
                                      .format(attributename, attributevalue))
 
