@@ -17,6 +17,7 @@ LOG_LEVEL = {
 
 # TODO Refactoring run with logging in focus.
 # Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
+# TODO doctest tests with doctest file (see "How the Tombola subclasses were tested" in the Python books
 def main(argv):
     try:
         opts, args = getopt.getopt(argv, 'i:l:e:', ['instructions=', 'loglevel=', 'examiner='])
