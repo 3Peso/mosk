@@ -13,11 +13,11 @@ class CurrentUser(ArtefactBase):
     def collect(self):
         self._collecteddata = getuser()
 
-    def gettitle(self):
+    def title(self):
         return self.__title
 
-    def getcollectionmethod(self):
+    def collectionmethod(self):
         return self.__collectionmethod
 
-    def getdescription(self):
+    def description(self):
         return self.__description

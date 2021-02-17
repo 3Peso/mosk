@@ -50,13 +50,13 @@ class OSName(ArtefactBase):
             self._collecteddata = \
                 _platform_lookup[sys.platform][LOOKUP_KEY][platform.mac_ver()[VERSION_NUMBER_INDEX]]
 
-    def gettitle(self) -> str:
+    def title(self) -> str:
         return self.__title
 
-    def getcollectionmethod(self) -> str:
+    def collectionmethod(self) -> str:
         return self.__collectionmethod
 
-    def getdescription(self) -> str:
+    def description(self) -> str:
         return self.__description
 
     @classmethod
@@ -84,13 +84,13 @@ class OSVersion(ArtefactBase):
         if sys.platform == 'darwin':
             self._collecteddata = platform.mac_ver()[VERSION_NUMBER_INDEX]
 
-    def gettitle(self) -> str:
+    def title(self) -> str:
         return self.__title
 
-    def getcollectionmethod(self) -> str:
+    def collectionmethod(self) -> str:
         return self.__collectionmethod
 
-    def getdescription(self) -> str:
+    def description(self) -> str:
         return self.__description
 
     @staticmethod
@@ -116,13 +116,13 @@ class OSTimezone(ArtefactBase):
     def collect(self):
         self._collecteddata = datetime.now().astimezone().tzname()
 
-    def gettitle(self) -> str:
+    def title(self) -> str:
         return self.__title
 
-    def getcollectionmethod(self) -> str:
+    def collectionmethod(self) -> str:
         return self.__collectionmethod
 
-    def getdescription(self) -> str:
+    def description(self) -> str:
         return self.__description
 
 
@@ -145,11 +145,11 @@ class SudoVersion(ArtefactBase):
                                    universal_newlines=True)
         self._collecteddata = process.communicate()
 
-    def gettitle(self) -> str:
+    def title(self) -> str:
         return self.__title
 
-    def getcollectionmethod(self) -> str:
+    def collectionmethod(self) -> str:
         return self.__collectionmethod
 
-    def getdescription(self) -> str:
+    def description(self) -> str:
         return self.__description

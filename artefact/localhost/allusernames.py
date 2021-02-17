@@ -32,11 +32,11 @@ class AllUsernames(ArtefactBase):
             result.append(["{}: {}".format(prop, getattr(pw, prop)) for prop in self.__properties])
         self._collecteddata = result
 
-    def gettitle(self) -> str:
+    def title(self) -> str:
         return self.__title
 
-    def getcollectionmethod(self) -> str:
+    def collectionmethod(self) -> str:
         return self.__collectionmethod
 
-    def getdescription(self) -> str:
+    def description(self) -> str:
         return self.__description

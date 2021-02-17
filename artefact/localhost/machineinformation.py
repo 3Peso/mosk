@@ -21,11 +21,11 @@ class MachineName(ArtefactBase):
         else:
             MachineName._logger.info("Could not colelct machine name.")
 
-    def gettitle(self):
+    def title(self):
         return self.__title
 
-    def getcollectionmethod(self):
+    def collectionmethod(self):
         return self.__collectionmethod
 
-    def getdescription(self):
+    def description(self):
         return self.__description
