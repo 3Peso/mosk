@@ -8,6 +8,7 @@ from businesslogic.placeholders import Placeholder
 from protocol.logfileprotocol import LogFileProtocol
 
 
+# TODO There should be a way to provide comments for the protocol by defining them in the instructions file
 class Collector:
     _logger = logging.getLogger(__name__)
 
