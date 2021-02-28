@@ -47,7 +47,9 @@
             <Network module="source.network">
                 <TemperatureFromOpenWeatherDotCom module="artefact.network.internet"
                                                   city="munich" countrycode="ger"
-                                                  apikey="c8f2a7f1fff851cd590a0cd7aef77269"/>
+                                                  apikey="c8f2a7f1fff851cd590a0cd7aef77269" />
+                <ExternalLinksOnUrl module="artefact.network.internet"
+                                    url="https://www.heise.de" />
             </Network>
         </Root>
     </Instructions>
