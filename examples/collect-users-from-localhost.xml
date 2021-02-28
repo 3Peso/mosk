@@ -44,6 +44,11 @@
                 <FileExistence module="artefact.localhost.file" filepath="~/Library/._insu" />
                 <!-- End Silver Sparrow indicator -->
             </LocalHost>
+            <Network module="source.network">
+                <TemperatureFromOpenWeatherDotCom module="artefact.network.internet"
+                                                  city="munich" countrycode="ger"
+                                                  apikey="c8f2a7f1fff851cd590a0cd7aef77269"/>
+            </Network>
         </Root>
     </Instructions>
 </Task>

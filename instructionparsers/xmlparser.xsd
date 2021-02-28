@@ -22,10 +22,20 @@
   </xs:complexType>
 
   <xs:complexType name="Root">
-    <xs:choice>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element maxOccurs="unbounded" minOccurs="0" type="LocalHost" name="LocalHost" />
+      <xs:element maxOccurs="unbounded" minOccurs="0" type="Network" name="Network" />
     </xs:choice>
     <xs:attribute name="module" type="xs:string" />
+  </xs:complexType>
+
+  <xs:complexType name="Network">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="TemperatureFromOpenWeatherDotCom" />
+    </xs:choice>
+    <xs:attribute name="path" type="xs:string" />
+    <xs:attribute name="module" type="xs:string" />
+    <xs:anyAttribute processContents="lax" />
   </xs:complexType>
 
   <xs:complexType name="LocalHost">
@@ -57,4 +67,5 @@
   <xs:element name="MachineName" type="Artefact" />
   <xs:element name="SudoVersion" type="Artefact" />
   <xs:element name="FileExistence" type="Artefact" />
+  <xs:element name="TemperatureFromOpenWeatherDotCom" type="Artefact" />
 </xs:schema>
