@@ -32,7 +32,7 @@
                 <OSName module="artefact.localhost.osinformation" />
                 <OSVersion module="artefact.localhost.osinformation" />
                 <OSTimezone module="artefact.localhost.osinformation" />
-                <AllUsernames module="artefact.localhost.allusernames" properties="pw_name,pw_gecos,pw_dir" />
+                <!--<AllUsernames module="artefact.localhost.allusernames" properties="pw_name,pw_gecos,pw_dir" />-->
                 <CurrentUser module="artefact.localhost.currentuser" />
                 <SudoVersion module="artefact.localhost.osinformation" />
                 <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
@@ -48,8 +48,9 @@
                 <TemperatureFromOpenWeatherDotCom module="artefact.network.internet"
                                                   city="munich" countrycode="ger"
                                                   apikey="c8f2a7f1fff851cd590a0cd7aef77269" />
-                <ExternalLinksOnUrl module="artefact.network.internet"
-                                    url="https://www.heise.de" />
+                <!--<ExternalLinksOnUrl module="artefact.network.internet"
+                                    url="https://www.heise.de" />-->
+                <HostsRegisteredInFritzBox module="artefact.network.router" />
             </Network>
         </Root>
     </Instructions>

@@ -33,6 +33,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element ref="TemperatureFromOpenWeatherDotCom" />
       <xs:element ref="ExternalLinksOnUrl" />
+      <xs:element ref="HostsRegisteredInFritzBox" />
     </xs:choice>
     <xs:attribute name="path" type="xs:string" />
     <xs:attribute name="module" type="xs:string" />
@@ -70,4 +71,5 @@
   <xs:element name="FileExistence" type="Artefact" />
   <xs:element name="TemperatureFromOpenWeatherDotCom" type="Artefact" />
   <xs:element name="ExternalLinksOnUrl" type="Artefact" />
+  <xs:element name="HostsRegisteredInFritzBox" type="Artefact" />
 </xs:schema>
