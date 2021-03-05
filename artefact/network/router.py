@@ -1,9 +1,13 @@
+import requests.exceptions
 from collections import namedtuple
 
 from baseclasses.artefact import ArtefactBase
 
 from fritzconnection.lib.fritzhosts import FritzHosts
 from fritzconnection.cli.utils import get_instance
+
+
+Host = namedtuple('Host', ['Index', 'IP', 'HostName', 'MacAddress', 'Status'])
 
 
 class HostsRegisteredInFritzBox(ArtefactBase):
@@ -16,16 +20,25 @@ class HostsRegisteredInFritzBox(ArtefactBase):
 
     def __str__(self):
         hosts = ""
-        for host in self._collecteddata:
-            hosts += "{}\n".format(host)
+
+        if self._collecteddata is not None:
+            for host in self._collecteddata:
+                hosts += f'{host.Index:>3}: {host.IP:<16} {host.HostName:<28} {host.MacAddress:<17}   {host.Status}\n'
+        else:
+            hosts = "No hosts retrieved."
+
         return hosts
 
     # TODO Make parameters configurabel via XML and prompt for password if needed
     def collect(self):
         Args = namedtuple('Args', ['address', 'port', 'username', 'password', 'encrypt'])
         args = Args(address='192.168.178.1', port='49000', encrypt=False, username=None, password=input('Password: '))
-        fho = get_instance(FritzHosts, args)
-        self._collecteddata = self._get_status(fho)
+        try:
+            fho = get_instance(FritzHosts, args)
+        except requests.exceptions.ConnectionError:
+            self._collecteddata = None
+        else:
+            self._collecteddata = self._get_status(fho)
 
     def title(self):
         return self.__title
@@ -44,6 +57,6 @@ class HostsRegisteredInFritzBox(ArtefactBase):
             ip = host['ip'] if host['ip'] else '-'
             mac = host['mac'] if host['mac'] else '-'
             hn = host['name']
-            yield f'{index:>3}: {ip:<16} {hn:<28} {mac:<17}   {status}'
+            yield Host(Index=index, IP=ip, MacAddress=mac, HostName=hn, Status=status)
 
 # TODO Implement a class to collect all FritzBox event logs and filter for certain signal words
