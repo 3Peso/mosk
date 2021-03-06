@@ -1,5 +1,6 @@
 import logging
 from instructionparsers.xmlparser import XmlParser
+from contextlib import suppress
 
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.artefact import ArtefactBase
@@ -62,8 +63,8 @@ class Collector:
     def _collect_and_document(self, artefact: ArtefactBase, callpath: str):
         # The following implicitly calls ArtefactBase.collect() because
         # ArtefactBase implements __call__.
-        artefact()
-        Collector._logger.debug("{} - collected data".format(callpath))
+        with suppress(artefact()):
+            Collector._logger.debug("{} - collected data".format(callpath))
         self._protocol.writer_protocol_entry(entrydata=artefact.getdocumentation(),
                                              entryheader=callpath)
         self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')
