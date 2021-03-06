@@ -27,7 +27,8 @@ _platform_lookup = {
             '11.0': 'BigSur',
             '11.1': 'BigSur',
             '11.2': 'BigSur',
-            '11.2.1': 'BigSur'
+            '11.2.1': 'BigSur',
+            '11.2.2': 'BigSur'
         },
         METHOD_KEY: 'platform.mac_ver()',
         DESCRIPTION_KEY: 'Collects MacOS version number with platform module and uses this \r\n'

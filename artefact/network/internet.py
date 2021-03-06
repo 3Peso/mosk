@@ -33,7 +33,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
             self._collecteddata = "Could not query {}.\n{}".format(queryurl, httperror.info)
         else:
             data = json.load(html)
-            self._collecteddata = "Current temperature in {}: {}{}".format(city, data['main']['temp'], '°')
+        self._collecteddata = "Current temperature in {}: {}{}".format(city, data['main']['temp'], '°')
 
     def title(self):
         return self.__title
