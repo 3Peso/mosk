@@ -61,6 +61,7 @@ class LogFileProtocol(ProtocolBase):
 
         return name
 
+    # TODO Refactor. The call currently is horrible
     def writer_protocol_entry(self, entryheader, entrydata):
         if entryheader is not None and entryheader != '':
             self._messagelogger.info('*' * len(entryheader))
@@ -69,6 +70,8 @@ class LogFileProtocol(ProtocolBase):
         if entrydata is not None and entrydata != '':
             self._artefactlogger.info(entrydata)
         return
+
+    # TODO Think about adding a newline functions
 
 # Protocol Example
 
