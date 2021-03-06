@@ -47,8 +47,12 @@ class OSName(ArtefactBase):
 
     def collect(self):
         if sys.platform == 'darwin':
-            self._collecteddata = \
-                _platform_lookup[sys.platform][LOOKUP_KEY][platform.mac_ver()[VERSION_NUMBER_INDEX]]
+            platformversion = platform.mac_ver()[VERSION_NUMBER_INDEX]
+            try:
+                self._collecteddata = \
+                    _platform_lookup[sys.platform][LOOKUP_KEY][platformversion]
+            except KeyError:
+                self._collecteddata = "Cannot collect OS name for platform version '{}'".format(platformversion)
 
     def title(self) -> str:
         return self.__title
