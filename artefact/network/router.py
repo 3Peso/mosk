@@ -15,8 +15,9 @@ class HostsRegisteredInFritzBox(ArtefactBase):
         ArtefactBase.__init__(self, *args, **kwargs)
         self.__title = "FritzBoxHosts"
         self.__collectionmethod = "fritzcollection.lib.hosts"
-        self.__description = "Uses to Open Source Python module 'fritzconnection' by Klaus Bremer" \
-                             "to collect the status of all registered hosts in a FritzBox network"
+        self.__description = \
+            "Uses to Open Source Python module 'fritzconnection' by Klaus Bremer\r\n" \
+            "to collect the status of all registered hosts in a FritzBox network"
 
     def __str__(self):
         hosts = ""
