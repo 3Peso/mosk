@@ -15,6 +15,12 @@ class BashHistoryOfAllUsers(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
+        self.__title = 'BashHistoryOfAllUsers'
+        self.__collectionmethod = 'os.file'
+        self.__description = \
+            'Retrieves all user folers and tries to find bash shell and zhs shell history files and\r\n' \
+            'then tries to store their content.\r\n' \
+            'IMPORTANT: None-Unicode-Characters wont be stored.'
 
     def __str__(self):
         result = ''
@@ -27,6 +33,15 @@ class BashHistoryOfAllUsers(ArtefactBase):
     def collect(self):
         userfolders = [f.path for f in os.scandir('/Users') if f.is_dir()]
         self._collecteddata = list(BashHistoryOfAllUsers._collect_bash_history(userfolders))
+
+    def title(self):
+        return self.__title
+
+    def collectionmethod(self):
+        return self.__collectionmethod
+
+    def description(self):
+        return self.__description
 
     @staticmethod
     def _collect_bash_history(userfolders):
