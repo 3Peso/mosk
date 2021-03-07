@@ -10,12 +10,12 @@ from source.localhost import expandfilepath
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
 
 
-class BashHistoryOfAllUsers(ArtefactBase):
+class ShellHistoryOfAllUsers(ArtefactBase):
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'BashHistoryOfAllUsers'
+        self.__title = 'ShellHistoryOfAllUsers'
         self.__collectionmethod = 'os.file'
         self.__description = \
             'Retrieves all user folers and tries to find bash shell and zhs shell history files and\r\n' \
@@ -32,7 +32,7 @@ class BashHistoryOfAllUsers(ArtefactBase):
 
     def collect(self):
         userfolders = [f.path for f in os.scandir('/Users') if f.is_dir()]
-        self._collecteddata = list(BashHistoryOfAllUsers._collect_bash_history(userfolders))
+        self._collecteddata = list(ShellHistoryOfAllUsers._collect_bash_history(userfolders))
 
     def title(self):
         return self.__title
@@ -49,6 +49,6 @@ class BashHistoryOfAllUsers(ArtefactBase):
                             for history in ['.bash_history', '.zsh_history']]
         for historyfile in historyfilepaths:
             if path.exists(historyfile):
-                BashHistoryOfAllUsers._logger.debug("Found terminal history file '{}'.".format(historyfile))
+                ShellHistoryOfAllUsers._logger.debug("Found terminal history file '{}'.".format(historyfile))
                 with open(historyfile, encoding='unicode_escape') as hf:
                     yield TermianlHistory(Path=historyfile, Content=hf.read())
