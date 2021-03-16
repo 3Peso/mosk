@@ -32,3 +32,14 @@ def get_time(ntpserver=DEFAULT_TIME_SERVER):
         t = struct.unpack('!12I', data)[10]
         t -= REF_TIME_1970
     return time.ctime(t)
+
+
+def str_to_bool(boolstring):
+    if boolstring == 'True':
+        return True
+    if boolstring == 'False':
+        return False
+    elif boolstring == '' or boolstring is None:
+        return False
+    else:
+        return True
