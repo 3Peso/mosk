@@ -25,6 +25,7 @@ class NVRAMCollector(ArtefactBase):
     def description(self):
         return self.__description
 
+
 class LocalTime(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
