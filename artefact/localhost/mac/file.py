@@ -1,10 +1,9 @@
 import logging
-import os
 from collections import namedtuple
 from os import path
 
 from baseclasses.artefact import ArtefactBase
-from source.localhost import expandfilepath
+from businesslogic.support import get_userfolders
 
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
@@ -31,7 +30,7 @@ class ShellHistoryOfAllUsers(ArtefactBase):
         return result
 
     def collect(self):
-        userfolders = [f.path for f in os.scandir('/Users') if f.is_dir()]
+        userfolders = list(get_userfolders())
         self._collecteddata = list(ShellHistoryOfAllUsers._collect_bash_history(userfolders))
 
     def title(self):
