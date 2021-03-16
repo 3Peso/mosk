@@ -2,6 +2,7 @@ import requests.exceptions
 from collections import namedtuple
 
 from baseclasses.artefact import ArtefactBase
+from businesslogic.support import str_to_bool
 
 from fritzconnection.lib.fritzhosts import FritzHosts
 from fritzconnection.cli.utils import get_instance
@@ -11,6 +12,11 @@ Host = namedtuple('Host', ['Index', 'IP', 'HostName', 'MacAddress', 'Status'])
 
 
 class HostsRegisteredInFritzBox(ArtefactBase):
+    ADDRESS_PARAMETER = 'address'
+    PORT_PARAMETER = 'port'
+    USERNAME_PARAMETER = 'username'
+    ENCRYPT_PARAMETER = 'encrypt'
+
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
         self.__title = "FritzBoxHosts"
@@ -33,7 +39,17 @@ class HostsRegisteredInFritzBox(ArtefactBase):
     # TODO Make parameters configurabel via XML and prompt for password if needed
     def collect(self):
         Args = namedtuple('Args', ['address', 'port', 'username', 'password', 'encrypt'])
-        args = Args(address='192.168.178.1', port='49000', encrypt=False, username=None, password=input('Password: '))
+        params = self._get_parameters()
+
+        username = None
+        if HostsRegisteredInFritzBox.USERNAME_PARAMETER in params.keys():
+            username = params[HostsRegisteredInFritzBox.USERNAME_PARAMETER]
+
+        args = Args(address=params[HostsRegisteredInFritzBox.ADDRESS_PARAMETER],
+                    port=params[HostsRegisteredInFritzBox.PORT_PARAMETER],
+                    encrypt=str_to_bool(params[HostsRegisteredInFritzBox.ENCRYPT_PARAMETER]),
+                    username=username,
+                    password=input('Password: '))
         try:
             fho = get_instance(FritzHosts, args)
         except requests.exceptions.ConnectionError:
@@ -49,6 +65,12 @@ class HostsRegisteredInFritzBox(ArtefactBase):
 
     def description(self):
         return self.__description
+
+    def _get_parameters(self):
+        params = [HostsRegisteredInFritzBox.ADDRESS_PARAMETER, HostsRegisteredInFritzBox.USERNAME_PARAMETER,
+                  HostsRegisteredInFritzBox.PORT_PARAMETER, HostsRegisteredInFritzBox.ADDRESS_PARAMETER,
+                  HostsRegisteredInFritzBox.ENCRYPT_PARAMETER]
+        return {k: self._parameters[k].nodeValue for k in params if k in self._parameters.keys()}
 
     @staticmethod
     def _get_status(fh):
