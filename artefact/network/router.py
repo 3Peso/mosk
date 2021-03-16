@@ -1,4 +1,5 @@
 import requests.exceptions
+import getpass
 from collections import namedtuple
 
 from baseclasses.artefact import ArtefactBase
@@ -37,6 +38,7 @@ class HostsRegisteredInFritzBox(ArtefactBase):
         return hosts
 
     # TODO Make parameters configurabel via XML and prompt for password if needed
+    # TODO Currently encrypted transfare of credentials to fritzbox does not work
     def collect(self):
         Args = namedtuple('Args', ['address', 'port', 'username', 'password', 'encrypt'])
         params = self._get_parameters()
@@ -49,7 +51,7 @@ class HostsRegisteredInFritzBox(ArtefactBase):
                     port=params[HostsRegisteredInFritzBox.PORT_PARAMETER],
                     encrypt=str_to_bool(params[HostsRegisteredInFritzBox.ENCRYPT_PARAMETER]),
                     username=username,
-                    password=input('Password: '))
+                    password=getpass.getpass('Password: '))
         try:
             fho = get_instance(FritzHosts, args)
         except requests.exceptions.ConnectionError:
