@@ -41,7 +41,7 @@ To run mosk you have to provide instructions provided, for example, as XML files
             </LocalHost>
             <Network module="source.network">
                 <TimeFromNTPServer module="artefact.network.system" />
-                <HostsRegisteredInFritzBox module="artefact.network.router" address="192.168.178.1" port="49000" encrypt="False"/>
+                <HostsRegisteredInFritzBox module="artefact.network.router" address="10.0.0.1" port="48000" encrypt="False"/>
             </Network>
         </Root>
     </Instructions>
