@@ -1,0 +1,30 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Sachbearbeiter">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Auftrag">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Auftraggeber">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Beschreibung des Asservats">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Beschreibung der Aufgabe">
+            Wie lauten die Eckdaten des Betriebssystems des zugrundeliegend Artefakts?
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <Network module="source.network">
+                <TemperatureFromOpenWeatherDotCom module="artefact.network.internet"
+                                                  city="munich" countrycode="ger"
+                                                  apikey="!@APIKey@!" />
+                <!--<ExternalLinksOnUrl module="artefact.network.internet"
+                                    url="https://www.hfritsfiewlsdkwe.de" />-->
+            </Network>
+        </Root>
+    </Instructions>
+</Task>

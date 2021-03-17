@@ -1,0 +1,53 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Sachbearbeiter">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Auftrag">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Auftraggeber">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Beschreibung des Asservats">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Beschreibung der Aufgabe">
+            Wie lauten die Eckdaten des Betriebssystems des zugrundeliegend Artefakts?
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <LocalHost module="source.localhost">
+                <!-- The placeholder name implies, that the data collected by the artefact should be
+                stored in memory for later use in following artefacts in the tree as parameters -->
+                <MachineName module="artefact.localhost.machineinformation" placeholdername="machinename" />
+            </LocalHost>
+            <!--Problem is, the machinename will not be replaced because the machine name is only collected
+            at collection phase not initializition phase. So there must be a mechanism which automatically looks
+            up correct placeholder values on collection phase, too. This can be hooked in in the wrapper class object.
+            Only requirement in this case would be, that the machinename can only be looked up, after the collection
+            of the above "MachineName" artefact has taken place.-->
+            <LocalHost path="!@machinename@!" module="source.localhost">
+                <OSName module="artefact.localhost.osinformation" />
+                <OSVersion module="artefact.localhost.osinformation" />
+                <OSTimezone module="artefact.localhost.osinformation" />
+                <AllUsernames module="artefact.localhost.allusernames" properties="pw_name,pw_gecos,pw_dir" />
+                <CurrentUser module="artefact.localhost.currentuser" />
+                <SudoVersion module="artefact.localhost.osinformation" />
+                <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
+                <!-- Begin The following files may indicate that the "Silver Sparrow" is installed on mac -->
+                <!-- https://www.heise.de/news/Silver-Sparrow-Mysterioese-Malware-auf-ueber-29-000-Macs-entdeckt-5062066.html -->
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.json" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.plist" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/agent.sh" />
+                <FileExistence module="artefact.localhost.file" filepath="~/Library/._insu" />
+                <!-- End Silver Sparrow indicator -->
+                <ShellHistoryOfAllUsers module="artefact.localhost.mac.file" />
+                <NVRAMCollector module="artefact.localhost.mac.system" />
+                <TimeFromNTPServer module="artefact.network.system" />
+                <LocalTime module="artefact.localhost.mac.system" />
+            </LocalHost>
+        </Root>
+    </Instructions>
+</Task>

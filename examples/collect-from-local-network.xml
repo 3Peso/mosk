@@ -1,0 +1,28 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Sachbearbeiter">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Auftrag">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Auftraggeber">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Beschreibung des Asservats">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Beschreibung der Aufgabe">
+            Wie lauten die Eckdaten des Betriebssystems des zugrundeliegend Artefakts?
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <Network module="source.network">
+                <TimeFromNTPServer module="artefact.network.system" />
+                <HostsRegisteredInFritzBox module="artefact.network.router" address="!@FritzIP@!"
+                port="!@FritzPort@!" encrypt="False"/>
+            </Network>
+        </Root>
+    </Instructions>
+</Task>
