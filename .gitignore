@@ -1,4 +1,4 @@
 # Project exclude paths
 /venv/
-/examples/
+/examples/collect-test.xml
 global_placeholders.json
