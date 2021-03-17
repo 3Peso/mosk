@@ -145,6 +145,6 @@ class XmlParser:
         # Just add parameters which are not in the intersection of the set with the
         # reserved names and the attributes of the provided node map.
         for parametername in attributes.keys() - cls._none_parameter_attributes:
-            parameters[parametername] = attributes[parametername]
+            parameters[parametername] = attributes[parametername].nodeValue
 
         return parameters

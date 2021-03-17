@@ -72,7 +72,7 @@ class HostsRegisteredInFritzBox(ArtefactBase):
         params = [HostsRegisteredInFritzBox.ADDRESS_PARAMETER, HostsRegisteredInFritzBox.USERNAME_PARAMETER,
                   HostsRegisteredInFritzBox.PORT_PARAMETER, HostsRegisteredInFritzBox.ADDRESS_PARAMETER,
                   HostsRegisteredInFritzBox.ENCRYPT_PARAMETER]
-        return {k: self._parameters[k].nodeValue for k in params if k in self._parameters.keys()}
+        return {k: self._parameters[k] for k in params if k in self._parameters.keys()}
 
     @staticmethod
     def _get_status(fh):

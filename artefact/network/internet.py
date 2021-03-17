@@ -22,9 +22,10 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
 
     def collect(self):
-        city = self._parameters[TemperatureFromOpenWeatherDotCom.CITY_PARAMETER].nodeValue
-        countrycode = self._parameters[TemperatureFromOpenWeatherDotCom.COUNTRY_PARAMETER].nodeValue
-        apikey = self._parameters[TemperatureFromOpenWeatherDotCom.API_KEY_PARAMETER].nodeValue
+        city = self._parameters[TemperatureFromOpenWeatherDotCom.CITY_PARAMETER]
+        countrycode = self._parameters[TemperatureFromOpenWeatherDotCom.COUNTRY_PARAMETER]
+        # TODO Implement logic to replace placeholder with value from 'global_placeholders.json'
+        apikey = self._parameters[TemperatureFromOpenWeatherDotCom.API_KEY_PARAMETER]
         queryurl = self._get_query(city, countrycode, apikey)
 
         try:
@@ -70,7 +71,7 @@ class ExternalLinksOnUrl(ArtefactBase):
 
     def collect(self):
         self._collecteddata = ExternalLinksOnUrl._getexternallinks(self._parameters[
-                                                                       ExternalLinksOnUrl.PAGE_URL_PARAMETER].nodeValue)
+                                                                       ExternalLinksOnUrl.PAGE_URL_PARAMETER])
 
     def title(self):
         return self.__title

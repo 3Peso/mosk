@@ -13,9 +13,8 @@ class FileExistence(ArtefactBase):
         self.__collectionmethod = 'os.path.exists'
         self.__description = 'Find a file by file name including the path or parts of the path.'
 
-    # TODO Currently the artefact stores XML attributes in its parameters. It should only store their value.
     def collect(self):
-        filepath = self._parameters[self.FILE_PATH_PARAMETER].nodeValue
+        filepath = self._parameters[self.FILE_PATH_PARAMETER]
         filepath = expandfilepath(filepath)
         if path.exists(filepath):
             self._collecteddata = "File '{}' exists.".format(filepath)
@@ -39,11 +38,11 @@ class FileContent(ArtefactBase):
         ArtefactBase.__init__(self, *args, **kwargs)
 
     def collect(self):
-        filepath = self._parameters[self.FILE_PATH_PARAMETER].nodeValue
+        filepath = self._parameters[self.FILE_PATH_PARAMETER]
         filepath = expandfilepath(filepath)
         if path.exists(filepath):
             with open(filepath) as filetoload:
                 self._collecteddata = filetoload.read()
         else:
             self._collecteddata = "File '{}' does not exist.".format(
-                self._parameters[self.FILE_PATH_PARAMETER].nodeValue)
+                self._parameters[self.FILE_PATH_PARAMETER])
