@@ -45,4 +45,4 @@ class FileContent(ArtefactBase):
                 self._collecteddata = filetoload.read()
         else:
             self._collecteddata = "File '{}' does not exist.".format(
-                self._parameters[self.FILE_PATH_PARAMETER])
+                self.get_parameter(self.FILE_PATH_PARAMETER))

@@ -22,10 +22,10 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
 
     def collect(self):
-        city = self._parameters[TemperatureFromOpenWeatherDotCom.CITY_PARAMETER]
-        countrycode = self._parameters[TemperatureFromOpenWeatherDotCom.COUNTRY_PARAMETER]
+        city = self.get_parameter(TemperatureFromOpenWeatherDotCom.CITY_PARAMETER)
+        countrycode = self.get_parameter(TemperatureFromOpenWeatherDotCom.COUNTRY_PARAMETER)
         # TODO Implement logic to replace placeholder with value from 'global_placeholders.json'
-        apikey = self._parameters[TemperatureFromOpenWeatherDotCom.API_KEY_PARAMETER]
+        apikey = self.get_parameter(TemperatureFromOpenWeatherDotCom.API_KEY_PARAMETER)
         queryurl = self._get_query(city, countrycode, apikey)
 
         try:
