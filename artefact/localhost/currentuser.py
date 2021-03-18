@@ -11,7 +11,7 @@ class CurrentUser(ArtefactBase):
         self.__description = 'Collects the current user with the Python module getpass.'
 
     def collect(self):
-        self._collecteddata = getuser()
+        self.data = getuser()
 
     def title(self):
         return self.__title

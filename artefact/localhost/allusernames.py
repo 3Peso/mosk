@@ -12,12 +12,12 @@ class AllUsernames(ArtefactBase):
         self.__description = 'Collects all usernames with the Python module pwd.'
         # TODO Refactor so that there is no tie to xml (nodeValue) and that the xml attribute values are stored
         # inside the parameters variable
-        self.__properties = [item for item in kwargs['parameters']['properties'].nodeValue.split(',')]
+        self.__properties = [item for item in kwargs['parameters']['properties'].split(',')]
 
     # TODO Refactor
     def __str__(self):
-        result = ''
-        for item in self._collecteddata:
+        result = 'Collection Timestamp: {}\r\n\r\n'.format(self.data.currentdatetime)
+        for item in self.data.collecteddata:
             itemasstring = ''
             for prop in item:
                 itemasstring += "{}\r\n".format(prop)
@@ -30,7 +30,7 @@ class AllUsernames(ArtefactBase):
         result = []
         for pw in getpwall():
             result.append(["{}: {}".format(prop, getattr(pw, prop)) for prop in self.__properties])
-        self._collecteddata = result
+        self.data = result
 
     def title(self) -> str:
         return self.__title
