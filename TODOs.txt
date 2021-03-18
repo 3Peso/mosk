@@ -1,5 +1,3 @@
-# Implement cli argument to provide global placeholders
-
 # Implement CollectedData class to hold the data, a datetime string indicating the collection date,
 #  the location from where the data is from, an MD5 hash of the file/location, if achievable,
 #  a GUID for the data/file.

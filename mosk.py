@@ -22,9 +22,9 @@ LOG_LEVEL = {
 # see: https://eclecticlight.co/2021/03/02/what-has-changed-in-macos-and-why-it-matters/
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, 'i:l:e:', ['instructions=', 'loglevel=', 'examiner='])
+        opts, args = getopt.getopt(argv, 'i:l:e:g:', ['instructions=', 'loglevel=', 'examiner=', 'globalplaceholders='])
     except getopt.GetoptError:
-        print("mosk.py -i <instructionsfile> -l [CRITICAL")
+        print("mosk.py -i <instructionsfile> -l [CRITICAL]")
         sys.exit(2)
 
     for opt, arg in opts:
@@ -37,10 +37,13 @@ def main(argv):
                 raise KeyError("'{}' not a valid log level.".format(arg))
         elif opt in ('-e', '--examiner'):
             examiner = arg
+        elif opt in ('-g', '--globalplaceholders'):
+            globalplaceholders = arg
 
     try:
         logger = logging.getLogger(__name__)
-        collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner)
+        collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner,
+                                            placeholderfile=globalplaceholders)
         collector.collect()
         logger.info("Collection complete.")
     except FileNotFoundError:

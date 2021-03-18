@@ -1,7 +1,6 @@
 import logging
 from instructionparsers.xmlparser import XmlParser
 from contextlib import suppress
-
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.artefact import ArtefactBase
 from baseclasses.protocol import ProtocolBase
@@ -18,7 +17,9 @@ class Collector:
         self._protocol = protocol
 
     @classmethod
-    def get_collector(cls, instructionsfile: str, examiner: str = ''):
+    def get_collector(cls, instructionsfile: str, examiner: str = '',
+                      placeholderfile: str = Placeholder.get_globalplaceholderfile()):
+        Placeholder.set_globalplaceholderfile(placeholderfile)
         protocol = LogFileProtocol(examiner)
         xmlparser = XmlParser(instructionsfile, protocol)
         collector = cls(parser=xmlparser, protocol=protocol)
