@@ -14,7 +14,7 @@ class NVRAMCollector(ArtefactBase):
         process = subprocess.Popen(['nvram', '-p'],
                                    stdout=subprocess.PIPE,
                                    universal_newlines=True)
-        self._collecteddata = process.communicate()[0]
+        self.data = process.communicate()[0]
 
     def title(self):
         return self.__title
@@ -38,7 +38,7 @@ class LocalTime(ArtefactBase):
         process = subprocess.Popen(['zdump', '/etc/localtime'],
                                    stdout=subprocess.PIPE,
                                    universal_newlines=True)
-        self._collecteddata = process.communicate()[0]
+        self.data = process.communicate()[0]
 
     def title(self):
         return self.__title

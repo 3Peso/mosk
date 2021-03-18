@@ -17,9 +17,9 @@ class FileExistence(ArtefactBase):
         filepath = self._parameters[self.FILE_PATH_PARAMETER]
         filepath = expandfilepath(filepath)
         if path.exists(filepath):
-            self._collecteddata = "File '{}' exists.".format(filepath)
+            self.data = "File '{}' exists.".format(filepath)
         else:
-            self._collecteddata = "File '{}' does not exist.".format(filepath)
+            self.data = "File '{}' does not exist.".format(filepath)
 
     def title(self):
         return self.__title
@@ -42,7 +42,7 @@ class FileContent(ArtefactBase):
         filepath = expandfilepath(filepath)
         if path.exists(filepath):
             with open(filepath) as filetoload:
-                self._collecteddata = filetoload.read()
+                self.data = filetoload.read()
         else:
-            self._collecteddata = "File '{}' does not exist.".format(
+            self.data = "File '{}' does not exist.".format(
                 self.get_parameter(self.FILE_PATH_PARAMETER))

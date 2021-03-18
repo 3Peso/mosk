@@ -1,6 +1,4 @@
-# Implement CollectedData class to hold the data, a datetime string indicating the collection date,
-#  the location from where the data is from, an MD5 hash of the file/location, if achievable,
-#  a GUID for the data/file.
+# CollectedData should also hold location of source file, if possible.
 
 # Implement a collection process which not only collects the data but also the location/files from where
 #  the data is from.

@@ -22,8 +22,8 @@ class ShellHistoryOfAllUsers(ArtefactBase):
             'IMPORTANT: None-Unicode-Characters wont be stored.'
 
     def __str__(self):
-        result = ''
-        for data in self._collecteddata:
+        result = 'Collection Timestamp: {}\r\n\r\n'.format(self.data.currentdatetime)
+        for data in self.data.collecteddata:
             result = result + "{}START{}\nPATH: {}\n\nCONTENT:\n{}\n{} END {}".format('*' * 20, '*' * 20,
                                                                                       data.Path, data.Content,
                                                                                       '+' * 20, '+' * 20)
@@ -31,7 +31,7 @@ class ShellHistoryOfAllUsers(ArtefactBase):
 
     def collect(self):
         userfolders = list(get_userfolders())
-        self._collecteddata = list(ShellHistoryOfAllUsers._collect_bash_history(userfolders))
+        self.data = list(ShellHistoryOfAllUsers._collect_bash_history(userfolders))
 
     def title(self):
         return self.__title

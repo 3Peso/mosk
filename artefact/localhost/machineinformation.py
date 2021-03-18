@@ -14,10 +14,10 @@ class MachineName(ArtefactBase):
         self.__description = 'Collects the machine name of the local host with the Python module socket'
 
     def collect(self):
-        self._collecteddata = socket.gethostname()
-        if self._collecteddata is not None:
+        self.data = socket.gethostname()
+        if self.data is not None:
             MachineName._logger.debug("Machine name '{}' has been collected.".
-                                      format(self._collecteddata))
+                                      format(self.data.collecteddata))
         else:
             MachineName._logger.info("Could not colelct machine name.")
 

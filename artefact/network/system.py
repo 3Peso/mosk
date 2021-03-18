@@ -13,12 +13,13 @@ class TimeFromNTPServer(ArtefactBase):
                              'Requires network connection.'
 
     def __str__(self):
-        return "Time server: '{}' Collected Time: {}".format(self.__timeServer, self._collecteddata)
+        return "Collection Timestamp: {}\r\n\r\nTime server: '{}' Collected Time: {}".\
+            format(self.data.currentdatetime, self.__timeServer, self.data.collecteddata)
 
     def collect(self):
         # TODO Provide time server by intructions
         time = get_time(ntpserver=self.__timeServer)
-        self._collecteddata = time
+        self.data = time
 
     def title(self):
         return self.__title

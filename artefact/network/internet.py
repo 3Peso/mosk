@@ -31,10 +31,10 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         try:
             html = urlopen(queryurl)
         except HTTPError as httperror:
-            self._collecteddata = "Could not query {}.\n{}".format(queryurl, httperror.info)
+            self.data = "Could not query {}.\n{}".format(queryurl, httperror.info)
         else:
             data = json.load(html)
-        self._collecteddata = "Current temperature in {}: {}{}".format(city, data['main']['temp'], '°')
+        self.data = "Current temperature in {}: {}{}".format(city, data['main']['temp'], '°')
 
     def title(self):
         return self.__title
@@ -59,19 +59,18 @@ class ExternalLinksOnUrl(ArtefactBase):
         self.__description = 'Scraps all external urls on a given web page with BeautifulSoup.'
 
     def __str__(self):
-        result = ''
+        result = '{}\r\n\r\n'.format(self.data.currentdatetime)
 
-        if type(self._collecteddata) is list:
-            for item in self._collecteddata:
+        if type(self.data.collecteddata) is list:
+            for item in self.data.collecteddata:
                 result += "{}\r\n".format(item)
         else:
-            result = self._collecteddata
+            result += self.data.collecteddata
 
         return result
 
     def collect(self):
-        self._collecteddata = ExternalLinksOnUrl._getexternallinks(self._parameters[
-                                                                       ExternalLinksOnUrl.PAGE_URL_PARAMETER])
+        self.data = ExternalLinksOnUrl._getexternallinks(self._parameters[ExternalLinksOnUrl.PAGE_URL_PARAMETER])
 
     def title(self):
         return self.__title

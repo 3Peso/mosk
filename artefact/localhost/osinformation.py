@@ -50,10 +50,9 @@ class OSName(ArtefactBase):
         if sys.platform == 'darwin':
             platformversion = platform.mac_ver()[VERSION_NUMBER_INDEX]
             try:
-                self._collecteddata = \
-                    _platform_lookup[sys.platform][LOOKUP_KEY][platformversion]
+                self.data = _platform_lookup[sys.platform][LOOKUP_KEY][platformversion]
             except KeyError:
-                self._collecteddata = "Cannot collect OS name for platform version '{}'".format(platformversion)
+                self.data = "Cannot collect OS name for platform version '{}'".format(platformversion)
 
     def title(self) -> str:
         return self.__title
@@ -87,7 +86,7 @@ class OSVersion(ArtefactBase):
 
     def collect(self):
         if sys.platform == 'darwin':
-            self._collecteddata = platform.mac_ver()[VERSION_NUMBER_INDEX]
+            self.data = platform.mac_ver()[VERSION_NUMBER_INDEX]
 
     def title(self) -> str:
         return self.__title
@@ -119,7 +118,7 @@ class OSTimezone(ArtefactBase):
         self.__description = 'Collect the local timezone by using the Python module datetime.'
 
     def collect(self):
-        self._collecteddata = datetime.now().astimezone().tzname()
+        self.data = datetime.now().astimezone().tzname()
 
     def title(self) -> str:
         return self.__title
@@ -142,13 +141,13 @@ class SudoVersion(ArtefactBase):
             "are vulnurable to get root level access if you have access to the machine."
 
     def __str__(self):
-        return self._collecteddata[0]
+        return 'Collection Timestamp: {}\r\n\r\n{}'.format(self.data.currentdatetime, self.data.collecteddata[0])
 
     def collect(self):
         process = subprocess.Popen(['sudo', '-V'],
                                    stdout=subprocess.PIPE,
                                    universal_newlines=True)
-        self._collecteddata = process.communicate()
+        self.data = process.communicate()
 
     def title(self) -> str:
         return self.__title
