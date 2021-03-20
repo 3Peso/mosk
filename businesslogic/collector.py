@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from instructionparsers.xmlparser import XmlParser
 from contextlib import suppress
 from instructionparsers.wrapper import InstructionWrapper
@@ -15,6 +16,8 @@ class Collector:
     def __init__(self, parser: XmlParser, protocol: ProtocolBase):
         self._parser = parser
         self._protocol = protocol
+        self._collectionstart = None
+        self._collectionend = None
 
     @classmethod
     def get_collector(cls, instructionsfile: str, examiner: str = '',
@@ -26,10 +29,14 @@ class Collector:
         return collector
 
     def collect(self):
-        self._document_metadata()
+        # Log the date and time when collection started.
+        self.collection_start = datetime.now()
+        self._document_colletionwide_metadata()
         self._collect_from_instrcutions(self._parser.instructions)
+        # Log the date and time when collection ended.
+        self.collection_end = datetime.now()
 
-    def _document_metadata(self):
+    def _document_colletionwide_metadata(self):
         for metafield in self._parser.metadatafields:
             self._protocol.writer_protocol_entry(entryheader='',
                                                  entrydata="{}: {}"
@@ -83,7 +90,20 @@ class Collector:
 
         self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')
 
-    # TODO document start date
-    # TODO document start time
-    # TODO document end date
-    # TODO document end time
+    @property
+    def collection_start(self):
+        return self._collectionstart
+
+    @collection_start.setter
+    def collection_start(self, value):
+        self._collectionstart = value
+        self._protocol.writer_protocol_entry(entryheader='Collection Start', entrydata=value)
+
+    @property
+    def collection_end(self):
+        return self._collectionend
+
+    @collection_end.setter
+    def collection_end(self, value):
+        self._collectionend = value
+        self._protocol.writer_protocol_entry(entryheader='Collection End', entrydata=value)

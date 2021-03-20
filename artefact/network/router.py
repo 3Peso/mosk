@@ -84,5 +84,3 @@ class HostsRegisteredInFritzBox(ArtefactBase):
             mac = host['mac'] if host['mac'] else '-'
             hn = host['name']
             yield Host(Index=index, IP=ip, MacAddress=mac, HostName=hn, Status=status)
-
-# TODO Implement a class to collect all FritzBox event logs and filter for certain signal words

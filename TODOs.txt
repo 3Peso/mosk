@@ -10,3 +10,5 @@
 #  https://eclecticlight.co/2021/03/17/time-machine-to-apfs-backing-up/)
 
 # Collector to check for Fusion-Drive
+
+# Implement a class to collect all FritzBox event logs and filter for certain signal words

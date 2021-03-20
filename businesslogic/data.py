@@ -2,6 +2,7 @@ import os
 
 import businesslogic.support
 
+
 class CollectionData:
     def __init__(self, data, currentdatetime=None):
         self.collecteddata = data
