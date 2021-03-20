@@ -18,6 +18,7 @@ class FileExistence(ArtefactBase):
         filepath = expandfilepath(filepath)
         if path.exists(filepath):
             self.data = "File '{}' exists.".format(filepath)
+            self.data.sourcepath = filepath
         else:
             self.data = "File '{}' does not exist.".format(filepath)
 

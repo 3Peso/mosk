@@ -1,7 +1,9 @@
-# CollectedData should also hold location of source file, if possible.
-
 # Implement a collection process which not only collects the data but also the location/files from where
 #  the data is from.
+
+# Update data metadata format in protocol for collectors with own __str__
+
+# Rework metadata formating in protocol
 
 # Update the documentation.
 

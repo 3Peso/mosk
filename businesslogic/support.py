@@ -2,6 +2,7 @@ import os
 import socket
 import time
 import struct
+import hashlib
 
 REF_TIME_1970 = 2208988800  # Reference time
 DEFAULT_TIME_SERVER = '0.de.pool.ntp.org'
@@ -43,3 +44,12 @@ def str_to_bool(boolstring):
         return False
     else:
         return True
+
+
+# From https://stackoverflow.com/questions/3431825/generating-an-md5-checksum-of-a-file
+def md5(fpath):
+    hash_md5 = hashlib.md5()
+    with open(fpath, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()

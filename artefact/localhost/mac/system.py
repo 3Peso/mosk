@@ -39,6 +39,7 @@ class LocalTime(ArtefactBase):
                                    stdout=subprocess.PIPE,
                                    universal_newlines=True)
         self.data = process.communicate()[0]
+        self.data.sourcepath = '/etc/localtime'
 
     def title(self):
         return self.__title
