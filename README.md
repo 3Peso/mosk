@@ -111,7 +111,7 @@ ExternalLinksOnUrl
 HostsRegisteredInFritzBox
 TimeFromNTPServer
 
-### CLI Arguments
+## CLI Arguments
 Run mosk:
 
 ```
