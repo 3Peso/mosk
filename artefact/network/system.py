@@ -3,6 +3,8 @@ from baseclasses.artefact import ArtefactBase
 
 
 class TimeFromNTPServer(ArtefactBase):
+    TIMER_SERVER_ATTRIBUTE = 'ntpserver'
+
     __timeServer = DEFAULT_TIME_SERVER
 
     def __init__(self, *args, **kwargs):
@@ -18,7 +20,7 @@ class TimeFromNTPServer(ArtefactBase):
         return result
 
     def collect(self):
-        # TODO Provide time server by intructions
+        self.__timeServer = self.get_parameter(self.TIMER_SERVER_ATTRIBUTE)
         time = get_time(ntpserver=self.__timeServer)
         self.data = time
 
