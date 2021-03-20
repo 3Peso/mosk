@@ -82,7 +82,7 @@ You can provide placeholders in a global placeholder file, by default "global_pl
 
 If you want to use one of the included placeholders place it as attribute value for the collectors defined in the instructions xml file you want to use, like seen in the [above example](#placeholders).
 
-You can provide your own placeholders file by using the cli argument '-e'.
+You can provide your own placeholders file by using the [cli argument '-g'](#placeholder-file).
 
 ## Collectors
 
@@ -110,4 +110,30 @@ TemperatureFromOpenWeatherDotCom
 ExternalLinksOnUrl
 HostsRegisteredInFritzBox
 TimeFromNTPServer
-    
+
+### CLI Arguments
+Run mosk:
+
+```
+./mosk -i ./examples/collect-test.xml
+```
+
+The only required argument is '--instructions', or '-i' followed by the path to the [instructions file](#instructions).
+
+Additional arguments are:
+
+#### Examiner
+```
+-a <examiner>
+```
+
+#### Debug Level
+```
+-l [DEBUG|INFO|WARN|ERROR|CIRITICAL]
+```
+
+#### Placeholder file
+```
+-g <placeholder file path>
+```
+By default this is 'global_placeholders.json'.
