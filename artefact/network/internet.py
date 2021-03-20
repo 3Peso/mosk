@@ -24,7 +24,6 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
     def collect(self):
         city = self.get_parameter(TemperatureFromOpenWeatherDotCom.CITY_PARAMETER)
         countrycode = self.get_parameter(TemperatureFromOpenWeatherDotCom.COUNTRY_PARAMETER)
-        # TODO Implement logic to replace placeholder with value from 'global_placeholders.json'
         apikey = self.get_parameter(TemperatureFromOpenWeatherDotCom.API_KEY_PARAMETER)
         queryurl = self._get_query(city, countrycode, apikey)
 
