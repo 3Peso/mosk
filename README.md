@@ -48,11 +48,11 @@ To run mosk you have to provide instructions provided, for example, as XML files
 </Task>
 ```
 
-Currently as instructions format only XML is supported.
+As instructions format currently only XML is supported.
 
 ###Placeholders
 
-You can define place holders inside the instructions enclosed by '!@' '@!', for example '!@test@!. mosk will try to fill in the "blanks" in two runs. First run is before the actual collectors are been instanciated. You can provide the values for this in the file 'global_placeholders.json'. Second run actually happens during collection. If one collector collects the value for the placeholder before another collector consumes it.
+You can define placeholders inside the instructions enclosed by '!@' '@!', for example '!@test@!. mosk will try to fill in the "blanks" in two runs. First run is before the actual collectors are been instanciated. You can provide the values for this in the file 'global_placeholders.json'. Second run actually happens during collection. If one collector collects the value for the placeholder before another collector consumes it.
 
 Currently only XML is supported as instructions format. So currently the only way to provide values for placeholders collected by collectors is by providing the attribute "placeholdername" for the collector which should collect the value for later use.
 Example:
@@ -83,9 +83,7 @@ You can provide placeholders in a global placeholder file, by default "global_pl
 }
 ```
 
-If you want to use one of the included placeholders place it as attribute value for the collectors defined in the instructions xml file you want to use, like seen in the above example.
-
-[test](###placeholders)
+If you want to use one of the included placeholders place it as attribute value for the collectors defined in the instructions xml file you want to use, like seen in the [above example](#placeholders).
 
 You can provide your own placeholders file by using the cli argument '-e'.
 
