@@ -1,14 +1,14 @@
-#mosk
+# mosk
 
 mosk is a short form for "macOS Kraken". Originally created as framework to collect artefacts from macOS images and machines running macOS. The framework is designed to be easyly extensible.
 
 mosk should not only run collectors to collect artefacts, it should also provide some layer of documentation of what has been collected and how this happend, to be able to later explain the "what" and the "who" to others, for example in court.
 
-##Instructions
+## Instructions
 
 To run mosk you have to provide instructions provided, for example, as XML files.
 
-###Example Instruction XML
+### Example Instruction XML
 ```xml
 <Task>
     <TaskHeader>
@@ -67,7 +67,7 @@ Example:
 ```
 The above example also implies that you can reuse placeholders throught the instructions as often as you want, as long as they already have been intiailzed before usage.
 
-###'global_placeholders.json'
+### 'global_placeholders.json'
 
 You can provide placeholders in a global placeholder file, by default "global_placeholders.json":
 
@@ -84,12 +84,12 @@ If you want to use one of the included placeholders place it as attribute value 
 
 You can provide your own placeholders file by using the cli argument '-e'.
 
-##Collectors
+## Collectors
 
 mosk does its collection through collectors. There are already several collectors implemented:
 
-###Currently supported collectors
-####Scope 'localhost'
+### Supported collectors
+#### Scope 'localhost'
 AllUsernames
 CurrentUsername
 FileExsistence
@@ -100,12 +100,12 @@ OSVersion
 OSTimezone
 SudoVersion
 
-####Scope 'localhost.mac'
+#### Scope 'localhost.mac'
 ShellHistoryOfAllUsers
 LocalTime
 NVRAMCollector
 
-####Scope 'network'
+#### Scope 'network'
 TemperatureFromOpenWeatherDotCom
 ExternalLinksOnUrl
 HostsRegisteredInFritzBox
