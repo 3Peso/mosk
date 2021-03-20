@@ -76,10 +76,7 @@ You can provide placeholders in a global placeholder file, by default "global_pl
   "examiner": "sho",
   "clienttask": "Do something, dam it!",
   "client": "Sgt Mustman",
-  "artefactdescription": "BrackBook Flair",
-  "APIKey": "a3f2a8f1fff851cds90a0cd7aef46389",
-  "FritzIP": "10.0.99.254",
-  "FritzPort": "38999"
+  "artefactdescription": "BrackBook Flair"
 }
 ```
 
