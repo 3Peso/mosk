@@ -141,7 +141,7 @@ class SudoVersion(ArtefactBase):
             "are vulnurable to get root level access if you have access to the machine."
 
     def __str__(self):
-        return 'Collection Timestamp: {}\r\n\r\n{}'.format(self.data.currentdatetime, self.data.collecteddata[0])
+        return self.data.get_metadata_as_str(self.data.collecteddata[0])
 
     def collect(self):
         process = subprocess.Popen(['sudo', '-V'],

@@ -22,11 +22,13 @@ class ShellHistoryOfAllUsers(ArtefactBase):
             'IMPORTANT: None-Unicode-Characters wont be stored.'
 
     def __str__(self):
-        result = 'Collection Timestamp: {}\r\n\r\n'.format(self.data.currentdatetime)
+        result = ''
         for data in self.data.collecteddata:
-            result = result + "{}START{}\nPATH: {}\n\nCONTENT:\n{}\n{} END {}".format('*' * 20, '*' * 20,
-                                                                                      data.Path, data.Content,
-                                                                                      '+' * 20, '+' * 20)
+            result = "{}START{}\nPATH: {}\n\nCONTENT:\n{}\n{} END {}".format('*' * 20, '*' * 20,
+                                                                             data.Path, data.Content,
+                                                                             '+' * 20, '+' * 20)
+        result = self.data.get_metadata_as_str(result)
+
         return result
 
     def collect(self):

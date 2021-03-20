@@ -16,14 +16,14 @@ class AllUsernames(ArtefactBase):
 
     # TODO Refactor
     def __str__(self):
-        result = 'Collection Timestamp: {}\r\n\r\n'.format(self.data.currentdatetime)
+        result = ''
         for item in self.data.collecteddata:
             itemasstring = ''
             for prop in item:
                 itemasstring += "{}\r\n".format(prop)
             result += "{}\r\n".format(itemasstring)
+        result = self.data.get_metadata_as_str(result)
 
-        # Test Commit
         return result
 
     def collect(self):

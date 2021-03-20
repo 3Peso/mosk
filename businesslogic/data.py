@@ -11,15 +11,21 @@ class CollectionData:
 
     # TODO Rework metadata formatting
     def __str__(self):
-        result = "{}\r\n".format(self.collecteddata)
-        if self.currentdatetime is not None:
-            result += "\r\nCollection Time Stamp: {}".format(self.currentdatetime)
-        if self.sourcehash is not None:
-            result += "\r\nSource MD5: {}".format(self.sourcehash)
-        if self.sourcepath is not None:
-            result += "\r\nSource path: {}".format(self.sourcepath)
-
+        result = "{}".format(self.collecteddata)
+        result = self.get_metadata_as_str(result)
         return result
+
+    def get_metadata_as_str(self, prepend=''):
+        if prepend != '':
+            prepend = "{}\r\n".format(prepend)
+        if self.currentdatetime is not None:
+            prepend += "\r\nCollection Time Stamp: {}".format(self.currentdatetime)
+        if self.sourcehash is not None:
+            prepend += "\r\nSource MD5: {}".format(self.sourcehash)
+        if self.sourcepath is not None:
+            prepend += "\r\nSource path: {}".format(self.sourcepath)
+
+        return prepend
 
     @property
     def sourcehash(self):

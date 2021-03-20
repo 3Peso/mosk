@@ -27,13 +27,14 @@ class HostsRegisteredInFritzBox(ArtefactBase):
             "to collect the status of all registered hosts in a FritzBox network"
 
     def __str__(self):
-        hosts = "Collection Timestamp: {}\r\n\r\n".format(self.data.currentdatetime)
+        hosts = ''
 
         if self.data.collecteddata is not None:
             for host in self.data.collecteddata:
                 hosts += f'{host.Index:>3}: {host.IP:<16} {host.HostName:<28} {host.MacAddress:<17}   {host.Status}\n'
         else:
             hosts += "No hosts retrieved."
+        hosts = self.data.get_metadata_as_str(hosts)
 
         return hosts
 

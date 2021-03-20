@@ -58,13 +58,14 @@ class ExternalLinksOnUrl(ArtefactBase):
         self.__description = 'Scraps all external urls on a given web page with BeautifulSoup.'
 
     def __str__(self):
-        result = 'Collection Timestamp: {}\r\n\r\n'.format(self.data.currentdatetime)
+        result = ''
 
         if type(self.data.collecteddata) is list:
             for item in self.data.collecteddata:
                 result += "{}\r\n".format(item)
         else:
             result += self.data.collecteddata
+        result = self.data.get_metadata_as_str(result)
 
         return result
 
