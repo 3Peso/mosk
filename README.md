@@ -50,7 +50,7 @@ To run mosk you have to provide instructions provided, for example, as XML files
 
 As instructions format currently only XML is supported.
 
-###Placeholders
+### Placeholders
 
 You can define placeholders inside the instructions enclosed by '!@' '@!', for example '!@test@!. mosk will try to fill in the "blanks" in two runs. First run is before the actual collectors are been instanciated. You can provide the values for this in the file 'global_placeholders.json'. Second run actually happens during collection. If one collector collects the value for the placeholder before another collector consumes it.
 
