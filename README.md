@@ -1,14 +1,14 @@
-# mosk
+#mosk
 
 mosk is a short form for "macOS Kraken". Originally created as framework to collect artefacts from macOS images and machines running macOS. The framework is designed to be easyly extensible.
 
 mosk should not only run collectors to collect artefacts, it should also provide some layer of documentation of what has been collected and how this happend, to be able to later explain the "what" and the "who" to others, for example in court.
 
-## Instructions
+##Instructions
 
 To run mosk you have to provide instructions provided, for example, as XML files.
 
-### Example Instruction XML
+###Example Instruction XML
 ```xml
 <Task>
     <TaskHeader>
@@ -50,7 +50,7 @@ To run mosk you have to provide instructions provided, for example, as XML files
 
 Currently as instructions format only XML is supported.
 
-### Placeholders
+###Placeholders
 
 You can define place holders inside the instructions enclosed by '!@' '@!', for example '!@test@!. mosk will try to fill in the "blanks" in two runs. First run is before the actual collectors are been instanciated. You can provide the values for this in the file 'global_placeholders.json'. Second run actually happens during collection. If one collector collects the value for the placeholder before another collector consumes it.
 
@@ -67,12 +67,34 @@ Example:
 ```
 The above example also implies that you can reuse placeholders throught the instructions as often as you want, as long as they already have been intiailzed before usage.
 
-## Collectors
+###'global_placeholders.json'
+
+You can provide placeholders in a global placeholder file, by default "global_placeholders.json":
+
+```json
+{
+  "examiner": "sho",
+  "clienttask": "Do something, dam it!",
+  "client": "Sgt Mustman",
+  "artefactdescription": "BrackBook Flair",
+  "APIKey": "a3f2a8f1fff851cds90a0cd7aef46389",
+  "FritzIP": "10.0.99.254",
+  "FritzPort": "38999"
+}
+```
+
+If you want to use one of the included placeholders place it as attribute value for the collectors defined in the instructions xml file you want to use, like seen in the above example.
+
+[test](###placeholders)
+
+You can provide your own placeholders file by using the cli argument '-e'.
+
+##Collectors
 
 mosk does its collection through collectors. There are already several collectors implemented:
 
-### Currently supported collectors
-#### Scope 'localhost'
+###Currently supported collectors
+####Scope 'localhost'
 AllUsernames
 CurrentUsername
 FileExsistence
@@ -83,12 +105,12 @@ OSVersion
 OSTimezone
 SudoVersion
 
-#### Scope 'localhost.mac'
+####Scope 'localhost.mac'
 ShellHistoryOfAllUsers
 LocalTime
 NVRAMCollector
 
-#### Scope 'network'
+####Scope 'network'
 TemperatureFromOpenWeatherDotCom
 ExternalLinksOnUrl
 HostsRegisteredInFritzBox
