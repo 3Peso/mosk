@@ -125,6 +125,8 @@ You can provide placeholders in a global placeholder file, by default "global_pl
 }
 ```
 
+Placeholder names are casesensitive.
+
 If you want to use one of the included placeholders place it as attribute value for the collectors defined in the instructions xml file you want to use, like seen in the [above example](#placeholders).
 
 You can provide your own placeholders file by using the [cli argument '-g'](#placeholder-file).
