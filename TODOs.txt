@@ -17,3 +17,13 @@
 # Implement a class to collect all FritzBox event logs and filter for certain signal words
 
 # There should be a way to provide comments for the protocol by defining them in the instructions file
+
+# osinformation currently is only implemented in very small parts and works only for macOS
+
+# Refactoring run with logging in focus.
+#  Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
+
+# Doctest tests with doctest file (see "How the Tombola subclasses were tested" in the Python books
+
+# Add a database with MD5 hashes for systemfiles of macOS
+#  see: https://eclecticlight.co/2021/03/02/what-has-changed-in-macos-and-why-it-matters/
