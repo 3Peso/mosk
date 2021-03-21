@@ -1,4 +1,5 @@
 import os
+import hashlib
 
 import businesslogic.support
 
@@ -32,6 +33,9 @@ class CollectionData:
     def sourcehash(self):
         return self._sourcehash
 
+    def save_as_md5(self, value: str):
+        self._sourcehash = hashlib.md5(value.encode('ascii')).hexdigest()
+
     @property
     def sourcepath(self):
         return self._sourcepath
@@ -40,6 +44,5 @@ class CollectionData:
     @sourcepath.setter
     def sourcepath(self, value):
         if value is not None and os.path.exists(value):
-            with open(value) as source:
-                self._sourcehash = businesslogic.support.md5(value)
-                self._sourcepath = value
+            self._sourcehash = businesslogic.support.md5(value)
+            self._sourcepath = value
