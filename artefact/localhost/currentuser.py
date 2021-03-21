@@ -4,6 +4,9 @@ from baseclasses.artefact import ArtefactBase
 
 
 class CurrentUser(ArtefactBase):
+    """
+    Gets the name of the currently authenticated user running the script.
+    """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
         self._title = 'Current User'

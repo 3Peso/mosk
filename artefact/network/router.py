@@ -13,6 +13,10 @@ Host = namedtuple('Host', ['Index', 'IP', 'HostName', 'MacAddress', 'Status'])
 
 
 class HostsRegisteredInFritzBox(ArtefactBase):
+    """
+    Retrieve a list of all hosts currently registered at a FritzBox router using the provided
+    API and the OpenSource Python module "fritzconnection", https://pypi.org/project/fritzconnection/.
+    """
     ADDRESS_PARAMETER = 'address'
     PORT_PARAMETER = 'port'
     USERNAME_PARAMETER = 'username'

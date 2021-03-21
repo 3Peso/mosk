@@ -32,6 +32,9 @@ class NVRAMCollector(ArtefactBase):
 
 
 class LocalTime(ArtefactBase):
+    """
+    Gets the local time of the macOS installation from '/etc/localtime'.
+    """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
         self._title = 'LocalTime'

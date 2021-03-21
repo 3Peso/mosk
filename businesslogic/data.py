@@ -5,6 +5,10 @@ import businesslogic.support
 
 
 class CollectionData:
+    """
+    CollectionData is the data container which stores the collected data in memory, and additionally required metadata
+    as the path of the source file, if there is one,the colelction timestamp, and/or the MD5 hash of the collected data.
+    """
     def __init__(self, data, currentdatetime=None):
         self.collecteddata = data
         self.currentdatetime = currentdatetime

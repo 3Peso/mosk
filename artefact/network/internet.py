@@ -9,6 +9,12 @@ from baseclasses.artefact import ArtefactBase
 
 
 class TemperatureFromOpenWeatherDotCom(ArtefactBase):
+    """
+    Retrieves the current temperature from OpenWeather.com.
+
+    You need to provide the citiy, country code, and a valid API key, which you can get from
+    OpenWeather.com.
+    """
     CITY_PARAMETER = 'city'
     COUNTRY_PARAMETER = 'countrycode'
     API_KEY_PARAMETER = 'apikey'
@@ -40,6 +46,9 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
 
 
 class ExternalLinksOnUrl(ArtefactBase):
+    """
+    Retrieves all the external links from a provided URL, using BeautifulSoup.
+    """
     PAGE_URL_PARAMETER = 'url'
 
     def __init__(self, *args, **kwargs):

@@ -39,6 +39,9 @@ _platform_lookup = {
 
 
 class OSName(ArtefactBase):
+    """
+    Tries to look up the installed OS name.
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         documentation = self._collect_documentation()
@@ -68,6 +71,9 @@ class OSName(ArtefactBase):
 
 
 class OSVersion(ArtefactBase):
+    """
+    Tries to retrieve the OS version number.
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         documentation = self._collect_documentation()

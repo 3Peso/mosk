@@ -3,6 +3,9 @@ from baseclasses.artefact import ArtefactBase
 
 
 class TimeFromNTPServer(ArtefactBase):
+    """
+    Retrieves the current time from a provided NTP server.
+    """
     TIMER_SERVER_ATTRIBUTE = 'ntpserver'
 
     __timeServer = DEFAULT_TIME_SERVER

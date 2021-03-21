@@ -5,6 +5,9 @@ from source.localhost import expandfilepath
 
 
 class FileExistence(ArtefactBase):
+    """
+    Tests if a file exsists under the provided path and returns True or False accordingly.
+    """
     FILE_PATH_PARAMETER = "filepath"
 
     def __init__(self, *args, **kwargs):
@@ -24,6 +27,9 @@ class FileExistence(ArtefactBase):
 
 
 class FileContent(ArtefactBase):
+    """
+    Retrieves the file content of a file provided by path.
+    """
     FILE_PATH_PARAMETER = "filepath"
 
     def __init__(self, *args, **kwargs):

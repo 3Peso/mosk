@@ -5,6 +5,9 @@ from baseclasses.artefact import ArtefactBase
 
 
 class MachineName(ArtefactBase):
+    """
+    Retrieves the name of the machine running this script.
+    """
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):

@@ -5,6 +5,9 @@ from baseclasses.artefact import ArtefactBase
 
 # TODO Implement switch to collect only users with a folder in '/users/*'
 class AllUsernames(ArtefactBase):
+    """
+    Gets all user names retrievable by python.
+    """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
         self._title = 'AllUsernames'

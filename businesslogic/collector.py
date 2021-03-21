@@ -11,6 +11,10 @@ from protocol.logfileprotocol import LogFileProtocol
 
 # TODO There should be a way to provide comments for the protocol by defining them in the instructions file
 class Collector:
+    """
+    The Collector class is the actual part where all the logic of the protocol instance, the instruction parser
+    and the collector artefacts is been instantiated and invoked.
+    """
     _logger = logging.getLogger(__name__)
 
     def __init__(self, parser: XmlParser, protocol: ProtocolBase):

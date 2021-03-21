@@ -36,6 +36,14 @@ def get_time(ntpserver=DEFAULT_TIME_SERVER):
 
 
 def str_to_bool(boolstring):
+    """
+    Translate a string into a real boolean value.
+    :param boolstring:
+    Any string. But original intention was the usage of the strings "False" and "True".
+    :return:
+    Returns True for the string "True" and False for the string "False".
+    Returns True for any nonempty string and False for an empty string or for None.
+    """
     if boolstring == 'True':
         return True
     if boolstring == 'False':
@@ -48,6 +56,11 @@ def str_to_bool(boolstring):
 
 # From https://stackoverflow.com/questions/3431825/generating-an-md5-checksum-of-a-file
 def md5(fpath):
+    """
+    Calculates the the MD5 hash of a file.
+    :param fpath: Path of the file for which the MD5 hash is required.
+    :return: Returns the string representation of the MD5 hash.
+    """
     hash_md5 = hashlib.md5()
     with open(fpath, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
