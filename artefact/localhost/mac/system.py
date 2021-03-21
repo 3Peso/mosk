@@ -4,6 +4,9 @@ from baseclasses.artefact import ArtefactBase
 
 
 class NVRAMCollector(ArtefactBase):
+    """
+    Tries to access the NVRAM of a macOS installation and store its content.
+    """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
         self.__title = 'NVRAMCollector'
@@ -11,10 +14,12 @@ class NVRAMCollector(ArtefactBase):
         self.__description = 'Collects the contents of the NVRAM by calling the bash command "nvram".'
 
     def collect(self):
-        process = subprocess.Popen(['nvram', '-p'],
+        process = subprocess.Popen(['nvram', '-xp'],
                                    stdout=subprocess.PIPE,
                                    universal_newlines=True)
-        self.data = process.communicate()[0]
+        nvramcontent = process.communicate()[0]
+        self.data = nvramcontent
+        self.data.save_as_md5(nvramcontent)
 
     def title(self):
         return self.__title
