@@ -12,20 +12,20 @@ To run mosk you have to provide instructions provided, for example, as XML files
 ```xml
 <Task>
     <TaskHeader>
-        <examiner title="Sachbearbeiter">
+        <examiner title="Examiner">
             !@examiner@!
         </examiner>
-        <originaltask title="Auftrag">
+        <originaltask title="Assignment">
             !@clienttask@!
         </originaltask>
-        <taskissuer title="Auftraggeber">
+        <taskissuer title="Client">
             !@client@!
         </taskissuer>
-        <artefactdescription title="Beschreibung des Asservats">
+        <artefactdescription title="Description of Artefact">
             !@artefactdescription@!
         </artefactdescription>
-        <taskdescription title="Beschreibung der Aufgabe">
-            Wie lauten die Eckdaten des Betriebssystems des zugrundeliegend Artefakts?
+        <taskdescription title="Task Description">
+            Colellect everything you can.
         </taskdescription>
     </TaskHeader>
     <Instructions>
