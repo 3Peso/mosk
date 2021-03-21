@@ -10,7 +10,6 @@ class AllUsernames(ArtefactBase):
         self.__title = 'AllUsernames'
         self.__collectionmethod = 'pwd.getpwall'
         self.__description = 'Collects all usernames with the Python module pwd.'
-        # TODO Refactor so that there is no tie to xml (nodeValue) and that the xml attribute values are stored
         # inside the parameters variable
         self.__properties = [item for item in kwargs['parameters']['properties'].split(',')]
 
