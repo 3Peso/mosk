@@ -10,6 +10,10 @@ TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
 
 
 class ShellHistoryOfAllUsers(ArtefactBase):
+    """
+    Tries to access all user folders of a macOS installation and then it iterates over the possible shell history
+    files (.bash_history and .zhs_history).
+    """
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
