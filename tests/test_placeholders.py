@@ -4,10 +4,11 @@ from unittest.mock import MagicMock
 from businesslogic.placeholders import Placeholder
 
 
-# TODO tests should be independed from each other. There should be no required call order. Currently there is no
-# TODO setup or teardown for each test.
 class TestPlaceholder(TestCase):
     _placeholder_test_file = "placeholder_file_test.json"
+
+    def setUp(self) -> None:
+        Placeholder._globalplaceholderfile = Placeholder.GLOBAL_PLACEHOLDER_FILE_PATH
 
     @staticmethod
     @mock.patch('os.path', MagicMock(return_value=True))
@@ -49,7 +50,8 @@ class TestPlaceholder(TestCase):
 
     def test_get_placeholder_with_nonexisting_key(self):
         """Should raise KeyError if the placeholder does not exist."""
-        with self.assertRaises(KeyError): Placeholder.get_placeholder('IDoNotExist')
+        with self.assertRaises(KeyError):
+            Placeholder.get_placeholder('IDoNotExist')
 
     def test_get_placeholder_casesensitive(self):
         """Should raise KeyError because of case insitivity"""
@@ -59,4 +61,20 @@ class TestPlaceholder(TestCase):
         expected_value = "Sgt Mustman"
 
         assert Placeholder.get_placeholder(exisiting_placeholder) == expected_value
-        with self.assertRaises(KeyError): Placeholder.get_placeholder(nonexisting_placeholder)
+        with self.assertRaises(KeyError):
+            Placeholder.get_placeholder(nonexisting_placeholder)
+
+    def test__call__should_replace_placeholder_in_string(self):
+        """Using the @Placeholder decorator on a function returing a string should replace placeholders in
+        that string with the values stored in the placeholder dictionary."""
+        Placeholder.set_globalplaceholderfile(self._placeholder_test_file)
+        string_with_placeholder = "This was it! !@client@! had enough. 'This has to end now!', !@client@! thought."
+        expected_string = "This was it! Sgt Mustman had enough. 'This has to end now!', Sgt Mustman thought."
+
+        @Placeholder
+        def test_function():
+            return string_with_placeholder
+
+        actual_string = test_function()
+
+        assert actual_string == expected_string
