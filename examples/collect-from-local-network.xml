@@ -6,7 +6,7 @@
         <originaltask title="Assignment">
             !@clienttask@!
         </originaltask>
-        <taskissuer title="Cleint">
+        <taskissuer title="Client">
             !@client@!
         </taskissuer>
         <artefactdescription title="Description of Artefact">
