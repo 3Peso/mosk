@@ -15,11 +15,6 @@ LOG_LEVEL = {
 }
 
 
-# TODO Refactoring run with logging in focus.
-# Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
-# TODO doctest tests with doctest file (see "How the Tombola subclasses were tested" in the Python books
-# TODO Add a database with MD5 hashes for systemfiles of macOS
-# see: https://eclecticlight.co/2021/03/02/what-has-changed-in-macos-and-why-it-matters/
 def main(argv):
     try:
         opts, args = getopt.getopt(argv, 'i:l:e:g:', ['instructions=', 'loglevel=', 'examiner=', 'globalplaceholders='])

@@ -1,4 +1,10 @@
 class InstructionWrapper:
+    """
+    A wrapper class which is used the the instructions parses to wrap the instructions into. By doing that
+    the interface of the instructions towards the actual collection manager "businesslogic.collector.Collecter"
+    is been normalized so that the manager can (in theory) consume the instructions from any instruction parser.
+    """
+
     # TODO parentinstrcution currently is not used anywhere. Is it really needed?
     def __init__(self, instruction, parentinstrutction, instructionid: 'int > 0', placeholdername: str = ''):
         self._instruction = instruction

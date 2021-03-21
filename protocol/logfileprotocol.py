@@ -7,6 +7,10 @@ from baseclasses.protocol import ProtocolBase
 
 
 class LogFileProtocol(ProtocolBase):
+    """
+    Class to write a text protocol of the colleted data.
+    """
+
     def __init__(self, examiner, artifactid='', filedate=date.today(), taskid=''):
         super().__init__(artifactid=artifactid, examiner=examiner, taskid=taskid)
         self._date = filedate

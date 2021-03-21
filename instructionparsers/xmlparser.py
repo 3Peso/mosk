@@ -14,6 +14,9 @@ from businesslogic.placeholders import Placeholder
 
 
 class XmlParser:
+    """
+    This class is used to parse instructions from XML instruction files which adhere to the 'xmlparser.xsd' schema.
+    """
     _logger = logging.getLogger(__name__)
 
     PATH_ATTRIBUTE = 'path'
