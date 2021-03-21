@@ -20,9 +20,9 @@ class HostsRegisteredInFritzBox(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = "FritzBoxHosts"
-        self.__collectionmethod = "fritzcollection.lib.hosts"
-        self.__description = \
+        self._title = "FritzBoxHosts"
+        self._collectionmethod = "fritzcollection.lib.hosts"
+        self._description = \
             "Uses to Open Source Python module 'fritzconnection' by Klaus Bremer\r\n" \
             "to collect the status of all registered hosts in a FritzBox network"
 
@@ -59,15 +59,6 @@ class HostsRegisteredInFritzBox(ArtefactBase):
             self.data = None
         else:
             self.data = self._get_status(fho)
-
-    def title(self):
-        return self.__title
-
-    def collectionmethod(self):
-        return self.__collectionmethod
-
-    def description(self):
-        return self.__description
 
     def _get_parameters(self):
         params = [HostsRegisteredInFritzBox.ADDRESS_PARAMETER, HostsRegisteredInFritzBox.USERNAME_PARAMETER,

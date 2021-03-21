@@ -42,9 +42,9 @@ class OSName(ArtefactBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         documentation = self._collect_documentation()
-        self.__collectionmethod = documentation[METHOD_KEY]
-        self.__description = documentation[DESCRIPTION_KEY]
-        self.__title = 'OS Name'
+        self._collectionmethod = documentation[METHOD_KEY]
+        self._description = documentation[DESCRIPTION_KEY]
+        self._title = 'OS Name'
 
     def collect(self):
         if sys.platform == 'darwin':
@@ -53,15 +53,6 @@ class OSName(ArtefactBase):
                 self.data = _platform_lookup[sys.platform][LOOKUP_KEY][platformversion]
             except KeyError:
                 self.data = "Cannot collect OS name for platform version '{}'".format(platformversion)
-
-    def title(self) -> str:
-        return self.__title
-
-    def collectionmethod(self) -> str:
-        return self.__collectionmethod
-
-    def description(self) -> str:
-        return self.__description
 
     @classmethod
     def _collect_documentation(cls):
@@ -80,22 +71,13 @@ class OSVersion(ArtefactBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         documentation = self._collect_documentation()
-        self.__collectionmethod = documentation[METHOD_KEY]
-        self.__description = documentation[DESCRIPTION_KEY]
-        self.__title = 'OS Version'
+        self._collectionmethod = documentation[METHOD_KEY]
+        self._description = documentation[DESCRIPTION_KEY]
+        self._title = 'OS Version'
 
     def collect(self):
         if sys.platform == 'darwin':
             self.data = platform.mac_ver()[VERSION_NUMBER_INDEX]
-
-    def title(self) -> str:
-        return self.__title
-
-    def collectionmethod(self) -> str:
-        return self.__collectionmethod
-
-    def description(self) -> str:
-        return self.__description
 
     @staticmethod
     def _collect_documentation():
@@ -113,29 +95,20 @@ class OSVersion(ArtefactBase):
 class OSTimezone(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'OS Timezone'
-        self.__collectionmethod = 'datetime.now astimezone'
-        self.__description = 'Collect the local timezone by using the Python module datetime.'
+        self._title = 'OS Timezone'
+        self._collectionmethod = 'datetime.now astimezone'
+        self._description = 'Collect the local timezone by using the Python module datetime.'
 
     def collect(self):
         self.data = datetime.now().astimezone().tzname()
-
-    def title(self) -> str:
-        return self.__title
-
-    def collectionmethod(self) -> str:
-        return self.__collectionmethod
-
-    def description(self) -> str:
-        return self.__description
 
 
 class SudoVersion(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'Sudo Version Collector'
-        self.__collectionmethod = 'sudo -V in Shell'
-        self.__description = \
+        self._title = 'Sudo Version Collector'
+        self._collectionmethod = 'sudo -V in Shell'
+        self._description = \
             "Collects all information about the current SUDO version. According to CVE-2021-3156\r\n" \
             "the versions 1.7.7 through 1.7.10p9, 1.8.2 through 1.8.31p2, and 1.9.0 through 1.9.5p1\r\n" \
             "are vulnurable to get root level access if you have access to the machine."
@@ -148,12 +121,3 @@ class SudoVersion(ArtefactBase):
                                    stdout=subprocess.PIPE,
                                    universal_newlines=True)
         self.data = process.communicate()
-
-    def title(self) -> str:
-        return self.__title
-
-    def collectionmethod(self) -> str:
-        return self.__collectionmethod
-
-    def description(self) -> str:
-        return self.__description

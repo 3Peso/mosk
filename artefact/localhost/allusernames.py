@@ -7,9 +7,9 @@ from baseclasses.artefact import ArtefactBase
 class AllUsernames(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'AllUsernames'
-        self.__collectionmethod = 'pwd.getpwall'
-        self.__description = 'Collects all usernames with the Python module pwd.'
+        self._title = 'AllUsernames'
+        self._collectionmethod = 'pwd.getpwall'
+        self._description = 'Collects all usernames with the Python module pwd.'
         # inside the parameters variable
         self.__properties = [item for item in kwargs['parameters']['properties'].split(',')]
 
@@ -30,12 +30,3 @@ class AllUsernames(ArtefactBase):
         for pw in getpwall():
             result.append(["{}: {}".format(prop, getattr(pw, prop)) for prop in self.__properties])
         self.data = result
-
-    def title(self) -> str:
-        return self.__title
-
-    def collectionmethod(self) -> str:
-        return self.__collectionmethod
-
-    def description(self) -> str:
-        return self.__description

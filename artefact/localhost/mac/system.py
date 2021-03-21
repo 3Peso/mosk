@@ -9,9 +9,9 @@ class NVRAMCollector(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'NVRAMCollector'
-        self.__collectionmethod = 'nvram -p'
-        self.__description = 'Collects the contents of the NVRAM by calling the bash command "nvram".'
+        self._title = 'NVRAMCollector'
+        self._collectionmethod = 'nvram -p'
+        self._description = 'Collects the contents of the NVRAM by calling the bash command "nvram".'
 
     def collect(self):
         process = subprocess.Popen(['nvram', '-xp'],
@@ -34,9 +34,9 @@ class NVRAMCollector(ArtefactBase):
 class LocalTime(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'LocalTime'
-        self.__collectionmethod = 'zdump /etc/localtime'
-        self.__description = 'Collects the local date and time by reading the contents of\r\n' \
+        self._title = 'LocalTime'
+        self._collectionmethod = 'zdump /etc/localtime'
+        self._description = 'Collects the local date and time by reading the contents of\r\n' \
                              'of "/etc/localtime" with zdump.'
 
     def collect(self):
@@ -45,12 +45,3 @@ class LocalTime(ArtefactBase):
                                    universal_newlines=True)
         self.data = process.communicate()[0]
         self.data.sourcepath = '/etc/localtime'
-
-    def title(self):
-        return self.__title
-
-    def collectionmethod(self):
-        return self.__collectionmethod
-
-    def description(self):
-        return self.__description

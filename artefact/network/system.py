@@ -9,9 +9,9 @@ class TimeFromNTPServer(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'TimeFromNTPServer'
-        self.__collectionmethod = 'Network call using socket connect.'
-        self.__description = 'Retrieves the time from a time server. Can be used as reference time.\r\n' \
+        self._title = 'TimeFromNTPServer'
+        self._collectionmethod = 'Network call using socket connect.'
+        self._description = 'Retrieves the time from a time server. Can be used as reference time.\r\n' \
                              'Requires network connection.'
 
     def __str__(self):
@@ -23,12 +23,3 @@ class TimeFromNTPServer(ArtefactBase):
         self.__timeServer = self.get_parameter(self.TIMER_SERVER_ATTRIBUTE)
         time = get_time(ntpserver=self.__timeServer)
         self.data = time
-
-    def title(self):
-        return self.__title
-
-    def collectionmethod(self):
-        return self.__collectionmethod
-
-    def description(self):
-        return self.__description

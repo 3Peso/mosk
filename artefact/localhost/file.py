@@ -9,9 +9,9 @@ class FileExistence(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'Filesystem'
-        self.__collectionmethod = 'os.path.exists'
-        self.__description = 'Find a file by file name including the path or parts of the path.'
+        self._title = 'Filesystem'
+        self._collectionmethod = 'os.path.exists'
+        self._description = 'Find a file by file name including the path or parts of the path.'
 
     def collect(self):
         filepath = self._parameters[self.FILE_PATH_PARAMETER]
@@ -21,15 +21,6 @@ class FileExistence(ArtefactBase):
             self.data.sourcepath = filepath
         else:
             self.data = "File '{}' does not exist.".format(filepath)
-
-    def title(self):
-        return self.__title
-
-    def collectionmethod(self):
-        return self.__collectionmethod
-
-    def description(self):
-        return self.__description
 
 
 class FileContent(ArtefactBase):

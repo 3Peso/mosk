@@ -15,9 +15,9 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'Current temperature from openweather.com'
-        self.__collectionmethod = 'Get data from returend json object.'
-        self.__description = 'Calling the API of the webside with free developer api key.'
+        self._title = 'Current temperature from openweather.com'
+        self._collectionmethod = 'Get data from returend json object.'
+        self._description = 'Calling the API of the webside with free developer api key.'
         self.__url = "https://api.openweathermap.org/data/2.5/weather"
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
 
@@ -35,15 +35,6 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
             data = json.load(html)
         self.data = "Current temperature in {}: {}{}".format(city, data['main']['temp'], '°')
 
-    def title(self):
-        return self.__title
-
-    def collectionmethod(self):
-        return self.__collectionmethod
-
-    def description(self):
-        return self.__description
-
     def _get_query(self, city, countrycode, apikey):
         return self.__querytemplate.format(self.__url, city, countrycode, apikey)
 
@@ -53,9 +44,9 @@ class ExternalLinksOnUrl(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self.__title = 'External Links on Web Page'
-        self.__collectionmethod = 'Web Scrapping'
-        self.__description = 'Scraps all external urls on a given web page with BeautifulSoup.'
+        self._title = 'External Links on Web Page'
+        self._collectionmethod = 'Web Scrapping'
+        self._description = 'Scraps all external urls on a given web page with BeautifulSoup.'
 
     def __str__(self):
         result = ''
@@ -71,15 +62,6 @@ class ExternalLinksOnUrl(ArtefactBase):
 
     def collect(self):
         self.data = ExternalLinksOnUrl._getexternallinks(self._parameters[ExternalLinksOnUrl.PAGE_URL_PARAMETER])
-
-    def title(self):
-        return self.__title
-
-    def collectionmethod(self):
-        return self.__collectionmethod
-
-    def description(self):
-        return self.__description
 
     @staticmethod
     def _getexternallinks(excludeurl):
