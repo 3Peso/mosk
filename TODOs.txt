@@ -1,3 +1,6 @@
+# Artefact data should be able to contain more than just one data object. For example there could be more than
+#  one bash history.
+
 # Implement unit tests.
 
 # Implement SQLite Storage for protocol and collected data/files
