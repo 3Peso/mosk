@@ -1,19 +1,19 @@
 <Task>
     <TaskHeader>
-        <examiner title="Sachbearbeiter">
+        <examiner title="Examiner">
             !@examiner@!
         </examiner>
-        <originaltask title="Auftrag">
+        <originaltask title="Assignment">
             !@clienttask@!
         </originaltask>
-        <taskissuer title="Auftraggeber">
+        <taskissuer title="Cleint">
             !@client@!
         </taskissuer>
-        <artefactdescription title="Beschreibung des Asservats">
+        <artefactdescription title="Description of Artefact">
             !@artefactdescription@!
         </artefactdescription>
-        <taskdescription title="Beschreibung der Aufgabe">
-            Wie lauten die Eckdaten des Betriebssystems des zugrundeliegend Artefakts?
+        <taskdescription title="Task Description">
+            Collect everything you can from the local network.
         </taskdescription>
     </TaskHeader>
     <Instructions>
