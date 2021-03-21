@@ -49,6 +49,52 @@ To run mosk you have to provide instructions provided, for example, as XML files
 
 As instructions format currently only XML is supported.
 
+### XML Instructions Schema
+
+The instrucitons are validated against this XML schem:
+```xml
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Task">
+    <xs:complexType>
+      <xs:sequence>
+          <xs:element type="TaskHeader" name="TaskHeader" minOccurs="0" maxOccurs="unbounded" ></xs:element>
+          <xs:element type="Instructions" name="Instructions"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="TaskHeader">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Instructions">
+    <xs:choice>
+      <xs:element type="Root" name="Root" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="Root">
+    <xs:sequence>
+      <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="module" type="xs:string" />
+  </xs:complexType>
+</xs:schema>
+```
+
+### XML Instruction Definition
+
+If you want to add a collector to the instructions you have to use the class name of the collector as element name, and provide the module in the attribute 'module' like for example:
+
+```xml
+...
+    <OSTimezone module="artefact.localhost.osinformation" />
+...
+```
+
 ### Placeholders
 
 You can define placeholders inside the instructions enclosed by '!@' '@!', for example '!@test@!. mosk will try to fill in the "blanks" in two runs. First run is before the actual collectors are been instanciated. You can provide the values for this in the file 'global_placeholders.json'. Second run actually happens during collection. If one collector collects the value for the placeholder before another collector consumes it.
