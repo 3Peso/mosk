@@ -33,8 +33,15 @@ class CollectionData:
     def sourcehash(self):
         return self._sourcehash
 
+    # TODO refactor so that MD5 hash for longer strings can be added, too.
     def save_as_md5(self, value: str):
-        self._sourcehash = hashlib.md5(value.encode('ascii')).hexdigest()
+        # Only chunks of up to 4096 bytes can be crammed into an md5 hash. If they are longer
+        # you have to split the strings.
+        bvalue = value.encode('ascii')
+        if len(bvalue) >= 4096:
+            self._sourcehash = hashlib.md5(bvalue).hexdigest()
+        else:
+            raise ValueError("Provided value cannot be longer than 4096 bytes.")
 
     @property
     def sourcepath(self):
