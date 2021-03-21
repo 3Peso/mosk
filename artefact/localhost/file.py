@@ -37,13 +37,18 @@ class FileContent(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
+        self._title = "File content collector"
+        self._collectionmethod = "python file context manager"
+        self._description = "Uses the python file context manager to open the file in read mode and store its\r\n" \
+                            "content and a MD5 hash of its content."
 
     def collect(self):
         filepath = self._parameters[self.FILE_PATH_PARAMETER]
         filepath = expandfilepath(filepath)
         if path.exists(filepath):
-            with open(filepath) as filetoload:
+            with open(filepath, "r") as filetoload:
                 self.data = filetoload.read()
+            self.data.sourcepath = filepath
         else:
             self.data = "File '{}' does not exist.".format(
                 self.get_parameter(self.FILE_PATH_PARAMETER))
