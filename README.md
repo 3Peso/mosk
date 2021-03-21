@@ -51,7 +51,7 @@ As instructions format currently only XML is supported.
 
 ### XML Instructions Schema
 
-The instrucitons are validated against this XML schem:
+The instrucitons are validated against this XML schema:
 ```xml
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
