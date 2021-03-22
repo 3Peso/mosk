@@ -2,7 +2,7 @@
 mosk mac module for classes collecting os information.
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['NVRAMCollector', 'LocalTime']
 
@@ -27,7 +27,7 @@ class NVRAMCollector(ArtefactBase):
                                    universal_newlines=True)
         nvramcontent = process.communicate()[0]
         self.data = nvramcontent
-        self.data.save_as_md5(nvramcontent)
+        self.data[-1].save_as_md5(nvramcontent)
 
     def title(self):
         return self.__title
