@@ -2,7 +2,7 @@
 mosk mac module for classes collecting file information.
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['ShellHistoryOfAllUsers']
 
@@ -33,19 +33,21 @@ class ShellHistoryOfAllUsers(ArtefactBase):
             'then tries to store their content.\r\n' \
             'IMPORTANT: None-Unicode-Characters wont be stored.'
 
-    def __str__(self):
-        result = ''
-        for data in self.data.collecteddata:
-            result = "{}START{}\nPATH: {}\n\nCONTENT:\n{}\n{} END {}".format('*' * 20, '*' * 20,
-                                                                             data.Path, data.Content,
-                                                                             '+' * 20, '+' * 20)
-        result = self.data.get_metadata_as_str(result)
-
-        return result
+    #def __str__(self):
+    #    result = ''
+    #    for data in self.data.collecteddata:
+    #        result = "{}START{}\nPATH: {}\n\nCONTENT:\n{}\n{} END {}".format('*' * 20, '*' * 20,
+    #                                                                         data.Path, data.Content,
+    #                                                                         '+' * 20, '+' * 20)
+    #    result = self.data.get_metadata_as_str(result)
+    #
+    #    return result
 
     def collect(self):
         userfolders = list(get_userfolders())
-        self.data = list(ShellHistoryOfAllUsers._collect_bash_history(userfolders))
+        for history in ShellHistoryOfAllUsers._collect_bash_history(userfolders):
+            self.data = history.Content
+            self.data[-1].sourcepath = history.Path
 
     @staticmethod
     def _collect_bash_history(userfolders):
