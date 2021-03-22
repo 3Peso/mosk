@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting os information.
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['OSName', 'OSVersion', 'OSTimezone']
 
@@ -125,11 +125,8 @@ class SudoVersion(ArtefactBase):
             "the versions 1.7.7 through 1.7.10p9, 1.8.2 through 1.8.31p2, and 1.9.0 through 1.9.5p1\r\n" \
             "are vulnurable to get root level access if you have access to the machine."
 
-    def __str__(self):
-        return self.data.get_metadata_as_str(self.data.collecteddata[0])
-
     def collect(self):
         process = subprocess.Popen(['sudo', '-V'],
                                    stdout=subprocess.PIPE,
                                    universal_newlines=True)
-        self.data = process.communicate()
+        self.data = process.communicate()[0]
