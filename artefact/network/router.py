@@ -41,12 +41,12 @@ class HostsRegisteredInFritzBox(ArtefactBase):
     def __str__(self):
         hosts = ''
 
-        if self.data.collecteddata is not None:
-            for host in self.data.collecteddata:
+        if self.data[0].collecteddata is not None:
+            for host in self.data[0].collecteddata:
                 hosts += f'{host.Index:>3}: {host.IP:<16} {host.HostName:<28} {host.MacAddress:<17}   {host.Status}\n'
         else:
             hosts += "No hosts retrieved."
-        hosts = self.data.get_metadata_as_str(hosts)
+        hosts = self.data[0].get_metadata_as_str(hosts)
 
         return hosts
 
