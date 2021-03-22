@@ -2,8 +2,9 @@
 Collection data module
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.3'
 __author__ = '3Peso'
+__all__ = ['CollectionData']
 
 import os
 import hashlib
@@ -24,8 +25,11 @@ class CollectionData:
 
     # TODO Rework metadata formatting
     def __str__(self):
-        result = "{}".format(self.collecteddata)
+        result = '-- Collection Data     {}\r\n\r\n'.format('-' * 10)
+        result += "{}".format(self.collecteddata)
+        result += '\r\n\r\n-- Collection Metadata {}'.format('-' * 10)
         result = self.get_metadata_as_str(result)
+        result += '\r\n\r\n{}\r\n'.format('-' * 33)
         return result
 
     def get_metadata_as_str(self, prepend=''):
