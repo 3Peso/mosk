@@ -2,7 +2,7 @@
 mosk network module for classes collecting information from the internet.
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['TemperatureFromOpenWeatherDotCom', 'ExternalLinksOnUrl']
 
@@ -68,12 +68,12 @@ class ExternalLinksOnUrl(ArtefactBase):
     def __str__(self):
         result = ''
 
-        if type(self.data.collecteddata) is list:
-            for item in self.data.collecteddata:
+        if type(self.data[0].collecteddata) is list:
+            for item in self.data[0].collecteddata:
                 result += "{}\r\n".format(item)
         else:
-            result += self.data.collecteddata
-        result = self.data.get_metadata_as_str(result)
+            result += self.data[0].collecteddata
+        result = self.data[0].get_metadata_as_str(result)
 
         return result
 
