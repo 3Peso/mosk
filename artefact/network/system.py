@@ -2,8 +2,9 @@
 mosk network module for classes collecting system information through a network.
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
+__all__ = ['TimeFromNTPServer']
 
 from businesslogic.support import get_time, DEFAULT_TIME_SERVER
 from baseclasses.artefact import ArtefactBase

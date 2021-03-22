@@ -2,8 +2,9 @@
 mosk network module for classes collecting router information through a network.
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
+__all__ = ['HostsRegisteredInFritzBox']
 
 import requests.exceptions
 import getpass

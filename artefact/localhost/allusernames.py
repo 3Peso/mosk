@@ -2,8 +2,9 @@
 mosk localhost module for classes collecting information about all users.
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
+__all__ = ['AllUsernames']
 
 from pwd import getpwall
 

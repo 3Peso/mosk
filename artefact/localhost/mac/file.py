@@ -2,8 +2,9 @@
 mosk mac module for classes collecting file information.
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
+__all__ = ['ShellHistoryOfAllUsers']
 
 import logging
 from collections import namedtuple
