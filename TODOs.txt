@@ -3,11 +3,11 @@
 
 # Implement unit tests.
 
-# Implement versioning.
-
 # Implement SQLite Storage for protocol and collected data/files
 
 # Update the documentation.
+
+# Consolidate "currentuser" and "allusernames" into one localhost module
 
 # Detect, if VPNs are used (TOR over VPN)
 

@@ -1,7 +1,15 @@
+"""
+Collector Module
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 import logging
 from datetime import datetime
 from instructionparsers.xmlparser import XmlParser
 from contextlib import suppress
+
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.artefact import ArtefactBase
 from baseclasses.protocol import ProtocolBase

@@ -1,3 +1,10 @@
+"""
+mosk network module for classes collecting router information through a network.
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 import requests.exceptions
 import getpass
 from collections import namedtuple

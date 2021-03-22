@@ -1,3 +1,10 @@
+"""
+mosk localhost module for classes collecting information about all users.
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 from pwd import getpwall
 
 from baseclasses.artefact import ArtefactBase

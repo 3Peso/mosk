@@ -1,3 +1,10 @@
+"""
+mosk localhost module for classes collecting file information.
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 from os import path
 
 from baseclasses.artefact import ArtefactBase

@@ -1,3 +1,10 @@
+"""
+mosk localhost module for classes collecting machine information.
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 import logging
 import socket
 

@@ -1,3 +1,10 @@
+"""
+mosk mac module for classes collecting file information.
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 import logging
 from collections import namedtuple
 from os import path

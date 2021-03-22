@@ -1,3 +1,10 @@
+"""
+support module continaing tool functions for mosk
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 import os
 import socket
 import time

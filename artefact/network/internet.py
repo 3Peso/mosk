@@ -1,3 +1,10 @@
+"""
+mosk network module for classes collecting information from the internet.
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 import json
 import re
 from urllib.request import urlopen

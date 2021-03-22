@@ -1,3 +1,10 @@
+"""
+mosk localhost module for classes collecting infromation about the current user.
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 from getpass import getuser
 
 from baseclasses.artefact import ArtefactBase

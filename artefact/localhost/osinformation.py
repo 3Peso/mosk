@@ -1,5 +1,10 @@
-# TODO Refactor
-# OS Timezone
+"""
+mosk localhost module for classes collecting os information.
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 import platform
 import sys
 import subprocess

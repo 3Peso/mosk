@@ -1,3 +1,10 @@
+"""
+mosk source base class module
+"""
+
+__version__ = '0.0.1'
+__author__ = '3Peso'
+
 import logging
 from collections import UserDict
 
