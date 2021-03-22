@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting file information.
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['FileExistence', 'FileContent']
 
@@ -29,7 +29,7 @@ class FileExistence(ArtefactBase):
         filepath = expandfilepath(filepath)
         if path.exists(filepath):
             self.data = "File '{}' exists.".format(filepath)
-            self.data.sourcepath = filepath
+            self.data[-1].sourcepath = filepath
         else:
             self.data = "File '{}' does not exist.".format(filepath)
 
