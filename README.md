@@ -184,3 +184,89 @@ Additional arguments are:
 -g <placeholder file path>
 ```
 By default this is 'global_placeholders.json'.
+
+## Protocol
+
+mosk will try to write a protocol of the collection process. Every collector for that reason will collect not only the data but also metadata. The following metadata may be collected:
+
+* File path
+* MD5 hash of collected data
+* Collection timestamp (will always be collected)
+
+If not possible or not suitable, the above metadata will not be collected.
+
+### Log File Protocol
+
+The log file protocol writer will write a collection log in a pure text file.
+
+Example:
+
+```txt
+****************
+Collection Start
+****************
+2021-03-23 06:29:16.830065
+Clerk: 
+            sho
+        
+Task: 
+            Some task
+        
+Client: 
+            Sgt Mustman
+        
+Artefact Description: 
+            MacBook Flair
+        
+Task Description: 
+            Some task description
+            
+
+*********************************
+Root:0->LocalHost:1->OSTimezone:2
+*********************************
+Title: OS Timezone
+Description: Collect the local timezone by using the Python module datetime.
+Collection Method: datetime.now astimezone
+ 
+-- Collection Data     ----------
+
+CET
+
+-- Collection Metadata ----------
+
+Collection Time Stamp: 2021-03-23 06:34:02.407411
+
+---------------------------------
+
+
+ 
+**********************************
+Root:0->LocalHost:1->FileContent:2
+**********************************
+Title: File content collector
+Description: Uses the python file context manager to open the file in read mode and store its
+content and a MD5 hash of its content.
+Collection Method: python file context manager
+ 
+-- Collection Data     ----------
+
+This is a test file.
+
+It should be used to test
+working with file content.
+
+-- Collection Metadata ----------
+
+Collection Time Stamp: 2021-03-23 06:34:02.425094
+Source MD5: 0db7d1adf349b912f612c9be06278706
+Source path: /Users/dreipeso/PycharmProjects/mosk/tests/test.txt
+
+---------------------------------
+         
+            
+**************
+Collection End
+**************
+2021-03-23 06:34:15.365227
+```
