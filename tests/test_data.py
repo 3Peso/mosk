@@ -42,7 +42,7 @@ class TestCollectionData(TestCase):
 
     def test_get_collector_info_as_str_no_collector_name_and_no_params(self):
         """
-        Should do nothing
+        Should do nothing.
         """
         actual_data = CollectionData(data="Test data")
         expected = "Test String"
