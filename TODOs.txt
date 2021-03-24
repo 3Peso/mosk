@@ -26,3 +26,8 @@
 
 # Add a database with MD5 hashes for systemfiles of macOS
 #  see: https://eclecticlight.co/2021/03/02/what-has-changed-in-macos-and-why-it-matters/
+
+# Add collector to get system report of mac ("About this Mac.app" -> Systemreport)
+
+# Implement a tool script, or find a script, to append signatures to modules
+#  update version string of module according to changed signature
