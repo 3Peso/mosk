@@ -2,7 +2,7 @@
 Collection data module
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 __all__ = ['CollectionData']
 
@@ -48,13 +48,11 @@ class CollectionData:
         return prepend
 
     def get_collector_info_as_str(self, prepend=''):
-        if self._collector_name is None:
+        if self._collector_name is None and self._collector_parameters is not None:
             raise ValueError('You must provide a collector name.')
 
-        if prepend != '':
-            prepend = "{}\r\n".format(prepend)
         if self._collector_name is not None:
-            prepend += "\r\nCollector: {}".format(self._collector_name)
+            prepend += "\r\n\r\nCollector: {}".format(self._collector_name)
         if self._collector_parameters is not None:
             for param in self._collector_parameters.keys():
                 prepend += "\r\n{}: '{}'".format(param, self._collector_parameters[param])

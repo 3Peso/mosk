@@ -39,3 +39,14 @@ class TestCollectionData(TestCase):
 
         with self.assertRaises(ValueError):
             actual_data.get_collector_info_as_str(teststring)
+
+    def test_get_collector_info_as_str_no_collector_name_and_no_params(self):
+        """
+        Should do nothing
+        """
+        actual_data = CollectionData(data="Test data")
+        expected = "Test String"
+
+        actual = actual_data.get_collector_info_as_str(expected)
+
+        assert actual == expected
