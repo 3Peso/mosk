@@ -33,16 +33,6 @@ class ShellHistoryOfAllUsers(ArtefactBase):
             'then tries to store their content.\r\n' \
             'IMPORTANT: None-Unicode-Characters wont be stored.'
 
-    #def __str__(self):
-    #    result = ''
-    #    for data in self.data.collecteddata:
-    #        result = "{}START{}\nPATH: {}\n\nCONTENT:\n{}\n{} END {}".format('*' * 20, '*' * 20,
-    #                                                                         data.Path, data.Content,
-    #                                                                         '+' * 20, '+' * 20)
-    #    result = self.data.get_metadata_as_str(result)
-    #
-    #    return result
-
     def collect(self):
         userfolders = list(get_userfolders())
         for history in ShellHistoryOfAllUsers._collect_bash_history(userfolders):
