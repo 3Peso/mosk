@@ -1,5 +1,9 @@
 # Implement unit tests.
 
+# Parameters of collectrs should be part of the protocol
+
+# Need better 'mechanic' to handle parameters in collectors (see 'AllUsernames' as bad example)
+
 # Implement SQLite Storage for protocol and collected data/files
 
 # Update the documentation.
