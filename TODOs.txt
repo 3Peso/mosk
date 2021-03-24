@@ -1,10 +1,10 @@
+# There should be a way to provide comments for the protocol by defining them in the instructions file
+
+# Consolidate "currentuser" and "allusernames" into one localhost module
+
 # Need better 'mechanic' to handle parameters in collectors (see 'AllUsernames' as bad example)
 
 # Implement SQLite Storage for protocol and collected data/files
-
-# Update the documentation.
-
-# Consolidate "currentuser" and "allusernames" into one localhost module
 
 # Detect, if VPNs are used (TOR over VPN)
 
@@ -14,8 +14,6 @@
 # Collector to check for Fusion-Drive
 
 # Implement a class to collect all FritzBox event logs and filter for certain signal words
-
-# There should be a way to provide comments for the protocol by defining them in the instructions file
 
 # osinformation currently is only implemented in very small parts and works only for macOS
 
