@@ -2,7 +2,7 @@
 support module continaing tool functions for mosk
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
 
 import os
@@ -51,14 +51,17 @@ def str_to_bool(boolstring):
     Returns True for the string "True" and False for the string "False".
     Returns True for any nonempty string and False for an empty string or for None.
     """
-    if boolstring == 'True':
-        return True
-    if boolstring == 'False':
-        return False
-    elif boolstring == '' or boolstring is None:
-        return False
+    if isinstance(boolstring, str) or boolstring is None:
+        if boolstring == 'True':
+            return True
+        if boolstring == 'False':
+            return False
+        elif boolstring == '' or boolstring is None:
+            return False
+        else:
+            return True
     else:
-        return True
+        raise TypeError('Only strings and None are supported.')
 
 
 # From https://stackoverflow.com/questions/3431825/generating-an-md5-checksum-of-a-file
