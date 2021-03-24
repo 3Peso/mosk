@@ -148,11 +148,11 @@ mosk does its collection through collectors. There are already several collector
 * SudoVersion
 
 ##### AllUsernames
-**Allowed attributes/parameters:**
+Allowed attributes/parameters:
 
-<u>*properties*</u>
+*properties*
 
-<u>*users_with_homedir*</u><br/>
+*users_with_homedir*<br/>
 'True' or 'False', if true only users with user folders are been collected.
 
 #### Scope 'localhost.mac'
