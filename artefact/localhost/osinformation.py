@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting os information.
 """
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = '3Peso'
 __all__ = ['OSName', 'OSVersion', 'OSTimezone']
 
@@ -24,6 +24,7 @@ _platform_lookup = {
         LOOKUP_KEY: {
             # TODO Refactor in a manor, so that only the important parts are used to determine the os name.
             # Example: For BigSur only the 11 is important. For Sierra only 10.12 is important.
+            # TODO Try to find a way to collect OS information online
             '10.10': 'Yosemite',
             '10.11': 'El Capitan',
             '10.12': 'Sierra',
@@ -34,7 +35,8 @@ _platform_lookup = {
             '11.1': 'BigSur',
             '11.2': 'BigSur',
             '11.2.1': 'BigSur',
-            '11.2.2': 'BigSur'
+            '11.2.2': 'BigSur',
+            '11.2.3': 'BigSur'
         },
         METHOD_KEY: 'platform.mac_ver()',
         DESCRIPTION_KEY: 'Collects MacOS version number with platform module and uses this \r\n'
