@@ -137,15 +137,23 @@ mosk does its collection through collectors. There are already several collector
 
 ### Supported collectors
 #### Scope 'localhost'
-AllUsernames
-CurrentUsername
-FileExsistence
-FileContent
-MachineName
-OSName
-OSVersion
-OSTimezone
-SudoVersion
+* [AllUsernames](#allusernames)
+* CurrentUsername
+* FileExsistence
+* FileContent
+* MachineName
+* OSName
+* OSVersion
+* OSTimezone
+* SudoVersion
+
+##### AllUsernames
+**Allowed attributes/parameters:**
+
+<u>*properties*</u>
+
+<u>*users_with_homedir*</u><br/>
+'True' or 'False', if true only users with user folders are been collected.
 
 #### Scope 'localhost.mac'
 ShellHistoryOfAllUsers
