@@ -243,7 +243,9 @@ CET
 
 -- Collection Metadata ----------
 
-Collection Time Stamp: 2021-03-23 06:34:02.407411
+Collection Time Stamp: 2021-03-24 14:52:25.861043
+
+Collector: OSTimezone
 
 ---------------------------------
 
@@ -266,9 +268,12 @@ working with file content.
 
 -- Collection Metadata ----------
 
-Collection Time Stamp: 2021-03-23 06:34:02.425094
+Collection Time Stamp: 2021-03-24 14:52:25.905901
 Source MD5: 0db7d1adf349b912f612c9be06278706
 Source path: /Users/dreipeso/PycharmProjects/mosk/tests/test.txt
+
+Collector: FileContent
+filepath: '~/PycharmProjects/mosk/tests/test.txt'
 
 ---------------------------------
          
