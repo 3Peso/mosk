@@ -2,7 +2,7 @@
 mosk mac module for classes collecting file information.
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 __all__ = ['ShellHistoryOfAllUsers']
 
@@ -34,15 +34,15 @@ class ShellHistoryOfAllUsers(ArtefactBase):
             'IMPORTANT: None-Unicode-Characters wont be stored.'
 
     def collect(self):
-        userfolders = list(get_userfolders())
+        userfolders = set(get_userfolders())
         for history in ShellHistoryOfAllUsers._collect_bash_history(userfolders):
             self.data = history.Content
             self.data[-1].sourcepath = history.Path
 
     @staticmethod
     def _collect_bash_history(userfolders):
-        historyfilepaths = [path.join(folder, history) for folder in userfolders
-                            for history in ['.bash_history', '.zsh_history']]
+        historyfilepaths = (path.join(folder, history) for folder in userfolders
+                            for history in ['.bash_history', '.zsh_history'])
         for historyfile in historyfilepaths:
             if path.exists(historyfile):
                 ShellHistoryOfAllUsers._logger.debug("Found terminal history file '{}'.".format(historyfile))

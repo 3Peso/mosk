@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting information about all users.
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 __all__ = ['AllUsernames']
 
@@ -37,7 +37,7 @@ class AllUsernames(ArtefactBase):
             if not self.__users_with_homedir:
                 self.data = ["{}: {}".format(prop, getattr(pw, prop)) for prop in self.__properties]
             else:
-                homedirs = [user.name for user in get_userfolders()]
+                homedirs = (user.name for user in get_userfolders())
                 username = getattr(pw, 'pw_name')
                 if username in homedirs:
                     self._logger.debug('"{} user collected"'.format(username))
