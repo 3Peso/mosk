@@ -2,7 +2,7 @@
 mosk network module for classes collecting information from the internet.
 """
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = '3Peso'
 __all__ = ['TemperatureFromOpenWeatherDotCom', 'ExternalLinksOnUrl']
 
@@ -23,9 +23,6 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
     You need to provide the citiy, country code, and a valid API key, which you can get from
     OpenWeather.com.
     """
-    CITY_PARAMETER = 'city'
-    COUNTRY_PARAMETER = 'countrycode'
-    API_KEY_PARAMETER = 'apikey'
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
@@ -36,10 +33,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
 
     def collect(self):
-        city = self.get_parameter(TemperatureFromOpenWeatherDotCom.CITY_PARAMETER)
-        countrycode = self.get_parameter(TemperatureFromOpenWeatherDotCom.COUNTRY_PARAMETER)
-        apikey = self.get_parameter(TemperatureFromOpenWeatherDotCom.API_KEY_PARAMETER)
-        queryurl = self._get_query(city, countrycode, apikey)
+        queryurl = self._get_query(self.city, self.countrycode, self.apikey)
 
         try:
             html = urlopen(queryurl)
@@ -47,17 +41,16 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
             self.data = "Could not query {}.\n{}".format(queryurl, httperror.info)
         else:
             data = json.load(html)
-        self.data = "Current temperature in {}: {}{}".format(city, data['main']['temp'], '°')
+        self.data = "Current temperature in {}: {}{}".format(self.city, data['main']['temp'], '°')
 
     def _get_query(self, city, countrycode, apikey):
-        return self.__querytemplate.format(self.__url, city, countrycode, apikey)
+        return self.__querytemplate.format(self.__url, self.city, self.countrycode, self.apikey)
 
 
 class ExternalLinksOnUrl(ArtefactBase):
     """
     Retrieves all the external links from a provided URL, using BeautifulSoup.
     """
-    PAGE_URL_PARAMETER = 'url'
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
@@ -78,7 +71,7 @@ class ExternalLinksOnUrl(ArtefactBase):
         return result
 
     def collect(self):
-        self.data = ExternalLinksOnUrl._getexternallinks(self._parameters[ExternalLinksOnUrl.PAGE_URL_PARAMETER])
+        self.data = ExternalLinksOnUrl._getexternallinks(self.url)
 
     @staticmethod
     def _getexternallinks(excludeurl):

@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting file information.
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 __all__ = ['FileExistence', 'FileContent']
 
@@ -16,7 +16,6 @@ class FileExistence(ArtefactBase):
     """
     Tests if a file exsists under the provided path and returns True or False accordingly.
     """
-    FILE_PATH_PARAMETER = "filepath"
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
@@ -25,8 +24,7 @@ class FileExistence(ArtefactBase):
         self._description = 'Find a file by file name including the path or parts of the path.'
 
     def collect(self):
-        filepath = self._parameters[self.FILE_PATH_PARAMETER]
-        filepath = expandfilepath(filepath)
+        filepath = expandfilepath(self.filepath)
         if path.exists(filepath):
             self.data = "File '{}' exists.".format(filepath)
             self.data[-1].sourcepath = filepath
@@ -48,12 +46,10 @@ class FileContent(ArtefactBase):
                             "content and a MD5 hash of its content."
 
     def collect(self):
-        filepath = self._parameters[self.FILE_PATH_PARAMETER]
-        filepath = expandfilepath(filepath)
+        filepath = expandfilepath(self.filepath)
         if path.exists(filepath):
             with open(filepath, "r") as filetoload:
                 self.data = filetoload.read()
             self.data[-1].sourcepath = filepath
         else:
-            self.data = "File '{}' does not exist.".format(
-                self.get_parameter(self.FILE_PATH_PARAMETER))
+            self.data = "File '{}' does not exist.".format(self.filepath)

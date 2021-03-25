@@ -1,7 +1,5 @@
 # Consolidate "currentuser" and "allusernames" into one localhost module
 
-# Need better 'mechanic' to handle parameters in collectors (see 'AllUsernames' as bad example)
-
 # Implement SQLite Storage for protocol and collected data/files
 
 # Detect, if VPNs are used (TOR over VPN)

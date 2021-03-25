@@ -27,7 +27,7 @@ class AllUsernames(ArtefactBase):
         # inside the parameters variable
         self.__properties = [item for item in kwargs['parameters']['properties'].split(',')]
         try:
-            self.__users_with_homedir = str_to_bool(kwargs['parameters']['users_with_homedir'])
+            self.__users_with_homedir = str_to_bool(self.users_with_homedir)
             self._logger.debug('Collecting users with home directory: {}'.format(self.__users_with_homedir))
         except KeyError:
             self.__users_with_homedir = False
