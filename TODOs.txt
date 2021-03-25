@@ -1,5 +1,3 @@
-# There should be a way to provide comments for the protocol by defining them in the instructions file
-
 # Consolidate "currentuser" and "allusernames" into one localhost module
 
 # Need better 'mechanic' to handle parameters in collectors (see 'AllUsernames' as bad example)
@@ -31,3 +29,5 @@
 #  update version string of module according to changed signature
 
 # Remove 'design' folder
+
+# collector for comparing MD5 hashes

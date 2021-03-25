@@ -36,13 +36,18 @@
                 <CurrentUser module="artefact.localhost.currentuser" />
                 <SudoVersion module="artefact.localhost.osinformation" />
                 <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
-                <!-- Begin The following files may indicate that the "Silver Sparrow" is installed on mac -->
-                <!-- https://www.heise.de/news/Silver-Sparrow-Mysterioese-Malware-auf-ueber-29-000-Macs-entdeckt-5062066.html -->
-                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.json" />
-                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.plist" />
-                <FileExistence module="artefact.localhost.file" filepath="/tmp/agent.sh" />
-                <FileExistence module="artefact.localhost.file" filepath="~/Library/._insu" />
-                <!-- End Silver Sparrow indicator -->
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.json"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.plist"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/agent.sh"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="~/Library/._insu"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/l" />
                 <ShellHistoryOfAllUsers module="artefact.localhost.mac.file" />
                 <NVRAMCollector module="artefact.localhost.mac.system" />
                 <TimeFromNTPServer module="artefact.network.system" />

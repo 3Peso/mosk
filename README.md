@@ -37,7 +37,8 @@ To run mosk you have to provide instructions provided, for example, as XML files
                 <OSName module="artefact.localhost.osinformation" />
                 <OSVersion module="artefact.localhost.osinformation" />
                 <OSTimezone module="artefact.localhost.osinformation" />
-                <LocalTime module="artefact.localhost.mac.system" />
+                <LocalTime module="artefact.localhost.mac.system"
+                description="Some describing text for the collector which will be logged in protocol metadata."/>
             </LocalHost>
             <Network module="source.network">
                 <TimeFromNTPServer module="artefact.network.system" />
@@ -203,11 +204,52 @@ mosk will try to write a protocol of the collection process. Every collector for
 
 If not possible or not suitable, the above metadata will not be collected.
 
+Additionally it will log the name of the collector class and all provided parameters to the collector. This can be used to, for example log some description for why the data has been collected in the first place.
+
 ### Log File Protocol
 
 The log file protocol writer will write a collection log in a pure text file.
 
-Example:
+#### Example
+
+The following instrcutions ...
+
+```xml
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            sho
+        </examiner>
+        <originaltask title="Assignment">
+            Some task
+        </originaltask>
+        <taskissuer title="Client">
+            Sgt Mustman
+        </taskissuer>
+        <artefactdescription title="Description of Artefact">
+            MacBook Flair
+        </artefactdescription>
+        <taskdescription title="Task Description">
+            Some task description
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+           <LocalHost path="!@machinename@!" module="source.localhost">
+                <OSTimezone module="artefact.localhost.osinformation" />
+                <FileContent module="artefact.localhost.file" 
+                             filepath="~/tests/test.txt"
+                             description="Collected the content of the file for demo purposes." />
+            </LocalHost>
+            <Network module="source.network">
+                <TimeFromNTPServer module="artefact.network.system" />
+            </Network>
+        </Root>
+    </Instructions>
+</Task>
+```
+
+... will lead to a protocol like the following.
 
 ```txt
 ****************
@@ -274,6 +316,7 @@ Source path: /User/AUser/tests/test.txt
 
 Collector: FileContent
 filepath: '~/tests/test.txt'
+description: 'Collected the content of the file for demo purposes.'
 
 ---------------------------------
          
