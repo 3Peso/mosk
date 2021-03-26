@@ -1,6 +1,9 @@
 # Refactoring run with logging in focus.
 #  Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
 
+# Move text resources of collectors into seperate json file and initialize them on the fly or
+#  in a central spot upon usage.
+
 # Implement SQLite Storage for protocol and collected data/files
 
 # Logging of protected parameters in protocol should be controlable (see OpenWeather collector as example)
