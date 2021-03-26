@@ -92,6 +92,7 @@ def get_collector_resources():
     # HACK
     # Do the following steps to ensure we are operating in the root directory of mosk
     # so that os.abspath works
+    # IMPORTANT: Depends on support module stored one level above root
     old_wd = _change_cwd_to_module_root()
     resourcesfilepath = os.path.abspath('./resources/collector_text_{}.json'.format(countrycode))
     os.chdir(old_wd)
