@@ -2,9 +2,9 @@
 mosk localhost module for classes collecting infromation about the current user.
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
-__all__ = ['CurrentUser']
+__all__ = ['CurrentUser', 'AllUsernames']
 
 import logging
 from pwd import getpwall
