@@ -39,8 +39,9 @@ class AllUsernames(ArtefactBase):
         self._title = 'AllUsernames'
         self._collectionmethod = 'pwd.getpwall'
         self._description = 'Collects all usernames with the Python module pwd.'
-        # inside the parameters variable
-        self.__properties = [item for item in kwargs['parameters']['properties'].split(',')]
+        # Which properties of 'pwd.getpwall' will be controlled by the 'properties' parameter of the
+        # collector, which is a string of property names seperated by comma.
+        self.__properties = (item for item in self.properties.split(','))
         try:
             self.__users_with_homedir = str_to_bool(self.users_with_homedir)
             self._logger.debug('Collecting users with home directory: {}'.format(self.__users_with_homedir))
