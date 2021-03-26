@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting infromation about the current user.
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['CurrentUser', 'AllUsernames']
 
@@ -20,9 +20,6 @@ class CurrentUser(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = 'Current User'
-        self._collectionmethod = 'getpass.getuser'
-        self._description = 'Collects the current user with the Python module getpass.'
 
     def collect(self):
         self.data = getuser()
