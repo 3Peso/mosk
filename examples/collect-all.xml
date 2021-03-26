@@ -32,8 +32,8 @@
                 <OSName module="artefact.localhost.osinformation" />
                 <OSVersion module="artefact.localhost.osinformation" />
                 <OSTimezone module="artefact.localhost.osinformation" />
-                <AllUsernames module="artefact.localhost.allusernames" properties="pw_name,pw_gecos,pw_dir" />
-                <CurrentUser module="artefact.localhost.currentuser" />
+                <AllUsernames module="artefact.localhost.user" properties="pw_name,pw_gecos,pw_dir" />
+                <CurrentUser module="artefact.localhost.user" />
                 <SudoVersion module="artefact.localhost.osinformation" />
                 <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
                 <FileExistence module="artefact.localhost.file" filepath="/tmp/version.json"

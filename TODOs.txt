@@ -1,6 +1,9 @@
-# Consolidate "currentuser" and "allusernames" into one localhost module
+# Refactoring run with logging in focus.
+#  Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
 
 # Implement SQLite Storage for protocol and collected data/files
+
+# Logging of protected parameters in protocol should be controlable (see OpenWeather collector as example)
 
 # Detect, if VPNs are used (TOR over VPN)
 
@@ -12,9 +15,6 @@
 # Implement a class to collect all FritzBox event logs and filter for certain signal words
 
 # osinformation currently is only implemented in very small parts and works only for macOS
-
-# Refactoring run with logging in focus.
-#  Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
 
 # Doctest tests with doctest file (see "How the Tombola subclasses were tested" in the Python books
 
