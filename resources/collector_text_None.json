@@ -1,0 +1,17 @@
+{
+  "artefact.localhost.mac.file.ShellHistoryOffAllUsers": {
+    "title" : "ShellHistoryOffAllUsers",
+    "collectionmethod": "os.file",
+    "description": "Retrieves all user folers and tries to find bash shell and zhs shell history files and\\r\\n then tries to store their content.\\r\\n IMPORTANT: None-Unicode-Characters wont be stored."
+  },
+  "artefact.localhost.mac.system.NVRAMCollector": {
+    "title": "NVRAMCollector",
+    "collectionmethod": "nvram -p",
+    "description": "Collects the contents of the NVRAM by calling the bash command \"nvram\""
+  },
+  "artefact.localhost.user.CurrentUser": {
+    "title": "CurrentUser",
+    "collectionmethod": "getpass.getuser",
+    "description": "Collects the current user with the Python module getpass."
+  }
+}

@@ -1,9 +1,9 @@
 from unittest import TestCase, mock
 
-from businesslogic.support import str_to_bool
+from businesslogic.support import str_to_bool, get_collector_resources
 
 
-class TestSupport(TestCase):
+class TestSupportStrToBool(TestCase):
     def test_str_to_bool_True(self):
         assert str_to_bool('True')
 
@@ -22,3 +22,15 @@ class TestSupport(TestCase):
     def test_str_to_bool_no_str_input_raises_TypeError(self):
         with self.assertRaises(TypeError):
             str_to_bool(23)
+
+
+class TestGetCollectorResources(TestCase):
+    def test_get_collector_resources_no_resources(self):
+        """
+        When there are no resources files available for current locale it should return the
+        default resources.
+        :return: JSON object with the contents of 'collector_text_default.json'
+        """
+        actual_resources = get_collector_resources()
+
+        assert actual_resources is not None

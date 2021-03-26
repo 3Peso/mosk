@@ -2,14 +2,19 @@
 support module continaing tool functions for mosk
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 
+import json
+import locale
+import logging
 import os
 import socket
+import sys
 import time
 import struct
 import hashlib
+
 
 REF_TIME_1970 = 2208988800  # Reference time
 DEFAULT_TIME_SERVER = '0.de.pool.ntp.org'
@@ -76,3 +81,37 @@ def md5(fpath):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
+
+def get_collector_resources():
+    logger = logging.getLogger(__name__)
+    countrycode, _ = locale.getdefaultlocale()
+    resources = None
+
+    # TODO Move into a contextmanager
+    # HACK
+    # Do the following steps to ensure we are operating in the root directory of mosk
+    # so that os.abspath works
+    old_wd = _change_cwd_to_module_root()
+    resourcesfilepath = os.path.abspath('./resources/collector_text_{}.json'.format(countrycode))
+    os.chdir(old_wd)
+
+    if os.path.exists(resourcesfilepath):
+        try:
+            with open(resourcesfilepath) as rf:
+                resources = json.load(rf)
+        except FileNotFoundError:
+            if countrycode is None:
+                logger.warning('Default resources file not found.')
+            else:
+                logger.info('Resources file for country code {} not found.'.format(countrycode))
+
+    return resources
+
+
+def _change_cwd_to_module_root():
+    basepath = os.path.dirname(sys.modules[__name__].__file__)
+    old = os.getcwd()
+    os.chdir(basepath)
+    os.chdir('..')
+    return old

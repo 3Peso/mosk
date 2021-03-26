@@ -46,3 +46,43 @@ class TestArtefactBase(TestCase):
         artefact.data = None
 
         assert len(artefact.data) == 0
+
+    @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
+    @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
+    def test__init_description_properties_with_missing_resources(self):
+        """
+        Should initialize properties _title, _description, and _collectionmethod with None
+        """
+        from baseclasses.artefact import ArtefactBase
+        artefact = ArtefactBase(parent=None, parameters={})
+
+        assert artefact._title == None
+        assert artefact._description == None
+        assert artefact._collectionmethod == None
+
+    @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
+    @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
+    def test__init_description_properties_with_missing_resources_for_collector(self):
+        """
+        Should initialize properties _title, _description, and _collectionmethod with None,
+        if there are no string for the current collector
+        """
+        from baseclasses.artefact import ArtefactBase
+        artefact = ArtefactBase(parent=None, parameters={})
+
+        assert artefact._title == None
+        assert artefact._description == None
+        assert artefact._collectionmethod == None
+
+    @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
+    @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
+    def test__init_description_properties(self):
+        """
+        Should initialize properties _title, _description, and _collectionmethod
+        """
+        from artefact.localhost.user import CurrentUser
+        artefact = CurrentUser(parent=None, parameters={})
+
+        assert artefact._title == 'CurrentUser'
+        assert artefact._description == 'Collects the current user with the Python module getpass.'
+        assert artefact._collectionmethod == 'getpass.getuser'
