@@ -14,8 +14,9 @@ LOG_LEVEL = {
     'DEBUG': logging.DEBUG
 }
 
+if __name__ == '__main__':
+    argv = sys.argv[1:]
 
-def main(argv):
     try:
         opts, args = getopt.getopt(argv, 'i:l:e:g:', ['instructions=', 'loglevel=', 'examiner=', 'globalplaceholders='])
     except getopt.GetoptError:
@@ -44,7 +45,3 @@ def main(argv):
     except FileNotFoundError:
         print('Could not initialize parser.')
         sys.exit(2)
-
-
-if __name__ == "__main__":
-    main(sys.argv[1:])
