@@ -1,9 +1,14 @@
+__version__ = '0.0.1'
+__author__ = '3Peso'
+__all__ = ['LogFileProtocol']
+
 import logging
 import re
 from datetime import date
 from glob import glob
 
 from baseclasses.protocol import ProtocolBase
+from businesslogic.data import CollectionMetaData
 
 
 class LogFileProtocol(ProtocolBase):
@@ -64,6 +69,12 @@ class LogFileProtocol(ProtocolBase):
             name = self._protocolfilename
 
         return name
+
+    def set_task_metadata(self, metadata: CollectionMetaData):
+        for metafield in metadata.metadata_fields:
+            self.writer_protocol_entry(entryheader='',
+                                       entrydata="{}: {}"
+                                       .format(metafield, metadata.get_metadata(metafield)))
 
     # TODO Refactor. The call currently is horrible
     def writer_protocol_entry(self, entryheader, entrydata):

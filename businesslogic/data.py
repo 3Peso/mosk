@@ -2,14 +2,16 @@
 Collection data module
 """
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 __author__ = '3Peso'
-__all__ = ['CollectionData']
+__all__ = ['CollectionData', 'CollectionMetaData']
 
 import os
 import hashlib
+from collections import OrderedDict
 
 import businesslogic.support
+from businesslogic.placeholders import Placeholder
 
 
 class CollectionData:
@@ -83,3 +85,18 @@ class CollectionData:
         if value is not None and os.path.exists(value):
             self._sourcehash = businesslogic.support.md5(value)
             self._sourcepath = value
+
+
+class CollectionMetaData:
+    """Will store the metadata regarding the whole collection process, like for example the task description."""
+    def __init__(self, metadata: OrderedDict):
+        self._collectionMetadata = metadata
+
+    @property
+    def metadata_fields(self):
+        for field in self._collectionMetadata.keys():
+            yield field
+
+    @Placeholder
+    def get_metadata(self, field):
+        return self._collectionMetadata[field]

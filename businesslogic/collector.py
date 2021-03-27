@@ -2,7 +2,7 @@
 Collector Module
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
 
 import logging
@@ -43,16 +43,10 @@ class Collector:
     def collect(self):
         # Log the date and time when collection started.
         self.collection_start = datetime.now()
-        self._document_colletionwide_metadata()
+        self._protocol.set_task_metadata(self._parser.metadata)
         self._collect_from_instrcutions(self._parser.instructions)
         # Log the date and time when collection ended.
         self.collection_end = datetime.now()
-
-    def _document_colletionwide_metadata(self):
-        for metafield in self._parser.metadatafields:
-            self._protocol.writer_protocol_entry(entryheader='',
-                                                 entrydata="{}: {}"
-                                                 .format(metafield, self._parser.get_metadata(metafield)))
 
     def _collect_from_instrcutions(self, current_instruction: InstructionWrapper, callpath: str = ''):
         if callpath == '':

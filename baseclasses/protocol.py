@@ -2,8 +2,9 @@
 mosk protocol base class module
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
+__all__ = ['ProtocolBase']
 
 from abc import abstractmethod
 
@@ -16,6 +17,10 @@ class ProtocolBase:
 
     @abstractmethod
     def writer_protocol_entry(self, entryheader: str, entrydata: str):
+        pass
+
+    @abstractmethod
+    def set_task_metadata(self, metadata):
         pass
 
     @property
