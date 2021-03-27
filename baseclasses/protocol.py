@@ -2,7 +2,7 @@
 mosk protocol base class module
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['ProtocolBase']
 
@@ -14,6 +14,8 @@ class ProtocolBase:
         self._examiner = str(examiner)
         self._taskid = str(taskid)
         self._artifactid = str(artifactid)
+        self._collection_start = None
+        self._collection_end = None
 
     @abstractmethod
     def writer_protocol_entry(self, entryheader: str, entrydata: str):
@@ -34,3 +36,23 @@ class ProtocolBase:
     @property
     def task_id(self):
         return self._taskid
+
+    @property
+    @abstractmethod
+    def collection_start(self):
+        pass
+
+    @collection_start.setter
+    @abstractmethod
+    def collection_start(self, value):
+        pass
+
+    @property
+    @abstractmethod
+    def collection_end(self):
+        pass
+
+    @collection_end.setter
+    @abstractmethod
+    def collection_end(self, value):
+        pass

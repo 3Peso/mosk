@@ -1,4 +1,4 @@
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
 __all__ = ['LogFileProtocol']
 
@@ -87,6 +87,24 @@ class LogFileProtocol(ProtocolBase):
         return
 
     # TODO Think about adding a newline functions
+
+    @property
+    def collection_start(self):
+        return self._collection_start
+
+    @collection_start.setter
+    def collection_start(self, value):
+        self._collection_start = value
+        self.writer_protocol_entry(entryheader='Collection Start', entrydata=value)
+
+    @property
+    def collection_end(self):
+        return self._collection_end
+
+    @collection_end.setter
+    def collection_end(self, value):
+        self._collection_end = value
+        self.writer_protocol_entry(entryheader='Collection End', entrydata=value)
 
 # Protocol Example
 

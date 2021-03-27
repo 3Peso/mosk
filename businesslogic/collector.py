@@ -2,8 +2,9 @@
 Collector Module
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.4'
 __author__ = '3Peso'
+__all__ = ['Collector']
 
 import logging
 from datetime import datetime
@@ -42,11 +43,11 @@ class Collector:
 
     def collect(self):
         # Log the date and time when collection started.
-        self.collection_start = datetime.now()
+        self._protocol.collection_start = datetime.now()
         self._protocol.set_task_metadata(self._parser.metadata)
         self._collect_from_instrcutions(self._parser.instructions)
         # Log the date and time when collection ended.
-        self.collection_end = datetime.now()
+        self._protocol.collection_end = datetime.now()
 
     def _collect_from_instrcutions(self, current_instruction: InstructionWrapper, callpath: str = ''):
         if callpath == '':
@@ -95,21 +96,3 @@ class Collector:
                 self._protocol.writer_protocol_entry(entrydata=str(artefact), entryheader='')
 
         self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')
-
-    @property
-    def collection_start(self):
-        return self._collectionstart
-
-    @collection_start.setter
-    def collection_start(self, value):
-        self._collectionstart = value
-        self._protocol.writer_protocol_entry(entryheader='Collection Start', entrydata=value)
-
-    @property
-    def collection_end(self):
-        return self._collectionend
-
-    @collection_end.setter
-    def collection_end(self, value):
-        self._collectionend = value
-        self._protocol.writer_protocol_entry(entryheader='Collection End', entrydata=value)
