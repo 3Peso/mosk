@@ -143,6 +143,7 @@ mosk does its collection through collectors. There are already several collector
 * FileExsistence
 * FileContent
 * MachineName
+* OSPlatform
 * OSName
 * OSVersion
 * OSTimezone
