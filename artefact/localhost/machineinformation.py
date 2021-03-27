@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting machine information.
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['MachineName']
 
@@ -20,9 +20,6 @@ class MachineName(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = 'Machine Name'
-        self._collectionmethod = 'socket.gethostname()'
-        self._description = 'Collects the machine name of the local host with the Python module socket'
 
     def collect(self):
         self.data = socket.gethostname()
