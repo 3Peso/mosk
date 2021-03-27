@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting file information.
 """
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 __author__ = '3Peso'
 __all__ = ['FileExistence', 'FileContent']
 
@@ -19,9 +19,6 @@ class FileExistence(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = 'Filesystem'
-        self._collectionmethod = 'os.path.exists'
-        self._description = 'Find a file by file name including the path or parts of the path.'
 
     def collect(self):
         filepath = expandfilepath(self.filepath)
@@ -40,10 +37,6 @@ class FileContent(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = "File content collector"
-        self._collectionmethod = "python file context manager"
-        self._description = "Uses the python file context manager to open the file in read mode and store its\r\n" \
-                            "content and a MD5 hash of its content."
 
     def collect(self):
         filepath = expandfilepath(self.filepath)
