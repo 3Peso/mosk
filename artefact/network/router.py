@@ -32,11 +32,6 @@ class HostsRegisteredInFritzBox(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = "FritzBoxHosts"
-        self._collectionmethod = "fritzcollection.lib.hosts"
-        self._description = \
-            "Uses to Open Source Python module 'fritzconnection' by Klaus Bremer\r\n" \
-            "to collect the status of all registered hosts in a FritzBox network"
 
     def __str__(self):
         hosts = ''

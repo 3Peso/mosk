@@ -2,7 +2,7 @@
   "artefact.localhost.mac.file.ShellHistoryOffAllUsers": {
     "title" : "ShellHistoryOffAllUsers",
     "collectionmethod": "os.file",
-    "description": "Retrieves all user folers and tries to find bash shell and zhs shell history files and\\r\\n then tries to store their content.\\r\\n IMPORTANT: None-Unicode-Characters wont be stored."
+    "description": "Retrieves all user folers and tries to find bash shell and zhs shell history files and\r\n then tries to store their content.\r\n IMPORTANT: None-Unicode-Characters wont be stored."
   },
   "artefact.localhost.mac.system.NVRAMCollector": {
     "title": "NVRAMCollector",
@@ -73,5 +73,10 @@
     "title": "External Links on Web Page",
     "collectionmethod": "Web Scrapping",
     "description": "Scraps all external urls on a given web page with BeautifulSoup."
+  },
+  "artefact.network.router.HostsRegisteredInFritzBox": {
+    "title": "HostsRegisteredInFritzBox",
+    "collectionmethod":"fritzcollection.lib.hosts",
+    "description": "Uses to Open Source Python module 'fritzconnection' by Klaus Bremer\r\nto collect the status of all registered hosts in a FritzBox network."
   }
 }
