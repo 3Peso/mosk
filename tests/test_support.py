@@ -34,3 +34,13 @@ class TestGetCollectorResources(TestCase):
         actual_resources = get_collector_resources()
 
         assert actual_resources is not None
+
+    def test_get_collector_resources_no_resources_folder(self):
+        """
+        When there is no local resources folder there should happen nothing (except a logging error
+        message been print).
+        :return:
+        """
+        actual_resources = get_collector_resources("./IDoNotExsit")
+
+        assert actual_resources is None

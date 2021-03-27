@@ -2,7 +2,7 @@
 support module continaing tool functions for mosk
 """
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = '3Peso'
 
 import json
@@ -83,18 +83,20 @@ def md5(fpath):
     return hash_md5.hexdigest()
 
 
-def get_collector_resources():
+def get_collector_resources(resourcespath="./resources"):
     logger = logging.getLogger(__name__)
     countrycode, _ = locale.getdefaultlocale()
     resources = None
 
+    resourcesfilepath = os.path.join(resourcespath, "collector_text_{}.json".format(countrycode))
+    logger.debug("Trying to load text resources from '{} ...'".format(resourcesfilepath))
     # TODO Move into a contextmanager
     # HACK
     # Do the following steps to ensure we are operating in the root directory of mosk
     # so that os.abspath works
     # IMPORTANT: Depends on support module stored one level above root
     old_wd = _change_cwd_to_module_root()
-    resourcesfilepath = os.path.abspath('./resources/collector_text_{}.json'.format(countrycode))
+    resourcesfilepath = os.path.abspath(resourcesfilepath)
     os.chdir(old_wd)
 
     if os.path.exists(resourcesfilepath):
