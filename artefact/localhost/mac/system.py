@@ -2,7 +2,7 @@
 mosk mac module for classes collecting os information.
 """
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = '3Peso'
 __all__ = ['NVRAMCollector', 'LocalTime']
 
@@ -17,9 +17,6 @@ class NVRAMCollector(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = 'NVRAMCollector'
-        self._collectionmethod = 'nvram -p'
-        self._description = 'Collects the contents of the NVRAM by calling the bash command "nvram".'
 
     def collect(self):
         process = subprocess.Popen(['nvram', '-xp'],
@@ -45,10 +42,6 @@ class LocalTime(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = 'LocalTime'
-        self._collectionmethod = 'zdump /etc/localtime'
-        self._description = 'Collects the local date and time by reading the contents of\r\n' \
-                             'of "/etc/localtime" with zdump.'
 
     def collect(self):
         process = subprocess.Popen(['zdump', '/etc/localtime'],
