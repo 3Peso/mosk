@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting os information.
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 __all__ = ['OSName', 'OSVersion', 'OSTimezone']
 
@@ -132,3 +132,12 @@ class SudoVersion(ArtefactBase):
                                    stdout=subprocess.PIPE,
                                    universal_newlines=True)
         self.data = process.communicate()[0]
+
+
+class OSPlatform(ArtefactBase):
+    """Collects the platform on which this script is running on."""
+    def __init__(self, *args, **kwargs):
+        ArtefactBase.__init__(self, *args, **kwargs)
+
+    def collect(self):
+        self.data = platform.system()
