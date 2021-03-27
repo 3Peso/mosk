@@ -63,5 +63,15 @@
     "title": "AllUsernames",
     "collectionmethod": "pwd.getpwall",
     "description": "Collects all usernames with the Python module pwd."
+  },
+  "artefact.network.internet.TemperatureFromOpenWeatherDotCom": {
+    "title": "Current temperature from openweather.com",
+    "collectionmethod": "Get data from returend json object.",
+    "description": "Calling the API of the webside with free developer api key."
+  },
+  "artefact.network.internet.ExternalLinksOnUrl": {
+    "title": "External Links on Web Page",
+    "collectionmethod": "Web Scrapping",
+    "description": "Scraps all external urls on a given web page with BeautifulSoup."
   }
 }

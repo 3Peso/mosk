@@ -2,7 +2,7 @@
 mosk network module for classes collecting information from the internet.
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 __all__ = ['TemperatureFromOpenWeatherDotCom', 'ExternalLinksOnUrl']
 
@@ -26,9 +26,6 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = 'Current temperature from openweather.com'
-        self._collectionmethod = 'Get data from returend json object.'
-        self._description = 'Calling the API of the webside with free developer api key.'
         self.__url = "https://api.openweathermap.org/data/2.5/weather"
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
 
@@ -54,9 +51,6 @@ class ExternalLinksOnUrl(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = 'External Links on Web Page'
-        self._collectionmethod = 'Web Scrapping'
-        self._description = 'Scraps all external urls on a given web page with BeautifulSoup.'
 
     def __str__(self):
         result = ''
