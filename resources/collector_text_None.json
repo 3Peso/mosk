@@ -13,5 +13,50 @@
     "title": "CurrentUser",
     "collectionmethod": "getpass.getuser",
     "description": "Collects the current user with the Python module getpass."
+  },
+  "artefact.localhost.file.FileExistence": {
+    "title": "FileExsistence",
+    "collectionmethod": "os.path.exists",
+    "description": "Find a file by file name including the path or parts of the path."
+  },
+  "artefact.localhost.file.FileContent": {
+    "title": "FileContent",
+    "collectionmethod": "Python File Contextmanager",
+    "description": "Uses the python file context manager to open the file in read mode and store its\r\ncontent and MD5 hash of its content."
+  },
+  "artefact.localhost.mac.system.LocalTime": {
+    "title": "LocalTime",
+    "collectionmethod": "zdump /etc/localtime",
+    "description": "Collects the local date and time by reading the contents of\r\n '/etc/localtime' with zdump."
+  },
+  "artefact.localhost.osinformation.OSPlatform": {
+    "title": "OSPlatform",
+    "collectionmethod": "platform.system",
+    "description": "Collects the platform name on which this script is running on (Windows, Linux, Darwin which is Mac)."
+  },
+  "artefact.localhost.machineinformation.MachineName": {
+    "title": "MachineName",
+    "collectionmethod": "socket.gethostname",
+    "description": "Collects the machine name of the local host with the Python module socket."
+  },
+  "artefact.localhost.osinformation.OSName": {
+    "title": "OSName",
+    "collectionmethod": "platform.mac_ver plus lookup table",
+    "description": "Collects the macOS version and checks it against an internal lookup table to get OS Name."
+  },
+  "artefact.localhost.osinformation.OSVersion": {
+    "title": "OSVersion",
+    "collectionmethod": "platform.mac_ver",
+    "description": "Collects the running macOS version."
+  },
+  "artefact.localhost.osinformation.OSTimezone": {
+    "title": "OSTimezone",
+    "collectionmethod": "datetime.now",
+    "description": "Collects the currently configured timezone on localhost."
+  },
+  "artefact.localhost.osinformation.SudoVersion": {
+    "title": "SudoVersion",
+    "collectionmethod": "sudo -V in Shell",
+    "description": "Collects the currently installed sudo version."
   }
 }

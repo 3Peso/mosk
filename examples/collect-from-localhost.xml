@@ -34,7 +34,9 @@
                 <OSTimezone module="artefact.localhost.osinformation" />
                 <AllUsernames module="artefact.localhost.user" properties="pw_name,pw_gecos,pw_dir" />
                 <CurrentUser module="artefact.localhost.user" />
-                <SudoVersion module="artefact.localhost.osinformation" />
+                <SudoVersion module="artefact.localhost.osinformation"
+                             description="According to CVE-2021-3156 the versions 1.7.7 through 1.7.10p9, 1.8.2 through 1.8.31p2,&#xD;&#xA;and 1.9.0 through 1.9.5p are vulnurable to get root level access if you have access to the machine."
+                             description-url="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3156" />
                 <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
                 <FileExistence module="artefact.localhost.file" filepath="/tmp/version.json"
                                description="Possible indicator for a 'Silver Sparrow' infection."
