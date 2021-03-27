@@ -58,5 +58,10 @@
     "title": "SudoVersion",
     "collectionmethod": "sudo -V in Shell",
     "description": "Collects the currently installed sudo version."
+  },
+  "artefact.localhost.user.AllUsernames": {
+    "title": "AllUsernames",
+    "collectionmethod": "pwd.getpwall",
+    "description": "Collects all usernames with the Python module pwd."
   }
 }

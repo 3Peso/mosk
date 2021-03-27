@@ -33,9 +33,6 @@ class AllUsernames(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._title = 'AllUsernames'
-        self._collectionmethod = 'pwd.getpwall'
-        self._description = 'Collects all usernames with the Python module pwd.'
         # Which properties of 'pwd.getpwall' will be controlled by the 'properties' parameter of the
         # collector, which is a string of property names seperated by comma.
         self.__properties = (item for item in self.properties.split(','))
