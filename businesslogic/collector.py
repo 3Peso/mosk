@@ -2,7 +2,7 @@
 Collector Module
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 __all__ = ['Collector']
 
@@ -13,7 +13,6 @@ from contextlib import suppress
 
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.artefact import ArtefactBase
-from baseclasses.protocol import ProtocolBase
 from businesslogic.placeholders import Placeholder
 from protocol.logfileprotocol import LogFileProtocol
 
@@ -26,7 +25,7 @@ class Collector:
     """
     _logger = logging.getLogger(__name__)
 
-    def __init__(self, parser: XmlParser, protocol: ProtocolBase):
+    def __init__(self, parser: XmlParser, protocol):
         self._parser = parser
         self._protocol = protocol
         self._collectionstart = None
@@ -82,17 +81,4 @@ class Collector:
             artefact()
             Collector._logger.debug("{} - collected data".format(callpath))
 
-        self._protocol.writer_protocol_entry(entrydata=artefact.getdocumentation(),
-                                             entryheader=callpath)
-        self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')
-
-        if artefact.data is None:
-            self._protocol.writer_protocol_entry(entrydata="Could not collect data for artefact '{}'\n"
-                                                           "due to unhandled exception."
-                                                 .format(str(type(artefact))),
-                                                 entryheader='')
-        else:
-            with suppress(TypeError):
-                self._protocol.writer_protocol_entry(entrydata=str(artefact), entryheader='')
-
-        self._protocol.writer_protocol_entry(entryheader='', entrydata=' ')
+        self._protocol.store_artefact(artefact, callpath)

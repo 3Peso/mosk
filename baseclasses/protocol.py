@@ -2,11 +2,11 @@
 mosk protocol base class module
 """
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = '3Peso'
-__all__ = ['ProtocolBase']
 
 from abc import abstractmethod
+from baseclasses.artefact import ArtefactBase
 
 
 class ProtocolBase:
@@ -18,7 +18,11 @@ class ProtocolBase:
         self._collection_end = None
 
     @abstractmethod
-    def writer_protocol_entry(self, entryheader: str, entrydata: str):
+    def _write_protocol_entry(self, entryheader: str, entrydata: str):
+        pass
+
+    @abstractmethod
+    def store_artefact(self, artefact: ArtefactBase, callpath: str):
         pass
 
     @abstractmethod

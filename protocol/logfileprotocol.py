@@ -1,4 +1,4 @@
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['LogFileProtocol']
 
@@ -6,8 +6,10 @@ import logging
 import re
 from datetime import date
 from glob import glob
+from contextlib import suppress
 
 from baseclasses.protocol import ProtocolBase
+from baseclasses.artefact import ArtefactBase
 from businesslogic.data import CollectionMetaData
 
 
@@ -57,6 +59,17 @@ class LogFileProtocol(ProtocolBase):
                     raise ValueError('You reached the limit of 99999 protocols. Delete old protocols.')
         return nextcounter
 
+    # TODO Refactor. The call currently is horrible
+    def _write_protocol_entry(self, entryheader, entrydata):
+        if entryheader is not None and entryheader != '':
+            self._messagelogger.info('*' * len(entryheader))
+            self._messagelogger.info(entryheader)
+            self._messagelogger.info('*' * len(entryheader))
+        if entrydata is not None and entrydata != '':
+            self._artefactlogger.info(entrydata)
+        return
+
+    # TODO Think about adding a newline functions
     @property
     def protocol_filename(self):
         if self._protocolfilename == '':
@@ -72,21 +85,25 @@ class LogFileProtocol(ProtocolBase):
 
     def set_task_metadata(self, metadata: CollectionMetaData):
         for metafield in metadata.metadata_fields:
-            self.writer_protocol_entry(entryheader='',
+            self._write_protocol_entry(entryheader='',
                                        entrydata="{}: {}"
                                        .format(metafield, metadata.get_metadata(metafield)))
 
-    # TODO Refactor. The call currently is horrible
-    def writer_protocol_entry(self, entryheader, entrydata):
-        if entryheader is not None and entryheader != '':
-            self._messagelogger.info('*' * len(entryheader))
-            self._messagelogger.info(entryheader)
-            self._messagelogger.info('*' * len(entryheader))
-        if entrydata is not None and entrydata != '':
-            self._artefactlogger.info(entrydata)
-        return
+    def store_artefact(self, artefact: ArtefactBase, callpath: str):
+        self._write_protocol_entry(entrydata=artefact.getdocumentation(),
+                                   entryheader=callpath)
+        self._write_protocol_entry(entryheader='', entrydata=' ')
 
-    # TODO Think about adding a newline functions
+        if artefact.data is None:
+            self._write_protocol_entry(entrydata="Could not collect data for artefact '{}'\n"
+                                                 "due to unhandled exception."
+                                                 .format(str(type(artefact))),
+                                                 entryheader='')
+        else:
+            with suppress(TypeError):
+                self._write_protocol_entry(entrydata=str(artefact), entryheader='')
+
+        self._write_protocol_entry(entryheader='', entrydata=' ')
 
     @property
     def collection_start(self):
@@ -95,7 +112,7 @@ class LogFileProtocol(ProtocolBase):
     @collection_start.setter
     def collection_start(self, value):
         self._collection_start = value
-        self.writer_protocol_entry(entryheader='Collection Start', entrydata=value)
+        self._write_protocol_entry(entryheader='Collection Start', entrydata=value)
 
     @property
     def collection_end(self):
@@ -104,7 +121,7 @@ class LogFileProtocol(ProtocolBase):
     @collection_end.setter
     def collection_end(self, value):
         self._collection_end = value
-        self.writer_protocol_entry(entryheader='Collection End', entrydata=value)
+        self._write_protocol_entry(entryheader='Collection End', entrydata=value)
 
 # Protocol Example
 

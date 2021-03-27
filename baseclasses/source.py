@@ -2,13 +2,13 @@
 mosk source base class module
 """
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = '3Peso'
+__all__ = ['SourceBase']
 
 import logging
 from collections import UserDict
 
-from baseclasses.protocol import ProtocolBase
 from businesslogic.placeholders import Placeholder
 
 
@@ -52,5 +52,5 @@ class SourceBase:
         return self._protocol
 
     @protocol.setter
-    def protocol(self, newprotocol: ProtocolBase):
+    def protocol(self, newprotocol):
         self._protocol = newprotocol
