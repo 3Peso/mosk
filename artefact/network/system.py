@@ -2,7 +2,7 @@
 mosk network module for classes collecting system information through a network.
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 __all__ = ['TimeFromNTPServer']
 
