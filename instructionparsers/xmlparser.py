@@ -1,3 +1,7 @@
+__version__ = '0.0.1'
+__author__ = '3Peso'
+__all__ = ['XmlParser']
+
 import importlib
 import logging
 from os import path
@@ -10,7 +14,7 @@ import xmlschema
 
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.protocol import ProtocolBase
-from businesslogic.placeholders import Placeholder
+from businesslogic.data import CollectionMetaData
 
 
 class XmlParser:
@@ -34,6 +38,8 @@ class XmlParser:
 
     def __init__(self, instructionspath: str, protocol: ProtocolBase):
         self._protocol = protocol
+        # _metadata will store things like the task description, the examiner, etc. Everything
+        # which is stored in the "TaskHeader" section.
         self._metadata = OrderedDict()
         self.instructionspath = instructionspath
 
@@ -52,6 +58,7 @@ class XmlParser:
             self._instructionspath = str(newpath)
             self._sourcesandartefactsTree = self._init_instructions()
             self._initializemetadata()
+            self._metadata = CollectionMetaData(self._metadata)
         else:
             raise FileNotFoundError("'{}' does not exist.".format(newpath))
 
@@ -62,12 +69,8 @@ class XmlParser:
         return self._sourcesandartefactsTree
 
     @property
-    def metadatafields(self):
-        return self._metadata.keys()
-
-    @Placeholder
-    def get_metadata(self, metadatafield):
-        return self._metadata[metadatafield]
+    def metadata(self):
+        return self._metadata
 
     @classmethod
     def _validate_schema(cls, xmlfilepath: str):
