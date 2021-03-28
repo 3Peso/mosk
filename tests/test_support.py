@@ -5,19 +5,19 @@ from businesslogic.support import str_to_bool, get_collector_resources
 
 class TestSupportStrToBool(TestCase):
     def test_str_to_bool_True(self):
-        assert str_to_bool('True')
+        self.assertEqual(str_to_bool('True'), True)
 
     def test_str_to_bool_False(self):
-        assert not str_to_bool('False')
+        self.assertEqual(str_to_bool('False'), False)
 
     def test_str_to_bool_Empty(self):
-        assert not str_to_bool('')
+        self.assertEqual(str_to_bool(''), False)
 
     def test_str_to_bool_None(self):
-        assert not str_to_bool(None)
+        self.assertEqual(str_to_bool(None), False)
 
     def test_str_to_bool_any(self):
-        assert str_to_bool('Any String')
+        self.assertEqual(str_to_bool('Any String'), True)
 
     def test_str_to_bool_no_str_input_raises_TypeError(self):
         with self.assertRaises(TypeError):
@@ -33,7 +33,7 @@ class TestGetCollectorResources(TestCase):
         """
         actual_resources = get_collector_resources()
 
-        assert actual_resources is not None
+        self.assertIsNotNone(actual_resources)
 
     def test_get_collector_resources_no_resources_folder(self):
         """
@@ -43,4 +43,4 @@ class TestGetCollectorResources(TestCase):
         """
         actual_resources = get_collector_resources("./IDoNotExsit")
 
-        assert actual_resources is None
+        self.assertIsNone(actual_resources)
