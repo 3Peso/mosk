@@ -18,10 +18,6 @@ class ProtocolBase:
         self._collection_end = None
 
     @abstractmethod
-    def _write_protocol_entry(self, entryheader: str, entrydata: str):
-        pass
-
-    @abstractmethod
     def store_artefact(self, artefact: ArtefactBase, callpath: str):
         pass
 

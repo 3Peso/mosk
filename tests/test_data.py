@@ -1,15 +1,18 @@
 import os
+import json
+from datetime import datetime
 from unittest import TestCase
 
 
 class TestCollectionData(TestCase):
-
-    def setUp(self) -> None:
-        self._currentdir = os.getcwd()
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls._currentdir = os.getcwd()
         os.chdir('..')
 
-    def tearDown(self):
-        os.chdir(self._currentdir)
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.chdir(cls._currentdir)
 
     def test_get_collector_info_as_str(self):
         """
@@ -64,3 +67,49 @@ class TestCollectionData(TestCase):
         actual = actual_data.get_collector_info_as_str(expected)
 
         self.assertEqual(actual, expected)
+
+    def test_get_json(self):
+        """
+        :return: JSON object of data object
+        """
+        from businesslogic.data import CollectionData
+
+        actual_data = CollectionData(data="Test data")
+
+        actual_json_string = actual_data.get_json()
+
+        self.assertIsNotNone(actual_json_string)
+
+    def test_get_json(self):
+        """
+        :return: JSON object of data object
+        """
+        from businesslogic.data import CollectionData
+
+        expected_data = "Test data"
+        expected_collector = "TestCollector"
+        expected_collector_params = {
+            "param1": "value1",
+            "param2": "value2"
+        }
+        expected_sourcepath = "source_path"
+        expected_sourcehash = "This is not a hash"
+        actual_data_obj = CollectionData(data=expected_data, collector_name=expected_collector,
+                                         collector_parameters=expected_collector_params)
+        actual_data_obj._sourcepath = expected_sourcepath
+        actual_data_obj._sourcehash = expected_sourcehash
+        expected_time = datetime.now()
+        actual_data_obj.currentdatetime = expected_time
+
+        actual_json_string = actual_data_obj.get_json()
+        actual_json = json.loads(actual_json_string)
+
+        self.assertIsNotNone(actual_json)
+        self.assertIsNotNone(actual_json['CollectionTime'])
+        self.assertEqual(actual_json['CollectionTime'], str(expected_time))
+        self.assertEqual(actual_json['Data'], expected_data)
+        self.assertEqual(actual_json['CollectorName'], expected_collector)
+        self.assertEqual(actual_json['SourcePath'], expected_sourcepath)
+        self.assertEqual(actual_json['SourceHash'], expected_sourcehash)
+        self.assertEqual(actual_json['param1'], expected_collector_params['param1'])
+        self.assertEqual(actual_json['param2'], expected_collector_params['param2'])

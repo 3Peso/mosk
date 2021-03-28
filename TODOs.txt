@@ -8,6 +8,8 @@
 
 # Implement SQLite Storage for protocol and collected data/files
 
+# Using Python3 style string formatting
+
 # Logging of protected parameters in protocol should be controlable (see OpenWeather collector as example)
 
 # Detect, if VPNs are used (TOR over VPN)

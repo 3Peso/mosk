@@ -8,6 +8,7 @@ __all__ = ['CollectionData', 'CollectionMetaData']
 
 import os
 import hashlib
+import json
 from collections import OrderedDict
 
 import businesslogic.support
@@ -60,6 +61,20 @@ class CollectionData:
                 prepend += "\r\n{}: '{}'".format(param, self._collector_parameters[param])
 
         return prepend
+
+    def get_json(self):
+        j = {
+            "CollectionTime": str(self.currentdatetime),
+            "Data": str(self.collecteddata),
+            "CollectorName": self._collector_name,
+            "SourcePath": self._sourcepath,
+            "SourceHash": self._sourcehash
+        }
+
+        for param, value in self._collector_parameters.items():
+            j[param] = value
+
+        return json.dumps(j)
 
     @property
     def sourcehash(self):
