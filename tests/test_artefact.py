@@ -15,7 +15,7 @@ class TestArtefactBase(TestCase):
         artefact = ArtefactBase(parent=None, parameters={})
         artefact.data = "Some data"
 
-        assert len(artefact.data) == 1
+        self.assertEqual(len(artefact.data), 1)
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
     @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
@@ -29,7 +29,7 @@ class TestArtefactBase(TestCase):
         artefact.data = "Some data"
         artefact.data = "More data"
 
-        assert len(artefact.data) == 2
+        self.assertEqual(len(artefact.data), 2)
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
     @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
@@ -45,7 +45,7 @@ class TestArtefactBase(TestCase):
 
         artefact.data = None
 
-        assert len(artefact.data) == 0
+        self.assertEqual(len(artefact.data), 0)
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
     @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
@@ -56,9 +56,9 @@ class TestArtefactBase(TestCase):
         from baseclasses.artefact import ArtefactBase
         artefact = ArtefactBase(parent=None, parameters={})
 
-        assert artefact._title == None
-        assert artefact._description == None
-        assert artefact._collectionmethod == None
+        self.assertIsNone(artefact._title)
+        self.assertIsNone(artefact._description)
+        self.assertIsNone(artefact._collectionmethod)
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
     @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())

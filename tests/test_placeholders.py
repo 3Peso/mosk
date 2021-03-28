@@ -1,5 +1,5 @@
 from unittest import TestCase, mock
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from businesslogic.placeholders import Placeholder
 
@@ -11,13 +11,13 @@ class TestPlaceholder(TestCase):
         Placeholder._globalplaceholderfile = Placeholder.GLOBAL_PLACEHOLDER_FILE_PATH
 
     @mock.patch('os.path', MagicMock(return_value=True))
-    @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
     def test_set_globalplaceholderfile(self):
         """Set the global placeholder file and initialize the placeholders with the file content"""
-        Placeholder.set_globalplaceholderfile('test.txt')
+        with patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders') as init_mock:
+            Placeholder.set_globalplaceholderfile('test.txt')
 
-        self.assertEqual(Placeholder._globalplaceholderfile, 'test.txt')
-        assert Placeholder._initialize_global_placeholders.called
+            self.assertEqual(Placeholder._globalplaceholderfile, 'test.txt')
+            init_mock.assert_called()
 
     def test_get_globalplaceholerfile(self):
         """Return the default placeholder file, if no placeholder file has been provided."""
