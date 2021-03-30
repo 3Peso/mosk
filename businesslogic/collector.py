@@ -2,7 +2,7 @@
 Collector Module
 """
 
-__version__ = '0.0.6'
+__version__ = '0.0.7'
 __author__ = '3Peso'
 __all__ = ['Collector']
 
@@ -52,7 +52,7 @@ class Collector:
         if callpath == '':
             callpath = str(current_instruction)
         else:
-            callpath = "{}->{}".format(callpath, str(current_instruction))
+            callpath = f"{callpath}->{current_instruction}"
 
         # travel down to the leaf elements of the instruction tree
         # which are artefacts
@@ -68,9 +68,9 @@ class Collector:
             if current_instruction.placeholdername != '':
                 Placeholder.update_placeholder(current_instruction.placeholdername,
                                                current_instruction.instruction.data)
-                Collector._logger.info("Stored artefact data '{}' as placeholder '{}'.".
-                                       format(current_instruction.instruction.data,
-                                              current_instruction.placeholdername))
+                Collector._logger.info(
+                    f"Stored artefact data '{current_instruction.instruction.data}' as placeholder "
+                    f"'{current_instruction.placeholdername}'.")
         else:
             Collector._logger.debug(callpath)
 
@@ -79,6 +79,6 @@ class Collector:
         # ArtefactBase implements __call__.
         with suppress(BaseException):
             artefact()
-            Collector._logger.debug("{} - collected data".format(callpath))
+            Collector._logger.debug(f"{callpath} - collected data")
 
         self._protocol.store_artefact(artefact, callpath)

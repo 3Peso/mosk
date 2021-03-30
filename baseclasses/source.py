@@ -2,7 +2,7 @@
 mosk source base class module
 """
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = '3Peso'
 __all__ = ['SourceBase']
 
@@ -44,8 +44,8 @@ class SourceBase:
         for attributename in attributes.keys():
             attributevalue = Placeholder.replace_placeholders(attributes[attributename])
             Placeholder.update_placeholder(attributename, attributevalue)
-            SourceBase._logger.debug("Source: Cached source parameter '{}'. Parameter value: '{}'"
-                                     .format(attributename, attributevalue))
+            SourceBase._logger.debug(
+                f"Source: Cached source parameter '{attributename}'. Parameter value: '{attributevalue}'")
 
     @property
     def protocol(self):

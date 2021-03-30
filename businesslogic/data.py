@@ -2,7 +2,7 @@
 Collection data module
 """
 
-__version__ = '0.0.6'
+__version__ = '0.0.7'
 __author__ = '3Peso'
 __all__ = ['CollectionData', 'CollectionMetaData']
 
@@ -30,23 +30,23 @@ class CollectionData:
 
     # TODO Rework metadata formatting
     def __str__(self):
-        result = '-- Collection Data     {}\r\n\r\n'.format('-' * 10)
-        result += "{}".format(self.collecteddata)
-        result += '\r\n\r\n-- Collection Metadata {}'.format('-' * 10)
+        result = f'-- Collection Data     {"-" * 10}\r\n\r\n'
+        result += f"{self.collecteddata}"
+        result += f'\r\n\r\n-- Collection Metadata {"-" * 10}'
         result = self.get_metadata_as_str(result)
         result = self.get_collector_info_as_str(result)
-        result += '\r\n\r\n{}\r\n'.format('-' * 33)
+        result += f'\r\n\r\n{"-" * 33}\r\n'
         return result
 
     def get_metadata_as_str(self, prepend=''):
         if prepend != '':
-            prepend = "{}\r\n".format(prepend)
+            prepend = f"{prepend}\r\n"
         if self.currentdatetime is not None:
-            prepend += "\r\nCollection Time Stamp: {}".format(self.currentdatetime)
+            prepend += f"\r\nCollection Time Stamp: {self.currentdatetime}"
         if self.sourcehash is not None:
-            prepend += "\r\nSource MD5: {}".format(self.sourcehash)
+            prepend += f"\r\nSource MD5: {self.sourcehash}"
         if self.sourcepath is not None:
-            prepend += "\r\nSource path: {}".format(self.sourcepath)
+            prepend += f"\r\nSource path: {self.sourcepath}"
 
         return prepend
 
@@ -55,10 +55,10 @@ class CollectionData:
             raise ValueError('You must provide a collector name.')
 
         if self._collector_name is not None:
-            prepend += "\r\n\r\nCollector: {}".format(self._collector_name)
+            prepend += f"\r\n\r\nCollector: {self._collector_name}"
         if self._collector_parameters is not None:
             for param in self._collector_parameters.keys():
-                prepend += "\r\n{}: '{}'".format(param, self._collector_parameters[param])
+                prepend += f"\r\n{param}: '{self._collector_parameters[param]}'"
 
         return prepend
 
