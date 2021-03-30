@@ -2,7 +2,7 @@
 mosk mac module for classes collecting os information.
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 __all__ = ['NVRAMCollector', 'LocalTime']
 
@@ -17,6 +17,7 @@ class NVRAMCollector(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
+        self._supportedsystem = 'darwin'
 
     def _collect(self):
         process = subprocess.Popen(['nvram', '-xp'],

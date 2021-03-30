@@ -26,6 +26,7 @@ class ShellHistoryOfAllUsers(ArtefactBase):
 
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
+        self._supportedsystem = 'darwin'
 
     def _collect(self):
         userfolders = set(get_userfolders())

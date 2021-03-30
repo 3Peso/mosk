@@ -2,7 +2,7 @@
 Collector Module
 """
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 __author__ = '3Peso'
 __all__ = ['Collector']
 
@@ -62,7 +62,7 @@ class Collector:
         # HACK: This is a rather whaky way of determining if the object is right
         # Another way would be to use 'isinstance' which I try not to use to
         # avoid implementing my own ABC.
-        if 'collect' in dir(current_instruction.instruction):
+        if '_collect' in dir(current_instruction.instruction):
             self._collect_and_document(current_instruction.instruction, callpath=callpath)
 
             if current_instruction.placeholdername != '':
