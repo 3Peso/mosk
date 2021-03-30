@@ -2,7 +2,7 @@
 support module continaing tool functions for mosk
 """
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 __author__ = '3Peso'
 
 import json
@@ -14,6 +14,7 @@ import sys
 import time
 import struct
 import hashlib
+import subprocess
 
 
 REF_TIME_1970 = 2208988800  # Reference time
@@ -118,3 +119,10 @@ def _change_cwd_to_module_root():
     os.chdir(basepath)
     os.chdir('..')
     return old
+
+
+def run_terminal_command(command, arguments):
+    process = subprocess.Popen([command, arguments],
+                               stdout=subprocess.PIPE,
+                               universal_newlines=True)
+    return process.communicate()[0]
