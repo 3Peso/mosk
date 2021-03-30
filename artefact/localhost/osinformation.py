@@ -2,16 +2,16 @@
 mosk localhost module for classes collecting os information.
 """
 
-__version__ = '0.0.8'
+__version__ = '0.0.9'
 __author__ = '3Peso'
 __all__ = ['OSName', 'OSVersion', 'OSTimezone']
 
 import platform
 import sys
-import subprocess
 from datetime import datetime
 
 from baseclasses.artefact import ArtefactBase
+from businesslogic.support import run_terminal_command
 
 
 METHOD_KEY = 'CollectionMethod'
@@ -86,10 +86,7 @@ class SudoVersion(ArtefactBase):
         self._supportedsystem = ('Darwin', 'Linux')
 
     def _collect(self):
-        process = subprocess.Popen(['sudo', '-V'],
-                                   stdout=subprocess.PIPE,
-                                   universal_newlines=True)
-        self.data = process.communicate()[0]
+        self.data = run_terminal_command('sudo', '-V')
 
 
 class OSPlatform(ArtefactBase):
