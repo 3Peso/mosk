@@ -2,7 +2,7 @@
 support module continaing tool functions for mosk
 """
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __author__ = '3Peso'
 
 import json
@@ -88,7 +88,7 @@ def get_collector_resources(resourcespath="./resources"):
     countrycode, _ = locale.getdefaultlocale()
     resources = None
 
-    resourcesfilepath = os.path.join(resourcespath, "collector_text_{}.json".format(countrycode))
+    resourcesfilepath = os.path.join(resourcespath, f"collector_text_{countrycode}.json")
     logger.debug("Trying to load text resources from '{} ...'".format(resourcesfilepath))
     # TODO Move into a contextmanager
     # HACK
@@ -107,7 +107,7 @@ def get_collector_resources(resourcespath="./resources"):
             if countrycode is None:
                 logger.warning('Default resources file not found.')
             else:
-                logger.info('Resources file for country code {} not found.'.format(countrycode))
+                logger.info(f'Resources file for country code {countrycode} not found.')
 
     return resources
 
