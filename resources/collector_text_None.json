@@ -88,5 +88,10 @@
     "title": "DetectFusionDrive",
     "collectionmethod": "diskutil list",
     "description": "Runs 'diskutil list' and tries to find the string 'Fusion' in the result."
+  },
+  "artefact.localhost.system.DetectFileByName": {
+    "title": "DetectFileByName",
+    "collectionmethod": "mdfind kMDItemFSName='FileName'",
+    "description": "Uses 'mdfind' to try to find a file identified with its full name,\\r\\nwhich is the name and the extension."
   }
 }
