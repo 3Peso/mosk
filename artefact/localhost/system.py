@@ -17,7 +17,7 @@ class NVRAMCollector(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
-        self._supportedsystem = 'darwin'
+        self._supportedsystem = 'Darwin'
 
     def _collect(self):
         process = subprocess.Popen(['nvram', '-xp'],
@@ -43,6 +43,7 @@ class LocalTime(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
+        self._supportedsystem = 'Darwin'
 
     def _collect(self):
         process = subprocess.Popen(['zdump', '/etc/localtime'],

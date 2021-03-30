@@ -1,8 +1,3 @@
-# Add optional test switch for testing the underlying platform and logging an meaningful exception for the collector
-#  if the platform is not supported by the collector.
-
-# Move OSVersion and OSName for mac into artefact.localhost.mac.osinfromation.py
-
 # Refactoring run with logging in focus.
 #  Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
 

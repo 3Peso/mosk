@@ -37,7 +37,7 @@ To run mosk you have to provide instructions provided, for example, as XML files
                 <OSName module="artefact.localhost.osinformation" />
                 <OSVersion module="artefact.localhost.osinformation" />
                 <OSTimezone module="artefact.localhost.osinformation" />
-                <LocalTime module="artefact.localhost.mac.system"
+                <LocalTime module="artefact.localhost.system"
                 description="Some describing text for the collector which will be logged in protocol metadata."/>
             </LocalHost>
             <Network module="source.network">

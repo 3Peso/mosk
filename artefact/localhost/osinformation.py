@@ -48,6 +48,7 @@ class OSName(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._supportedsystem = 'Darwin'
 
     def _collect(self):
         if sys.platform == 'darwin':
@@ -64,6 +65,7 @@ class OSVersion(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._supportedsystem = 'Darwin'
 
     def _collect(self):
         if sys.platform == 'darwin':
@@ -81,6 +83,7 @@ class OSTimezone(ArtefactBase):
 class SudoVersion(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
+        self._supportedsystem = ('Darwin', 'Linux')
 
     def _collect(self):
         process = subprocess.Popen(['sudo', '-V'],

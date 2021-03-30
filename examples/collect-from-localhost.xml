@@ -50,10 +50,10 @@
                 <FileExistence module="artefact.localhost.file" filepath="~/Library/._insu"
                                description="Possible indicator for a 'Silver Sparrow' infection."
                                describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/l" />
-                <ShellHistoryOfAllUsers module="artefact.localhost.mac.file" />
-                <NVRAMCollector module="artefact.localhost.mac.system" />
+                <ShellHistoryOfAllUsers module="artefact.localhost.file" />
+                <NVRAMCollector module="artefact.localhost.system" />
                 <TimeFromNTPServer module="artefact.network.system" />
-                <LocalTime module="artefact.localhost.mac.system" />
+                <LocalTime module="artefact.localhost.system" />
             </LocalHost>
         </Root>
     </Instructions>
