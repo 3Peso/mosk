@@ -51,3 +51,20 @@ class LocalTime(ArtefactBase):
                                    universal_newlines=True)
         self.data = process.communicate()[0]
         self.data.sourcepath = '/etc/localtime'
+
+
+class DetectFusionDrive(ArtefactBase):
+    """
+    Trys to detect Fusion drives.
+    """
+    def __init__(self, *args, **kwargs):
+        ArtefactBase.__init__(self, *args, **kwargs)
+        self._supportedsystem = 'Darwin'
+
+    def _collect(self):
+        process = subprocess.Popen(['diskutil', 'list'],
+                                   stdout=subprocess.PIPE,
+                                   universal_newlines=True)
+        result = process.communicate()[0]
+        possible_fusion = 'Fusion' in result
+        self.data = f"Possible Fusion Drive detected: {possible_fusion}\r\n\r\nDiskutil list:\r\n{result}"

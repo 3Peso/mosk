@@ -83,5 +83,10 @@
     "title": "TimeFromNTPServer",
     "collectionmethod": "Network call using socket connect.",
     "description": "Retrieves the time from a time server. Can be used as reference time.\\r\\nRequires network connection."
+  },
+  "artefact.localhost.system.DetectFusionDrive": {
+    "title": "DetectFusionDrive",
+    "collectionmethod": "diskutil list",
+    "description": "Runs 'diskutil list' and tries to find the string 'Fusion' in the result."
   }
 }

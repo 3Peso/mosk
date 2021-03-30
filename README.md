@@ -148,6 +148,7 @@ mosk does its collection through collectors. There are already several collector
 * OSVersion
 * OSTimezone
 * SudoVersion
+* DetectFusionDrive
 
 ##### AllUsernames
 Allowed attributes/parameters:
