@@ -2,7 +2,7 @@
 mosk network module for classes collecting information from the internet.
 """
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 __author__ = '3Peso'
 __all__ = ['TemperatureFromOpenWeatherDotCom', 'ExternalLinksOnUrl']
 
@@ -35,10 +35,10 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         try:
             html = urlopen(queryurl)
         except HTTPError as httperror:
-            self.data = "Could not query {}.\n{}".format(queryurl, httperror.info)
+            self.data = f"Could not query {queryurl}.\n{httperror.info}"
         else:
             data = json.load(html)
-        self.data = "Current temperature in {}: {}{}".format(self.city, data['main']['temp'], '°')
+        self.data = f"Current temperature in {self.city}: {data['main']['temp']} °C"
 
     def _get_query(self, city, countrycode, apikey):
         return self.__querytemplate.format(self.__url, self.city, self.countrycode, self.apikey)
@@ -57,7 +57,7 @@ class ExternalLinksOnUrl(ArtefactBase):
 
         if type(self.data[0].collecteddata) is list:
             for item in self.data[0].collecteddata:
-                result += "{}\r\n".format(item)
+                result += f"{item}\r\n"
         else:
             result += self.data[0].collecteddata
         result = self.data[0].get_metadata_as_str(result)
@@ -72,9 +72,9 @@ class ExternalLinksOnUrl(ArtefactBase):
         try:
             html = urlopen(excludeurl)
         except URLError as urlerror:
-            return "Cannot open url '{}'.\n{}".format(excludeurl, urlerror.reason)
+            return f"Cannot open url '{excludeurl}'.\n{urlerror.reason}"
         except HTTPError as httperror:
-            return "Cannot request page '{}\n{}'".format(excludeurl, httperror.reason)
+            return f"Cannot request page '{excludeurl}\n{httperror.reason}'"
         else:
             bs = BeautifulSoup(html, "html.parser")
             # TODO The filtering regex does not exclude internal links as I would like it. Must be sharpened

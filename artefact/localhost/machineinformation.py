@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting machine information.
 """
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = '3Peso'
 __all__ = ['MachineName']
 
@@ -24,7 +24,6 @@ class MachineName(ArtefactBase):
     def _collect(self):
         self.data = socket.gethostname()
         if self.data is not None:
-            MachineName._logger.debug("Machine name '{}' has been collected.".
-                                      format(self.data.collecteddata))
+            MachineName._logger.debug(f"Machine name '{self.data.collecteddata}' has been collected.")
         else:
             MachineName._logger.info("Could not colelct machine name.")

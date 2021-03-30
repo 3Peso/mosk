@@ -2,7 +2,7 @@
 mosk localhost module for classes collecting os information.
 """
 
-__version__ = '0.0.7'
+__version__ = '0.0.8'
 __author__ = '3Peso'
 __all__ = ['OSName', 'OSVersion', 'OSTimezone']
 
@@ -56,7 +56,7 @@ class OSName(ArtefactBase):
             try:
                 self.data = _platform_lookup[sys.platform][LOOKUP_KEY][platformversion]
             except KeyError:
-                self.data = "Cannot collect OS name for platform version '{}'".format(platformversion)
+                self.data = f"Cannot collect OS name for platform version '{platformversion}'"
 
 
 class OSVersion(ArtefactBase):

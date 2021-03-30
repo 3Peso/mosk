@@ -2,7 +2,7 @@
 mosk network module for classes collecting system information through a network.
 """
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 __author__ = '3Peso'
 __all__ = ['TimeFromNTPServer']
 
@@ -34,6 +34,6 @@ class TimeFromNTPServer(ArtefactBase):
         try:
             self.__timeServer = self.timeserver
         except AttributeError:
-            self._logger.info("No time server provided. Using default: {}".format(DEFAULT_TIME_SERVER))
+            self._logger.info(f"No time server provided. Using default: {DEFAULT_TIME_SERVER}")
         time = NTPTime(Time=get_time(ntpserver=self.__timeServer), NTPServer=self.__timeServer)
         self.data = time
