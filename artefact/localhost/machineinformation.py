@@ -21,7 +21,7 @@ class MachineName(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         self.data = socket.gethostname()
         if self.data is not None:
             MachineName._logger.debug("Machine name '{}' has been collected.".

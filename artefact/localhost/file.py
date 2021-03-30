@@ -20,7 +20,7 @@ class FileExistence(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         filepath = expandfilepath(self.filepath)
         if path.exists(filepath):
             self.data = "File '{}' exists.".format(filepath)
@@ -38,7 +38,7 @@ class FileContent(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         filepath = expandfilepath(self.filepath)
         if path.exists(filepath):
             with open(filepath, "r") as filetoload:

@@ -29,7 +29,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         self.__url = "https://api.openweathermap.org/data/2.5/weather"
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
 
-    def collect(self):
+    def _collect(self):
         queryurl = self._get_query(self.city, self.countrycode, self.apikey)
 
         try:
@@ -64,7 +64,7 @@ class ExternalLinksOnUrl(ArtefactBase):
 
         return result
 
-    def collect(self):
+    def _collect(self):
         self.data = ExternalLinksOnUrl._getexternallinks(self.url)
 
     @staticmethod

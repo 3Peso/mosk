@@ -40,7 +40,7 @@ if __name__ == '__main__':
         logger = logging.getLogger(__name__)
         collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner,
                                             placeholderfile=globalplaceholders)
-        collector.collect()
+        collector._collect()
         logger.info("Collection complete.")
     except FileNotFoundError:
         print('Could not initialize parser.')

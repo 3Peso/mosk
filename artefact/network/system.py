@@ -30,7 +30,7 @@ class TimeFromNTPServer(ArtefactBase):
         self._description = 'Retrieves the time from a time server. Can be used as reference time.\r\n' \
                             'Requires network connection.'
 
-    def collect(self):
+    def _collect(self):
         try:
             self.__timeServer = self.timeserver
         except AttributeError:

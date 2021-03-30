@@ -21,7 +21,7 @@ class CurrentUser(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         self.data = getuser()
 
 
@@ -42,7 +42,7 @@ class AllUsernames(ArtefactBase):
         except KeyError:
             self.__users_with_homedir = False
 
-    def collect(self):
+    def _collect(self):
         for pw in getpwall():
             if not self.__users_with_homedir:
                 self.data = ["{}: {}".format(prop, getattr(pw, prop)) for prop in self.__properties]

@@ -47,7 +47,7 @@ class HostsRegisteredInFritzBox(ArtefactBase):
 
     # TODO Make parameters configurabel via XML and prompt for password if needed
     # TODO Currently encrypted transfare of credentials to fritzbox does not work
-    def collect(self):
+    def _collect(self):
         Args = namedtuple('Args', ['address', 'port', 'username', 'password', 'encrypt'])
         params = self._get_parameters()
 

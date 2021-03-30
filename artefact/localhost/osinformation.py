@@ -49,7 +49,7 @@ class OSName(ArtefactBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         if sys.platform == 'darwin':
             platformversion = platform.mac_ver()[VERSION_NUMBER_INDEX]
             try:
@@ -65,7 +65,7 @@ class OSVersion(ArtefactBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         if sys.platform == 'darwin':
             self.data = platform.mac_ver()[VERSION_NUMBER_INDEX]
 
@@ -74,7 +74,7 @@ class OSTimezone(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         self.data = datetime.now().astimezone().tzname()
 
 
@@ -82,7 +82,7 @@ class SudoVersion(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         process = subprocess.Popen(['sudo', '-V'],
                                    stdout=subprocess.PIPE,
                                    universal_newlines=True)
@@ -94,5 +94,5 @@ class OSPlatform(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         self.data = platform.system()

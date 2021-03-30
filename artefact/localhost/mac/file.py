@@ -27,7 +27,7 @@ class ShellHistoryOfAllUsers(ArtefactBase):
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
 
-    def collect(self):
+    def _collect(self):
         userfolders = set(get_userfolders())
         for history in ShellHistoryOfAllUsers._collect_bash_history(userfolders):
             self.data = history.Content
