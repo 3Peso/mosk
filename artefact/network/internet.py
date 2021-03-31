@@ -2,7 +2,6 @@
 mosk network module for classes collecting information from the internet.
 """
 
-__version__ = '0.0.6'
 __author__ = '3Peso'
 __all__ = ['TemperatureFromOpenWeatherDotCom', 'ExternalLinksOnUrl']
 

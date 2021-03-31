@@ -1,4 +1,3 @@
-__version__ = '0.0.1'
 __author__ = '3Peso'
 __all__ = ['XmlParser']
 

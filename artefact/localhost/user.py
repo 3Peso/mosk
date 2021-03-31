@@ -2,7 +2,6 @@
 mosk localhost module for classes collecting infromation about the current user.
 """
 
-__version__ = '0.0.4'
 __author__ = '3Peso'
 __all__ = ['CurrentUser', 'AllUsernames']
 

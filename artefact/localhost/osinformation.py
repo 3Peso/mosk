@@ -2,7 +2,6 @@
 mosk localhost module for classes collecting os information.
 """
 
-__version__ = '0.0.9'
 __author__ = '3Peso'
 __all__ = ['OSName', 'OSVersion', 'OSTimezone']
 

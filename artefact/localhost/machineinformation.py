@@ -2,7 +2,6 @@
 mosk localhost module for classes collecting machine information.
 """
 
-__version__ = '0.0.4'
 __author__ = '3Peso'
 __all__ = ['MachineName']
 

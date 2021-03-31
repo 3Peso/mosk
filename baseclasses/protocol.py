@@ -2,7 +2,6 @@
 mosk protocol base class module
 """
 
-__version__ = '0.0.4'
 __author__ = '3Peso'
 
 from abc import abstractmethod
