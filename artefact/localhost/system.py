@@ -61,8 +61,15 @@ class DetectFileByName(ArtefactBase):
 
     def _collect(self):
         filename = self.get_parameter('filename')
-        result = run_terminal_command('mdfind', f"kMDItemFSName={filename}")
+        result = run_terminal_command('mdfind', self._get_mdfind_parameter(filename))
         if result is None or result == "":
             self.data = f"Application '{filename}' not found."
         else:
             self.data = f"Application '{filename}' found.\r\n{result}"
+
+    @classmethod
+    def _get_mdfind_parameter(cls, filename):
+        if '*' in filename:
+            return f"kMDItemDisplayName == {filename}"
+        else:
+            return f"kMDItemFSName={filename}"

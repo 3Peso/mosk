@@ -2,7 +2,7 @@
   "artefact.localhost.mac.file.ShellHistoryOffAllUsers": {
     "title" : "ShellHistoryOffAllUsers",
     "collectionmethod": "os.file",
-    "description": "Retrieves all user folers and tries to find bash shell and zhs shell history files and\\r\\n then tries to store their content.\\r\\n IMPORTANT: None-Unicode-Characters wont be stored."
+    "description": "Retrieves all user folers and tries to find bash shell and zhs shell history files and\r\n then tries to store their content.\r\n IMPORTANT: None-Unicode-Characters wont be stored."
   },
   "artefact.localhost.mac.system.NVRAMCollector": {
     "title": "NVRAMCollector",
@@ -22,12 +22,12 @@
   "artefact.localhost.file.FileContent": {
     "title": "FileContent",
     "collectionmethod": "Python File Contextmanager",
-    "description": "Uses the python file context manager to open the file in read mode and store its\\r\\ncontent and MD5 hash of its content."
+    "description": "Uses the python file context manager to open the file in read mode and store its\r\ncontent and MD5 hash of its content."
   },
   "artefact.localhost.mac.system.LocalTime": {
     "title": "LocalTime",
     "collectionmethod": "zdump /etc/localtime",
-    "description": "Collects the local date and time by reading the contents of\\r\\n '/etc/localtime' with zdump."
+    "description": "Collects the local date and time by reading the contents of\r\n '/etc/localtime' with zdump."
   },
   "artefact.localhost.osinformation.OSPlatform": {
     "title": "OSPlatform",
@@ -77,12 +77,12 @@
   "artefact.network.router.HostsRegisteredInFritzBox": {
     "title": "HostsRegisteredInFritzBox",
     "collectionmethod":"fritzcollection.lib.hosts",
-    "description": "Uses to Open Source Python module 'fritzconnection' by Klaus Bremer\\r\\nto collect the status of all registered hosts in a FritzBox network."
+    "description": "Uses to Open Source Python module 'fritzconnection' by Klaus Bremer\r\nto collect the status of all registered hosts in a FritzBox network."
   },
   "artefact.network.system.TimeFromNTPServer": {
     "title": "TimeFromNTPServer",
     "collectionmethod": "Network call using socket connect.",
-    "description": "Retrieves the time from a time server. Can be used as reference time.\\r\\nRequires network connection."
+    "description": "Retrieves the time from a time server. Can be used as reference time.\r\nRequires network connection."
   },
   "artefact.localhost.system.DetectFusionDrive": {
     "title": "DetectFusionDrive",
@@ -91,7 +91,7 @@
   },
   "artefact.localhost.system.DetectFileByName": {
     "title": "DetectFileByName",
-    "collectionmethod": "mdfind kMDItemFSName='FileName'",
-    "description": "Uses 'mdfind' to try to find a file identified with its full name,\\r\\nwhich is the name and the extension."
+    "collectionmethod": "mdfind kMDItemFSName='FileName' or mdfind kMDItemDisplayName == 'FileNameWithWildcards'",
+    "description": "Uses 'mdfind' to try to find a file identified with its full name,\r\nwhich is the name and the extension."
   }
 }
