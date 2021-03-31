@@ -53,7 +53,7 @@ class DetectFusionDrive(ArtefactBase):
 
 class DetectFileByName(ArtefactBase):
     """
-    Tries to find an app installation
+    Tries to find a file, currently by the use of the CLI of spotlight 'mdfind'
     """
     def __init__(self, *args, **kwargs):
         ArtefactBase.__init__(self, *args, **kwargs)
