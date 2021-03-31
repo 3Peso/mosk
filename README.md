@@ -150,6 +150,7 @@ mosk does its collection through collectors. There are already several collector
 * SudoVersion
 * DetectFusionDrive
 * DetectFileByName
+* InstalledApplications
 
 ##### AllUsernames
 Allowed attributes/parameters:
