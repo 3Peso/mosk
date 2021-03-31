@@ -72,3 +72,15 @@ class DetectFileByName(ArtefactBase):
             return f"kMDItemDisplayName == {filename}"
         else:
             return f"kMDItemFSName={filename}"
+
+
+class InstalledApplications(ArtefactBase):
+    """
+    Retrieve all installed applications on a mac
+    """
+    def __init__(self, *args, **kwargs):
+        ArtefactBase.__init__(self, *args, **kwargs)
+        self._supportedsystem = 'Darwin'
+
+    def _collect(self) -> dict:
+        self.data = run_terminal_command('system_profiler', 'SPApplicationsDataType')

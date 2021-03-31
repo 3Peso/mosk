@@ -93,5 +93,10 @@
     "title": "DetectFileByName",
     "collectionmethod": "mdfind kMDItemFSName='FileName' or mdfind kMDItemDisplayName == 'FileNameWithWildcards'",
     "description": "Uses 'mdfind' to try to find a file identified with its full name,\r\nwhich is the name and the extension."
+  },
+  "artefact.localhost.system.InstalledApplications": {
+    "title": "InstalledApplications",
+    "collectionmethod": "system_profiler",
+    "description": "Collects all installed applications."
   }
 }
