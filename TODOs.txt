@@ -22,6 +22,4 @@
 # Implement a tool script, or find a script, to append signatures to modules
 #  update version string of module according to changed signature
 
-# Remove 'design' folder
-
 # collector for comparing MD5 hashes
