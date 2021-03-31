@@ -161,15 +161,14 @@ Allowed attributes/parameters:
 'True' or 'False', if true only users with user folders are been collected.
 
 #### Scope 'localhost.mac'
-ShellHistoryOfAllUsers
-LocalTime
-NVRAMCollector
+* ShellHistoryOfAllUsers
+* LocalTime
+* NVRAMCollector
 
 #### Scope 'network'
-TemperatureFromOpenWeatherDotCom
-ExternalLinksOnUrl
-HostsRegisteredInFritzBox
-TimeFromNTPServer
+* TemperatureFromOpenWeatherDotCom
+* ExternalLinksOnUrl
+* TimeFromNTPServer
 
 ## CLI Arguments
 Run mosk:
