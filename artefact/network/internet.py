@@ -39,7 +39,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
             data = json.load(html)
         self.data = f"Current temperature in {self.city}: {data['main']['temp']} °C"
 
-    def _get_query(self, city, countrycode, apikey):
+    def _get_query(self):
         return self.__querytemplate.format(self.__url, self.city, self.countrycode, self.apikey)
 
 
