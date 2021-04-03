@@ -9,7 +9,7 @@ import logging
 from collections import namedtuple
 from os import path
 
-from baseclasses.artefact import ArtefactBase
+from baseclasses.artefact import ArtefactBase, MacArtefact
 from source.localhost import expandfilepath
 from businesslogic.support import get_userfolders
 
@@ -22,7 +22,7 @@ class FileExistence(ArtefactBase):
     """
 
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _collect(self):
         filepath = expandfilepath(self.filepath)
@@ -40,7 +40,7 @@ class FileContent(ArtefactBase):
     FILE_PATH_PARAMETER = "filepath"
 
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _collect(self):
         filepath = expandfilepath(self.filepath)
@@ -52,7 +52,7 @@ class FileContent(ArtefactBase):
             self.data = f"File '{self.filepath}' does not exist."
 
 
-class ShellHistoryOfAllUsers(ArtefactBase):
+class ShellHistoryOfAllUsers(MacArtefact):
     """
     Tries to access all user folders of a macOS installation and then it iterates over the possible shell history
     files (.bash_history and .zhs_history).
@@ -60,8 +60,7 @@ class ShellHistoryOfAllUsers(ArtefactBase):
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
-        self._supportedsystem = 'Darwin'
+        super().__init__(*args, **kwargs)
 
     def _collect(self):
         userfolders = set(get_userfolders())

@@ -9,7 +9,7 @@ import platform
 import sys
 from datetime import datetime
 
-from baseclasses.artefact import ArtefactBase
+from baseclasses.artefact import MacArtefact, ArtefactBase
 from businesslogic.support import run_terminal_command
 
 
@@ -41,13 +41,12 @@ _platform_lookup = {
 }
 
 
-class OSName(ArtefactBase):
+class OSName(MacArtefact):
     """
     Tries to look up the installed OS name.
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._supportedsystem = 'Darwin'
 
     def _collect(self):
         if sys.platform == 'darwin':
@@ -58,13 +57,12 @@ class OSName(ArtefactBase):
                 self.data = f"Cannot collect OS name for platform version '{platformversion}'"
 
 
-class OSVersion(ArtefactBase):
+class OSVersion(MacArtefact):
     """
     Tries to retrieve the OS version number.
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._supportedsystem = 'Darwin'
 
     def _collect(self):
         if sys.platform == 'darwin':
@@ -73,7 +71,7 @@ class OSVersion(ArtefactBase):
 
 class OSTimezone(ArtefactBase):
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _collect(self):
         self.data = datetime.now().astimezone().tzname()
@@ -81,17 +79,17 @@ class OSTimezone(ArtefactBase):
 
 class SudoVersion(ArtefactBase):
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._supportedsystem = ('Darwin', 'Linux')
 
     def _collect(self):
-        self.data = run_terminal_command('sudo', '-V')
+        self.data = run_terminal_command(['sudo', '-V'])
 
 
 class OSPlatform(ArtefactBase):
     """Collects the platform on which this script is running on."""
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _collect(self):
         self.data = platform.system()

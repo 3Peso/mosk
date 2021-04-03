@@ -23,7 +23,7 @@ class TimeFromNTPServer(ArtefactBase):
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._title = 'TimeFromNTPServer'
         self._collectionmethod = 'Network call using socket connect.'
         self._description = 'Retrieves the time from a time server. Can be used as reference time.\r\n' \

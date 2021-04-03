@@ -18,7 +18,7 @@ class MachineName(ArtefactBase):
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _collect(self):
         self.data = socket.gethostname()

@@ -18,7 +18,7 @@ class CurrentUser(ArtefactBase):
     Gets the name of the currently authenticated user running the script.
     """
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _collect(self):
         self.data = getuser()
@@ -31,7 +31,7 @@ class AllUsernames(ArtefactBase):
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         # Which properties of 'pwd.getpwall' will be controlled by the 'properties' parameter of the
         # collector, which is a string of property names seperated by comma.
         self.__properties = (item for item in self.properties.split(','))

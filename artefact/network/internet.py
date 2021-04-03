@@ -24,7 +24,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
     """
 
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.__url = "https://api.openweathermap.org/data/2.5/weather"
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
 
@@ -49,7 +49,7 @@ class ExternalLinksOnUrl(ArtefactBase):
     """
 
     def __init__(self, *args, **kwargs):
-        ArtefactBase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __str__(self):
         result = ''
