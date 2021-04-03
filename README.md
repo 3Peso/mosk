@@ -151,6 +151,8 @@ mosk does its collection through collectors. There are already several collector
 * DetectFusionDrive
 * DetectFileByName
 * InstalledApplications
+* DetectFileVault
+* FileSystemInformation
 
 ##### AllUsernames
 Allowed attributes/parameters:

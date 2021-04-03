@@ -98,5 +98,15 @@
     "title": "InstalledApplications",
     "collectionmethod": "system_profiler",
     "description": "Collects all installed applications."
+  },
+  "artefact.localhost.system.FileSystemInformation": {
+    "title": "FileSystemInformation",
+    "collectionmethod": "diskutil",
+    "description": "Collects information about the connected drives and volumes."
+  },
+  "artefact.localhost.system.DetectFileVault": {
+    "title": "DetectFileVault",
+    "collectionmethod": "diskutil",
+    "description": "Runs 'diskutil apfs list' and tries to find string identifying the status of FileVault."
   }
 }

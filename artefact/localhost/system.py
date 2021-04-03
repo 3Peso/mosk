@@ -47,6 +47,20 @@ class DetectFusionDrive(MacArtefact):
         self.data = f"Possible Fusion Drive detected: {possible_fusion}\r\n\r\nDiskutil list:\r\n{result}"
 
 
+class DetectFileVault(MacArtefact):
+    """
+    Trys to detect FileVaul encryption
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _collect(self):
+        result = run_terminal_command(['diskutil', 'apfs', 'list'])
+        possible_filevault = 'FileVault:                 Yes' in result
+        self.data = f"Possible FileVault encryption detected: " \
+                    f"{possible_filevault}\r\n\r\nDiskutil apfs list: \r\n{result}"
+
+
 class DetectFileByName(MacArtefact):
     """
     Tries to find a file, currently by the use of the CLI of spotlight 'mdfind'
