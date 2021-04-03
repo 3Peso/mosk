@@ -120,8 +120,8 @@ def _change_cwd_to_module_root():
     return old
 
 
-def run_terminal_command(command, arguments):
-    process = subprocess.Popen([command, arguments],
+def run_terminal_command(arguments: list):
+    process = subprocess.Popen(arguments,
                                stdout=subprocess.PIPE,
                                universal_newlines=True)
     return process.communicate()[0]
