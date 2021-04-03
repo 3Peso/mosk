@@ -153,6 +153,7 @@ mosk does its collection through collectors. There are already several collector
 * InstalledApplications
 * DetectFileVault
 * FileSystemInformation
+* HardwareInformation
 
 ##### AllUsernames
 Allowed attributes/parameters:

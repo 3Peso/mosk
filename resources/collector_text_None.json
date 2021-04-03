@@ -108,5 +108,10 @@
     "title": "DetectFileVault",
     "collectionmethod": "diskutil",
     "description": "Runs 'diskutil apfs list' and tries to find string identifying the status of FileVault."
+  },
+  "artefact.localhost.system.HardwareInforamtion": {
+    "title": "HardwareInformation",
+    "collectionmethod": "system_profiler SPHardwareDataType",
+    "description": "Collects basic hardware information like serial number and model."
   }
 }

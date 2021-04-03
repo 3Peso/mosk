@@ -105,3 +105,14 @@ class FileSystemInformation(MacArtefact):
     def _collect(self):
         self.data = run_terminal_command(['diskutil', 'list'])
         self.data = run_terminal_command(['diskutil', 'apfs', 'list'])
+
+
+class HardwareInformation(MacArtefact):
+    """
+    Uses the system profiler to collect serial number, model, firmware, etc. from a mac.
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _collect(self):
+        self.data = run_terminal_command(['system_profiler', 'SPHardwareDataType'])
