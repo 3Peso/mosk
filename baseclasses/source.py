@@ -35,8 +35,11 @@ class SourceBase:
 
         return path
 
-    def getparameter(self, parametername: str):
-        return self._parameters[parametername]
+    @Placeholder
+    def get_parameter(self, parameter):
+        parametervalue = self._parameters[parameter]
+        self._logger.debug(f"Retrieved parameter '{parameter}': '{parametervalue}'")
+        return parametervalue
 
     @classmethod
     def cache_parameters(cls, attributes: UserDict):

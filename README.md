@@ -173,6 +173,9 @@ Allowed attributes/parameters:
 * ExternalLinksOnUrl
 * TimeFromNTPServer
 
+#### Scope 'EWFImage'
+* FolderInformation
+
 ## CLI Arguments
 Run mosk:
 
