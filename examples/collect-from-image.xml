@@ -1,0 +1,26 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Assignment">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Client">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Description of Artefact">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Task Description">
+           Collect everything you can from the internet.
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <EWFImage module="source.image" filepath="./SomeEWFImage.e01" imagetype="ewf">
+                <FolderInformation module="artefact.image.system" folder="/" />
+            </EWFImage>
+        </Root>
+    </Instructions>
+</Task>

@@ -8,3 +8,4 @@ dependencies_private.txt
 /artefact/network/router.py
 ideas.txt
 collector_text_de_DE.json
+/tests/EWFDemoFat32.e01
