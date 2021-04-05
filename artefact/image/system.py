@@ -14,5 +14,5 @@ class FolderInformation(ArtefactBase):
         self._folder = self.get_parameter('folder')
 
     def _collect(self):
-        for folderitem in self._parent.get_filesystem_information(self._folder):
+        for folderitem in self._parent.get_folder_information(self._folder):
             self.data = folderitem
