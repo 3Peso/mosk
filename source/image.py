@@ -105,6 +105,8 @@ class EWFImage(SourceBase):
         else:
             return self._filesysteminfo[folder]
 
+    # TODO sets would be more performat instead of a dictionary. Implement a hashable class to represent a folder
+    # with its items and add this to a set.
     def built_filesystem_information(self, folderpath='/'):
         folderitems = self.get_folder_information(folderpath)
         self._filesysteminfo[folderpath] = folderitems
