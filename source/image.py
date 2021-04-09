@@ -1,6 +1,6 @@
 import logging
 import sys
-from collections import namedtuple
+import datetime
 
 import pytsk3
 import pyewf
@@ -9,7 +9,53 @@ from baseclasses.source import SourceBase
 from businesslogic.support import str_to_bool
 
 
-FolderItem = namedtuple('FolderItem', ['Name', 'Type', 'Size', 'Create', 'Modify_Date'])
+class FolderItemInfo:
+    def __init__(self, name: bytes, itemtype, size, create, modify_date):
+        self.Name = name
+        self.Type = itemtype
+        self.Size = size
+        self._create = create
+        self._modify_date = modify_date
+
+    @property
+    def create(self):
+        timestamp = datetime.datetime.fromtimestamp(self._create)
+        return timestamp.strftime('%Y-%m-%d %H:%M:%S')
+
+    @property
+    def modify_date(self):
+        timestamp = datetime.datetime.fromtimestamp(self._modify_date)
+        return timestamp.strftime('%Y-%m-%d %H:%M:%S')
+
+
+class FolderInfo:
+    def __init__(self, folderpath, folderitems, imagefile):
+        self._imagefile = imagefile
+        self._folderitems = folderitems
+        self._folderpath = folderpath
+
+    def __hash__(self):
+        return hash(self.__key())
+
+    def __eq__(self, other):
+        if isinstance(other, FolderInfo):
+            return self.__key() == other.__key()
+        return NotImplemented
+
+    def __str__(self):
+        result = f"Foler Path: '{self._imagefile}:{self._folderpath}'\r\n\r\n"
+        headers = ['Name', 'Type', 'Size', 'Create Date', 'Modify Date']
+        row_format = "{:<45}{:<10}{:<10}{:<21}{:<21}\r\n"
+        result += row_format.format(*headers) + "\r\n"
+        for item in self._folderitems:
+            result += row_format.format(item.Name.decode(), item.Type, str(item.Size),
+                                        str(item.create), str(item.modify_date))
+
+        return result
+
+    def __iter__(self):
+        for item in self._folderitems:
+            yield item
 
 
 class EWFImageInfo(pytsk3.Img_Info):
@@ -45,7 +91,7 @@ class EWFImage(SourceBase):
         self._filesysteminfo = {}
 
         if str_to_bool(self.get_parameter('discover')):
-            self.built_filesystem_information()
+            self._built_filesystem_information()
 
     def _get_image_information(self):
         if self._imagetype == "ewf":
@@ -95,22 +141,22 @@ class EWFImage(SourceBase):
             create = f.info.meta.crtime
             modify = f.info.meta.mtime
 
-            yield FolderItem(Name=name, Type=f_type, Size=size, Create=create, Modify_Date=modify)
+            yield FolderItemInfo(name=name, itemtype=f_type, size=size, create=create, modify_date=modify)
 
-    def get_folder_information(self, folder):
-        if folder not in self._filesysteminfo.keys():
-            folderinfo = set(self._discover_folder(folder))
-            self._filesysteminfo[folder] = folderinfo
+    # TODO Could potentially be speed up by using a set instead of a list for the folder info objects
+    def _built_filesystem_information(self, folderpath='/'):
+        folderinfo = self.get_folder_information(folderpath)
+        self._filesysteminfo[folderpath] = folderinfo
+
+        for item in folderinfo:
+            if item.Type == "DIR" and item.Name != b'.' and item.Name != b'..':
+                self._built_filesystem_information(f"{folderpath}{item.Name.decode()}/")
+
+    def get_folder_information(self, folderpath):
+        if folderpath not in self._filesysteminfo.keys():
+            folderinfo = FolderInfo(folderpath=folderpath, folderitems=set(self._discover_folder(folderpath)),
+                                    imagefile=self._imagefilepath)
+            self._filesysteminfo[folderpath] = folderinfo
             return folderinfo
         else:
-            return self._filesysteminfo[folder]
-
-    # TODO sets would be more performat instead of a dictionary. Implement a hashable class to represent a folder
-    # with its items and add this to a set.
-    def built_filesystem_information(self, folderpath='/'):
-        folderitems = self.get_folder_information(folderpath)
-        self._filesysteminfo[folderpath] = folderitems
-
-        for item in folderitems:
-            if item.Type == "DIR" and item.Name != b'.' and item.Name != b'..':
-                self.built_filesystem_information(f"{folderpath}{item.Name.decode()}/")
+            return self._filesysteminfo[folderpath]
