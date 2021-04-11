@@ -33,6 +33,10 @@ class Image(SourceBase):
     def get_image_metadata(self):
         pass
 
+    @abstractmethod
+    def export_file(self, partitionindex, filepath, outpath):
+        pass
+
 
 class FolderItemInfo:
     def __init__(self, name: bytes, itemtype, size, create, modify_date, offset):

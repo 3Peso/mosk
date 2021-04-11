@@ -128,5 +128,10 @@
     "title": "PartitionTable",
     "collectionmethod": "pyewf and pytsk3",
     "description": "Tries to read the partition table of an image from a given ewf file."
+  },
+  "artefact.image.file.File": {
+    "title": "File",
+    "collectionmethod": "pyewf and pytsk3",
+    "description": "Tries to extract a file from an image from a given ewf file."
   }
 }
