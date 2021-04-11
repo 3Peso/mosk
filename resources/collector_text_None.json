@@ -123,5 +123,10 @@
     "title": "ImageMetadata",
     "collectionmethod": "pyewf and pytsk3",
     "description": "Tries to load the metadata image information from a given ewf file."
+  },
+  "artefact.image.system.PartitionTable": {
+    "title": "PartitionTable",
+    "collectionmethod": "pyewf and pytsk3",
+    "description": "Tries to read the partition table of an image from a given ewf file."
   }
 }

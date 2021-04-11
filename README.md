@@ -175,6 +175,8 @@ Allowed attributes/parameters:
 
 #### Scope 'EWFImage'
 * FolderInformation
+* ImageMetadata
+* PartitionTable
 
 ## CLI Arguments
 Run mosk:

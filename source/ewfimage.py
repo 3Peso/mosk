@@ -31,11 +31,13 @@ class EWFImage(Image):
     def get_partition_table(self):
         try:
             attr_id = getattr(pytsk3, f"TSK_VS_TYPE_{self.PARTITION_TYPE[self._fs_type]}")
-            volume = pytsk3.Volume_Info(self._imageinfo, attr_id)
+            volumes = pytsk3.Volume_Info(self._imageinfo, attr_id)
         except IOError as ioerror:
             _, e, _ = sys.exc_info()
             self._logger.info(f"Unable to read partition table.")
             raise ioerror
+
+        return EWFPartitionTable(volumes=volumes)
 
     def get_image_metadata(self):
         headers = self._imageinfo.ewf_handle.get_header_values()
@@ -149,5 +151,21 @@ class EWFMetadata:
 
         result += f"\r\nBytes per Sector: {self._bytes_per_sector}\r\n" \
                   f"Number of Sectors: {self._number_of_sectors}\r\nImage Size: {self._image_size}"
+
+        return result
+
+
+class EWFPartitionTable:
+    def __init__(self, volumes):
+        self._volumes = volumes
+
+    def __str__(self):
+        rowformat = "{:<9}{:<32}{:<21}{:<21}"
+        result = rowformat.format('Index', 'Type', 'Offest Start Sector', 'Lenght in Sectors') + "\r\n\r\n"
+
+        for partition in self._volumes:
+            result += \
+                rowformat.format(partition.addr, partition.desc.decode('UTF-8'), partition.start, partition.len) + \
+                "\r\n"
 
         return result
