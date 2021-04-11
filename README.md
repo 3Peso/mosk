@@ -177,6 +177,7 @@ Allowed attributes/parameters:
 * FolderInformation
 * ImageMetadata
 * PartitionTable
+* File
 
 ## CLI Arguments
 Run mosk:
