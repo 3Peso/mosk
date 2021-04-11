@@ -7,6 +7,8 @@
 
 # Detect, if VPNs are used (TOR over VPN)
 
+# Pretty print sizes of image and file information
+
 # Collector to search in log files (for example for the string "Starting automatic backup",
 #  https://eclecticlight.co/2021/03/17/time-machine-to-apfs-backing-up/)
 

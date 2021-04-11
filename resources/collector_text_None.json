@@ -118,5 +118,10 @@
     "title": "FolderInformation",
     "collectionmethod": "pyewf and pytsk3",
     "description": "Tries to load the information of a given folder from an image file.\r\nInfo contains files and folders of a given folder, and their basic attributes like size, and creation date."
+  },
+  "artefact.image.system.ImageMetadata": {
+    "title": "ImageMetadata",
+    "collectionmethod": "pyewf and pytsk3",
+    "description": "Tries to load the metadata image information from a given ewf file."
   }
 }
