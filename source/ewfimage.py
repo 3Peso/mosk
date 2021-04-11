@@ -14,23 +14,32 @@ class EWFImage(Image):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._imageinfo = self._get_image_information()
-        self._filesystem = self._attach_filesystem()
+        self._initialize_partition_lookup()
         self._filesysteminfo = {}
 
         if str_to_bool(self.get_parameter('discover')):
-            self._built_filesystem_information()
+            for partitionindex in range(0, len(self._partitions)):
+                if self._partitions[partitionindex].fs_object is not None:
+                    self._built_filesystem_information(partitionindex=partitionindex)
 
-    def get_folder_information(self, folderpath):
-        if folderpath not in self._filesysteminfo.keys():
-            folderinfo = FolderInfo(folderpath=folderpath, folderitems=set(self._discover_folder(folderpath)),
-                                    imagefile=self._imagefilepath)
-            self._filesysteminfo[folderpath] = folderinfo
-            return folderinfo
-        else:
-            return self._filesysteminfo[folderpath]
+    def get_folder_information(self, folderpath, partitionindex: int):
+        folderinfo = None
+        try:
+            if folderpath not in self._filesysteminfo[partitionindex].keys():
+                folderinfo = FolderInfo(folderpath=folderpath,
+                                        folderitems=set(self._discover_folder(folderpath, partitionindex)),
+                                        imagefile=self._imagefilepath, partitionindex=partitionindex)
+            else:
+                folderinfo = self._filesysteminfo[partitionindex][folderpath]
+        except KeyError:
+            folderinfo = FolderInfo(folderpath=folderpath,
+                                    folderitems=set(self._discover_folder(folderpath, partitionindex)),
+                                    imagefile=self._imagefilepath, partitionindex=partitionindex)
+
+        return folderinfo
 
     def get_partition_table(self):
-        return EWFPartitionTable(volumes=self._get_volume_from_image())
+        return EWFPartitionTable(volume=self._get_volume_from_image())
 
     def get_image_metadata(self):
         headers = self._imageinfo.ewf_handle.get_header_values()
@@ -43,9 +52,8 @@ class EWFImage(Image):
         return metadata
 
     def export_file(self, partitionindex, filepath, filename, outpath):
-        volume = self._get_volume_from_image()
-        fs_object = self._get_fs_object(volume=volume, partitionindex=int(partitionindex), path=filepath,
-                                        file=filename)
+        fs_object = self._get_fs_object_for_path(partitionindex=int(partitionindex), path=filepath,
+                                                 file=filename)
         if fs_object is not None:
             try:
                 self._write_file(fs_object, filename, filepath, outpath)
@@ -55,11 +63,29 @@ class EWFImage(Image):
         else:
             raise FileNotFoundError(f"Could not find '{filepath}{filename}' in image '{self._imagefilepath}'.")
 
-    def _get_fs_object(self, volume, partitionindex: int, path, file):
+    def _initialize_partition_lookup(self):
+        self._volume = self._get_volume_from_image()
+        tmp = list(self._volume)
+        self._partitions = {paritionindex: self._get_partition_object(paritionindex, tmp[paritionindex])
+                            for paritionindex in range(0, len(tmp))}
+
+    def _get_partition_object(self, partitionindex: int, partition):
+        fs = None
+        try:
+            fs = pytsk3.FS_Info(self._imageinfo, offset=partition.start * self._volume.info.block_size)
+        except IOError:
+            _, e, _ = sys.exc_info()
+            self._logger.info(f"Unable to open FS:\n{e}")
+
+        partition_object = EWFPartition(partition=partition, fs_object=fs)
+
+        return partition_object
+
+    def _get_fs_object_for_path(self, partitionindex: int, path, file):
         # Get file system object for partition
         try:
-            partition = list(volume)[partitionindex]
-            fs = pytsk3.FS_Info(self._imageinfo, offset=partition.start * volume.info.block_size)
+            partition = list(self._volume)[partitionindex]
+            fs = pytsk3.FS_Info(self._imageinfo, offset=partition.start * self._volume.info.block_size)
         except IOError as ioerror:
             _, e, _ = sys.exc_info()
             self._logger.error(f"Unable to open FS:\r\n{e}")
@@ -102,7 +128,7 @@ class EWFImage(Image):
 
     def _get_volume_from_image(self):
         try:
-            attr_id = getattr(pytsk3, f"TSK_VS_TYPE_{self.PARTITION_TYPE[self._fs_type]}")
+            attr_id = getattr(pytsk3, f"TSK_VS_TYPE_{self._fstype}")
             volume = pytsk3.Volume_Info(self._imageinfo, attr_id)
         except IOError as ioerror:
             _, e, _ = sys.exc_info()
@@ -128,51 +154,48 @@ class EWFImage(Image):
 
         return img_info
 
-    def _attach_filesystem(self):
-        fs = None
+    def _discover_folder(self, folder, partitionindex):
+        if self._partitions[partitionindex].fs_object is not None:
+            root_dir = self._partitions[partitionindex].fs_object.open_dir(path=folder)
 
-        for fs_type in self.FILE_SYSTEM_OFFSETS.keys():
-            try:
-                fs = pytsk3.FS_Info(self._imageinfo, self.FILE_SYSTEM_OFFSETS[fs_type])
-                self._fs_type = fs_type
-                break
-            except IOError:
-                _, e, _ = sys.exc_info()
-                self._logger.info(f"Unable to open FS:\n{e}")
-                fs = None
+            self._logger.debug(f"'{folder}' loading info from image ...")
+            for f in root_dir:
+                name = f.info.name.name
+                if hasattr(f.info.meta, "type"):
+                    if f.info.meta.type == pytsk3.TSK_FS_META_TYPE_DIR:
+                        f_type = "DIR"
+                    else:
+                        f_type = "FILE"
+                    size = f.info.meta.size
+                    create = f.info.meta.crtime
+                    modify = f.info.meta.mtime
+                    offset = f.info.fs_info.offset
 
-        if fs is None:
-            self._logger.error("Could not attach image. Unkown filesystem.")
-
-        return fs
-
-    def _discover_folder(self, folder):
-        root_dir = self._filesystem.open_dir(path=folder)
-
-        self._logger.debug(f"'{folder}' loading info from image ...")
-        for f in root_dir:
-            name = f.info.name.name
-            if f.info.meta.type == pytsk3.TSK_FS_META_TYPE_DIR:
-                f_type = "DIR"
-            else:
-                f_type = "FILE"
-            size = f.info.meta.size
-            create = f.info.meta.crtime
-            modify = f.info.meta.mtime
-            offset = f.info.fs_info.offset
-
-            yield FolderItemInfo(name=name, itemtype=f_type, size=size, create=create, modify_date=modify,
-                                 offset=offset)
+                    yield FolderItemInfo(name=name, itemtype=f_type, size=size, create=create, modify_date=modify,
+                                         offset=offset)
 
     # TODO Could potentially be speed up by using a set instead of a list for the folder info objects
-    def _built_filesystem_information(self, folderpath='/'):
-        folderinfo = self.get_folder_information(folderpath)
-        self._filesysteminfo[folderpath] = folderinfo
+    def _built_filesystem_information(self, folderpath='/', partitionindex=0):
+        partition = None
+        try:
+            partition = self._filesysteminfo[partitionindex]
+        except KeyError:
+            partition = {}
+            self._filesysteminfo[partitionindex] = partition
 
-        for item in folderinfo:
-            if item.Type == "DIR" and item.Name != b'.' and item.Name != b'..':
-                self._built_filesystem_information(f"{folderpath}{item.Name.decode()}/")
+        folderinfo = self.get_folder_information(folderpath, partitionindex)
+        partition[folderpath] = folderinfo
 
+        if folderinfo is not None:
+            for item in folderinfo:
+                if item.Type == "DIR" and item.Name != b'.' and item.Name != b'..':
+                    self._built_filesystem_information(f"{folderpath}{item.Name.decode()}/", partitionindex)
+
+
+class EWFPartition:
+    def __init__(self, partition, fs_object):
+        self.partition = partition
+        self.fs_object = fs_object
 
 class EWFImageInfo(pytsk3.Img_Info):
     def __init__(self, ewf_handle):
@@ -218,14 +241,14 @@ class EWFMetadata:
 
 
 class EWFPartitionTable:
-    def __init__(self, volumes):
-        self._volumes = volumes
+    def __init__(self, volume):
+        self._volume = volume
 
     def __str__(self):
         rowformat = "{:<9}{:<32}{:<21}{:<21}"
         result = rowformat.format('Index', 'Type', 'Offest Start Sector', 'Lenght in Sectors') + "\r\n\r\n"
 
-        for partition in self._volumes:
+        for partition in self._volume:
             result += \
                 rowformat.format(partition.addr, partition.desc.decode('UTF-8'), partition.start, partition.len) + \
                 "\r\n"

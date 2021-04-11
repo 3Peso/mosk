@@ -6,23 +6,16 @@ from baseclasses.source import SourceBase
 
 
 class Image(SourceBase):
-    FILE_SYSTEM_OFFSETS = {
-        "Fat32": 1048576
-    }
-
-    PARTITION_TYPE = {
-        "Fat32": "DOS"
-    }
-
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._imagefilepath = self.get_parameter('filepath')
         self._imagetype = self.get_parameter('imagetype')
+        self._fstype = self.get_parameter('fstype')
 
     @abstractmethod
-    def get_folder_information(self, folderpath):
+    def get_folder_information(self, folderpath, partitionindex):
         pass
 
     @abstractmethod
@@ -59,10 +52,11 @@ class FolderItemInfo:
 
 
 class FolderInfo:
-    def __init__(self, folderpath, folderitems, imagefile):
+    def __init__(self, folderpath, folderitems, imagefile, partitionindex):
         self._imagefile = imagefile
         self._folderitems = folderitems
         self._folderpath = folderpath
+        self._partitionindex = partitionindex
 
     def __hash__(self):
         return hash(self.__key())
@@ -73,7 +67,8 @@ class FolderInfo:
         return NotImplemented
 
     def __str__(self):
-        result = f"Foler Path: '{self._imagefile}:{self._folderpath}'\r\n\r\n"
+        result = f"Foler Path: '{self._imagefile}:{self._folderpath}'\r\n"
+        result += f"Partition Index: '{self._partitionindex}\r\n\r\n"
         headers = ['Name', 'Type', 'Size', 'Create Date', 'Modify Date']
         row_format = "{:<45}{:<10}{:<10}{:<21}{:<21}\r\n"
         result += row_format.format(*headers) + "\r\n"
