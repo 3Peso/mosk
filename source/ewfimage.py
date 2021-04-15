@@ -169,7 +169,10 @@ class EWFImage(Image):
                     size = f.info.meta.size
                     create = f.info.meta.crtime
                     modify = f.info.meta.mtime
-                    offset = f.info.fs_info.offset
+                    if hasattr(f.info.fs_info, "offset"):
+                        offset = f.info.fs_info.offset
+                    else:
+                        offset = 0
 
                     yield FolderItemInfo(name=name, itemtype=f_type, size=size, create=create, modify_date=modify,
                                          offset=offset)
