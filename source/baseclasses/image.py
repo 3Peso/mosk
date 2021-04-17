@@ -12,6 +12,7 @@ ImageType = namedtuple('ImageType', ['Type', 'FileEnding'])
 
 class Image(SourceBase):
     IMAGE_TYPE_EWF = ImageType(Type='ewf', FileEnding='.e01')
+    DEFAULT_FS_TYPE = 'MAC'
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
@@ -22,7 +23,7 @@ class Image(SourceBase):
             self._fstype = self.get_parameter('fstype')
         except KeyError:
             self._logger.warning("No image type parameter 'fstype' provided. Defaulting to 'MAC'.")
-            self._fstype = 'MAC'
+            self._fstype = self.DEFAULT_FS_TYPE
 
     @property
     def imagefilepath(self):

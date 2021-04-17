@@ -3,6 +3,7 @@ import pytsk3
 import pyewf
 import os
 from contextlib import suppress
+from functools import lru_cache
 
 from source.baseclasses.image import Image, FolderInfo, FolderItemInfo
 from businesslogic.support import str_to_bool
@@ -218,6 +219,11 @@ class EWFImage(Image):
         return volume
 
     def _get_image_information(self):
+        """
+        Creates an EWFImageInfo object which contains the pyewf.handle object for operations on the
+        ewf image.
+        :return: EWFImageInfo object
+        """
         if self._imagetype == self.IMAGE_TYPE_EWF:
             try:
                 filenames = pyewf.glob(self._imagefilepath)
@@ -225,7 +231,7 @@ class EWFImage(Image):
                 self._logger.error(f"Invalid EWF format:\n{ioerror}")
                 raise ioerror
 
-            ewf_handle = pyewf.handle()
+            ewf_handle: pyewf.handle = pyewf.handle()
             ewf_handle.open(filenames)
             img_info = EWFImageInfo(ewf_handle)
         else:
@@ -244,24 +250,25 @@ class EWFImage(Image):
 
             self._logger.debug(f"'{folder}' loading info from image ...")
             for f in root_dir:
-                name = f.info.name.name
+                name: bytes = f.info.name.name
                 if hasattr(f.info.meta, "type"):
                     if f.info.meta.type == pytsk3.TSK_FS_META_TYPE_DIR:
-                        f_type = "DIR"
+                        f_type: str = "DIR"
                     else:
-                        f_type = "FILE"
-                    size = f.info.meta.size
-                    create = f.info.meta.crtime
-                    modify = f.info.meta.mtime
+                        f_type: str = "FILE"
+                    size: int = f.info.meta.size
+                    create: int = f.info.meta.crtime
+                    modify: int = f.info.meta.mtime
                     if hasattr(f.info.fs_info, "offset"):
-                        offset = f.info.fs_info.offset
+                        offset: int = f.info.fs_info.offset
                     else:
-                        offset = 0
+                        offset: int = 0
 
                     yield FolderItemInfo(name=name, itemtype=f_type, size=size, create=create, modify_date=modify,
                                          offset=offset)
 
     # TODO Could potentially be speed up by using a set instead of a list for the folder info objects
+    @lru_cache()
     def _built_filesystem_information(self, folderpath='/', partitionindex=0):
         partition: dict = None
         try:
@@ -297,7 +304,7 @@ class EWFPartition:
 
 class EWFImageInfo(pytsk3.Img_Info):
     def __init__(self, ewf_handle):
-        self._ewf_handle = ewf_handle
+        self._ewf_handle: pyewf.handle = ewf_handle
         super(EWFImageInfo, self).__init__(url="",
                                            type=pytsk3.TSK_IMG_TYPE_EXTERNAL)
 
