@@ -16,11 +16,11 @@ class EWFImage(Image):
         self._imageinfo = self._get_image_information()
         self._initialize_partition_lookup()
         self._filesysteminfo = {}
-
         if str_to_bool(self.get_parameter('discover')):
-            for partitionindex in range(0, len(self._partitions)):
-                if self._partitions[partitionindex].fs_object is not None:
-                    self._built_filesystem_information(partitionindex=partitionindex)
+            self._initialize_partitions()
+            self._fs_discoverd = True
+        else:
+            self._fs_discoverd = False
 
     def get_folder_information(self, folderpath, partitionindex: int):
         folderinfo = None
@@ -52,6 +52,10 @@ class EWFImage(Image):
         return metadata
 
     def export_file(self, partitionindex, filepath, filename, outpath):
+        if not self._fs_discoverd:
+            raise RuntimeError("You can only export files with parameter 'discover' set to True during image object"
+                               " creation.")
+
         fs_object = self._get_fs_object_for_path(partitionindex=int(partitionindex), path=filepath,
                                                  file=filename)
         if fs_object is not None:
@@ -65,36 +69,42 @@ class EWFImage(Image):
         else:
             raise FileNotFoundError(f"Could not find '{filepath}{filename}' in image '{self._imagefilepath}'.")
 
+    def _initialize_partitions(self):
+        """
+        Try to build a file system representatio of every partition in the provided image.
+        """
+        for partitionindex in range(0, len(self._partitions)):
+            if self._partitions[partitionindex].fs_object is not None:
+                self._built_filesystem_information(partitionindex=partitionindex)
+
     def _initialize_partition_lookup(self):
         self._volume = self._get_volume_from_image()
         tmp = list(self._volume)
-        self._partitions = {paritionindex: self._get_partition_object(paritionindex, tmp[paritionindex])
+        self._partitions = {paritionindex: self._get_partition_object(tmp[paritionindex])
                             for paritionindex in range(0, len(tmp))}
 
-    def _get_partition_object(self, partitionindex: int, partition):
+    def _get_partition_object(self, partition):
+        """
+        Builds an EWFPartition object containing the fs_object object for accessing files
+        in the partition.
+        :param partition:
+        :return: EWFPartition object which contains an fs_object object needed to access files
+        of this partition later
+        """
         fs = None
         try:
             fs = pytsk3.FS_Info(self._imageinfo, offset=partition.start * self._volume.info.block_size)
         except IOError:
             _, e, _ = sys.exc_info()
-            self._logger.info(f"Unable to open FS:\n{e}")
+            self._logger.info(f"Unable to open FS:\r\n{e}")
 
         partition_object = EWFPartition(partition=partition, fs_object=fs)
 
         return partition_object
 
     def _get_fs_object_for_path(self, partitionindex: int, path, file):
-        # Get file system object for partition
-        try:
-            partition = list(self._volume)[partitionindex]
-            fs = pytsk3.FS_Info(self._imageinfo, offset=partition.start * self._volume.info.block_size)
-        except IOError as ioerror:
-            _, e, _ = sys.exc_info()
-            self._logger.error(f"Unable to open FS:\r\n{e}")
-            raise ioerror
-
         # Get directory object
-        directory = fs.open_dir(path=path)
+        directory = self._partitions[partitionindex].fs_object.open_dir(path=path)
 
         # Iterate through directory to find file
         result = None
