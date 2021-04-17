@@ -125,6 +125,13 @@ class EWFImage(Image):
         return partition_object
 
     def _get_fs_object(self, path, file):
+        """
+        Yields a list object containing a pytsk3.File object for every found file in image for path
+        and file(name). Checks every partition found in the image for the path and file.
+        :param path: Path of the file.
+        :param file: Name of the file with extension.
+        :return: [partitionindex, pytsk3.File object]
+        """
         for partitionindex, partition in self._partitions.items():
             filecontent: pytsk3.File = None
             directory: pytsk3.Directory = None
@@ -137,17 +144,23 @@ class EWFImage(Image):
                 self._logger.info(f"Path '{path}' not found in partition #{partitionindex}")
 
             if directory is not None:
-                filecontent = self._get_filecontent(directory, path, file)
-                yield [partitionindex, filecontent]
+                filecontent = self._get_filecontent(directory, file)
+                if filecontent is not None:
+                    yield [partitionindex, filecontent]
 
-    def _get_filecontent(self, directory, path, file):
-        # Iterate through directory to find file
+    @staticmethod
+    def _get_filecontent(directory: pytsk3.Directory, file: str):
+        """
+        Checks every object in the directory to see if it has the file(name).
+        :param directory: directory object
+        :param file: file name with extension
+        :return: pytsk3.File object
+        """
         result: pytsk3.File = None
         for fs_object in directory:
             if hasattr(fs_object, "info") and \
                     hasattr(fs_object.info, "name") and \
                     hasattr(fs_object.info.name, "name"):
-                self._logger.debug(f"Looking at '{path}{fs_object.info.name.name.decode('UTF-8')}'")
                 if fs_object.info.name.name.decode('UTF-8') == file:
                     result = fs_object
                     break
