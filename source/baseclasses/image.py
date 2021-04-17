@@ -118,7 +118,14 @@ class FolderInfo:
         For every item in the folder yields a comma seperated string.
         """
         for item in self._folderitems:
-            filepath = "/".join([self._imagefile, str(self._partitionindex), item.Name.decode()])
+
+            folderpath = self._folderpath.strip('/')
+            filepath = ""
+            if folderpath != "":
+                filepath = "/".join([self._imagefile, str(self._partitionindex), folderpath,
+                                     item.Name.decode()])
+            else:
+                filepath = f"{self._imagefile}/{str(self._partitionindex)}/{item.Name.decode()}"
             result = ",".join([str(self._partitionindex), filepath, item.Type, str(item.Size), str(item.create),
                                str(item.modify_date)])
             yield result
