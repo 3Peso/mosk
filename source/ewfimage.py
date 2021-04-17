@@ -42,6 +42,9 @@ class EWFImage(Image):
         return EWFPartitionTable(volume=self._get_volume_from_image())
 
     def get_image_metadata(self):
+        """
+        Retrieves all available metadata of the image and returns a EWFMetadata object.
+        """
         headers = self._imageinfo.ewf_handle.get_header_values()
         hashes = self._imageinfo.ewf_handle.get_hash_values()
         metadata = EWFMetadata(hashes=hashes, headers=headers,
@@ -52,6 +55,15 @@ class EWFImage(Image):
         return metadata
 
     def export_file(self, partitionindex, filepath, filename, outpath):
+        """
+        Tries to export a file from the image file.
+        :param partitionindex:
+        :param filepath:
+        :param filename:
+        :param outpath: Outputpath for the exported file.
+        :return: Nothing, but will copy the exported file to the output path. The partition index will be
+        append to the output path as folder.
+        """
         if not self._fs_discoverd:
             raise RuntimeError("You can only export files with parameter 'discover' set to True during image object"
                                " creation.")
