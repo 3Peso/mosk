@@ -70,7 +70,7 @@ class EWFImage(Image):
 
         fs_objects = list(self._get_fs_object(path=filepath, file=filename))
         if fs_objects is not None:
-            for fso in fs_objects:
+            for partitionindex, fso in fs_objects:
                 # Append the partition index to the output path. Otherwise the path is not complete.
                 final_outpath = "/".join([outpath, str(partitionindex)])
                 try:
@@ -133,7 +133,7 @@ class EWFImage(Image):
 
             if directory is not None:
                 filecontent = self._get_filecontent(directory, path, file)
-                yield filecontent
+                yield [partitionindex, filecontent]
 
     def _get_filecontent(self, directory, path, file):
         # Iterate through directory to find file
