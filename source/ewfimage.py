@@ -267,9 +267,15 @@ class EWFImage(Image):
                     yield FolderItemInfo(name=name, itemtype=f_type, size=size, create=create, modify_date=modify,
                                          offset=offset)
 
-    # TODO Could potentially be speed up by using a set instead of a list for the folder info objects
     @lru_cache()
     def _built_filesystem_information(self, folderpath='/', partitionindex=0):
+        # TODO Could potentially be speed up by using a set instead of a list for the folder info objects
+        """
+        Recursivly discovers the filesystem of a partition, decalred by its index. Initializes the
+        member _filesystem on the go.
+        :param folderpath: Current folder which is being trafersed.
+        :param partitionindex: Index of the partition for which the filesystem information is been build.
+        """
         partition: dict = None
         try:
             partition = self._filesysteminfo[partitionindex]
