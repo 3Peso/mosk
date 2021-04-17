@@ -23,6 +23,11 @@ class EWFImage(Image):
             self._fs_discoverd = False
 
     def get_folder_information(self, folderpath, partitionindex: int):
+        """
+        Gets a FolderInfo object if the source partition contains the folder.
+        :param folderpath: Path of the folder for which the folder info is request.
+        :param partitionindex:
+        """
         folderinfo = None
         try:
             if folderpath not in self._filesysteminfo[partitionindex].keys():
@@ -39,6 +44,9 @@ class EWFImage(Image):
         return folderinfo
 
     def get_partition_table(self):
+        """
+        Creates an EWFPartitionTable object containing all the partitions included in the image file.
+        """
         return EWFPartitionTable(volume=self._get_volume_from_image())
 
     def get_image_metadata(self):
@@ -75,9 +83,8 @@ class EWFImage(Image):
                 final_outpath = "/".join([outpath, str(partitionindex)])
                 try:
                     self._write_file(fso, filename, filepath, final_outpath)
-                except OSError:
-                    _, e, _ = sys.exc_info()
-                    self._logger.error(f"Could not extract file from image.\r\n{e}")
+                except OSError as oserror:
+                    self._logger.error(f"Could not extract file from image.\r\n{oserror}")
         else:
             raise FileNotFoundError(f"Could not find '{filepath}{filename}' in image '{self._imagefilepath}'.")
 
@@ -111,9 +118,8 @@ class EWFImage(Image):
         fs = None
         try:
             fs = pytsk3.FS_Info(self._imageinfo, offset=partition.start * self._volume.info.block_size)
-        except IOError:
-            _, e, _ = sys.exc_info()
-            self._logger.info(f"Unable to open FS:\r\n{e}")
+        except IOError as ioerror:
+            self._logger.info(f"Unable to open FS:\r\n{ioerror}")
 
         partition_object = EWFPartition(partition=partition, fs_object=fs)
 
@@ -173,7 +179,6 @@ class EWFImage(Image):
             attr_id = getattr(pytsk3, f"TSK_VS_TYPE_{self._fstype}")
             volume = pytsk3.Volume_Info(self._imageinfo, attr_id)
         except IOError as ioerror:
-            _, e, _ = sys.exc_info()
             self._logger.info(f"Unable to read partition table.")
             raise ioerror
 
@@ -184,8 +189,7 @@ class EWFImage(Image):
             try:
                 filenames = pyewf.glob(self._imagefilepath)
             except IOError as ioerror:
-                _, e, _ = sys.exc_info()
-                self._logger.error(f"Invalid EWF format:\n{e}")
+                self._logger.error(f"Invalid EWF format:\n{ioerror}")
                 raise ioerror
 
             ewf_handle = pyewf.handle()
@@ -197,6 +201,11 @@ class EWFImage(Image):
         return img_info
 
     def _discover_folder(self, folder, partitionindex):
+        """
+        Yields a FolderItemInfo object for every item in the folder.
+        :param folder: Path of the folder.
+        :param partitionindex: Index of the partition where the folder can be found.
+        """
         if self._partitions[partitionindex].fs_object is not None:
             root_dir = self._partitions[partitionindex].fs_object.open_dir(path=folder)
 
