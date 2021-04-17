@@ -54,11 +54,10 @@ class EWFImage(Image):
 
         return metadata
 
-    def export_file(self, partitionindex, filepath, filename, outpath):
+    def export_file(self, filepath, filename, outpath):
         """
         Tries to export a file from the image file.
         Will try to find file with path and name in every partition in the provided image.
-        :param partitionindex:
         :param filepath:
         :param filename:
         :param outpath: Outputpath for the exported file.
