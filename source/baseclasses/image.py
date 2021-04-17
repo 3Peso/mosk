@@ -1,5 +1,6 @@
 import logging
 import datetime
+import os
 from abc import abstractmethod
 
 from baseclasses.source import SourceBase
@@ -10,13 +11,28 @@ class Image(SourceBase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._imagefilepath = self.get_parameter('filepath')
-        self._imagetype = self.get_parameter('imagetype')
+        self._imagetype = None
+        self.imagefilepath = self.get_parameter('filepath')
         try:
             self._fstype = self.get_parameter('fstype')
         except KeyError:
             self._logger.warning("No image type parameter 'fstype' provided. Defaulting to 'MAC'.")
             self._fstype = 'MAC'
+
+    @property
+    def imagefilepath(self):
+        return self._imagefilepath
+
+    @imagefilepath.setter
+    def imagefilepath(self, value: str):
+        if value.lower().endswith('.e01'):
+            self._imagetype = 'ewf'
+            if os.path.exists(value):
+                self._imagefilepath = value
+            else:
+                raise FileNotFoundError(f"Image file '{value}' not found.")
+        else:
+            raise ValueError("Currently only ewf files (file ending '.e01' are supported.")
 
     @abstractmethod
     def get_folder_information(self, folderpath, partitionindex):

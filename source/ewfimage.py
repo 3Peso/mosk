@@ -196,6 +196,10 @@ class EWFImage(Image):
             offset = offset + len(data)
 
     def _get_volume_from_image(self):
+        """
+        Tries to get a Volume_Info object from the provided image file.
+        :return: pytsk3.Volume_Info
+        """
         try:
             attr_id: int = getattr(pytsk3, f"TSK_VS_TYPE_{self._fstype}")
             volume: pytsk3.Volume_Info = pytsk3.Volume_Info(self._imageinfo, attr_id)
