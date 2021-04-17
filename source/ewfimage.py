@@ -1,5 +1,4 @@
 import logging
-import sys
 import pytsk3
 import pyewf
 import os
@@ -230,7 +229,7 @@ class EWFImage(Image):
 
     # TODO Could potentially be speed up by using a set instead of a list for the folder info objects
     def _built_filesystem_information(self, folderpath='/', partitionindex=0):
-        partition = None
+        partition: dict = None
         try:
             partition = self._filesysteminfo[partitionindex]
         except KeyError:
