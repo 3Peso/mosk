@@ -12,7 +12,11 @@ class Image(SourceBase):
         super().__init__(*args, **kwargs)
         self._imagefilepath = self.get_parameter('filepath')
         self._imagetype = self.get_parameter('imagetype')
-        self._fstype = self.get_parameter('fstype')
+        try:
+            self._fstype = self.get_parameter('fstype')
+        except KeyError:
+            self._logger.warning("No image type parameter 'fstype' provided. Defaulting to 'MAC'.")
+            self._fstype = 'MAC'
 
     @abstractmethod
     def get_folder_information(self, folderpath, partitionindex):

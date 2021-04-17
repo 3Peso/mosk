@@ -2,6 +2,7 @@ import logging
 import pytsk3
 import pyewf
 import os
+from contextlib import suppress
 
 from source.baseclasses.image import Image, FolderInfo, FolderItemInfo
 from businesslogic.support import str_to_bool
@@ -78,10 +79,8 @@ class EWFImage(Image):
         fs_objects = list(self._get_fs_object(path=filepath, file=filename))
         if fs_objects is not None:
             for partitionindex, fso in fs_objects:
-                # Append the partition index to the output path. Otherwise the path is not complete.
-                final_outpath = "/".join([outpath, str(partitionindex)])
                 try:
-                    self._write_file(fso, filename, filepath, final_outpath)
+                    self._write_file(fso, filename, filepath, outpath, partitionindex)
                 except OSError as oserror:
                     self._logger.error(f"Could not extract file from image.\r\n{oserror}")
         else:
@@ -168,8 +167,18 @@ class EWFImage(Image):
         return result
 
     @classmethod
-    def _write_file(cls, fs_object, filename, path, outputpath):
-        output_dir: str = os.path.join(outputpath, os.path.dirname(path.lstrip("//")))
+    def _write_file(cls, fs_object: pytsk3.File, filename: str, path: str, outputpath: str, partitionindex: int):
+        """
+        Writes a file from an image to the local filesystem into the provided outpath. If this outpath does not
+        exist, the outpath will be created before exporting the file. The final outpath will be the
+        outpath + partitionindex + the path of the file in the image + the filename itself.
+        :param fs_object: pytsk3.File object
+        :param filename:
+        :param path: the file path of the file to be exported, which it has in the image.
+        :param outputpath: Path to the local file system where the exported file will be written to.
+        """
+        output_dir: str = os.path.join(os.path.join(outputpath, str(partitionindex)),
+                                       os.path.dirname(path.lstrip("//")))
         buffer_size: int = 1024 * 1024
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
@@ -190,9 +199,17 @@ class EWFImage(Image):
         try:
             attr_id: int = getattr(pytsk3, f"TSK_VS_TYPE_{self._fstype}")
             volume: pytsk3.Volume_Info = pytsk3.Volume_Info(self._imageinfo, attr_id)
-        except IOError as ioerror:
-            self._logger.info(f"Unable to read partition table.")
-            raise ioerror
+        except IOError:
+            try:
+                # Give it another try without a type. Maybe the provided type was wrong.
+                self._logger.info(f"Could not open volume with the type '{self._fstype}'. Trying without type...")
+                volume = pytsk3.Volume_Info = pytsk3.Volume_Info(self._imageinfo)
+            except IOError as ioerror:
+                self._logger.info(f"Unable to read partition table.")
+                raise ioerror
+
+        with suppress(Exception):
+            self._logger.info(f"Volume is of type '{volume.info.vstype}'.")
 
         return volume
 
