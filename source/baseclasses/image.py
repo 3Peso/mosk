@@ -1,17 +1,22 @@
 import logging
 import datetime
 import os
+from collections import namedtuple
 from abc import abstractmethod
 
 from baseclasses.source import SourceBase
 
 
+ImageType = namedtuple('ImageType', ['Type', 'FileEnding'])
+
+
 class Image(SourceBase):
+    IMAGE_TYPE_EWF = ImageType(Type='ewf', FileEnding='.e01')
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._imagetype = None
+        self._imagetype: ImageType = None
         self.imagefilepath = self.get_parameter('filepath')
         try:
             self._fstype = self.get_parameter('fstype')
@@ -25,14 +30,15 @@ class Image(SourceBase):
 
     @imagefilepath.setter
     def imagefilepath(self, value: str):
-        if value.lower().endswith('.e01'):
-            self._imagetype = 'ewf'
+        if value.lower().endswith(self.IMAGE_TYPE_EWF.FileEnding):
+            self._imagetype = self.IMAGE_TYPE_EWF
             if os.path.exists(value):
                 self._imagefilepath = value
             else:
                 raise FileNotFoundError(f"Image file '{value}' not found.")
         else:
-            raise ValueError("Currently only ewf files (file ending '.e01' are supported.")
+            raise ValueError(f"Currently only {self.IMAGE_TYPE_EWF.Type} files"
+                             f" (file ending '{self.IMAGE_TYPE_EWF.FileEnding}' are supported.")
 
     @abstractmethod
     def get_folder_information(self, folderpath, partitionindex):

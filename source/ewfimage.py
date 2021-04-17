@@ -218,7 +218,7 @@ class EWFImage(Image):
         return volume
 
     def _get_image_information(self):
-        if self._imagetype == "ewf":
+        if self._imagetype == self.IMAGE_TYPE_EWF:
             try:
                 filenames = pyewf.glob(self._imagefilepath)
             except IOError as ioerror:
@@ -229,7 +229,7 @@ class EWFImage(Image):
             ewf_handle.open(filenames)
             img_info = EWFImageInfo(ewf_handle)
         else:
-            raise TypeError("EWFImage can only hanlde ewf files (.e01).")
+            raise TypeError(f"EWFImage can only hanlde ewf files ({self.IMAGE_TYPE_EWF.FileEnding}).")
 
         return img_info
 
