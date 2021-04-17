@@ -22,3 +22,14 @@ class File(ArtefactBase):
                                  f"'{self._out_path}'.")
 
         self.data = f"File '{self._file_path}{self._filename}' exported to path '{self._out_path}'."
+
+
+class FolderInformation(ArtefactBase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._folder = self.get_parameter('folder')
+        self._partitionindex = self.get_parameter('partitionindex')
+
+    def _collect(self):
+        folderinfo = self._parent.get_folder_information(self._folder, int(self._partitionindex))
+        self.data = str(folderinfo)

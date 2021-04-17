@@ -114,7 +114,7 @@
     "collectionmethod": "system_profiler SPHardwareDataType",
     "description": "Collects basic hardware information like serial number and model."
   },
-  "artefact.image.system.FolderInformation": {
+  "artefact.image.file.FolderInformation": {
     "title": "FolderInformation",
     "collectionmethod": "pyewf and pytsk3",
     "description": "Tries to load the information of a given folder from an image file.\r\nInfo contains files and folders of a given folder, and their basic attributes like size, and creation date."
