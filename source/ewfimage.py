@@ -55,6 +55,8 @@ class EWFImage(Image):
         fs_object = self._get_fs_object_for_path(partitionindex=int(partitionindex), path=filepath,
                                                  file=filename)
         if fs_object is not None:
+            # Append the partition index to the output path. Otherwise the path is not complete.
+            outpath = "/".join([outpath, str(partitionindex)])
             try:
                 self._write_file(fs_object, filename, filepath, outpath)
             except OSError:
@@ -199,6 +201,7 @@ class EWFPartition:
     def __init__(self, partition, fs_object):
         self.partition = partition
         self.fs_object = fs_object
+
 
 class EWFImageInfo(pytsk3.Img_Info):
     def __init__(self, ewf_handle):
