@@ -108,3 +108,17 @@ class FolderInfo:
     def __iter__(self):
         for item in self._folderitems:
             yield item
+
+    @staticmethod
+    def get_cvs_header():
+        return "PartitionIndex,Path,Type,Size,CreateDate,ModifyDate"
+
+    def get_folder_items_in_csv_format(self):
+        """
+        For every item in the folder yields a comma seperated string.
+        """
+        for item in self._folderitems:
+            filepath = "/".join([self._imagefile, str(self._partitionindex), item.Name.decode()])
+            result = ",".join([str(self._partitionindex), filepath, item.Type, str(item.Size), str(item.create),
+                               str(item.modify_date)])
+            yield result

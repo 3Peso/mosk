@@ -17,11 +17,17 @@ class EWFImage(Image):
         self._imageinfo: EWFImageInfo = self._get_image_information()
         self._initialize_partition_lookup()
         self._filesysteminfo = {}
+        self._fs_discoverd = False
         if str_to_bool(self.get_parameter('discover')):
-            self._initialize_partitions()
             self._fs_discoverd = True
-        else:
-            self._fs_discoverd = False
+            self._initialize_partitions()
+
+    @property
+    def filesysteminfo(self):
+        if not self._fs_discoverd:
+            raise RuntimeError("You can only export files with parameter 'discover' set to True during image object"
+                               " creation.")
+        return self._filesysteminfo
 
     def get_folder_information(self, folderpath, partitionindex: int):
         """
@@ -31,12 +37,12 @@ class EWFImage(Image):
         """
         folderinfo: FolderInfo = None
         try:
-            if folderpath not in self._filesysteminfo[partitionindex].keys():
+            if folderpath not in self.filesysteminfo[partitionindex].keys():
                 folderinfo = FolderInfo(folderpath=folderpath,
                                         folderitems=set(self._discover_folder(folderpath, partitionindex)),
                                         imagefile=self._imagefilepath, partitionindex=partitionindex)
             else:
-                folderinfo = self._filesysteminfo[partitionindex][folderpath]
+                folderinfo = self.filesysteminfo[partitionindex][folderpath]
         except KeyError:
             folderinfo = FolderInfo(folderpath=folderpath,
                                     folderitems=set(self._discover_folder(folderpath, partitionindex)),
@@ -73,10 +79,6 @@ class EWFImage(Image):
         :return: Nothing, but will copy the exported file to the output path. The partition index will be
         append to the output path as folder.
         """
-        if not self._fs_discoverd:
-            raise RuntimeError("You can only export files with parameter 'discover' set to True during image object"
-                               " creation.")
-
         fs_objects = list(self._get_fs_object(path=filepath, file=filename))
         if fs_objects is not None:
             for partitionindex, fso in fs_objects:
@@ -278,10 +280,10 @@ class EWFImage(Image):
         """
         partition: dict = None
         try:
-            partition = self._filesysteminfo[partitionindex]
+            partition = self.filesysteminfo[partitionindex]
         except KeyError:
             partition = {}
-            self._filesysteminfo[partitionindex] = partition
+            self.filesysteminfo[partitionindex] = partition
 
         folderinfo = self.get_folder_information(folderpath, partitionindex)
         partition[folderpath] = folderinfo

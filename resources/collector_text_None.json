@@ -133,5 +133,10 @@
     "title": "File",
     "collectionmethod": "pyewf and pytsk3",
     "description": "Tries to extract a file from an image from a given ewf file."
+  },
+  "artefact.image.file.CompleteFileSystemInfo": {
+    "title": "CompleteFileSystemInfo",
+    "collectionmethod": "pyewf and pytsk3",
+    "description": "Exports information about all files and folders in an image into a csv file."
   }
 }
