@@ -11,6 +11,7 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 from urllib.error import URLError
 from bs4 import BeautifulSoup
+from collections import UserDict
 
 from baseclasses.artefact import ArtefactBase
 
@@ -29,7 +30,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
 
     def _collect(self):
-        queryurl = self._get_query(self.city, self.countrycode, self.apikey)
+        queryurl = self._get_query()
 
         try:
             html = urlopen(queryurl)
@@ -41,6 +42,15 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
 
     def _get_query(self):
         return self.__querytemplate.format(self.__url, self.city, self.countrycode, self.apikey)
+
+    def _get_parameters_for_str(self):
+        """Overwrite default to prevent logging of API key."""
+        filtered: UserDict = {}
+        for itemname, itemvalue in self._parameters.items():
+            if itemname != 'apikey':
+                filtered[itemname] = itemvalue
+
+        return filtered
 
 
 class ExternalLinksOnUrl(ArtefactBase):

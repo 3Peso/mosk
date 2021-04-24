@@ -3,8 +3,6 @@
 
 # Implement SQLite Storage for protocol and collected data/files
 
-# Logging of protected parameters in protocol should be controlable (see OpenWeather collector as example)
-
 # Detect, if VPNs are used (TOR over VPN)
 
 # Possibility to define placeholder values in instructions file to be used later on
