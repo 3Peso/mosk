@@ -7,8 +7,6 @@
 
 # Detect, if VPNs are used (TOR over VPN)
 
-# Pretty print sizes of image and file information
-
 # Possibility to define placeholder values in instructions file to be used later on
 
 # FolderInformation must provide the partition index
@@ -29,3 +27,8 @@
 #  update version string of module according to changed signature
 
 # collector for comparing MD5 hashes
+
+# There is a bug somewhere in the EWFImage class or lower in the pytsk3 module. There are some files in the test
+#  image which will be separadet from their path when creating the overview csv file
+#  in FolerInfo.get_folder_items_in_csv_format()
+#  Example: '2,./tests/EWFDemoFAT32.e01/2/02 Sig/Microsoft Windows Vista & Office 2007 Forensics, Office 2007 File Format.pptx'

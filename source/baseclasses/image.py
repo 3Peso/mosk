@@ -101,7 +101,7 @@ class FolderInfo:
         row_format = "{:<45}{:<10}{:<10}{:<21}{:<21}\r\n"
         result += row_format.format(*headers) + "\r\n"
         for item in self._folderitems:
-            result += row_format.format(item.Name.decode(), item.Type, str(item.Size),
+            result += row_format.format(item.Name.decode(), item.Type, str(format_bytes(item.Size)),
                                         str(item.create), str(item.modify_date))
 
         return result

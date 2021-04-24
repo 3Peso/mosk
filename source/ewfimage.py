@@ -6,7 +6,7 @@ from contextlib import suppress
 from functools import lru_cache
 
 from source.baseclasses.image import Image, FolderInfo, FolderItemInfo
-from businesslogic.support import str_to_bool
+from businesslogic.support import str_to_bool, format_bytes
 
 
 class EWFImage(Image):
@@ -65,7 +65,7 @@ class EWFImage(Image):
         metadata = EWFMetadata(hashes=hashes, headers=headers,
                                bytes_per_sector=self._imageinfo.ewf_handle.bytes_per_sector,
                                number_of_sectors=self._imageinfo.ewf_handle.get_number_of_sectors(),
-                               image_size=self._imageinfo.ewf_handle.get_media_size())
+                               image_size=format_bytes(self._imageinfo.ewf_handle.get_media_size()))
 
         return metadata
 

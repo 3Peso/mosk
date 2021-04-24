@@ -122,7 +122,7 @@
   "artefact.image.system.ImageMetadata": {
     "title": "ImageMetadata",
     "collectionmethod": "pyewf and pytsk3",
-    "description": "Tries to load the metadata image information from a given ewf file."
+    "description": "Tries to load the metadata image information from a given ewf file.\r\nThe image size must not be the same as the size of the image file due to compression."
   },
   "artefact.image.system.PartitionTable": {
     "title": "PartitionTable",
