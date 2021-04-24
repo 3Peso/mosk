@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from businesslogic.support import str_to_bool, get_collector_resources
+from businesslogic.support import str_to_bool, get_collector_resources, format_bytes
 
 
 class TestSupportStrToBool(TestCase):
@@ -44,3 +44,47 @@ class TestGetCollectorResources(TestCase):
         actual_resources = get_collector_resources("./IDoNotExsit")
 
         self.assertIsNone(actual_resources)
+
+
+class TestFormatBytes(TestCase):
+    def test_format_bytes_Kilo(self):
+        """Should return 1KB"""
+        size = 1025
+        expected = "1.0KB"
+
+        self.assertEqual(expected, format_bytes(size))
+
+    def test_format_bytes_Mega(self):
+        """Should return 1MB"""
+        size = 1048576
+        expected = "1.0MB"
+
+        self.assertEqual(expected, format_bytes(size))
+
+    def test_format_bytes_Mega_2(self):
+        """Should return 1MB"""
+        size = 1048577
+        expected = "1.0MB"
+
+        self.assertEqual(expected, format_bytes(size))
+
+    def test_format_bytes_Giga(self):
+        """Should return 1GB"""
+        size = 1073741824
+        expected = "1.0GB"
+
+        self.assertEqual(expected, format_bytes(size))
+
+    def test_format_bytes_Terra(self):
+        """Should return 1TB"""
+        size = 1099511627776
+        expected = "1.0TB"
+
+        self.assertEqual(expected, format_bytes(size))
+
+    def test_format_bytes_Terra_2(self):
+        """Should return 1TB"""
+        size = 1125899906842624
+        expected = "1024.0TB"
+
+        self.assertEqual(expected, format_bytes(size))

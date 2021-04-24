@@ -5,6 +5,7 @@ from collections import namedtuple
 from abc import abstractmethod
 
 from baseclasses.source import SourceBase
+from businesslogic.support import format_bytes
 
 
 ImageType = namedtuple('ImageType', ['Type', 'FileEnding'])
@@ -126,6 +127,6 @@ class FolderInfo:
                                      item.Name.decode()])
             else:
                 filepath = f"{self._imagefile}/{str(self._partitionindex)}/{item.Name.decode()}"
-            result = ",".join([str(self._partitionindex), filepath, item.Type, str(item.Size), str(item.create),
-                               str(item.modify_date)])
+            result = ",".join([str(self._partitionindex), filepath, item.Type, str(format_bytes(item.Size)),
+                               str(item.create), str(item.modify_date)])
             yield result

@@ -125,3 +125,19 @@ def run_terminal_command(arguments: list):
                                stdout=subprocess.PIPE,
                                universal_newlines=True)
     return process.communicate()[0]
+
+
+def format_bytes(size):
+    """
+    Calculate more human readable values for byte sizes
+    :param size: Will support sizes up to terra bytes. Afterwards all is returned as terra bytes.
+    :return: string <calculatedsize><unit> for example "1MB"
+    """
+    power = 1024
+    n = 0
+    max_unit = 4
+    power_labels = {0: '', 1: 'K', 2: 'M', 3: 'G', 4: 'T'}
+    while size >= power and n < max_unit:
+        size /= power
+        n += 1
+    return f"{round(size,2)}{power_labels[n]+'B'}"

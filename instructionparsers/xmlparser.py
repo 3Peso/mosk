@@ -59,7 +59,7 @@ class XmlParser:
             self._initializemetadata()
             self._metadata = CollectionMetaData(self._metadata)
         else:
-            raise FileNotFoundError("'{}' does not exist.".format(newpath))
+            raise FileNotFoundError(f"'{newpath}' does not exist.")
 
     @property
     def instructions(self):
@@ -73,7 +73,7 @@ class XmlParser:
 
     @classmethod
     def _validate_schema(cls, xmlfilepath: str):
-        XmlParser._logger.info("Validating '{}' against xml schema '{}'...".format(xmlfilepath, XmlParser.XMLSCHEMA_PATH))
+        XmlParser._logger.info(f"Validating '{xmlfilepath}' against xml schema '{XmlParser.XMLSCHEMA_PATH}'...")
         schema = xmlschema.XMLSchema(XmlParser.XMLSCHEMA_PATH)
         schema.validate(xmlfilepath)
 
@@ -112,10 +112,10 @@ class XmlParser:
                 instructionwrapper_child = self._init_instructions(current=child,
                                                                    parentinstruction=currentinstruction,
                                                                    instructionid=instructionid + 1)
-                XmlParser._logger.debug("Adding '{}' with id {} as child of '{}' with id {}.".format(
-                    instructionwrapper_child.instructionname, instructionwrapper_child.instructionid,
-                    instructionwrapper.instructionname, instructionwrapper.instructionid
-                ))
+                XmlParser._logger.debug(
+                    f"Adding '{instructionwrapper_child.instructionname}' with "
+                    f"id {instructionwrapper_child.instructionid} as child of "
+                    f"'{instructionwrapper.instructionname}' with id {instructionwrapper.instructionid}.")
                 instructionwrapper.addchild(instructionwrapper_child)
 
         return instructionwrapper

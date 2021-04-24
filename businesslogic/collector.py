@@ -29,6 +29,7 @@ class Collector:
         self._protocol = protocol
         self._collectionstart = None
         self._collectionend = None
+        self._logger.debug("Collector object initialized.")
 
     @classmethod
     def get_collector(cls, instructionsfile: str, examiner: str = '',
