@@ -16,6 +16,10 @@ LOG_LEVEL = {
 }
 
 
+def is_globalplaceholder_valid(placeholderpath):
+    return os.path.exists(placeholderpath)
+
+
 if __name__ == '__main__':
     argv = sys.argv[1:]
 
@@ -36,7 +40,7 @@ if __name__ == '__main__':
         elif opt in ('-e', '--examiner'):
             examiner = arg
         elif opt in ('-g', '--globalplaceholders'):
-            if os.path.exists(arg):
+            if is_globalplaceholder_valid(arg):
                 globalplaceholders = arg
             else:
                 print(f"Globale placeholder file '{arg}' does not exist.")
