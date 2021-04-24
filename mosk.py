@@ -2,6 +2,7 @@
 import logging
 import getopt
 import sys
+import os
 
 from businesslogic.collector import Collector
 
@@ -34,7 +35,11 @@ if __name__ == '__main__':
         elif opt in ('-e', '--examiner'):
             examiner = arg
         elif opt in ('-g', '--globalplaceholders'):
-            globalplaceholders = arg
+            if os.path.exists(arg):
+                globalplaceholders = arg
+            else:
+                print(f"Globale placeholder file '{arg}' does not exist.")
+                sys.exit(2)
 
     try:
         logger = logging.getLogger(__name__)
