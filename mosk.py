@@ -15,6 +15,7 @@ LOG_LEVEL = {
     'DEBUG': logging.DEBUG
 }
 
+
 if __name__ == '__main__':
     argv = sys.argv[1:]
 

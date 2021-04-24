@@ -1,11 +1,10 @@
 from unittest import TestCase, mock
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 
 class TestArtefactBase(TestCase):
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
-    @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
     def test_data_setter(self):
         """
         Should add the provided value as data object to its data object list
@@ -18,7 +17,6 @@ class TestArtefactBase(TestCase):
         self.assertEqual(len(artefact.data), 1)
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
-    @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
     def test_data_setter_with_two_objects(self):
         """
         Should append data to the data object array if there are more data objects to be collected
@@ -32,7 +30,6 @@ class TestArtefactBase(TestCase):
         self.assertEqual(len(artefact.data), 2)
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
-    @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
     def test_data_setter_overwrite(self):
         """
         Should overwrite existing collected data if None is provided as data object
@@ -48,7 +45,6 @@ class TestArtefactBase(TestCase):
         self.assertEqual(len(artefact.data), 0)
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
-    @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
     def test__init_description_properties_with_missing_resources(self):
         """
         Should initialize properties _title, _description, and _collectionmethod with None
@@ -61,7 +57,6 @@ class TestArtefactBase(TestCase):
         self.assertIsNone(artefact._collectionmethod)
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
-    @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
     def test__init_description_properties_with_missing_resources_for_collector(self):
         """
         Should initialize properties _title, _description, and _collectionmethod with None,
@@ -75,7 +70,6 @@ class TestArtefactBase(TestCase):
         self.assertIsNone(artefact._collectionmethod)
 
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
-    @mock.patch('baseclasses.source.SourceBase.cache_parameters', MagicMock())
     def test__init_description_properties(self):
         """
         Should initialize properties _title, _description, and _collectionmethod
