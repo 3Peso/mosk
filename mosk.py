@@ -42,6 +42,9 @@ if __name__ == '__main__':
                                             placeholderfile=globalplaceholders)
         collector.collect()
         logger.info("Collection complete.")
+    except NameError:
+        print("The arguments 'instructionsfile', and 'examiner' are mandatory.")
+        sys.exit(2)
     except FileNotFoundError:
         print('Could not initialize parser.')
         sys.exit(2)
