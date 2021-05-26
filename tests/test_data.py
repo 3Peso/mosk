@@ -49,7 +49,8 @@ class TestCollectionData(TestCase):
         from businesslogic.data import CollectionData
 
         actual_parameters = {'Param1': 12, 'Param2': 'Test'}
-        actual_data = CollectionData(data="Test data", collector_parameters=actual_parameters)
+        actual_data = CollectionData(data="Test data")
+        actual_data.collector_parameters = actual_parameters
         teststring = "Test String"
 
         with self.assertRaises(ValueError):
@@ -94,8 +95,8 @@ class TestCollectionData(TestCase):
         }
         expected_sourcepath = "source_path"
         expected_sourcehash = "This is not a hash"
-        actual_data_obj = CollectionData(data=expected_data, collector_name=expected_collector,
-                                         collector_parameters=expected_collector_params)
+        actual_data_obj = CollectionData(data=expected_data, collector_name=expected_collector)
+        actual_data_obj.collector_parameters = expected_collector_params
         actual_data_obj._sourcepath = expected_sourcepath
         actual_data_obj._sourcehash = expected_sourcehash
         expected_time = datetime.now()
