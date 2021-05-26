@@ -21,8 +21,8 @@ class TestCollectionData(TestCase):
         from businesslogic.data import CollectionData
 
         actual_parameters = {'Param1': 12, 'Param2': 'Test'}
-        actual_data = CollectionData(data="Test data", collector_name="TestCollector",
-                                     collector_parameters=actual_parameters)
+        actual_data = CollectionData(data="Test data", collector_name="TestCollector")
+        actual_data.collector_parameters = actual_parameters
         teststring = "Test String"
         expected = "Test String\r\n\r\nCollector: TestCollector\r\nParam1: '12'\r\nParam2: 'Test'"
         actual = actual_data.get_collector_info_as_str(teststring)

@@ -25,7 +25,7 @@ class CollectionData:
         self._sourcehash = None
         self._sourcepath = None
         self._collector_name = collector_name
-        self._collector_parameters = None
+        self.collector_parameters = None
 
     # TODO Rework metadata formatting
     def __str__(self):
@@ -50,14 +50,14 @@ class CollectionData:
         return prepend
 
     def get_collector_info_as_str(self, prepend=''):
-        if self._collector_name is None and self._collector_parameters is not None:
+        if self._collector_name is None and self.collector_parameters is not None:
             raise ValueError('You must provide a collector name.')
 
         if self._collector_name is not None:
             prepend += f"\r\n\r\nCollector: {self._collector_name}"
-        if self._collector_parameters is not None:
-            for param in self._collector_parameters.keys():
-                prepend += f"\r\n{param}: '{self._collector_parameters[param]}'"
+        if self.collector_parameters is not None:
+            for param in self.collector_parameters.keys():
+                prepend += f"\r\n{param}: '{self.collector_parameters[param]}'"
 
         return prepend
 
@@ -70,7 +70,7 @@ class CollectionData:
             "SourceHash": self._sourcehash
         }
 
-        for param, value in self._collector_parameters.items():
+        for param, value in self.collector_parameters.items():
             j[param] = value
 
         return json.dumps(j)
