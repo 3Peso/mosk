@@ -22,6 +22,8 @@ class LogFileProtocol(ProtocolBase):
         self._date = filedate
         self._protocolfilename = ''
         self._protocolfiletype = 'txt'
+        self._search_pattern = "*_{}_{}-{:0>2d}-{:0>2d}.{}".format(self._examiner, self._date.year, self._date.month,
+                                                                   self._date.day, self._protocolfiletype)
         self._protocolfilename = self.protocol_filename
 
         self._artefactlogger = logging.getLogger('LogFile Protocol Artefact')
@@ -45,10 +47,10 @@ class LogFileProtocol(ProtocolBase):
 
         currlogger.addHandler(filehandler)
 
-    def _get_current_file_counter(self):
+    @staticmethod
+    def _get_current_file_counter(searchpattern):
         nextcounter = 1
-        searchpattern = "*_{}_{}-{:0>2d}-{:0>2d}.{}".format(self._examiner, self._date.year, self._date.month,
-                                                            self._date.day, self._protocolfiletype)
+
         protocols = glob(searchpattern)
         protocols.sort()
         if len(protocols) > 0:
@@ -76,7 +78,8 @@ class LogFileProtocol(ProtocolBase):
                 name = f"{self._artifactid}_{self._examiner}_{self._date}.{self._protocolfiletype}"
             else:
                 name = "{:0>5d}_{}_{}.{}"\
-                    .format(self._get_current_file_counter(), self._examiner, self._date, self._protocolfiletype)
+                    .format(self._get_current_file_counter(self._search_pattern),
+                            self._examiner, self._date, self._protocolfiletype)
         else:
             name = self._protocolfilename
 
