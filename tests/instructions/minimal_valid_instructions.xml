@@ -1,0 +1,8 @@
+<Task>
+    <TaskHeader>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+        </Root>
+    </Instructions>
+</Task>

@@ -1,0 +1,14 @@
+<Task>
+    <TaskHeader>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <LocalHost module="source.localhost">
+                <!-- The placeholder name implies, that the data collected by the artefact should be
+                stored in memory for later use in following artefacts in the tree as parameters -->
+                <MachineName module="artefact.localhost.machineinformation" placeholdername="machinename" />
+                <MoreMetadata title="Machine Name">!@machinename@!</MoreMetadata>
+            </LocalHost>
+        </Root>
+    </Instructions>
+</Task>

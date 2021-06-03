@@ -42,18 +42,18 @@ class TestXmlParserInstructionspath(TestCase):
 
 
 class TestXmlParserValidate_schema(TestCase):
-    def test_validate_schema_valid_instructions(self):
+    def test__validate_schema_valid_instructions(self):
         """
         Should do nothing.
         """
         from instructionparsers.xmlparser import XmlParser
         try:
             XmlParser.XMLSCHEMA_PATH = '../instructionparsers/xmlparser.xsd'
-            XmlParser._validate_schema(xmlfilepath='./valid_instructions.xml')
+            XmlParser._validate_schema(xmlfilepath='./instructions/valid_instructions.xml')
         except XMLSchemaException:
             self.fail("_validate_schema should not raise exception with valid xml instructions.")
 
-    def test_validate_schema_invalid_instructions(self):
+    def test__validate_schema_invalid_instructions(self):
         """
         Should raise exception.
         """
@@ -61,8 +61,18 @@ class TestXmlParserValidate_schema(TestCase):
 
         XmlParser.XMLSCHEMA_PATH = '../instructionparsers/xmlparser.xsd'
         self.assertRaises(XMLSchemaException,
-                          XmlParser._validate_schema, './invalid_instructions.xml')
+                          XmlParser._validate_schema, './instructions/invalid_instructions.xml')
 
+    def test__validate_schema_minimal_valid_instructions(self):
+        """
+        Should do nothing.
+        """
+        from instructionparsers.xmlparser import XmlParser
+        try:
+            XmlParser.XMLSCHEMA_PATH = '../instructionparsers/xmlparser.xsd'
+            XmlParser._validate_schema(xmlfilepath='./instructions/minimal_valid_instructions.xml')
+        except XMLSchemaException:
+            self.fail("_validate_schema should not raise exception with valid xml instructions.")
 
 class TestXmlParserInitializemetadata(TestCase):
     @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
@@ -70,10 +80,10 @@ class TestXmlParserInitializemetadata(TestCase):
         """
         Should initialize member 'metadata' with all elements which have the attribute "title".
         """
-        metadata = ('Examiner', 'Assignment', 'Client', 'Description of Artefact', 'Task Description', 'Machine Name')
+        metadata = ('Examiner', 'Assignment', 'Client', 'Description of Artefact', 'Task Description')
         from instructionparsers.xmlparser import XmlParser
 
-        instructions = './valid_instructions.xml'
+        instructions = './instructions/valid_instructions.xml'
         xml_parser = XmlParser(instructionspath=instructions, protocol=None)
         xml_parser._instructionspath = instructions
         xml_parser._initializemetadata()
@@ -83,9 +93,24 @@ class TestXmlParserInitializemetadata(TestCase):
 
 
 class TestXmlParserInitInstructions(TestCase):
-    def test__init_instructions_valid_instructions(self):
+    @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
+    def test__init_instructions_valid_instructions(self, path_mock):
         """
-        Should initialize collectors for all XML elements which have the attribute "module". Elements without
-        "module" attribute should be ignored.
+        Should initialize collectors for all XML elements which have the attribute "module".
         """
-        self.fail()
+        from instructionparsers.xmlparser import XmlParser
+        from instructionparsers.wrapper import InstructionWrapper
+
+        instructions = './instructions/valid_instructions.xml'
+        xml_parser = XmlParser(instructionspath=instructions, protocol=None)
+
+        xml_parser._instructionspath = instructions
+        instructionstree = xml_parser._init_instructions()
+
+        self.assertIsInstance(instructionstree, InstructionWrapper)
+
+    def test__init_instrcutions_valid_instructions_with_none_module(self):
+        """
+        Xml elements with no attribute "module" should be ignored.
+        """
+        #self.fail()

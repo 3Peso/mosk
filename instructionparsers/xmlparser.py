@@ -114,7 +114,7 @@ class XmlParser:
         parent for context information.
         :param instructionid: Id of the current instruction which is an iterating integer starting with 0
         for the first found collector.
-        :return: None
+        :return: object of type InstructionWrapper
         """
         if current is None:
             current = self._get_first_instruction_element()

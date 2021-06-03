@@ -22,7 +22,6 @@
                 <!-- The placeholder name implies, that the data collected by the artefact should be
                 stored in memory for later use in following artefacts in the tree as parameters -->
                 <MachineName module="artefact.localhost.machineinformation" placeholdername="machinename" />
-                <MoreMetadata title="Machine Name">!@machinename@!</MoreMetadata>
             </LocalHost>
             <!--Problem is, the machinename will not be replaced because the machine name is only collected
             at collection phase not initializition phase. So there must be a mechanism which automatically looks
@@ -33,7 +32,8 @@
                 <OSName module="artefact.localhost.osinformation" />
                 <OSVersion module="artefact.localhost.osinformation" />
                 <OSTimezone module="artefact.localhost.osinformation" />
-                <AllUsernames module="artefact.localhost.user" properties="pw_name,pw_gecos,pw_dir" />
+                <AllUsernames module="artefact.localhost.user" properties="pw_name,pw_gecos,pw_dir"
+                              users_with_homedir="True" />
                 <CurrentUser module="artefact.localhost.user" />
                 <SudoVersion module="artefact.localhost.osinformation"
                              description="According to CVE-2021-3156 the versions 1.7.7 through 1.7.10p9, 1.8.2 through 1.8.31p2,&#xD;&#xA;and 1.9.0 through 1.9.5p are vulnurable to get root level access if you have access to the machine."
