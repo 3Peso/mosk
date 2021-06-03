@@ -181,3 +181,31 @@ class TestXmlParserGetFirstInstructionElement(TestCase):
 
         self.assertIsInstance(element, Element)
         self.assertEqual(element.localName, 'Root')
+
+
+class TestXmlParser(TestCase):
+    def test__get_placeholder_name(self):
+        """
+        If XmlElement contains attribute "placeholder" method should return value of this attribute.
+        """
+        from instructionparsers.xmlparser import XmlParser
+        from xml.dom.minidom import Element, Document
+
+        document = Document()
+        element = document.createElement('Demo')
+        element.setAttribute(XmlParser.PLACEHOLDERNAME_ATTRIBUTE, "test")
+        result = XmlParser._get_placeholder_name(element)
+
+        self.assertEqual(result, 'test')
+
+    def test__get_placeholder_name_no_placeholder(self):
+        """
+        If XmlElement does not contain attribute "placeholder" method should return an empty string.
+        """
+        from instructionparsers.xmlparser import XmlParser
+        from xml.dom.minidom import Element
+
+        element = Element('Demo')
+        result = XmlParser._get_placeholder_name(element)
+
+        self.assertEqual(result, '')
