@@ -18,7 +18,7 @@
     </TaskHeader>
     <Instructions>
         <Root module="source.root">
-            <EWFImage module="source.image" filepath="./SomeEWFImage.e01" imagetype="ewf">
+            <EWFImage module="source.ewfimage" filepath="./SomeEWFImage.e01" imagetype="ewf">
                 <FolderInformation module="artefact.image.system" folder="/" />
             </EWFImage>
         </Root>
