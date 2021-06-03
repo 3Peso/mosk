@@ -106,6 +106,16 @@ class XmlParser:
 
     def _init_instructions(self, current: Element = None, parentinstruction=None,
                            instructionid: int = 0):
+        """
+        Parses the instructions xml file and initializes the artefact collectors in memory.
+        Artefact xml elements need to have the attribute "module". If not, they are been ignored.
+        :param current: Current xml element. Needed for recursive traversal.
+        :param parentinstruction: Parent to be stored for current so later the collector can call back
+        parent for context information.
+        :param instructionid: Id of the current instruction which is an iterating integer starting with 0
+        for the first found collector.
+        :return: None
+        """
         if current is None:
             current = self._get_first_instruction_element()
 

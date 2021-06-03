@@ -66,7 +66,10 @@ class TestXmlParserValidate_schema(TestCase):
 
 class TestXmlParserInitializemetadata(TestCase):
     @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
-    def test__initializemetadata_should_initialize_examiner(self, path_mock):
+    def test__initializemetadata_valid_instructions(self, path_mock):
+        """
+        Should initialize member 'metadata' with all elements which have the attribute "title".
+        """
         metadata = ('Examiner', 'Assignment', 'Client', 'Description of Artefact', 'Task Description', 'Machine Name')
         from instructionparsers.xmlparser import XmlParser
 
@@ -77,3 +80,12 @@ class TestXmlParserInitializemetadata(TestCase):
         for data in metadata:
             with self.subTest(data):
                 self.assertIsNotNone(xml_parser.metadata[data])
+
+
+class TestXmlParserInitInstructions(TestCase):
+    def test__init_instructions_valid_instructions(self):
+        """
+        Should initialize collectors for all XML elements which have the attribute "module". Elements without
+        "module" attribute should be ignored.
+        """
+        self.fail()
