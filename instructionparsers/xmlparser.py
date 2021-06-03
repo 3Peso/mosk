@@ -146,6 +146,10 @@ class XmlParser:
         return instructionwrapper
 
     def _get_first_instruction_element(self):
+        """
+        Parse the xml instructions file and search for the "Instructions" xml element.
+        :return: XmlElement
+        """
         # The first element in the xml branch could be a text element, if there
         # where new lines before the first tag starts.
         nodes = parse(self._instructionspath).getElementsByTagName(XmlParser.INSTRUCTIONS_ELEMENT)[0].childNodes

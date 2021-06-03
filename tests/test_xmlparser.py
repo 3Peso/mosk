@@ -74,6 +74,7 @@ class TestXmlParserValidate_schema(TestCase):
         except XMLSchemaException:
             self.fail("_validate_schema should not raise exception with valid xml instructions.")
 
+
 class TestXmlParserInitializemetadata(TestCase):
     @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
     def test__initializemetadata_valid_instructions(self, path_mock):
@@ -160,3 +161,23 @@ class TestXmlParserInitInstructions(TestCase):
                          'TimeFromNTPServer')
         self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[14].instructionname,
                          'LocalTime')
+
+
+class TestXmlParserGetFirstInstructionElement(TestCase):
+    @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
+    def test__get_first_instruction_element(self, path_mock):
+        """
+        Should return the xml element with the title "Root".
+        """
+        from instructionparsers.xmlparser import XmlParser
+        from xml.dom.minidom import Element
+        from instructionparsers.wrapper import InstructionWrapper
+
+        instructions = './instructions/valid_instructions.xml'
+        xml_parser = XmlParser(instructionspath=instructions, protocol=None)
+
+        xml_parser._instructionspath = instructions
+        element = xml_parser._get_first_instruction_element()
+
+        self.assertIsInstance(element, Element)
+        self.assertEqual(element.localName, 'Root')
