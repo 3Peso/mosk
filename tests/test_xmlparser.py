@@ -1,5 +1,6 @@
 from unittest import TestCase
 from unittest.mock import patch
+from xmlschema import XMLSchemaException
 
 
 class TestXmlParser(TestCase):
@@ -38,3 +39,24 @@ class TestXmlParser(TestCase):
         isfile_mock.return_value = False
         with self.assertRaises(FileNotFoundError):
             xml_parser.instructionspath = expected_file
+
+    def test_validate_schema_valid_instructions(self):
+        """
+        Should do nothing.
+        """
+        from instructionparsers.xmlparser import XmlParser
+        try:
+            XmlParser.XMLSCHEMA_PATH = '../instructionparsers/xmlparser.xsd'
+            XmlParser._validate_schema(xmlfilepath='./valid_instructions.xml')
+        except XMLSchemaException:
+            self.fail("_validate_schema should not raise exception with valid xml instructions.")
+
+    def test_validate_schema_invalid_instructions(self):
+        """
+        Should raise exception.
+        """
+        from instructionparsers.xmlparser import XmlParser
+
+        XmlParser.XMLSCHEMA_PATH = '../instructionparsers/xmlparser.xsd'
+        self.assertRaises(XMLSchemaException,
+            XmlParser._validate_schema, './invalid_instructions.xml')

@@ -1,0 +1,60 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Assignment">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Client">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Description of Artefact">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Task Description">
+            What is the key data of the artefact being examined?
+        </taskdescription>
+    </TaskHeader>
+    <Instruction>
+        <Root module="source.root">
+            <LocalHost module="source.localhost">
+                <!-- The placeholder name implies, that the data collected by the artefact should be
+                stored in memory for later use in following artefacts in the tree as parameters -->
+                <MachineName module="artefact.localhost.machineinformation" placeholdername="machinename" />
+            </LocalHost>
+            <!--Problem is, the machinename will not be replaced because the machine name is only collected
+            at collection phase not initializition phase. So there must be a mechanism which automatically looks
+            up correct placeholder values on collection phase, too. This can be hooked in in the wrapper class object.
+            Only requirement in this case would be, that the machinename can only be looked up, after the collection
+            of the above "MachineName" artefact has taken place.-->
+            <LocalHost path="!@machinename@!" module="source.localhost">
+                <OSName module="artefact.localhost.osinformation" />
+                <OSVersion module="artefact.localhost.osinformation" />
+                <OSTimezone module="artefact.localhost.osinformation" />
+                <AllUsernames module="artefact.localhost.user" properties="pw_name,pw_gecos,pw_dir" />
+                <CurrentUser module="artefact.localhost.user" />
+                <SudoVersion module="artefact.localhost.osinformation"
+                             description="According to CVE-2021-3156 the versions 1.7.7 through 1.7.10p9, 1.8.2 through 1.8.31p2,&#xD;&#xA;and 1.9.0 through 1.9.5p are vulnurable to get root level access if you have access to the machine."
+                             description-url="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3156" />
+                <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.json"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.plist"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/agent.sh"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="~/Library/._insu"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/l" />
+                <ShellHistoryOfAllUsers module="artefact.localhost.file" />
+                <NVRAMCollector module="artefact.localhost.system" />
+                <TimeFromNTPServer module="artefact.network.system" />
+                <LocalTime module="artefact.localhost.system" />
+            </LocalHost>
+        </Root>
+    </Instruction>
+</Task>
