@@ -3,7 +3,7 @@ from unittest.mock import patch
 from xmlschema import XMLSchemaException
 
 
-class TestXmlParser(TestCase):
+class TestXmlParserInstructionspath(TestCase):
     @patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders')
     @patch('instructionparsers.xmlparser.XmlParser._init_instructions')
     @patch('instructionparsers.xmlparser.path.isfile')
@@ -40,6 +40,8 @@ class TestXmlParser(TestCase):
         with self.assertRaises(FileNotFoundError):
             xml_parser.instructionspath = expected_file
 
+
+class TestXmlParserValidate_schema(TestCase):
     def test_validate_schema_valid_instructions(self):
         """
         Should do nothing.
@@ -59,4 +61,19 @@ class TestXmlParser(TestCase):
 
         XmlParser.XMLSCHEMA_PATH = '../instructionparsers/xmlparser.xsd'
         self.assertRaises(XMLSchemaException,
-            XmlParser._validate_schema, './invalid_instructions.xml')
+                          XmlParser._validate_schema, './invalid_instructions.xml')
+
+
+class TestXmlParserInitializemetadata(TestCase):
+    @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
+    def test__initializemetadata_should_initialize_examiner(self, path_mock):
+        metadata = ('Examiner', 'Assignment', 'Client', 'Description of Artefact', 'Task Description', 'Machine Name')
+        from instructionparsers.xmlparser import XmlParser
+
+        instructions = './valid_instructions.xml'
+        xml_parser = XmlParser(instructionspath=instructions, protocol=None)
+        xml_parser._instructionspath = instructions
+        xml_parser._initializemetadata()
+        for data in metadata:
+            with self.subTest(data):
+                self.assertIsNotNone(xml_parser.metadata[data])

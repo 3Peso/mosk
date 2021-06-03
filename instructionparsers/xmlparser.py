@@ -73,11 +73,24 @@ class XmlParser:
 
     @classmethod
     def _validate_schema(cls, xmlfilepath: str):
+        """
+        Validates the given xml file against the instructions xml schema. Throws an
+        XmlSchemaException if something is wrong with the xml file with regards to the
+        enforced schema.
+        :param xmlfilepath: Path to the xml file to be validated.
+        :return: None
+        """
         XmlParser._logger.info(f"Validating '{xmlfilepath}' against xml schema '{XmlParser.XMLSCHEMA_PATH}'...")
         schema = xmlschema.XMLSchema(XmlParser.XMLSCHEMA_PATH)
         schema.validate(xmlfilepath)
 
     def _initializemetadata(self, current: Element = None):
+        """
+        Parse the complete instructions file recursevly and look for elements with the "title" attribute.
+        These elements are the task metadata which is stored in memory by this method.
+        :param current: Current xml element to be checked for "title" attribute.
+        :return: None
+        """
         if current is None:
             current = parse(self._instructionspath).documentElement
 
