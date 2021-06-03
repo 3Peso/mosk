@@ -109,8 +109,54 @@ class TestXmlParserInitInstructions(TestCase):
 
         self.assertIsInstance(instructionstree, InstructionWrapper)
 
-    def test__init_instrcutions_valid_instructions_with_none_module(self):
+    @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
+    def test__init_instructions_valid_instructions(self, path_mock):
         """
-        Xml elements with no attribute "module" should be ignored.
+        Should return the instruction tree starting with "Root" node.
         """
-        #self.fail()
+        from instructionparsers.xmlparser import XmlParser
+        from instructionparsers.wrapper import InstructionWrapper
+
+        instructions = './instructions/valid_instructions.xml'
+        xml_parser = XmlParser(instructionspath=instructions, protocol=None)
+
+        xml_parser._instructionspath = instructions
+        instructionstree = xml_parser._init_instructions()
+
+        self.assertEqual(instructionstree.instructionname,
+                         'Root')
+        self.assertEqual(instructionstree.instructionchildren[0].instructionname,
+                         'LocalHost')
+        self.assertEqual(instructionstree.instructionchildren[0].instructionchildren[0].instructionname,
+                         'MachineName')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionname, 'LocalHost')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[0].instructionname,
+                         'OSName')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[1].instructionname,
+                         'OSVersion')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[2].instructionname,
+                         'OSTimezone')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[3].instructionname,
+                         'AllUsernames')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[4].instructionname,
+                         'CurrentUser')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[5].instructionname,
+                         'SudoVersion')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[6].instructionname,
+                         'FileExistence')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[7].instructionname,
+                         'FileExistence')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[8].instructionname,
+                         'FileExistence')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[9].instructionname,
+                         'FileExistence')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[10].instructionname,
+                         'FileExistence')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[11].instructionname,
+                         'ShellHistoryOfAllUsers')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[12].instructionname,
+                         'NVRAMCollector')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[13].instructionname,
+                         'TimeFromNTPServer')
+        self.assertEqual(instructionstree.instructionchildren[1].instructionchildren[14].instructionname,
+                         'LocalTime')

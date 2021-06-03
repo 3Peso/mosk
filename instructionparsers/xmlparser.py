@@ -122,10 +122,12 @@ class XmlParser:
         # TODO Implement a way to create source objects so that they also get their path attribute.
         currentinstruction = getattr(importlib.import_module(current.attributes[XmlParser.MODULE_ATTRIBUTE].nodeValue),
                                      current.tagName)(parent=parentinstruction,
-                                                      parameters=XmlParser._get_parameter_attributes(current.attributes))
+                                    parameters=XmlParser._get_parameter_attributes(current.attributes))
+
         currentinstruction.protocol = self._protocol
 
-        instructionwrapper = InstructionWrapper(instruction=currentinstruction, parentinstrutction=parentinstruction,
+        instructionwrapper = InstructionWrapper(instruction=currentinstruction,
+                                                parentinstrutction=parentinstruction,
                                                 instructionid=instructionid,
                                                 placeholdername=XmlParser._get_placeholder_name(current))
 
