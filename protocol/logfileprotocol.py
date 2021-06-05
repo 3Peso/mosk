@@ -62,7 +62,11 @@ class LogFileProtocol(ProtocolBase):
 
     def _write_protocol_entry(self, entryheader, entrydata):
         entry = LogFileProtocol._prepare_protocol_entry(entryheader=entryheader, entrydata=entrydata)
-        self._messagelogger.info(entry)
+        self._write(entry)
+        return
+
+    def _write(self, data):
+        self._write_protocol_entry(data)
         return
 
     @classmethod
@@ -81,7 +85,6 @@ class LogFileProtocol(ProtocolBase):
     def _get_header_seperator(cls, header):
         return '*' * len(header)
 
-    # TODO Think about adding a newline functions
     @property
     def protocol_filename(self):
         if self._protocolfilename == '':
