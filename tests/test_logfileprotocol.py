@@ -8,7 +8,7 @@ import re
 
 class TestLogFileProtocolFilename(TestCase):
     def tearDown(self) -> None:
-        filepattern = '^\d\d\d\d\d_tst_\d\d\d\d-\d\d-\d\d\.txt$'
+        filepattern = '^.*_tst_\d\d\d\d-\d\d-\d\d\.txt$'
         for f in os.listdir('.'):
             if re.search(filepattern, f):
                 os.remove(os.path.join('.', f))
@@ -134,6 +134,12 @@ class TestLogFileProtocolGetHeaderSeperator(TestCase):
 
 
 class TestLogFileProtocolWriteProtocolEntry(TestCase):
+    def tearDown(self) -> None:
+        filepattern = '^.*_tst_\d\d\d\d-\d\d-\d\d\.txt$'
+        for f in os.listdir('.'):
+            if re.search(filepattern, f):
+                os.remove(os.path.join('.', f))
+
     @patch("protocol.logfileprotocol.LogFileProtocol._write")
     def test__write_protocol_entry(self, write_mock):
         """
@@ -150,6 +156,12 @@ class TestLogFileProtocolWriteProtocolEntry(TestCase):
 
 
 class TestLogFileProtocolSetTaskMetadata(TestCase):
+    def tearDown(self) -> None:
+        filepattern = '^.*_tst_\d\d\d\d-\d\d-\d\d\.txt$'
+        for f in os.listdir('.'):
+            if re.search(filepattern, f):
+                os.remove(os.path.join('.', f))
+
     @patch("protocol.logfileprotocol.LogFileProtocol._write")
     def test_set_task_metadata(self, write_mock):
         """
