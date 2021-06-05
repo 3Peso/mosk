@@ -60,15 +60,26 @@ class LogFileProtocol(ProtocolBase):
                     raise ValueError('You reached the limit of 99999 protocols. Delete old protocols.')
         return nextcounter
 
-    # TODO Refactor. The call currently is horrible
     def _write_protocol_entry(self, entryheader, entrydata):
-        if entryheader is not None and entryheader != '':
-            self._messagelogger.info('*' * len(entryheader))
-            self._messagelogger.info(entryheader)
-            self._messagelogger.info('*' * len(entryheader))
-        if entrydata is not None and entrydata != '':
-            self._artefactlogger.info(entrydata)
+        entry = LogFileProtocol._prepare_protocol_entry(entryheader=entryheader, entrydata=entrydata)
+        self._messagelogger.info(entry)
         return
+
+    @classmethod
+    def _prepare_protocol_entry(cls, entryheader, entrydata):
+        entry = ""
+        if entryheader is not None and entryheader != '':
+            entry = \
+                f"{LogFileProtocol._get_header_seperator(entryheader)}\r\n" \
+                f"{entryheader}\r\n" \
+                f"{LogFileProtocol._get_header_seperator(entryheader)}\r\n"
+        if entrydata is not None and entrydata != '':
+            entry += f"{entrydata}\r\n"
+        return entry
+
+    @classmethod
+    def _get_header_seperator(cls, header):
+        return '*' * len(header)
 
     # TODO Think about adding a newline functions
     @property
