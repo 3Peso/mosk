@@ -4,7 +4,7 @@ from datetime import datetime
 from unittest import TestCase
 
 
-class TestCollectionData(TestCase):
+class TestCollectionDataGetCollectorInfoAsStr(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls._currentdir = os.getcwd()
@@ -69,6 +69,8 @@ class TestCollectionData(TestCase):
 
         self.assertEqual(actual, expected)
 
+
+class TestCollectionDataGetCollectorInfoAsStr(TestCase):
     def test_get_json(self):
         """
         :return: JSON object of data object
@@ -81,7 +83,6 @@ class TestCollectionData(TestCase):
 
         self.assertIsNotNone(actual_json_string)
 
-    # TODO: Break down into smaller tests.
     def test_get_json(self):
         """
         :return: JSON object of data object
@@ -115,3 +116,36 @@ class TestCollectionData(TestCase):
         self.assertEqual(actual_json['SourceHash'], expected_sourcehash)
         self.assertEqual(actual_json['param1'], expected_collector_params['param1'])
         self.assertEqual(actual_json['param2'], expected_collector_params['param2'])
+
+
+class TestCollectionDataDunderStr(TestCase):
+    def test___str__(self):
+        self.fail()
+
+    def test___str__no_data(self):
+        self.fail()
+
+
+class TestCollectionDataSaveAsMd5(TestCase):
+    def test_save_as_md5_data_smaller_than_4k(self):
+        self.fail()
+
+    def test_save_as_md5_data_zero(self):
+        self.fail()
+
+    def test_save_as_md5_bigger_than_4k(self):
+        self.fail()
+
+
+class TestCollectionDataSourcePath(TestCase):
+    def test_sourcepath(self):
+        self.fail()
+
+    def test_sourcepath_does_not_exist(self):
+        self.fail()
+
+    def test_sourcepath_file_zero(self):
+        self.fail()
+
+    def test_sourcepath_file_not_accessible(self):
+        self.fail()
