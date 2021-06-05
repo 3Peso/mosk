@@ -74,6 +74,9 @@ class Collector:
     def _collect_and_document(self, artefact: ArtefactBase, callpath: str):
         # The following implicitly calls ArtefactBase.collect() because
         # ArtefactBase implements __call__.
+        # Supress exeptions during collect because we never know what may go wrong.
+        # If something goes wrong, there will be nothing collected, but it will be logged
+        # that the collection for the collector was not able to collect the data.
         with suppress(BaseException):
             artefact()
             Collector._logger.debug(f"{callpath} - collected data")
