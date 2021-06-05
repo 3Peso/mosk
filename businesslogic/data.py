@@ -93,7 +93,6 @@ class CollectionData:
     def sourcepath(self):
         return self._sourcepath
 
-    # TODO more robust validation required
     @sourcepath.setter
     def sourcepath(self, value):
         if value is not None and os.path.exists(value):
