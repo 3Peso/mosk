@@ -166,6 +166,11 @@ class XmlParser:
 
     @classmethod
     def _get_placeholder_name(cls, current: Element):
+        """
+        Returns the value of the attribute "placeholder" of a given xml elmenet.
+        :param current:
+        :return:
+        """
         placeholdername = ''
         if cls.PLACEHOLDERNAME_ATTRIBUTE in current.attributes.keys():
             placeholdername = current.attributes[cls.PLACEHOLDERNAME_ATTRIBUTE].nodeValue
@@ -173,6 +178,12 @@ class XmlParser:
 
     @classmethod
     def _get_parameter_attributes(cls, attributes: NamedNodeMap) -> UserDict:
+        """
+        Creates a dictionary object of xml element attributes of the given xml element, which are
+        not reserved for special usage.
+        :param attributes:
+        :return:
+        """
         """Stores attributes of xml element in user dictionary, als long as they are not
         in the set of reserved attributes with special meaning."""
         parameters = UserDict()

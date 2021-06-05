@@ -1,6 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 from xmlschema import XMLSchemaException
+from xml.dom.minidom import Element, Document, parse
 
 
 class TestXmlParserInstructionspath(TestCase):
@@ -116,7 +117,6 @@ class TestXmlParserInitInstructions(TestCase):
         Should return the instruction tree starting with "Root" node.
         """
         from instructionparsers.xmlparser import XmlParser
-        from instructionparsers.wrapper import InstructionWrapper
 
         instructions = './instructions/valid_instructions.xml'
         xml_parser = XmlParser(instructionspath=instructions, protocol=None)
@@ -170,8 +170,6 @@ class TestXmlParserGetFirstInstructionElement(TestCase):
         Should return the xml element with the title "Root".
         """
         from instructionparsers.xmlparser import XmlParser
-        from xml.dom.minidom import Element
-        from instructionparsers.wrapper import InstructionWrapper
 
         instructions = './instructions/valid_instructions.xml'
         xml_parser = XmlParser(instructionspath=instructions, protocol=None)
@@ -189,7 +187,6 @@ class TestXmlParser(TestCase):
         If XmlElement contains attribute "placeholder" method should return value of this attribute.
         """
         from instructionparsers.xmlparser import XmlParser
-        from xml.dom.minidom import Element, Document
 
         document = Document()
         element = document.createElement('Demo')
@@ -203,9 +200,56 @@ class TestXmlParser(TestCase):
         If XmlElement does not contain attribute "placeholder" method should return an empty string.
         """
         from instructionparsers.xmlparser import XmlParser
-        from xml.dom.minidom import Element
+        #from xml.dom.minidom import Element
 
         element = Element('Demo')
         result = XmlParser._get_placeholder_name(element)
 
         self.assertEqual(result, '')
+
+
+class TestXmlParserGetParameterAttributes(TestCase):
+    @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
+    def test__get_parameter_attributes_return_userdict(self, path_mock):
+        """
+        Should return UserDict
+        """
+        from instructionparsers.xmlparser import XmlParser
+        from collections import UserDict
+
+        elem = parse("./instructions/instructions_stub.xml").documentElement.childNodes[1]
+
+        actual = XmlParser._get_parameter_attributes(attributes=elem.attributes)
+
+        self.assertIsInstance(actual, UserDict)
+
+    @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
+    def test__get_parameter_attributes_return_userdict_with_2_entries(self, path_mock):
+        """
+        Should return dict with two entries
+        """
+        from instructionparsers.xmlparser import XmlParser
+        from collections import UserDict
+
+        elem = parse("./instructions/instructions_stub.xml").documentElement.childNodes[1]
+
+        actual = XmlParser._get_parameter_attributes(attributes=elem.attributes)
+
+        self.assertEqual(len(actual), 2)
+
+    @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
+    def test__get_parameter_attributes_should_return_none_special_attributes(self, path_mock):
+        """
+        Should return dicitionry with "users_with_homedir" key and with "properties" key.
+        """
+        from instructionparsers.xmlparser import XmlParser
+        from collections import UserDict
+
+        elem = parse("./instructions/instructions_stub.xml").documentElement.childNodes[1]
+
+        actual = XmlParser._get_parameter_attributes(attributes=elem.attributes)
+
+        self.assertIsNotNone(actual.get("properties"))
+        self.assertIsNotNone(actual.get("users_with_homedir"))
+
+

@@ -1,0 +1,4 @@
+<Task>
+    <AllUsernames module="artefact.localhost.user" properties="pw_name,pw_gecos,pw_dir" users_with_homedir="True"
+                  title="Some Title" placeholdername="someplaceholder"/>
+</Task>
