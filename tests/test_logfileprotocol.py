@@ -1,11 +1,12 @@
 from unittest import TestCase
 from unittest.mock import patch
 from datetime import date
+from collections import OrderedDict
 import os
 import re
 
 
-class TestLogFileProtocolFilenameCounter(TestCase):
+class TestLogFileProtocolFilename(TestCase):
     def tearDown(self) -> None:
         filepattern = '^\d\d\d\d\d_tst_\d\d\d\d-\d\d-\d\d\.txt$'
         for f in os.listdir('.'):
@@ -26,6 +27,30 @@ class TestLogFileProtocolFilenameCounter(TestCase):
         counter_mock.return_value = 2
         actual_log_file_protocol_writer = LogFileProtocol(examiner=actual_tester, filedate=self.actual_filedate)
         expected_log_file_name = "00002_tst_2020-05-26.txt"
+
+        self.assertEqual(expected_log_file_name, actual_log_file_protocol_writer.protocol_filename)
+
+    def test_protocol_filename_empty(self):
+        """
+        Should return 00001_tst_2020-05-26.txt
+        """
+        from protocol.logfileprotocol import LogFileProtocol
+        actual_examiner = "tst"
+        actual_log_file_protocol_writer = LogFileProtocol(examiner=actual_examiner, filedate=self.actual_filedate)
+        expected_log_file_name = "00001_tst_2020-05-26.txt"
+
+        self.assertEqual(expected_log_file_name, actual_log_file_protocol_writer.protocol_filename)
+
+    def test_protocol_filename_with_artefactid(self):
+        """
+        Should return 1.2.3.4_tst_2020-05-26.txt
+        :return:
+        """
+        from protocol.logfileprotocol import LogFileProtocol
+        actual_examiner = "tst"
+        actual_log_file_protocol_writer = LogFileProtocol(examiner=actual_examiner, filedate=self.actual_filedate,
+                                                          artifactid="1.2.3.4")
+        expected_log_file_name = "1.2.3.4_tst_2020-05-26.txt"
 
         self.assertEqual(expected_log_file_name, actual_log_file_protocol_writer.protocol_filename)
 
@@ -106,3 +131,41 @@ class TestLogFileProtocolGetHeaderSeperator(TestCase):
         actual_seperator = LogFileProtocol._get_header_seperator(actual_data)
 
         self.assertEqual(expected_seperator, actual_seperator)
+
+
+class TestLogFileProtocolWriteProtocolEntry(TestCase):
+    @patch("protocol.logfileprotocol.LogFileProtocol._write")
+    def test__write_protocol_entry(self, write_mock):
+        """
+        Should call _write with "test data"
+        """
+        from protocol.logfileprotocol import LogFileProtocol
+
+        actual_data = "test data"
+        actual_logfileprotocol = LogFileProtocol(examiner="tst")
+        actual_logfileprotocol._write_protocol_entry(entrydata=actual_data, entryheader=None)
+        expected_data = "test data\r\n"
+
+        self.assertEqual(expected_data, write_mock.call_args[0][0])
+
+
+class TestLogFileProtocolSetTaskMetadata(TestCase):
+    @patch("protocol.logfileprotocol.LogFileProtocol._write")
+    def test_set_task_metadata(self, write_mock):
+        """
+        Should call _write with "metadata1: data1\r\n" and "metadata2: data2\r\n"
+        """
+        from protocol.logfileprotocol import LogFileProtocol
+        from businesslogic.data import CollectionMetaData
+
+        metadata = OrderedDict()
+        metadata["metadata1"] = "data1"
+        metadata["metadata2"] = "data2"
+        actual_metadata = CollectionMetaData(metadata)
+        actual_logfileprotocol = LogFileProtocol(examiner="tst")
+        expected_data1 = "metadata1: data1\r\n"
+        expected_data2 = "metadata2: data2\r\n"
+        actual_logfileprotocol.set_task_metadata(metadata=actual_metadata)
+
+        self.assertEqual(expected_data1, write_mock.call_args_list[0].args[0])
+        self.assertEqual(expected_data2, write_mock.call_args_list[1].args[0])
