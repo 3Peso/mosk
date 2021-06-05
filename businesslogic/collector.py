@@ -59,6 +59,7 @@ class Collector:
         for child in current_instruction.instructionchildren:
             self._collect_from_instrcutions(child, callpath)
 
+        # Artefacts do implement the method '_collect'.
         if '_collect' in dir(current_instruction.instruction):
             self._collect_and_document(current_instruction.instruction, callpath=callpath)
 
