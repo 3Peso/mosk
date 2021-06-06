@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from businesslogic.support import str_to_bool, get_collector_resources, format_bytes
+from businesslogic.support import str_to_bool, get_collector_resources, format_bytes, md5
 
 
 class TestSupportStrToBool(TestCase):
@@ -92,19 +92,53 @@ class TestFormatBytes(TestCase):
 
 class TestMd5(TestCase):
     def test_md5_with_file_shorter_than_4k(self):
-        pass
+        """
+        Should return hash 0db7d1adf349b912f612c9be06278706
+        """
+        expected_hash = "0db7d1adf349b912f612c9be06278706"
+        actual_hash = md5(fpath="./testfiles/test.txt")
+
+        self.assertEqual(expected_hash, actual_hash)
 
     def test_md5_with_file_longer_than_4k(self):
-        pass
+        """
+        Should return hash 23de9120d4b70ba8cb3f0a980bb6c039
+        """
+        expected_hash = "23de9120d4b70ba8cb3f0a980bb6c039"
+        actual_hash = md5(fpath="./testfiles/longtext.txt")
+
+        self.assertEqual(expected_hash, actual_hash)
 
     def test_md5_with_file_of_length_zero(self):
-        pass
+        """
+        Should return hash d41d8cd98f00b204e9800998ecf8427e
+        """
+        expected_hash = "d41d8cd98f00b204e9800998ecf8427e"
+        actual_hash = md5(fpath="./testfiles/empty.txt")
+
+        self.assertEqual(expected_hash, actual_hash)
 
     def test_md5_with_string_shorter_than_4k(self):
-        pass
+        """
+        Should return hash eb733a00c0c9d336e65691a37ab54293
+        """
+        expected_hash = "eb733a00c0c9d336e65691a37ab54293"
+        actual_hash = md5(data="test data")
+
+        self.assertEqual(expected_hash, actual_hash)
 
     def test_md5_with_string_of_length_zero(self):
-        pass
+        """
+        Should return hash d41d8cd98f00b204e9800998ecf8427e
+        """
+        expected_hash = "d41d8cd98f00b204e9800998ecf8427e"
+        actual_hash = md5(data="")
+
+        self.assertEqual(expected_hash, actual_hash)
 
     def test_md5_with_string_and_with_file(self):
-        pass
+        """
+        Should raise ValueError.
+        """
+        with self.assertRaises(ValueError):
+            md5(data="data", fpath="./testfiles/empty.txt")

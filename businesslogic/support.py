@@ -81,12 +81,15 @@ def md5(fpath="", data=""):
     if fpath is not None and fpath != "" and data is not None and data != "":
         raise ValueError("You can only provide a file OR a data string to calculate the MD5 hash.")
 
+    logger = logging.getLogger(__name__)
     hash_md5 = hashlib.md5()
     if fpath is not None and fpath != "":
+        logger.debug(f"Calculating MD5 hash for '{fpath}'.")
         with open(fpath, "rb") as f:
             for chunk in iter(lambda: f.read(4096), b""):
                 hash_md5.update(chunk)
     elif data is not None and data != "":
+        logger.debug(f"Calculating MD5 hash for string '{data}'.")
         bvalue = data.encode('ascii')
         chunks = _chunkstring(bvalue, 4096)
         for chunk in chunks:
