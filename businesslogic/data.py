@@ -104,6 +104,8 @@ class CollectionData:
         if value is not None and os.path.exists(value):
             self._sourcehash = businesslogic.support.md5(value)
             self._sourcepath = value
+        else:
+            raise FileNotFoundError(f"{value}")
 
 
 class CollectionMetaData:

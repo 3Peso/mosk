@@ -207,34 +207,6 @@ class TestCollectionDataDunderStr(TestCase):
         self.assertEqual(expected_string, str(actual_data))
 
 class TestCollectionDataSaveAsMd5(TestCase):
-    def test_save_as_md5_data_smaller_than_4k(self):
-        """
-        Should store md5 hash 0db7d1adf349b912f612c9be06278706 in _sourcehash
-        """
-        from businesslogic.data import CollectionData
-
-        expected_checksum = "0db7d1adf349b912f612c9be06278706"
-        with open("./testfiles/test.txt") as data:
-            expected_data = data.read()
-        actual_data = CollectionData(data="")
-        actual_data.save_as_md5(expected_data)
-
-        self.assertEqual(expected_checksum, actual_data._sourcehash)
-
-    def test_save_as_md5_data_zero(self):
-        """
-        Should store md5 hash d41d8cd98f00b204e9800998ecf8427e in _sourcehash
-        """
-        from businesslogic.data import CollectionData
-
-        expected_checksum = "d41d8cd98f00b204e9800998ecf8427e"
-        with open("./testfiles/empty.txt") as data:
-            expected_data = data.read()
-        actual_data = CollectionData(data="")
-        actual_data.save_as_md5(expected_data)
-
-        self.assertEqual(expected_checksum, actual_data._sourcehash)
-
     def test_save_as_md5_bigger_than_4k(self):
         """
         Should store md5 hash 23de9120d4b70ba8cb3f0a980bb6c039 in _sourcehash
@@ -251,14 +223,43 @@ class TestCollectionDataSaveAsMd5(TestCase):
 
 
 class TestCollectionDataSourcePath(TestCase):
-    def test_sourcepath(self):
-        pass
+    def test_sourcepath_setter(self):
+        """
+        Should set _sourcepath and _sourcehash with the MD5 hash of the file provided for _sourcepath
+        """
+        from businesslogic.data import CollectionData
+
+        expected_hash = "23de9120d4b70ba8cb3f0a980bb6c039"
+        expected_path = "./testfiles/longtext.txt"
+        actual_data = CollectionData(data="")
+        actual_data.sourcepath = expected_path
+
+        self.assertEqual(expected_hash, actual_data._sourcehash)
+        self.assertEqual(expected_path, actual_data._sourcepath)
 
     def test_sourcepath_does_not_exist(self):
-        pass
+        """
+        Should raise FileNotFound error.
+        """
+        from businesslogic.data import CollectionData
+
+        expected_path = "./testfiles/longtex.txt"
+        actual_data = CollectionData(data="")
+
+        with self.assertRaises(FileNotFoundError):
+            actual_data.sourcepath = expected_path
+
 
     def test_sourcepath_file_zero(self):
-        pass
+        """
+        Should set _sourcepath and _sourcehash with the MD5 hash of the file provided for _sourcepath
+        """
+        from businesslogic.data import CollectionData
 
-    def test_sourcepath_file_not_accessible(self):
-        pass
+        expected_hash = "d41d8cd98f00b204e9800998ecf8427e"
+        expected_path = "./testfiles/empty.txt"
+        actual_data = CollectionData(data="")
+        actual_data.sourcepath = expected_path
+
+        self.assertEqual(expected_hash, actual_data._sourcehash)
+        self.assertEqual(expected_path, actual_data._sourcepath)
