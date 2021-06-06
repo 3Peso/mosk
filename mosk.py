@@ -33,8 +33,8 @@ if __name__ == '__main__':
         if opt in ('-i', '--instructions'):
             instructionsfile = arg
         elif opt in ('-l', '--loglevel'):
-            if arg in LOG_LEVEL.keys():
-                logging.basicConfig(level=LOG_LEVEL[arg], format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
+            if arg.upper() in LOG_LEVEL.keys():
+                logging.basicConfig(level=LOG_LEVEL[arg.upper()], format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
             else:
                 raise KeyError("'{}' not a valid log level.".format(arg))
         elif opt in ('-e', '--examiner'):
@@ -56,5 +56,5 @@ if __name__ == '__main__':
         print("The arguments 'instructionsfile', and 'examiner' are mandatory.")
         sys.exit(2)
     except FileNotFoundError:
-        print('Could not initialize parser.')
+        print(f"Could not initialize parser. Instructions file '{instructionsfile}' does not exist.")
         sys.exit(2)

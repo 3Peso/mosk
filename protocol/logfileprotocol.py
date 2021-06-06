@@ -66,7 +66,7 @@ class LogFileProtocol(ProtocolBase):
         return
 
     def _write(self, data):
-        self._write_protocol_entry(data)
+        self._messagelogger.info(data)
         return
 
     @classmethod
