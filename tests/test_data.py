@@ -208,13 +208,46 @@ class TestCollectionDataDunderStr(TestCase):
 
 class TestCollectionDataSaveAsMd5(TestCase):
     def test_save_as_md5_data_smaller_than_4k(self):
-        pass
+        """
+        Should store md5 hash 0db7d1adf349b912f612c9be06278706 in _sourcehash
+        """
+        from businesslogic.data import CollectionData
+
+        expected_checksum = "0db7d1adf349b912f612c9be06278706"
+        with open("./testfiles/test.txt") as data:
+            expected_data = data.read()
+        actual_data = CollectionData(data="")
+        actual_data.save_as_md5(expected_data)
+
+        self.assertEqual(expected_checksum, actual_data._sourcehash)
 
     def test_save_as_md5_data_zero(self):
-        pass
+        """
+        Should store md5 hash d41d8cd98f00b204e9800998ecf8427e in _sourcehash
+        """
+        from businesslogic.data import CollectionData
+
+        expected_checksum = "d41d8cd98f00b204e9800998ecf8427e"
+        with open("./testfiles/empty.txt") as data:
+            expected_data = data.read()
+        actual_data = CollectionData(data="")
+        actual_data.save_as_md5(expected_data)
+
+        self.assertEqual(expected_checksum, actual_data._sourcehash)
 
     def test_save_as_md5_bigger_than_4k(self):
-        pass
+        """
+        Should store md5 hash 23de9120d4b70ba8cb3f0a980bb6c039 in _sourcehash
+        """
+        from businesslogic.data import CollectionData
+
+        expected_checksum = "23de9120d4b70ba8cb3f0a980bb6c039"
+        with open("./testfiles/longtext.txt") as data:
+            expected_data = data.read()
+        actual_data = CollectionData(data="")
+        actual_data.save_as_md5(expected_data)
+
+        self.assertEqual(expected_checksum, actual_data._sourcehash)
 
 
 class TestCollectionDataSourcePath(TestCase):

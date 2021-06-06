@@ -14,9 +14,9 @@ class TestPlaceholder(TestCase):
     def test_set_globalplaceholderfile(self):
         """Set the global placeholder file and initialize the placeholders with the file content"""
         with patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders') as init_mock:
-            Placeholder.set_globalplaceholderfile('test.txt')
+            Placeholder.set_globalplaceholderfile('./testfiles/test.txt')
 
-            self.assertEqual(Placeholder._globalplaceholderfile, 'test.txt')
+            self.assertEqual(Placeholder._globalplaceholderfile, './testfiles/test.txt')
             init_mock.assert_called()
 
     def test_get_globalplaceholerfile(self):
