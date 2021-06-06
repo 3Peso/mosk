@@ -20,7 +20,10 @@ class CollectionData:
     as the path of the source file, if there is one,the colelction timestamp, and/or the MD5 hash of the collected data.
     """
     def __init__(self, data, currentdatetime=None, collector_name=None):
-        self.collecteddata = data
+        if data != "":
+            self.collecteddata = data
+        else:
+            self.collecteddata = "*No data collected*"
         self.currentdatetime = currentdatetime
         self._sourcehash = None
         self._sourcepath = None
@@ -32,34 +35,51 @@ class CollectionData:
         result = f'-- Collection Data     {"-" * 10}\r\n\r\n'
         result += f"{self.collecteddata}"
         result += f'\r\n\r\n-- Collection Metadata {"-" * 10}'
-        result = self.get_metadata_as_str(result)
-        result = self.get_collector_info_as_str(result)
-        result += f'\r\n\r\n{"-" * 33}\r\n'
+        result += f'\r\n\r\n{self.get_metadata_as_str()}'
+        result += f'\r\n{self.get_collector_info_as_str()}'
+        result += f'\r\n{"-" * 33}\r\n'
         return result
 
-    def get_metadata_as_str(self, prepend=''):
-        if prepend != '':
-            prepend = f"{prepend}\r\n"
+    #def get_metadata_as_str(self, prepend=''):
+    def get_metadata_as_str(self):
+        """
+        Returns all the collector metadata. This will be the timestamp the collector ran, and,
+        if provided by the collector, the md5 hash of the data, the collector collected, and, if provided
+        by the collector, the source file the collector used to collect the data.
+        :param prepend: Can be used to prepend additional information before the collector metadata.
+        :return:
+        """
+        #if prepend != '':
+        #    prepend = f"{prepend}\r\n"
+        metadata = ""
         if self.currentdatetime is not None:
-            prepend += f"\r\nCollection Time Stamp: {self.currentdatetime}"
+            metadata += f"\r\nCollection Time Stamp: {self.currentdatetime}"
         if self.sourcehash is not None:
-            prepend += f"\r\nSource MD5: {self.sourcehash}"
+            metadata += f"\r\nSource MD5: {self.sourcehash}"
         if self.sourcepath is not None:
-            prepend += f"\r\nSource path: {self.sourcepath}"
+            metadata += f"\r\nSource path: {self.sourcepath}"
 
-        return prepend
+        return metadata
 
-    def get_collector_info_as_str(self, prepend=''):
+    #def get_collector_info_as_str(self, prepend=''):
+    def get_collector_info_as_str(self):
+        """
+        Returns the collector name and the call parameters to run the collector in the first place
+        as string.
+        :param prepend: Can be used to prepend additional information befor the collector information.
+        :return:
+        """
         if self._collector_name is None and self.collector_parameters is not None:
             raise ValueError('You must provide a collector name.')
 
+        info = ""
         if self._collector_name is not None:
-            prepend += f"\r\n\r\nCollector: {self._collector_name}"
+            info += f"\r\n\r\nCollector: {self._collector_name}"
         if self.collector_parameters is not None:
             for param in self.collector_parameters.keys():
-                prepend += f"\r\n{param}: '{self.collector_parameters[param]}'"
+                info += f"\r\n{param}: '{self.collector_parameters[param]}'"
 
-        return prepend
+        return info
 
     def get_json(self):
         j = {
