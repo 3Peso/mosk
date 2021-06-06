@@ -30,7 +30,6 @@ class CollectionData:
         self._collector_name = collector_name
         self.collector_parameters = None
 
-    # TODO Rework metadata formatting
     def __str__(self):
         result = f'-- Collection Data     {"-" * 10}\r\n\r\n'
         result += f"{self.collecteddata}"
@@ -40,17 +39,12 @@ class CollectionData:
         result += f'\r\n{"-" * 33}\r\n'
         return result
 
-    #def get_metadata_as_str(self, prepend=''):
     def get_metadata_as_str(self):
         """
         Returns all the collector metadata. This will be the timestamp the collector ran, and,
         if provided by the collector, the md5 hash of the data, the collector collected, and, if provided
         by the collector, the source file the collector used to collect the data.
-        :param prepend: Can be used to prepend additional information before the collector metadata.
-        :return:
         """
-        #if prepend != '':
-        #    prepend = f"{prepend}\r\n"
         metadata = ""
         if self.currentdatetime is not None:
             metadata += f"\r\nCollection Time Stamp: {self.currentdatetime}"
@@ -61,13 +55,10 @@ class CollectionData:
 
         return metadata
 
-    #def get_collector_info_as_str(self, prepend=''):
     def get_collector_info_as_str(self):
         """
         Returns the collector name and the call parameters to run the collector in the first place
         as string.
-        :param prepend: Can be used to prepend additional information befor the collector information.
-        :return:
         """
         if self._collector_name is None and self.collector_parameters is not None:
             raise ValueError('You must provide a collector name.')
@@ -82,6 +73,9 @@ class CollectionData:
         return info
 
     def get_json(self):
+        """
+        Returns the json representation of the ColletorData object.
+        """
         j = {
             "CollectionTime": str(self.currentdatetime),
             "Data": str(self.collecteddata),
