@@ -70,17 +70,32 @@ def str_to_bool(boolstring):
 
 
 # From https://stackoverflow.com/questions/3431825/generating-an-md5-checksum-of-a-file
-def md5(fpath):
+def md5(fpath="", data=""):
     """
     Calculates the the MD5 hash of a file.
+    You can only provide a file path OR a data string, not both.
     :param fpath: Path of the file for which the MD5 hash is required.
+    :param data: Data string for which the MD5 hash should be calculated.
     :return: Returns the string representation of the MD5 hash.
     """
+    if fpath is not None and fpath != "" and data is not None and data != "":
+        raise ValueError("You can only provide a file OR a data string to calculate the MD5 hash.")
+
     hash_md5 = hashlib.md5()
-    with open(fpath, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
+    if fpath is not None and fpath != "":
+        with open(fpath, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_md5.update(chunk)
+    elif data is not None and data != "":
+        bvalue = data.encode('ascii')
+        chunks = _chunkstring(bvalue, 4096)
+        for chunk in chunks:
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
+
+def _chunkstring(string, length):
+    return (string[0 + i:length + i] for i in range(0, len(string), length))
 
 
 def get_collector_resources(resourcespath="./resources"):

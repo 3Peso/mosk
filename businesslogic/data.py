@@ -6,7 +6,6 @@ __author__ = '3Peso'
 __all__ = ['CollectionData', 'CollectionMetaData']
 
 import os
-import hashlib
 import json
 from collections import OrderedDict
 
@@ -94,18 +93,7 @@ class CollectionData:
         return self._sourcehash
 
     def save_as_md5(self, value: str):
-        hash_md5 = hashlib.md5()
-        # Only chunks of up to 4096 bytes can be crammed into an md5 hash. If they are longer
-        # you have to split the strings.
-        bvalue = value.encode('ascii')
-        chunks = CollectionData._chunkstring(bvalue, 4096)
-        for chunk in chunks:
-            hash_md5.update(chunk)
-        self._sourcehash = hash_md5.hexdigest()
-
-    @classmethod
-    def _chunkstring(cls, string, length):
-        return (string[0 + i:length + i] for i in range(0, len(string), length))
+        self._sourcehash = businesslogic.support.md5(data=value)
 
     @property
     def sourcepath(self):
