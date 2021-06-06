@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 from businesslogic.placeholders import Placeholder
 
 
-class TestPlaceholder(TestCase):
+class TestPlaceholderSetPlaceholderFile(TestCase):
     _placeholder_test_file = "placeholder_file_test.json"
 
     def setUp(self) -> None:
@@ -18,6 +18,13 @@ class TestPlaceholder(TestCase):
 
             self.assertEqual(Placeholder._globalplaceholderfile, './testfiles/test.txt')
             init_mock.assert_called()
+
+
+class TestPlaceholderGetPlaceholderFile(TestCase):
+    _placeholder_test_file = "placeholder_file_test.json"
+
+    def setUp(self) -> None:
+        Placeholder._globalplaceholderfile = Placeholder.GLOBAL_PLACEHOLDER_FILE_PATH
 
     def test_get_globalplaceholerfile(self):
         """Return the default placeholder file, if no placeholder file has been provided."""
@@ -33,6 +40,13 @@ class TestPlaceholder(TestCase):
         Placeholder.set_globalplaceholderfile(self._placeholder_test_file)
 
         self.assertEqual(Placeholder._globalplaceholderfile, self._placeholder_test_file)
+
+
+class TestPlaceholderGetPlaceholder(TestCase):
+    _placeholder_test_file = "placeholder_file_test.json"
+
+    def setUp(self) -> None:
+        Placeholder._globalplaceholderfile = Placeholder.GLOBAL_PLACEHOLDER_FILE_PATH
 
     def test_get_placeholder_from_testfile(self):
         """
@@ -62,6 +76,13 @@ class TestPlaceholder(TestCase):
         with self.assertRaises(KeyError):
             Placeholder.get_placeholder(nonexisting_placeholder)
 
+
+class TestPlaceholderCall(TestCase):
+    _placeholder_test_file = "placeholder_file_test.json"
+
+    def setUp(self) -> None:
+        Placeholder._globalplaceholderfile = Placeholder.GLOBAL_PLACEHOLDER_FILE_PATH
+
     def test__call__should_replace_placeholder_in_string(self):
         """Using the @Placeholder decorator on a function returing a string should replace placeholders in
         that string with the values stored in the placeholder dictionary."""
@@ -76,3 +97,26 @@ class TestPlaceholder(TestCase):
         actual_string = test_function()
 
         self.assertEqual(actual_string, expected_string)
+
+    def test__call__no_placeholders(self):
+        pass
+
+    def test__call__empty_string(self):
+        pass
+
+    def test__call__unkown_placeholder(self):
+        pass
+
+
+class TestPlaceholderReplacePlaceholders(TestCase):
+    def test_replace_placeholders(self):
+        pass
+
+    def test_replace_placeholders_no_placeholder(self):
+        pass
+
+    def test_replace_placeholders_empty_string(self):
+        pass
+
+    def test_replace_placeholders_unkwon_placeholder(self):
+        pass
