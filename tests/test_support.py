@@ -88,3 +88,23 @@ class TestFormatBytes(TestCase):
         expected = "1024.0TB"
 
         self.assertEqual(expected, format_bytes(size))
+
+
+class TestMd5(TestCase):
+    def test_md5_with_file_shorter_than_4k(self):
+        pass
+
+    def test_md5_with_file_longer_than_4k(self):
+        pass
+
+    def test_md5_with_file_of_length_zero(self):
+        pass
+
+    def test_md5_with_string_shorter_than_4k(self):
+        pass
+
+    def test_md5_with_string_of_length_zero(self):
+        pass
+
+    def test_md5_with_string_and_with_file(self):
+        pass
