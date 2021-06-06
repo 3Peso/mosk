@@ -1,8 +1,3 @@
-
-# Important Note
-
-This is a training project for me to learn Python. So please, be cautious and be patient.
-
 # mosk
 
 mosk is a short form for "macOS Kraken". Originally created as framework to collect artefacts from macOS images and machines running macOS. The framework is designed to be easyly extensible with additional collector classes.
