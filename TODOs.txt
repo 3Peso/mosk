@@ -9,7 +9,7 @@
 
 # FolderInformation must provide the partition index
 
-# Evaluate imagemounter to mount image for collecting data from images
+# Evaluate python imagemounter to mount image for collecting data from images
 
 # Collector to copy complete files
 
