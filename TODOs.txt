@@ -11,6 +11,8 @@
 
 # Evaluate imagemounter to mount image for collecting data from images
 
+# Use print function of macOS to print PDF exports of things like calendars, etc.
+
 # Collector to copy complete files
 
 # Collector to collect directory of file
