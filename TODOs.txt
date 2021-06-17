@@ -17,6 +17,8 @@
 
 # Collector to collect directory of file
 
+# Collector to execute a generic command and collect the output (for example the "find" command)
+
 # Preperations for portable usage (copy of bins, "compiled" version of tool, etc.)
 
 # Collector to search in log files (for example for the string "Starting automatic backup",
