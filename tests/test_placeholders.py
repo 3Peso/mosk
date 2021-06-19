@@ -87,7 +87,9 @@ class TestPlaceholderCall(TestCase):
         """Using the @Placeholder decorator on a function returing a string should replace placeholders in
         that string with the values stored in the placeholder dictionary."""
         Placeholder.set_globalplaceholderfile(self._placeholder_test_file)
-        string_with_placeholder = "This was it! !@client@! had enough. 'This has to end now!', !@client@! thought."
+        string_with_placeholder = f"This was it! {Placeholder.PLACEHOLDER_START}client{Placeholder.PLACEHOLDER_END} " \
+                                  f"had enough. 'This has to end now!', " \
+                                  f"{Placeholder.PLACEHOLDER_START}client{Placeholder.PLACEHOLDER_END} thought."
         expected_string = "This was it! Sgt Mustman had enough. 'This has to end now!', Sgt Mustman thought."
 
         @Placeholder
@@ -99,13 +101,90 @@ class TestPlaceholderCall(TestCase):
         self.assertEqual(actual_string, expected_string)
 
     def test__call__no_placeholders(self):
-        pass
+        """
+        Should to nothing with the text.
+        """
+        expected_string = "This is a string without a placeholder"
+
+        @Placeholder
+        def test_function():
+            return expected_string
+
+        actual_string = test_function()
+
+        self.assertEqual(expected_string, actual_string)
+
+    def test__call__only_rightmost_delimeter_of_a_placeholder(self):
+        """
+        Should do nothing with the text.
+        """
+        expected_string = f"This is a string without a placeholder{Placeholder.PLACEHOLDER_END}"
+
+        @Placeholder
+        def test_function():
+            return expected_string
+
+        actual_string = test_function()
+
+        self.assertEqual(expected_string, actual_string)
+
+    def test__call__only_leftmost_delimeter_of_a_placeholer(self):
+        """
+        Should do nothing with the text.
+        """
+        expected_string = f"This is a {Placeholder.PLACEHOLDER_START}string without a placeholder"
+
+        @Placeholder
+        def test_function():
+            return expected_string
+
+        actual_string = test_function()
+
+        self.assertEqual(expected_string, actual_string)
+
+    def test__call__left_and_right_delimeter_but_across_several_words(self):
+        """
+        Should do nothing with the text.
+        """
+        expected_string = f"This is a {Placeholder.PLACEHOLDER_START}string without a " \
+                          f"{Placeholder.PLACEHOLDER_END} placeholder"
+
+        @Placeholder
+        def test_function():
+            return expected_string
+
+        actual_string = test_function()
+
+        self.assertEqual(expected_string, actual_string)
+
+    def test__call__right_and_left_delimeter_in_wrong_order(self):
+        """
+        Should do nothing with the text.
+        """
+        expected_string = f"This is a {Placeholder.PLACEHOLDER_END}string{Placeholder.PLACEHOLDER_START} " \
+                          f"without a placeholder"
+
+        @Placeholder
+        def test_function():
+            return expected_string
+
+        actual_string = test_function()
+
+        self.assertEqual(expected_string, actual_string)
 
     def test__call__empty_string(self):
-        pass
+        """
+        Should to nothing with the text
+        """
+        expected_string = ""
 
-    def test__call__unkown_placeholder(self):
-        pass
+        @Placeholder
+        def test_function():
+            return expected_string
+
+        actual_string = test_function()
+
+        self.assertEqual(expected_string, actual_string)
 
 
 class TestPlaceholderReplacePlaceholders(TestCase):
