@@ -189,13 +189,47 @@ class TestPlaceholderCall(TestCase):
 
 class TestPlaceholderReplacePlaceholders(TestCase):
     def test_replace_placeholders(self):
-        pass
+        """
+        Should replace the placeholder inside the provided text, if the value for the placeholder has already been
+        defined.
+        """
+        string_with_placeholder = f"This is a string with " \
+                                  f"{Placeholder.PLACEHOLDER_START}placeholder{Placeholder.PLACEHOLDER_END}"
+        placeholder_value = "Yabubabba!"
+        Placeholder._instruction_placeholders["placeholder"] = placeholder_value
+        expected_string = f"This is a string with {placeholder_value}"
+
+        actual_string = Placeholder.replace_placeholders(string_with_placeholder)
+
+        self.assertEqual(expected_string, actual_string)
 
     def test_replace_placeholders_no_placeholder(self):
-        pass
+        """
+        Should do nothing.
+        """
+        expected_string = "This is a string with nothing"
+
+        actual_string = Placeholder.replace_placeholders(expected_string)
+
+        self.assertEqual(expected_string, actual_string)
 
     def test_replace_placeholders_empty_string(self):
-        pass
+        """
+        Should do nothing.
+        """
+        expected_string = ""
+
+        actual_string = Placeholder.replace_placeholders(expected_string)
+
+        self.assertEqual(expected_string, actual_string)
 
     def test_replace_placeholders_unkwon_placeholder(self):
-        pass
+        """
+        Should do nothing.
+        """
+        expected_string = f"This is a string with " \
+                                  f"{Placeholder.PLACEHOLDER_START}unkown{Placeholder.PLACEHOLDER_END}"
+
+        actual_string = Placeholder.replace_placeholders(expected_string)
+
+        self.assertEqual(expected_string, actual_string)
