@@ -237,15 +237,27 @@ class TestPlaceholderReplacePlaceholders(TestCase):
 
 class TestPlaceholderInitializeGlobalPlaceholders(TestCase):
     def test__initialize_global_placeholders(self):
-        pass
+        """
+        Should initialize the global placeholders dictionary with placeholders from json file.
+        """
+        self.fail()
 
 
 class TestPlaceholderUpdatePlaceholder(TestCase):
     def test_update_placeholder_with_new_placeholder(self):
-        pass
+        """
+        Should add the new placeholder to the global placeholders dicitionary.
+        """
+        self.fail()
 
     def test_update_placeholder_with_defined_placeholder(self):
-        pass
+        """
+        Should overwrite the placeholder already defined with the new value.
+        """
+        self.fail()
 
     def test_update_placeolder_with_value_which_contains_placeholder(self):
-        pass
+        """
+        Should raise a ValueError.
+        """
+        self.fail()

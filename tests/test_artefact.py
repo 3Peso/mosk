@@ -2,8 +2,7 @@ from unittest import TestCase, mock
 from unittest.mock import MagicMock, patch
 
 
-class TestArtefactBase(TestCase):
-
+class TestArtefactBaseDataSetter(TestCase):
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
     def test_data_setter(self):
         """
@@ -44,6 +43,8 @@ class TestArtefactBase(TestCase):
 
         self.assertEqual(len(artefact.data), 0)
 
+
+class TestArtefactBaseInitDescription(TestCase):
     @mock.patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', MagicMock())
     def test__init_description_properties_with_missing_resources(self):
         """
@@ -80,3 +81,17 @@ class TestArtefactBase(TestCase):
         self.assertEqual(artefact._title, 'CurrentUser')
         self.assertEqual(artefact._description, 'Collects the current user with the Python module getpass.')
         self.assertEqual(artefact._collectionmethod, 'getpass.getuser')
+
+
+class TestArtefactBaseCacheParameters(TestCase):
+    def test_cache_parameters_not_defined(self):
+        """
+        Should add the new placeholder to the global placeholders dictionary of Placeholders.
+        """
+        self.fail()
+
+    def test_cache_parameters_already_defined(self):
+        """
+        Should overwrite the placeholder in the global placeholders dictionary of Placeholders.
+        """
+        self.fail()
