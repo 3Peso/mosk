@@ -20,7 +20,7 @@ class TestPlaceholderSetPlaceholderFile(TestCase):
             init_mock.assert_called()
 
 
-class TestPlaceholderGetPlaceholderFile(TestCase):
+class TestPlaceholderGetGlobalPlaceholderFile(TestCase):
     _placeholder_test_file = "placeholder_file_test.json"
 
     def setUp(self) -> None:
@@ -228,8 +228,24 @@ class TestPlaceholderReplacePlaceholders(TestCase):
         Should do nothing.
         """
         expected_string = f"This is a string with " \
-                                  f"{Placeholder.PLACEHOLDER_START}unkown{Placeholder.PLACEHOLDER_END}"
+                          f"{Placeholder.PLACEHOLDER_START}unkown{Placeholder.PLACEHOLDER_END}"
 
         actual_string = Placeholder.replace_placeholders(expected_string)
 
         self.assertEqual(expected_string, actual_string)
+
+
+class TestPlaceholderInitializeGlobalPlaceholders(TestCase):
+    def test__initialize_global_placeholders(self):
+        pass
+
+
+class TestPlaceholderUpdatePlaceholder(TestCase):
+    def test_update_placeholder_with_new_placeholder(self):
+        pass
+
+    def test_update_placeholder_with_defined_placeholder(self):
+        pass
+
+    def test_update_placeolder_with_value_which_contains_placeholder(self):
+        pass
