@@ -342,3 +342,7 @@ Collection End
 **************
 2021-03-23 06:34:15.365227
 ```
+
+# REMINDER
+
+This is currently mostly a training project for me. After all, I am new to Python. Don't expect to much usefullness out of it until further notice ;-)
