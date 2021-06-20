@@ -88,10 +88,38 @@ class TestArtefactBaseCacheParameters(TestCase):
         """
         Should add the new placeholder to the global placeholders dictionary of Placeholders.
         """
-        self.fail()
+        from baseclasses.artefact import ArtefactBase
+        from businesslogic.placeholders import Placeholder
+
+        artefact = ArtefactBase(parent=None, parameters={})
+
+        expected_value = "value"
+        expected_attribute = "attribute"
+        artefact.cache_parameters({expected_attribute: expected_value})
+
+        try:
+            actual_value = Placeholder._instruction_placeholders[expected_attribute]
+            self.assertEqual(expected_value, actual_value)
+        except Exception:
+            self.fail()
 
     def test_cache_parameters_already_defined(self):
         """
         Should overwrite the placeholder in the global placeholders dictionary of Placeholders.
         """
-        self.fail()
+        from baseclasses.artefact import ArtefactBase
+        from businesslogic.placeholders import Placeholder
+
+        artefact = ArtefactBase(parent=None, parameters={})
+
+        expected_value = "value"
+        expected_attribute = "attribute"
+        Placeholder._instruction_placeholders[expected_attribute] = expected_value
+        expected_new_value = "new value"
+        artefact.cache_parameters({expected_attribute: expected_new_value})
+
+        try:
+            actual_value = Placeholder._instruction_placeholders[expected_attribute]
+            self.assertEqual(expected_new_value, actual_value)
+        except Exception:
+            self.fail()
