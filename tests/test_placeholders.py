@@ -236,11 +236,30 @@ class TestPlaceholderReplacePlaceholders(TestCase):
 
 
 class TestPlaceholderInitializeGlobalPlaceholders(TestCase):
+    _placeholder_test_file = "placeholder_file_test.json"
+
+    def setUp(self) -> None:
+        Placeholder._globalplaceholderfile = Placeholder.GLOBAL_PLACEHOLDER_FILE_PATH
+
     def test__initialize_global_placeholders(self):
         """
         Should initialize the global placeholders dictionary with placeholders from json file.
         """
-        self.fail()
+        expected_placeholders = {
+            "examiner": "sho",
+            "clienttask": "Finish the task at hand.",
+            "client": "Sgt Mustman",
+            "artefactdescription": "BrackBook Flair",
+            "APIKey": "a3f2a8f1fff851cds90a0cd7aef46389",
+            "FritzIP": "10.0.99.254",
+            "FritzPort": "38999",
+            "MyUrl": "fill me in"
+        }
+
+        Placeholder._initialize_global_placeholders()
+
+        for ph in expected_placeholders.keys():
+            self.assertEqual(expected_placeholders[ph], Placeholder._instruction_placeholders[ph])
 
 
 class TestPlaceholderUpdatePlaceholder(TestCase):
