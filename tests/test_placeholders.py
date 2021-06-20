@@ -312,16 +312,31 @@ class TestPlaceholderGetPlaceholders(TestCase):
         """
         Should return a Match object containing all matched placeholders.
         """
-        self.fail()
+        expected_text = "test_placeholder"
+        text = f"{Placeholder.PLACEHOLDER_START}{expected_text}{Placeholder.PLACEHOLDER_END}"
+
+        actual_matches = Placeholder._get_placeholders(text_to_check=text)
+
+        self.assertEqual(expected_text, actual_matches[0])
 
     def test__get_placeholders_on_text_with_three_placeholders(self):
         """
         Should return a Match object containing three matched placeholders.
         """
-        self.fail()
+        expected_matches = ["Hello", "there", "fool"]
+        text = f"{Placeholder.PLACEHOLDER_START}{expected_matches[0]}{Placeholder.PLACEHOLDER_END} " \
+               f"{Placeholder.PLACEHOLDER_START}{expected_matches[1]}{Placeholder.PLACEHOLDER_END} " \
+               f"{Placeholder.PLACEHOLDER_START}{expected_matches[2]}{Placeholder.PLACEHOLDER_END}"
+
+        actual_matches = Placeholder._get_placeholders(text_to_check=text)
+
+        self.assertEqual(expected_matches, actual_matches)
 
     def test__get_placeholders_on_text_with_placeholder_in_a_placeholder(self):
         """
         Should raise a ValueError
         """
-        self.fail()
+        expected_text = f"test{Placeholder.PLACEHOLDER_START}inner{Placeholder.PLACEHOLDER_END}"
+        text = f"{Placeholder.PLACEHOLDER_START}{expected_text}{Placeholder.PLACEHOLDER_END}"
+
+        self.assertRaises(ValueError, Placeholder._get_placeholders, text)
