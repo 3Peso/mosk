@@ -296,7 +296,15 @@ class TestCollectionMetaDataMetadataFields(TestCase):
         Should return generator to iterate over all provided keys provided in __init__
         :return:
         """
-        self.fail()
+        expected_metadata = {
+            "Metadata1": "Meta_Value_1",
+            "Metadata2": "Meta_Value_2"
+        }
+
+        actual_metadata = CollectionMetaData(metadata=expected_metadata)
+
+        for metadata_key in actual_metadata.metadata_fields:
+            self.assertEqual(expected_metadata[metadata_key], actual_metadata._collectionMetadata[metadata_key])
 
 
 class TestCollectionMetaDataGetMetadata(TestCase):
@@ -305,7 +313,16 @@ class TestCollectionMetaDataGetMetadata(TestCase):
         Should return the value for the metadata field.
         :return:
         """
-        self.fail()
+        expected_metadata = {
+            "Metadata1": "Meta_Value_1",
+            "Metadata2": "Meta_Value_2"
+        }
+        expected_metadata_key = "Metadata1"
+
+        actual_metadata = CollectionMetaData(metadata=expected_metadata)
+        actual_metadata_value = actual_metadata.get_metadata(expected_metadata_key)
+
+        self.assertEqual(expected_metadata[expected_metadata_key], actual_metadata_value)
 
     def test_get_metadata_with_metadata_with_placeholder(self):
         """
@@ -313,4 +330,17 @@ class TestCollectionMetaDataGetMetadata(TestCase):
         value.
         :return:
         """
-        self.fail()
+        from businesslogic.placeholders import Placeholder
+
+        expected_metadata = {
+            "Metadata1": "!@placeholder@!"
+        }
+        expected_metadata_key = "Metadata1"
+        expected_metadata_value = "placeholdervalue"
+
+        Placeholder.update_placeholder(placeholdername="placeholder", placeholdervalue=expected_metadata_value)
+
+        actual_metadata = CollectionMetaData(metadata=expected_metadata)
+        actual_metadata_value = actual_metadata.get_metadata(expected_metadata_key)
+
+        self.assertEqual(expected_metadata_value, actual_metadata_value)
