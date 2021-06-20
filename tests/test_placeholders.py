@@ -263,20 +263,65 @@ class TestPlaceholderInitializeGlobalPlaceholders(TestCase):
 
 
 class TestPlaceholderUpdatePlaceholder(TestCase):
+    def setUp(self) -> None:
+        Placeholder._instruction_placeholders = {}
+
     def test_update_placeholder_with_new_placeholder(self):
         """
         Should add the new placeholder to the global placeholders dicitionary.
         """
-        self.fail()
+        expected_placeholer = "test_placeholder"
+        expected_placeholder_value = "test_value"
+
+        Placeholder.update_placeholder(placeholdername=expected_placeholer, placeholdervalue=expected_placeholder_value)
+        actual_value = Placeholder._instruction_placeholders[expected_placeholer]
+
+        self.assertEqual(expected_placeholder_value, actual_value)
 
     def test_update_placeholder_with_defined_placeholder(self):
         """
         Should overwrite the placeholder already defined with the new value.
         """
-        self.fail()
+        expected_placeholer = "test_placeholder"
+        expected_placeholder_value = "test_value"
+        expected_placeholder_new_value = "test_value_new"
+
+        Placeholder.update_placeholder(placeholdername=expected_placeholer,
+                                       placeholdervalue=expected_placeholder_value)
+        Placeholder.update_placeholder(placeholdername=expected_placeholer,
+                                       placeholdervalue=expected_placeholder_new_value)
+        actual_value = Placeholder._instruction_placeholders[expected_placeholer]
+
+        self.assertEqual(expected_placeholder_new_value, actual_value)
 
     def test_update_placeolder_with_value_which_contains_placeholder(self):
         """
-        Should raise a ValueError.
+        Should accept the placeholder.
+        """
+        expected_placeholer = f"{Placeholder.PLACEHOLDER_START}test_placeholder{Placeholder.PLACEHOLDER_END}"
+        expected_placeholder_value = "test_value"
+
+        Placeholder.update_placeholder(placeholdername=expected_placeholer, placeholdervalue=expected_placeholder_value)
+        actual_value = Placeholder._instruction_placeholders[expected_placeholer]
+
+        self.assertEqual(expected_placeholder_value, actual_value)
+
+
+class TestPlaceholderGetPlaceholders(TestCase):
+    def test__get_placeholders_on_text_with_one_placeholder(self):
+        """
+        Should return a Match object containing all matched placeholders.
+        """
+        self.fail()
+
+    def test__get_placeholders_on_text_with_three_placeholders(self):
+        """
+        Should return a Match object containing three matched placeholders.
+        """
+        self.fail()
+
+    def test__get_placeholders_on_text_with_placeholder_in_a_placeholder(self):
+        """
+        Should raise a ValueError
         """
         self.fail()
