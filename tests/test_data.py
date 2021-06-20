@@ -4,6 +4,8 @@ from datetime import datetime
 from unittest import TestCase
 from unittest.mock import patch
 
+from businesslogic.data import CollectionMetaData
+
 
 class TestCollectionDataGetCollectorInfoAsStr(TestCase):
     @classmethod
@@ -17,16 +19,15 @@ class TestCollectionDataGetCollectorInfoAsStr(TestCase):
 
     def test_get_collector_info_as_str(self):
         """
-        :return: Should return a string with collector informormation prepended.
+        :return: Should return a string with collector informormation.
         """
         from businesslogic.data import CollectionData
 
         actual_parameters = {'Param1': 12, 'Param2': 'Test'}
         actual_data = CollectionData(data="Test data", collector_name="TestCollector")
         actual_data.collector_parameters = actual_parameters
-        teststring = "Test String"
-        expected = "Test String\r\n\r\nCollector: TestCollector\r\nParam1: '12'\r\nParam2: 'Test'"
-        actual = actual_data.get_collector_info_as_str(teststring)
+        expected = "\r\n\r\nCollector: TestCollector\r\nParam1: '12'\r\nParam2: 'Test'"
+        actual = actual_data.get_collector_info_as_str()
 
         self.assertEqual(actual, expected)
 
@@ -37,9 +38,8 @@ class TestCollectionDataGetCollectorInfoAsStr(TestCase):
         from businesslogic.data import CollectionData
 
         actual_data = CollectionData(data="Test data", collector_name="TestCollector")
-        teststring = "Test String"
-        expected = "Test String\r\n\r\nCollector: TestCollector"
-        actual = actual_data.get_collector_info_as_str(teststring)
+        expected = "\r\n\r\nCollector: TestCollector"
+        actual = actual_data.get_collector_info_as_str()
 
         self.assertEqual(actual, expected)
 
@@ -52,10 +52,9 @@ class TestCollectionDataGetCollectorInfoAsStr(TestCase):
         actual_parameters = {'Param1': 12, 'Param2': 'Test'}
         actual_data = CollectionData(data="Test data")
         actual_data.collector_parameters = actual_parameters
-        teststring = "Test String"
 
         with self.assertRaises(ValueError):
-            actual_data.get_collector_info_as_str(teststring)
+            actual_data.get_collector_info_as_str()
 
     def test_get_collector_info_as_str_no_collector_name_and_no_params(self):
         """
@@ -64,11 +63,10 @@ class TestCollectionDataGetCollectorInfoAsStr(TestCase):
         from businesslogic.data import CollectionData
 
         actual_data = CollectionData(data="Test data")
-        expected = "Test String"
 
-        actual = actual_data.get_collector_info_as_str(expected)
+        actual = actual_data.get_collector_info_as_str()
 
-        self.assertEqual(actual, expected)
+        self.assertEqual('', actual)
 
 
 class TestCollectionDataGetJson(TestCase):
@@ -271,14 +269,25 @@ class TestCollectionMetaDataDunderInit(TestCase):
         Should use the dictionary a source for the metadata.
         :return:
         """
-        self.fail()
+        expected_metadata = {
+            "Metadata1": "Meta_Value_1",
+            "Metadata2": "Meta_Value_2"
+        }
+
+        actual_metadata = CollectionMetaData(metadata=expected_metadata)
+
+        for expected_key in expected_metadata.keys():
+            self.assertEqual(expected_metadata[expected_key], actual_metadata._collectionMetadata[expected_key])
 
     def test___init__with_empty_dictionary(self):
         """
-        Should raise ValueError.
+        Should do nothing.
         :return:
         """
-        self.fail()
+        try:
+            CollectionMetaData(metadata={})
+        except Exception:
+            self.fail()
 
 
 class TestCollectionMetaDataMetadataFields(TestCase):
