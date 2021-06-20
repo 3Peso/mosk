@@ -71,7 +71,7 @@ class TestCollectionDataGetCollectorInfoAsStr(TestCase):
         self.assertEqual(actual, expected)
 
 
-class TestCollectionDataGetCollectorInfoAsStr(TestCase):
+class TestCollectionDataGetJson(TestCase):
     def test_get_json(self):
         """
         :return: JSON object of data object
@@ -206,6 +206,7 @@ class TestCollectionDataDunderStr(TestCase):
 
         self.assertEqual(expected_string, str(actual_data))
 
+
 class TestCollectionDataSaveAsMd5(TestCase):
     def test_save_as_md5_bigger_than_4k(self):
         """
@@ -249,7 +250,6 @@ class TestCollectionDataSourcePath(TestCase):
         with self.assertRaises(FileNotFoundError):
             actual_data.sourcepath = expected_path
 
-
     def test_sourcepath_file_zero(self):
         """
         Should set _sourcepath and _sourcehash with the MD5 hash of the file provided for _sourcepath
@@ -263,3 +263,45 @@ class TestCollectionDataSourcePath(TestCase):
 
         self.assertEqual(expected_hash, actual_data._sourcehash)
         self.assertEqual(expected_path, actual_data._sourcepath)
+
+
+class TestCollectionMetaDataDunderInit(TestCase):
+    def test___init__with_dictionary(self):
+        """
+        Should use the dictionary a source for the metadata.
+        :return:
+        """
+        self.fail()
+
+    def test___init__with_empty_dictionary(self):
+        """
+        Should raise ValueError.
+        :return:
+        """
+        self.fail()
+
+
+class TestCollectionMetaDataMetadataFields(TestCase):
+    def test_metadata_fields(self):
+        """
+        Should return generator to iterate over all provided keys provided in __init__
+        :return:
+        """
+        self.fail()
+
+
+class TestCollectionMetaDataGetMetadata(TestCase):
+    def test_get_metadata_with_normal_metadata_without_placeholder(self):
+        """
+        Should return the value for the metadata field.
+        :return:
+        """
+        self.fail()
+
+    def test_get_metadata_with_metadata_with_placeholder(self):
+        """
+        Should return the metadata value, but the placeholder is replaced with the correct placeholder
+        value.
+        :return:
+        """
+        self.fail()

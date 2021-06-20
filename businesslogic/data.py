@@ -109,7 +109,9 @@ class CollectionData:
 
 
 class CollectionMetaData:
-    """Will store the metadata regarding the whole collection process, like for example the task description."""
+    """
+    Will store the metadata regarding the whole collection process, like for example the task description.
+    """
     def __init__(self, metadata: OrderedDict):
         self._collectionMetadata = metadata
 
