@@ -180,6 +180,9 @@ Allowed attributes/parameters:
 * File
 * CompleteFileSystemInfo
 
+#### Scope 'Debug'
+* DebugPlaceholder
+
 ## CLI Arguments
 Run mosk:
 
