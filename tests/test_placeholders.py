@@ -261,6 +261,13 @@ class TestPlaceholderInitializeGlobalPlaceholders(TestCase):
         for ph in expected_placeholders.keys():
             self.assertEqual(expected_placeholders[ph], Placeholder._instruction_placeholders[ph])
 
+    #def test__initialize_global_placeholders_with_former_initialized_placehoders(self):
+    #    """
+    #    Should overwrite the global placeholders dictionary, deleting the already initialized placeholders.
+    #    :return:
+    #    """
+    #    self.fail()
+
 
 class TestPlaceholderUpdatePlaceholder(TestCase):
     def setUp(self) -> None:
