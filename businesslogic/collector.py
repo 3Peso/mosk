@@ -70,7 +70,7 @@ class Collector:
             # machine name.
             if current_instruction.placeholdername != '':
                 Placeholder.update_placeholder(current_instruction.placeholdername,
-                                               current_instruction.instruction.data)
+                                               current_instruction.instruction.data[0].collecteddata)
                 Collector._logger.info(
                     f"Stored artefact data '{current_instruction.instruction.data}' as placeholder "
                     f"'{current_instruction.placeholdername}'.")
