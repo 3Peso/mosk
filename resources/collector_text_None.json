@@ -138,5 +138,10 @@
     "title": "CompleteFileSystemInfo",
     "collectionmethod": "pyewf and pytsk3",
     "description": "Exports information about all files and folders in an image into a csv file."
+  },
+  "artefact.support.debug.DebugPlaceholder": {
+    "title": "DebugPlaceholder",
+    "collectionmethod": "Internal method",
+    "description": "Collector used to debug placeholder functionality. For internal / development use."
   }
 }
