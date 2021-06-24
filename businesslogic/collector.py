@@ -63,6 +63,11 @@ class Collector:
         if '_collect' in dir(current_instruction.instruction):
             self._collect_and_document(current_instruction.instruction, callpath=callpath)
 
+            # if the current instruction contains a "placeholdername" attribute this means
+            # there is a placeholder for the global placeholder dictionary which needs to be
+            # filled with the result of the current collector, so that following collectors
+            # can use this information for their own collection process, like for example the
+            # machine name.
             if current_instruction.placeholdername != '':
                 Placeholder.update_placeholder(current_instruction.placeholdername,
                                                current_instruction.instruction.data)
