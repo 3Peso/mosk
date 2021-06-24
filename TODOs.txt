@@ -5,8 +5,6 @@
 
 # Detect, if VPNs are used (TOR over VPN)
 
-# Possibility to define placeholder values in instructions file to be used later on
-
 # FolderInformation must provide the partition index
 
 # Evaluate imagemounter to mount image for collecting data from images
