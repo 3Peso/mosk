@@ -36,13 +36,13 @@ class SourceBase:
         return path
 
     @Placeholder
-    def get_parameter(self, parameter):
+    def get_parameter(self, parameter: str):
         parametervalue = self._parameters[parameter]
         self._logger.debug(f"Retrieved parameter '{parameter}': '{parametervalue}'")
         return parametervalue
 
     @classmethod
-    def cache_parameters(cls, attributes: UserDict):
+    def cache_parameters(cls, attributes: UserDict = None):
         for attributename in attributes.keys():
             attributevalue = Placeholder.replace_placeholders(attributes[attributename])
             Placeholder.update_placeholder(attributename, attributevalue)

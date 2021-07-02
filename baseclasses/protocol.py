@@ -9,7 +9,7 @@ from baseclasses.artefact import ArtefactBase
 
 
 class ProtocolBase:
-    def __init__(self, examiner='', taskid='', artifactid=''):
+    def __init__(self, examiner = '', taskid = '', artifactid = ''):
         self._examiner = str(examiner)
         self._taskid = str(taskid)
         self._artifactid = str(artifactid)
