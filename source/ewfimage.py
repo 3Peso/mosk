@@ -29,7 +29,7 @@ class EWFImage(Image):
                                " creation.")
         return self._filesysteminfo
 
-    def get_folder_information(self, folderpath, partitionindex: int):
+    def get_folder_information(self, folderpath: str, partitionindex: int):
         """
         Gets a FolderInfo object if the source partition contains the folder.
         :param folderpath: Path of the folder for which the folder info is request.
@@ -69,7 +69,7 @@ class EWFImage(Image):
 
         return metadata
 
-    def export_file(self, filepath, filename, outpath):
+    def export_file(self, filepath: str, filename: str, outpath: str):
         """
         Tries to export a file from the image file.
         Will try to find file with path and name in every partition in the provided image.
@@ -126,7 +126,7 @@ class EWFImage(Image):
 
         return partition_object
 
-    def _get_fs_object(self, path, file):
+    def _get_fs_object(self, path: str, file: str):
         """
         Yields a list object containing a pytsk3.File object for every found file in image for path
         and file(name). Checks every partition found in the image for the path and file.
@@ -241,7 +241,7 @@ class EWFImage(Image):
 
         return img_info
 
-    def _discover_folder(self, folder, partitionindex):
+    def _discover_folder(self, folder: str, partitionindex: int):
         """
         Yields a FolderItemInfo object for every item in the folder.
         :param folder: Path of the folder.

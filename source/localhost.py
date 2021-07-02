@@ -12,7 +12,7 @@ class LocalHost(SourceBase):
         SourceBase.__init__(self, *args, **kwargs)
 
 
-def expandfilepath(filepath):
+def expandfilepath(filepath: str):
     if '~' in filepath:
         homepath = str(Path.home())
         filepath = filepath.split('~')[-1]
