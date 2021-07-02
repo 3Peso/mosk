@@ -31,7 +31,7 @@ def get_userfolders():
 
 
 # from : https://stackoverflow.com/questions/36500197/python-get-time-from-ntp-server
-def get_time(ntpserver=DEFAULT_TIME_SERVER):
+def get_time(ntpserver: str = DEFAULT_TIME_SERVER):
     """
     Retrieves the current time from an NTP server.
     :param ntpserver: NTP Server to use. Default is 0.de.pool.ntp.org.
@@ -47,7 +47,7 @@ def get_time(ntpserver=DEFAULT_TIME_SERVER):
     return time.ctime(t)
 
 
-def str_to_bool(boolstring):
+def str_to_bool(boolstring: str):
     """
     Translate a string into a real boolean value.
     :param boolstring:
@@ -70,7 +70,7 @@ def str_to_bool(boolstring):
 
 
 # From https://stackoverflow.com/questions/3431825/generating-an-md5-checksum-of-a-file
-def md5(fpath="", data=""):
+def md5(fpath: str = "", data: str = ""):
     """
     Calculates the the MD5 hash of a file.
     You can only provide a file path OR a data string, not both.
@@ -97,11 +97,11 @@ def md5(fpath="", data=""):
     return hash_md5.hexdigest()
 
 
-def _chunkstring(string, length):
+def _chunkstring(string: str, length: int):
     return (string[0 + i:length + i] for i in range(0, len(string), length))
 
 
-def get_collector_resources(resourcespath="./resources"):
+def get_collector_resources(resourcespath: str = "./resources"):
     logger = logging.getLogger(__name__)
     countrycode, _ = locale.getdefaultlocale()
     resources = None
@@ -145,7 +145,7 @@ def run_terminal_command(arguments: list):
     return process.communicate()[0]
 
 
-def format_bytes(size):
+def format_bytes(size: int):
     """
     Calculate more human readable values for byte sizes
     :param size: Will support sizes up to terra bytes. Afterwards all is returned as terra bytes.
