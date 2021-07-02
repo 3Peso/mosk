@@ -18,7 +18,7 @@ class CollectionData:
     CollectionData is the data container which stores the collected data in memory, and additionally required metadata
     as the path of the source file, if there is one,the colelction timestamp, and/or the MD5 hash of the collected data.
     """
-    def __init__(self, data, currentdatetime=None, collector_name=None):
+    def __init__(self, data, currentdatetime = None, collector_name: str = None):
         if data != "":
             self.collecteddata = data
         else:
@@ -100,7 +100,7 @@ class CollectionData:
         return self._sourcepath
 
     @sourcepath.setter
-    def sourcepath(self, value):
+    def sourcepath(self, value: str):
         if value is not None and os.path.exists(value):
             self._sourcehash = businesslogic.support.md5(value)
             self._sourcepath = value
@@ -112,7 +112,7 @@ class CollectionMetaData:
     """
     Will store the metadata regarding the whole collection process, like for example the task description.
     """
-    def __init__(self, metadata: OrderedDict):
+    def __init__(self, metadata: OrderedDict = None):
         self._collectionMetadata = metadata
 
     @property
@@ -121,5 +121,5 @@ class CollectionMetaData:
             yield field
 
     @Placeholder
-    def get_metadata(self, field):
+    def get_metadata(self, field: str):
         return self._collectionMetadata[field]
