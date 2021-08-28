@@ -19,7 +19,7 @@ class TimeFromNTPServer(ArtefactBase):
     """
     Retrieves the current time from a provided NTP server.
     """
-    __timeServer = DEFAULT_TIME_SERVER
+    #__timeServer = DEFAULT_TIME_SERVER
     _logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
@@ -34,5 +34,11 @@ class TimeFromNTPServer(ArtefactBase):
             self.__timeServer = self.timeserver
         except AttributeError:
             self._logger.info(f"No time server provided. Using default: {DEFAULT_TIME_SERVER}")
+            self.timeserver = DEFAULT_TIME_SERVER
+            self.__timeServer = DEFAULT_TIME_SERVER
+
         time = NTPTime(Time=get_time(ntpserver=self.__timeServer), NTPServer=self.__timeServer)
-        self.data = time
+        self.data = time.Time
+
+    def _cleanup(self):
+        pass
