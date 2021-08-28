@@ -1,4 +1,5 @@
 from unittest import TestCase
+import os
 
 from businesslogic.support import str_to_bool, get_collector_resources, format_bytes, md5
 
@@ -50,56 +51,58 @@ class TestGetCollectorResources(TestCase):
         Should return a merged absolute file path when providing a relative path.
         :return:
         """
-        self.fail()
+        from businesslogic.support import _get_resources_path
+        expected_path = os.path.abspath('../resources/collector_text_de_DE.json')
+        actual_path = _get_resources_path('./resources', 'de_DE')
+
+        self.assertEqual(actual_path, expected_path)
 
     def test__get_resources_path_countrycode_empty(self):
         """
         Should throw an exception if countrycode is empty.
         :return:
         """
-        self.fail()
+        from businesslogic.support import _get_resources_path
 
-    def test__get_resources_path_countrycode_does_not_exist(self):
-        """
-        Should throw an exception if the countrycode does not exist.
-        :return:
-        """
-        self.fail()
+        self.assertRaises(ValueError, _get_resources_path, '.', '')
 
     def test__get_resources_path_resourcepath_empty(self):
         """
         Should throw an exception if resource path is empty.
         :return:
         """
-        self.fail()
+        from businesslogic.support import _get_resources_path
 
-    def test__get_resources_path_relative_path_does_not_exist(self):
-        """
-        Should throw an exception if the relative resource path does not exist.
-        :return:
-        """
-        self.fail()
+        self.assertRaises(ValueError, _get_resources_path, '', 'de_DE')
 
     def test__load_resources_resourcefilepath_empty(self):
         """
         Should throw an exception, if the resources file path is empty.
         :return:
         """
-        self.fail()
+        from businesslogic.support import _load_resources
+
+        self.assertRaises(ValueError, _load_resources, '', 'de_DE')
 
     def test__load_resources_resourcefilepath_does_not_exist(self):
         """
         Should return None.
         :return:
         """
-        self.fail()
+        from businesslogic.support import _load_resources
+
+        self.assertIsNone(_load_resources('../me_not_exist', 'de_DE'))
 
     def test__load_resources(self):
         """
-        Should return JSON object.
+        Should return dict object
         :return:
         """
-        self.fail()
+        from businesslogic.support import _load_resources
+        resourcesfilepath = os.path.abspath('../resources/collector_text_None.json')
+        actual_json_object = _load_resources(resourcesfilepath, 'None')
+
+        self.assertIsInstance(actual_json_object, dict)
 
 class TestFormatBytes(TestCase):
     def test_format_bytes_Kilo(self):

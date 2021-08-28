@@ -126,6 +126,10 @@ def get_collector_resources(resourcespath: str = "./resources"):
 
 def _get_resources_path(resourcespath: str, countrycode: str):
     logger = logging.getLogger(__name__)
+    if resourcespath == '':
+        raise ValueError('Resources path is empty.')
+    if countrycode == '':
+        raise ValueError('Country code is empty.')
     resourcesfilepath = os.path.join(resourcespath, f"collector_text_{countrycode}.json")
     logger.debug("Trying to load text resources from '{} ...'".format(resourcesfilepath))
     # TODO Move into a contextmanager
@@ -141,6 +145,8 @@ def _get_resources_path(resourcespath: str, countrycode: str):
 
 
 def _load_resources(resourcesfilepath: str, countrycode: str):
+    if resourcesfilepath == '':
+        raise ValueError('Resourcefilepath is empty.')
     logger = logging.getLogger(__name__)
     resources = None
     if os.path.exists(resourcesfilepath):
