@@ -39,7 +39,16 @@ def get_time(ntpserver: str = DEFAULT_TIME_SERVER):
     """
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     data = b'\x1b' + 47 * b'\0'
-    client.sendto(data, (ntpserver, 123))
+    socket_error = None
+    try:
+        client.sendto(data, (ntpserver, 123))
+    except socket.gaierror as so_err:
+        socket_error = so_err
+    finally:
+        if socket_error is not None:
+            # Try to close the socket, if something went wrong
+            client.close()
+            raise socket_error
     data, address = client.recvfrom(1024)
     if data:
         t = struct.unpack('!12I', data)[10]
