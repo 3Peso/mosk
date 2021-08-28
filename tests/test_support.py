@@ -45,6 +45,61 @@ class TestGetCollectorResources(TestCase):
 
         self.assertIsNone(actual_resources)
 
+    def test__get_resources_path(self):
+        """
+        Should return a merged absolute file path when providing a relative path.
+        :return:
+        """
+        self.fail()
+
+    def test__get_resources_path_countrycode_empty(self):
+        """
+        Should throw an exception if countrycode is empty.
+        :return:
+        """
+        self.fail()
+
+    def test__get_resources_path_countrycode_does_not_exist(self):
+        """
+        Should throw an exception if the countrycode does not exist.
+        :return:
+        """
+        self.fail()
+
+    def test__get_resources_path_resourcepath_empty(self):
+        """
+        Should throw an exception if resource path is empty.
+        :return:
+        """
+        self.fail()
+
+    def test__get_resources_path_relative_path_does_not_exist(self):
+        """
+        Should throw an exception if the relative resource path does not exist.
+        :return:
+        """
+        self.fail()
+
+    def test__load_resources_resourcefilepath_empty(self):
+        """
+        Should throw an exception, if the resources file path is empty.
+        :return:
+        """
+        self.fail()
+
+    def test__load_resources_resourcefilepath_does_not_exist(self):
+        """
+        Should return None.
+        :return:
+        """
+        self.fail()
+
+    def test__load_resources(self):
+        """
+        Should return JSON object.
+        :return:
+        """
+        self.fail()
 
 class TestFormatBytes(TestCase):
     def test_format_bytes_Kilo(self):
