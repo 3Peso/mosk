@@ -28,8 +28,8 @@ class TestGetCollectorResources(TestCase):
     def test_get_collector_resources_no_resources(self):
         """
         When there are no resources files available for current locale it should return the
-        default resources.
-        :return: JSON object with the contents of 'collector_text_default.json'
+        default resources. This is also true, if the resource file is there but it is empty.
+        :return: JSON object with the contents of 'collector_text_None.json'
         """
         actual_resources = get_collector_resources()
 

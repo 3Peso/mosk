@@ -111,10 +111,18 @@ def _chunkstring(string: str, length: int):
 
 
 def get_collector_resources(resourcespath: str = "./resources"):
-    logger = logging.getLogger(__name__)
     countrycode, _ = locale.getdefaultlocale()
     resources = None
+    resourcesfilepath = _get_resources_path(resourcespath, countrycode)
+    resources = _load_resources(resourcesfilepath, countrycode)
+    if resources is None:
+        resourcesfilepath = _get_resources_path(resourcespath, 'None')
+        resources = _load_resources(resourcesfilepath, countrycode)
 
+    return resources
+
+def _get_resources_path(resourcespath: str, countrycode: str):
+    logger = logging.getLogger(__name__)
     resourcesfilepath = os.path.join(resourcespath, f"collector_text_{countrycode}.json")
     logger.debug("Trying to load text resources from '{} ...'".format(resourcesfilepath))
     # TODO Move into a contextmanager
@@ -126,10 +134,18 @@ def get_collector_resources(resourcespath: str = "./resources"):
     resourcesfilepath = os.path.abspath(resourcesfilepath)
     os.chdir(old_wd)
 
+    return resourcesfilepath
+
+def _load_resources(resourcesfilepath: str, countrycode: str):
+    logger = logging.getLogger(__name__)
+    resources = None
     if os.path.exists(resourcesfilepath):
         try:
             with open(resourcesfilepath) as rf:
                 resources = json.load(rf)
+        except json.decoder.JSONDecodeError as json_error:
+            if json_error.msg == "Expecting value":
+                logger.info(f'Resource file for country code {countrycode} is empty.')
         except FileNotFoundError:
             if countrycode is None:
                 logger.warning('Default resources file not found.')
