@@ -40,19 +40,21 @@ def get_time(ntpserver: str = DEFAULT_TIME_SERVER):
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     data = b'\x1b' + 47 * b'\0'
     socket_error = None
+    t = None
     try:
         client.sendto(data, (ntpserver, 123))
+        data, address = client.recvfrom(1024)
+        if data:
+            t = struct.unpack('!12I', data)[10]
+            t -= REF_TIME_1970
     except socket.gaierror as so_err:
         socket_error = so_err
     finally:
-        if socket_error is not None:
-            # Try to close the socket, if something went wrong
+        if client is not None:
             client.close()
+        if socket_error is not None:
             raise socket_error
-    data, address = client.recvfrom(1024)
-    if data:
-        t = struct.unpack('!12I', data)[10]
-        t -= REF_TIME_1970
+
     return time.ctime(t)
 
 
