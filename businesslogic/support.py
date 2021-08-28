@@ -121,6 +121,7 @@ def get_collector_resources(resourcespath: str = "./resources"):
 
     return resources
 
+
 def _get_resources_path(resourcespath: str, countrycode: str):
     logger = logging.getLogger(__name__)
     resourcesfilepath = os.path.join(resourcespath, f"collector_text_{countrycode}.json")
@@ -135,6 +136,7 @@ def _get_resources_path(resourcespath: str, countrycode: str):
     os.chdir(old_wd)
 
     return resourcesfilepath
+
 
 def _load_resources(resourcesfilepath: str, countrycode: str):
     logger = logging.getLogger(__name__)
