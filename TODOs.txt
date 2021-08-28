@@ -7,7 +7,8 @@
 
 # FolderInformation must provide the partition index
 
-# Evaluate imagemounter to mount image for collecting data from images
+# Evaluate python imagemounter to mount image for collecting data from images - imount
+# https://imagemounter.readthedocs.io/en/latest/python.html
 
 # Use print function of macOS to print PDF exports of things like calendars, etc.
 
