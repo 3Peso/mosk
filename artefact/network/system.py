@@ -7,6 +7,7 @@ __all__ = ['TimeFromNTPServer']
 
 import collections
 import logging
+import socket
 
 from businesslogic.support import get_time, DEFAULT_TIME_SERVER
 from baseclasses.artefact import ArtefactBase
@@ -37,8 +38,13 @@ class TimeFromNTPServer(ArtefactBase):
             self.timeserver = DEFAULT_TIME_SERVER
             self.__timeServer = DEFAULT_TIME_SERVER
 
-        time = NTPTime(Time=get_time(ntpserver=self.__timeServer), NTPServer=self.__timeServer)
-        self.data = time.Time
+        try:
+            time = NTPTime(Time=get_time(ntpserver=self.__timeServer), NTPServer=self.__timeServer)
+            self.data = time.Time
+        except socket.gaierror as sock_err:
+            self._logger.error(f"Could not retrieve network time. socket.gaierror: {sock_err.args[1]}")
+            self.data = f"Could not retrieve network time because of a runtime exception. " \
+                        f"socket.gaierror message: {sock_err.args[1]}"
 
     def _cleanup(self):
         pass

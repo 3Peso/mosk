@@ -30,14 +30,19 @@ class TestTimeFromNTPServerCollect(TestCase):
 
     def test__collect_invalid_ntp_server_address(self):
         """
-        Should raise socket.gaierror.
+        Should give back data object with the message informing about a runtime exception.
         :return:
         """
         expected_ntp_server = 'invalid.address.invi'
+        expected_data = "Could not retrieve network time because of a runtime exception. " \
+                        "socket.gaierror message: nodename nor servname provided, or not known"
+
         actual_colletor = TimeFromNTPServer(parameters={}, parent=None)
         actual_colletor.timeserver = expected_ntp_server
 
-        self.assertRaises(socket.gaierror, actual_colletor._collect)
+        actual_colletor._collect()
+
+        self.assertEqual(str(actual_colletor.data[0].collecteddata), expected_data)
 
     def test__collect_no_network_connection(self):
         """
