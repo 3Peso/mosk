@@ -46,7 +46,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
                     data = json.load(weather_data)
                     self.data = f"Current temperature in {self.city}: {data['main']['temp']} °C"
                 else:
-                    data = f"'{queryurl}' returned invalid weather data."
+                    self.data = f"'{queryurl}' returned invalid weather data."
 
     @staticmethod
     def _weather_data_is_valid(weather_data):
