@@ -123,3 +123,22 @@ class TestArtefactBaseCacheParameters(TestCase):
             self.assertEqual(expected_new_value, actual_value)
         except Exception:
             self.fail()
+
+
+class TestArtefactBaseDunderCall(TestCase):
+    def test___call__with_unhandled_exception(self):
+        """
+        Should log a meaningful error message in collected data.
+        :return:
+        """
+        from tests.support.mockups import ExceptionArtefactMockup
+
+        expected_message = "Caught unhandled exception during collection of artefact. " \
+                           "Exception: There is something wrong with your values."
+        actual_artefact = ExceptionArtefactMockup(parent=None, parameters={})
+
+        # Collect by using __call__
+        actual_artefact()
+        actual_message = actual_artefact.data[0].collecteddata
+
+        self.assertEqual(actual_message, expected_message)
