@@ -5,7 +5,9 @@ mosk network module for classes collecting information from the internet.
 __author__ = '3Peso'
 __all__ = ['TemperatureFromOpenWeatherDotCom', 'ExternalLinksOnUrl']
 
+import http.client
 import json
+import logging
 import re
 from urllib.request import urlopen
 from urllib.error import HTTPError
@@ -49,8 +51,14 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
                     self.data = f"'{queryurl}' returned invalid weather data."
 
     @staticmethod
-    def _weather_data_is_valid(weather_data):
-        return True
+    def _weather_data_is_valid(weather_data: http.client.HTTPResponse):
+        logger = logging.getLogger(__name__)
+        if weather_data.getcode() == 200:
+            return True
+        else:
+            logger.warning(f"HTTPResponse code for queryied weather data was '{weather_data.getcode()}'. "
+                           f"Status code 200 is a requirement.")
+            return False
 
     def _get_query(self):
         return self.__querytemplate.format(self.__url, self.city, self.countrycode, self.apikey)

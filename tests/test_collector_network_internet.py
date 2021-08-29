@@ -121,11 +121,35 @@ class TestTemperatureFromOpenWeatherDotComWeatherDataIsValid(TestCase):
         Should return True
         :return:
         """
-        self.fail()
+        collector = TemperatureFromOpenWeatherDotCom(parameters={
+            'countrycode': 'ger', 'apikey': '12345', 'city': 'Munich'}, parent=None)
+
+        class FunkyHTTPResponseMockup():
+            @staticmethod
+            def getcode():
+                return 200
+
+        actual_data = FunkyHTTPResponseMockup()
+
+        actual_result = collector._weather_data_is_valid(actual_data)
+
+        self.assertTrue(actual_result)
 
     def test__weahter_data_is_valid_data_is_invalid(self):
         """
         Should return False
         :return:
         """
-        self.fail()
+        collector = TemperatureFromOpenWeatherDotCom(parameters={
+            'countrycode': 'ger', 'apikey': '12345', 'city': 'Munich'}, parent=None)
+
+        class FunkyHTTPResponseMockup():
+            @staticmethod
+            def getcode():
+                return 401
+
+        actual_data = FunkyHTTPResponseMockup()
+
+        actual_result = collector._weather_data_is_valid(actual_data)
+
+        self.assertFalse(actual_result)
