@@ -30,6 +30,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         super().__init__(*args, **kwargs)
         self.__url = "https://api.openweathermap.org/data/2.5/weather"
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
+        self._apikey = ""
 
     def _collect(self):
         try:
@@ -50,6 +51,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
                 else:
                     self.data = f"'{queryurl}' returned invalid weather data."
 
+    # REMARKS: Revisit this method. Only checking for the status code is no real help, I think.
     @staticmethod
     def _weather_data_is_valid(weather_data: http.client.HTTPResponse):
         logger = logging.getLogger(__name__)
@@ -72,13 +74,20 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
 
         return filtered
 
-    #@property
-    #def apikey(self):
-    #    return self._apikey
+    @property
+    def apikey(self):
+        if self._apikey == "":
+            raise AttributeError("apikey not set.")
+        else:
+            return self._apikey
 
-    #@property.setter
-    #def apikey(self, value):
-    #    self._apikey = value
+    @apikey.setter
+    def apikey(self, value):
+        valid_apikey_expression = re.compile('^[a-z0-9]{32}$')
+        if valid_apikey_expression.match(value):
+            self._apikey = value
+        else:
+            raise ValueError(f"Provided api key '{value}' does not match the valid format.")
 
 
 class ExternalLinksOnUrl(ArtefactBase):

@@ -23,7 +23,7 @@ class TestTemperatureFromOpenWeatherDotComCollect(TestCase):
         excpeted_data = "Could not query http://plumbumm.ich.bin.nicht.da.haha." \
                         "\n<urlopen error [Errno 8] nodename nor servname provided, or not known>"
         collector = TemperatureFromOpenWeatherDotCom(parameters={
-            'countrycode': 'ger', 'apikey': '12345', 'city': 'Munich'}, parent=None)
+            'countrycode': 'ger', 'apikey': '123456789abcdefghijkl1234567890a', 'city': 'Munich'}, parent=None)
 
         collector._collect()
 
@@ -41,7 +41,7 @@ class TestTemperatureFromOpenWeatherDotComCollect(TestCase):
         excpeted_data = "'https://api.openweathermap.org/data/2.5/weather?q=Munich,ger&units=Metric&&APPID=12345' " \
                         "returned invalid weather data."
         collector = TemperatureFromOpenWeatherDotCom(parameters={
-            'countrycode': 'ger', 'apikey': '12345', 'city': 'Munich'}, parent=None)
+            'countrycode': 'ger', 'apikey': '123456789abcdefghijkl1234567890a', 'city': 'Munich'}, parent=None)
 
         collector._collect()
 
@@ -55,7 +55,7 @@ class TestTemperatureFromOpenWeatherDotComCollect(TestCase):
         excpeted_data = "Could not load query. " \
                         "Error: ''TemperatureFromOpenWeatherDotCom' object has no attribute 'city''."
         collector = TemperatureFromOpenWeatherDotCom(parameters={
-            'countrycode': 'ger', 'apikey': '12345'}, parent=None)
+            'countrycode': 'ger', 'apikey': '123456789abcdefghijkl1234567890a'}, parent=None)
 
         collector._collect()
 
@@ -77,9 +77,10 @@ class TestTemperatureFromOpenWeatherDotComGetQuery(TestCase):
         Should return the initialized query string used to query the weather from openweather.com
         :return:
         """
-        expected_query = "https://api.openweathermap.org/data/2.5/weather?q=Munich,ger&units=Metric&&APPID=12345"
+        expected_query = "https://api.openweathermap.org/data/2.5/weather?q=Munich,ger&units=Metric&&APPID=123456789abcdefghijkl1234567890a"
         collector = TemperatureFromOpenWeatherDotCom(parameters={
-            'city': 'Munich', 'countrycode': 'ger', 'apikey': '12345'}, parent=None)
+            'city': 'Munich', 'countrycode': 'ger', 'apikey': '123456789abcdefghijkl1234567890a'}, parent=None)
+        collector._apikey = '123456789abcdefghijkl1234567890a'
 
         actual_query = collector._get_query()
 
@@ -90,7 +91,8 @@ class TestTemperatureFromOpenWeatherDotComGetQuery(TestCase):
         Should raise an exception.
         :return:
         """
-        collector = TemperatureFromOpenWeatherDotCom(parameters={'countrycode': 'ger', 'apikey': '12345'},
+        collector = TemperatureFromOpenWeatherDotCom(parameters={'countrycode': 'ger', 'apikey':
+            '123456789abcdefghijkl1234567890a'},
                                                      parent=None)
 
         self.assertRaises(AttributeError, collector._get_query)
@@ -100,7 +102,8 @@ class TestTemperatureFromOpenWeatherDotComGetQuery(TestCase):
         Should raise an exception.
         :return:
         """
-        collector = TemperatureFromOpenWeatherDotCom(parameters={'city': 'Munich', 'apikey': '12345'},
+        collector = TemperatureFromOpenWeatherDotCom(parameters={'city': 'Munich', 'apikey':
+            '123456789abcdefghijkl1234567890a'},
                                                      parent=None)
 
         self.assertRaises(AttributeError, collector._get_query)
@@ -122,7 +125,7 @@ class TestTemperatureFromOpenWeatherDotComWeatherDataIsValid(TestCase):
         :return:
         """
         collector = TemperatureFromOpenWeatherDotCom(parameters={
-            'countrycode': 'ger', 'apikey': '12345', 'city': 'Munich'}, parent=None)
+            'countrycode': 'ger', 'apikey': '123456789abcdefghijkl1234567890a', 'city': 'Munich'}, parent=None)
 
         class FunkyHTTPResponseMockup():
             @staticmethod
@@ -141,7 +144,7 @@ class TestTemperatureFromOpenWeatherDotComWeatherDataIsValid(TestCase):
         :return:
         """
         collector = TemperatureFromOpenWeatherDotCom(parameters={
-            'countrycode': 'ger', 'apikey': '12345', 'city': 'Munich'}, parent=None)
+            'countrycode': 'ger', 'apikey': '123456789abcdefghijkl1234567890a', 'city': 'Munich'}, parent=None)
 
         class FunkyHTTPResponseMockup():
             @staticmethod
@@ -153,3 +156,39 @@ class TestTemperatureFromOpenWeatherDotComWeatherDataIsValid(TestCase):
         actual_result = collector._weather_data_is_valid(actual_data)
 
         self.assertFalse(actual_result)
+
+
+class TestTemperatureFromOpenWeatherDotComApiKey(TestCase):
+    def test_apikey_getter_not_initialized(self):
+        """
+        Should raise an exception.
+        :return:
+        """
+        self.fail()
+
+    def test_apikey_getter(self):
+        """
+        Should return the value of _apikey
+        :return:
+        """
+        expected_apikey = "12345"
+        collector = TemperatureFromOpenWeatherDotCom(parent=None, parameters={})
+        collector._apikey = "12345"
+
+        actual_apikey = collector.apikey
+
+        self.assertEqual(expected_apikey, actual_apikey)
+
+    def test_apikey_setter_invalid_format(self):
+        """
+        Should raise an error.
+        :return:
+        """
+        self.fail()
+
+    def test_apikey_setter(self):
+        """
+        Should set the value of _apikey
+        :return:
+        """
+        self.fail()
