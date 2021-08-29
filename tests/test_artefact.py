@@ -128,7 +128,7 @@ class TestArtefactBaseCacheParameters(TestCase):
 class TestArtefactBaseDunderCall(TestCase):
     def test___call__with_unhandled_exception(self):
         """
-        Should log a meaningful error message in collected data.
+        Should log a meaningfull error message in collected data.
         :return:
         """
         from tests.support.mockups import ExceptionArtefactMockup
@@ -142,3 +142,67 @@ class TestArtefactBaseDunderCall(TestCase):
         actual_message = actual_artefact.data[0].collecteddata
 
         self.assertEqual(actual_message, expected_message)
+
+    def test___call__with_unsupported_platform(self):
+        """
+        Should log, that the selected collector is not supported by the underlying plattform.
+        :return:
+        """
+        self.fail()
+
+
+class TestArtefactBaseDunderStr(TestCase):
+    def test___str__data_is_none(self):
+        """
+        Should do nothing.
+        :return:
+        """
+        self.fail()
+
+    def test___str__several_data_objects_collected(self):
+        """
+        Should create combined string with information in string form for all collected data objects,
+        containing the object class name, the provided parameters, and their values.
+        :return:
+        """
+        self.fail()
+
+
+class TestArtefactBaseGetDocumentation(TestCase):
+    def test_getdocumentation(self):
+        """
+        Should return string with the documentation information for that collector.
+        :return:
+        """
+        self.fail()
+
+
+class TestArtefactBaseInitDescriptionProperties(TestCase):
+    def test__init_description_properties(self):
+        """
+        Should initialize _title, _description, _collectionmethod, looking these infos up in the resources file
+        which is currently in use.
+        :return:
+        """
+        self.fail()
+
+    def test__init_description_properties_no_title_found(self):
+        """
+        Should init _title with "No title found".
+        :return:
+        """
+        self.fail()
+
+    def test__init_description_properties_no_description_found(self):
+        """
+        Should init _description with "No description found".
+        :return:
+        """
+        self.fail()
+
+    def test__init_description_properties_no_colletionmethod_found(self):
+        """
+        Should init _collectionmethod with "No collection method found".
+        :return:
+        """
+        self.fail()
