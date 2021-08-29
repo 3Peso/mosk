@@ -1,7 +1,7 @@
-import socket
 from unittest import TestCase
 
-from artefact.network.system import TimeFromNTPServer, NTPTime
+
+from artefact.network.system import TimeFromNTPServer
 
 
 class TestTimeFromNTPServerCollect(TestCase):
