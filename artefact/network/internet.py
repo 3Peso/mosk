@@ -30,15 +30,27 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
 
     def _collect(self):
-        queryurl = self._get_query()
-
         try:
-            html = urlopen(queryurl)
-        except HTTPError as httperror:
-            self.data = f"Could not query {queryurl}.\n{httperror.info}"
+            queryurl = self._get_query()
+        except AttributeError as attr_err:
+            self.data = f"Could not load query. Error: '{str(attr_err)}'."
         else:
-            data = json.load(html)
-        self.data = f"Current temperature in {self.city}: {data['main']['temp']} °C"
+            try:
+                weather_data = urlopen(queryurl)
+            except HTTPError as httperror:
+                self.data = f"Could not query {queryurl}.\n{httperror.info}"
+            except URLError as urlerr:
+                self.data = f"Could not query {queryurl}.\n{str(urlerr)}"
+            else:
+                if self._weather_data_is_valid(weather_data):
+                    data = json.load(weather_data)
+                    self.data = f"Current temperature in {self.city}: {data['main']['temp']} °C"
+                else:
+                    data = f"'{queryurl}' returned invalid weather data."
+
+    @staticmethod
+    def _weather_data_is_valid(weather_data):
+        return True
 
     def _get_query(self):
         return self.__querytemplate.format(self.__url, self.city, self.countrycode, self.apikey)
@@ -51,6 +63,14 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
                 filtered[itemname] = itemvalue
 
         return filtered
+
+    #@property
+    #def apikey(self):
+    #    return self._apikey
+
+    #@property.setter
+    #def apikey(self, value):
+    #    self._apikey = value
 
 
 class ExternalLinksOnUrl(ArtefactBase):

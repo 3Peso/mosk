@@ -3,6 +3,8 @@
 
 # Implement SQLite Storage for protocol and collected data/files
 
+# Implement setter for apikey to ensure correct format in TemperatureFromOpenWeatherDotCom
+
 # Detect, if VPNs are used (TOR over VPN)
 
 # FolderInformation must provide the partition index
