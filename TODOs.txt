@@ -5,6 +5,8 @@
 
 # Implement setter for apikey to ensure correct format in TemperatureFromOpenWeatherDotCom
 
+# Implement integration test with complete dryrun and check for unhandled exceptions
+
 # Detect, if VPNs are used (TOR over VPN)
 
 # FolderInformation must provide the partition index
