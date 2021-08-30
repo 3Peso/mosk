@@ -9,7 +9,12 @@ class TestTemperatureFromOpenWeatherDotComDunderInit(TestCase):
         Should initialize self.__url and self.__querytemplate.
         :return:
         """
-        self.fail()
+        expected_querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
+        expected_url = "https://api.openweathermap.org/data/2.5/weather"
+        collector = TemperatureFromOpenWeatherDotCom(parameters={}, parent=None)
+
+        self.assertEqual(expected_url, collector._TemperatureFromOpenWeatherDotCom__url)
+        self.assertEqual(expected_querytemplate, collector._TemperatureFromOpenWeatherDotCom__querytemplate)
 
 
 class TestTemperatureFromOpenWeatherDotComCollect(TestCase):
@@ -38,10 +43,13 @@ class TestTemperatureFromOpenWeatherDotComCollect(TestCase):
         Should log invalid state of json in "collected" data as string.
         :return:
         """
-        excpeted_data = "'https://api.openweathermap.org/data/2.5/weather?q=Munich,ger&units=Metric&&APPID=12345' " \
+        excpeted_data = \
+            "'https://api.openweathermap.org/data/2.5/weather?q=Munich,ger" \
+            "&units=Metric&&APPID=123456789abcdefghijkl1234567890a' " \
                         "returned invalid weather data."
         collector = TemperatureFromOpenWeatherDotCom(parameters={
             'countrycode': 'ger', 'apikey': '123456789abcdefghijkl1234567890a', 'city': 'Munich'}, parent=None)
+        collector._apikey = '123456789abcdefghijkl1234567890a'
 
         collector._collect()
 
@@ -68,8 +76,12 @@ class TestTemperatureFromOpenWeatherDotComGetParametersForStr(TestCase):
         Should get all parameters necessary and store them for logging except the API key.
         :return:
         """
-        self.fail()
+        collector = TemperatureFromOpenWeatherDotCom(parameters={'city': 'Munich',
+            'countrycode': 'ger', 'apikey': '123456789abcdefghijkl1234567890a'}, parent=None)
 
+        actual_parameters = collector._get_parameters_for_str()
+
+        self.assertFalse('apikey' in actual_parameters)
 
 class TestTemperatureFromOpenWeatherDotComGetQuery(TestCase):
     def test__get_query(self):
@@ -164,7 +176,10 @@ class TestTemperatureFromOpenWeatherDotComApiKey(TestCase):
         Should raise an exception.
         :return:
         """
-        self.fail()
+        collector = TemperatureFromOpenWeatherDotCom(parent=None, parameters={})
+
+        with self.assertRaises(AttributeError):
+            tmp = collector.apikey
 
     def test_apikey_getter(self):
         """
@@ -184,11 +199,18 @@ class TestTemperatureFromOpenWeatherDotComApiKey(TestCase):
         Should raise an error.
         :return:
         """
-        self.fail()
+        collector = TemperatureFromOpenWeatherDotCom(parent=None, parameters={})
+
+        with self.assertRaises(ValueError):
+            collector.apikey = '12345'
 
     def test_apikey_setter(self):
         """
         Should set the value of _apikey
         :return:
         """
-        self.fail()
+        expected_key = '123456789abcdefghijkl1234567890a'
+        collector = TemperatureFromOpenWeatherDotCom(parent=None, parameters={})
+        collector.apikey = expected_key
+
+        self.assertEqual(expected_key, collector._apikey)

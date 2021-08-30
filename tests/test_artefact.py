@@ -136,6 +136,7 @@ class TestArtefactBaseDunderCall(TestCase):
         expected_message = "Caught unhandled exception during collection of artefact. " \
                            "Exception: There is something wrong with your values."
         actual_artefact = ExceptionArtefactMockup(parent=None, parameters={})
+        actual_artefact._supportedsystem = None
 
         # Collect by using __call__
         actual_artefact()
@@ -148,7 +149,17 @@ class TestArtefactBaseDunderCall(TestCase):
         Should log, that the selected collector is not supported by the underlying plattform.
         :return:
         """
-        self.fail()
+        from tests.support.mockups import ExceptionArtefactMockup
+
+        expected_message = 'The platform "Darwin" is not supported by this collector.' \
+                           '\nPlatform supported: "MamboJamboPlatform"'
+        actual_artefact = ExceptionArtefactMockup(parent=None, parameters={})
+
+        # Collect by using __call__
+        actual_artefact()
+        actual_message = actual_artefact.data[0].collecteddata
+
+        self.assertEqual(actual_message, expected_message)
 
 
 class TestArtefactBaseDunderStr(TestCase):
