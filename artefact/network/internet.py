@@ -12,6 +12,7 @@ import re
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from urllib.error import URLError
+from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 from collections import UserDict
 
@@ -106,7 +107,7 @@ class ExternalLinksOnUrl(ArtefactBase):
                 result += f"{item}\r\n"
         else:
             result += self.data[0].collecteddata
-        result = self.data[0].get_metadata_as_str(result)
+        result += self.data[0].get_metadata_as_str()
 
         return result
 
@@ -114,7 +115,7 @@ class ExternalLinksOnUrl(ArtefactBase):
         self.data = ExternalLinksOnUrl._getexternallinks(self.url)
 
     @staticmethod
-    def _getexternallinks(excludeurl):
+    def _getexternallinks(excludeurl: str):
         try:
             html = urlopen(excludeurl)
         except URLError as urlerror:
@@ -123,8 +124,8 @@ class ExternalLinksOnUrl(ArtefactBase):
             return f"Cannot request page '{excludeurl}\n{httperror.reason}'"
         else:
             bs = BeautifulSoup(html, "html.parser")
-            # TODO The filtering regex does not exclude internal links as I would like it. Must be sharpened
-            externallinks = [link['href'] for link in bs.find_all('a', href=re.compile(
-                '^(http|www)((?!'+excludeurl+').)*$'))
+            parsed_url = urlparse(excludeurl)
+            tmp = f"^(http|https)://((?!'+{parsed_url.netloc}+').)*$"
+            externallinks = [link['href'] for link in bs.find_all('a', href=re.compile(tmp))
                              if link['href'] is not None]
             return externallinks
