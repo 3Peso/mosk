@@ -151,8 +151,8 @@ class TestArtefactBaseDunderCall(TestCase):
         """
         from tests.support.mockups import ExceptionArtefactMockup
 
-        expected_message = 'The platform "Darwin" is not supported by this collector.' \
-                           '\nPlatform supported: "MamboJamboPlatform"'
+        expected_message = 'The platform "Darwin" is not supported by this collector. ' \
+                           '\r\nPlatform supported: "MamboJamboPlatform"'
         actual_artefact = ExceptionArtefactMockup(parent=None, parameters={})
 
         # Collect by using __call__
@@ -165,18 +165,17 @@ class TestArtefactBaseDunderCall(TestCase):
 class TestArtefactBaseDunderStr(TestCase):
     def test___str__data_is_none(self):
         """
-        Should do nothing.
+        Should return empty string.
         :return:
         """
-        self.fail()
+        from tests.support.mockups import ExceptionArtefactMockup
 
-    def test___str__several_data_objects_collected(self):
-        """
-        Should create combined string with information in string form for all collected data objects,
-        containing the object class name, the provided parameters, and their values.
-        :return:
-        """
-        self.fail()
+        expected_string = ''
+        actual_artefact = ExceptionArtefactMockup(parent=None, parameters={})
+
+        actual_artefact_as_string = str(actual_artefact)
+
+        self.assertEqual(expected_string, actual_artefact_as_string)
 
 
 class TestArtefactBaseGetDocumentation(TestCase):
@@ -185,7 +184,17 @@ class TestArtefactBaseGetDocumentation(TestCase):
         Should return string with the documentation information for that collector.
         :return:
         """
-        self.fail()
+        from tests.support.mockups import ExceptionArtefactMockup
+
+        expected_documentation = 'Title: Title\nDescription: Description\nCollection Method: Method'
+        actual_artefact = ExceptionArtefactMockup(parent=None, parameters={})
+        actual_artefact._title = "Title"
+        actual_artefact._description = "Description"
+        actual_artefact._collectionmethod = "Method"
+
+        actual_documentation = actual_artefact.getdocumentation()
+
+        self.assertEqual(actual_documentation, expected_documentation)
 
 
 class TestArtefactBaseInitDescriptionProperties(TestCase):
