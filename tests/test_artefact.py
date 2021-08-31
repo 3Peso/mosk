@@ -204,7 +204,25 @@ class TestArtefactBaseInitDescriptionProperties(TestCase):
         which is currently in use.
         :return:
         """
-        self.fail()
+        from tests.support.mockups import SimpleArtefactMockup
+        expected_resources = {
+            'tests.support.mockups.SimpleArtefactMockup': {
+                'title': 'Test Title',
+                'description': 'Test Description',
+                'collectionmethod': 'Method'
+            }
+        }
+        with mock.patch('baseclasses.artefact.get_collector_resources',
+                        MagicMock(return_value=expected_resources)):
+            actual_artefact = SimpleArtefactMockup(parameters={}, parent={})
+            actual_artefact._init_description_properties()
+
+        self.assertEqual(expected_resources['tests.support.mockups.SimpleArtefactMockup']['title'],
+                         actual_artefact._title)
+        self.assertEqual(expected_resources['tests.support.mockups.SimpleArtefactMockup']['description'],
+                         actual_artefact._description)
+        self.assertEqual(expected_resources['tests.support.mockups.SimpleArtefactMockup']['collectionmethod'],
+                         actual_artefact._collectionmethod)
 
     def test__init_description_properties_no_title_found(self):
         """

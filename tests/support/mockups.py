@@ -8,3 +8,8 @@ class ExceptionArtefactMockup(ArtefactBase):
 
     def _collect(self):
         raise ValueError("There is something wrong with your values.")
+
+
+class SimpleArtefactMockup(ArtefactBase):
+    def _collect(self):
+        return None
