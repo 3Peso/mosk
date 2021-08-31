@@ -229,18 +229,54 @@ class TestArtefactBaseInitDescriptionProperties(TestCase):
         Should init _title with "No title found".
         :return:
         """
-        self.fail()
+        from tests.support.mockups import SimpleArtefactMockup
+        expected_resources = {
+            'tests.support.mockups.SimpleArtefactMockup': {
+                'description': 'Test Description',
+                'collectionmethod': 'Method'
+            }
+        }
+        with mock.patch('baseclasses.artefact.get_collector_resources',
+                        MagicMock(return_value=expected_resources)):
+            actual_artefact = SimpleArtefactMockup(parameters={}, parent={})
+            actual_artefact._init_description_properties()
+
+        self.assertEqual("No Title Found", actual_artefact._title)
 
     def test__init_description_properties_no_description_found(self):
         """
         Should init _description with "No description found".
         :return:
         """
-        self.fail()
+        from tests.support.mockups import SimpleArtefactMockup
+        expected_resources = {
+            'tests.support.mockups.SimpleArtefactMockup': {
+                'title': 'Title',
+                'collectionmethod': 'Method'
+            }
+        }
+        with mock.patch('baseclasses.artefact.get_collector_resources',
+                        MagicMock(return_value=expected_resources)):
+            actual_artefact = SimpleArtefactMockup(parameters={}, parent={})
+            actual_artefact._init_description_properties()
+
+        self.assertEqual("No Description Found", actual_artefact._description)
 
     def test__init_description_properties_no_colletionmethod_found(self):
         """
         Should init _collectionmethod with "No collection method found".
         :return:
         """
-        self.fail()
+        from tests.support.mockups import SimpleArtefactMockup
+        expected_resources = {
+            'tests.support.mockups.SimpleArtefactMockup': {
+                'title': 'Title',
+                'description': 'Description'
+            }
+        }
+        with mock.patch('baseclasses.artefact.get_collector_resources',
+                        MagicMock(return_value=expected_resources)):
+            actual_artefact = SimpleArtefactMockup(parameters={}, parent={})
+            actual_artefact._init_description_properties()
+
+        self.assertEqual("No Collection Method Found", actual_artefact._collectionmethod)
