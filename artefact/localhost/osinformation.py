@@ -72,6 +72,7 @@ class OSName(MacArtefact):
         if not expected_version_format.match(platformversion):
             raise ValueError(f"Unexpected version string '{platformversion}'.")
 
+
 class OSVersion(MacArtefact):
     """
     Tries to retrieve the OS version number.
