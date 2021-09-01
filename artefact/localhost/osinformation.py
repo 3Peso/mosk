@@ -52,23 +52,23 @@ class OSName(MacArtefact):
             try:
                 self._verify_version_string(platformversion)
                 version_tuple = platformversion.split('.')
-                tmp = _platform_lookup[sys.platform][LOOKUP_KEY][platformversion]
+                tmp = _platform_lookup[sys.platform][LOOKUP_KEY][version_tuple[0]]
                 # if type is dict, it is an older platform like Mojave, whichs name is decided in the
                 # minor revision number
                 if type(tmp) is dict:
                     self.data = _platform_lookup[sys.platform][LOOKUP_KEY][version_tuple[0]][version_tuple[1]]
                 # if type is a string it is a newer platform whichs name is decided in the major revision number
                 elif type(tmp) is str:
-                    self.data = _platform_lookup[sys.platform][LOOKUP_KEY][platformversion][version_tuple[0]]
+                    self.data = tmp
             except ValueError:
                 self.data = f"Cannot collect OS name. Unexpected version string format '{platformversion}'."
             except KeyError:
                 self.data = f"Cannot collect OS name for platform version '{platformversion}'"
 
     @staticmethod
-    def _verify_version_string(cls, platformversion):
+    def _verify_version_string(platformversion):
         # Assume, that this code will never see older platforms, than 10.x.
-        expected_version_format = re.compile(r'^\d{2,}\.\d{2,}$')
+        expected_version_format = re.compile(r'^\d{2,}(\.\d{1,})?(\.\d{1,})?$')
         if not expected_version_format.match(platformversion):
             raise ValueError(f"Unexpected version string '{platformversion}'.")
 
