@@ -5,8 +5,10 @@ mosk localhost module for classes collecting os information.
 __author__ = '3Peso'
 __all__ = ['OSName', 'OSVersion', 'OSTimezone']
 
+import logging
 import platform
 import sys
+import re
 from datetime import datetime
 
 from baseclasses.artefact import MacArtefact, ArtefactBase
@@ -21,21 +23,16 @@ VERSION_NUMBER_INDEX = 0
 _platform_lookup = {
     'darwin': {
         LOOKUP_KEY: {
-            # TODO Refactor in a manor, so that only the important parts are used to determine the os name.
-            # Example: For BigSur only the 11 is important. For Sierra only 10.12 is important.
-            # TODO Try to find a way to collect OS information online
-            '10.10': 'Yosemite',
-            '10.11': 'El Capitan',
-            '10.12': 'Sierra',
-            '10.13': 'High Sierra',
-            '10.14': 'Mojave',
-            '10.15': 'Catalina',
-            '11.0': 'BigSur',
-            '11.1': 'BigSur',
-            '11.2': 'BigSur',
-            '11.2.1': 'BigSur',
-            '11.2.2': 'BigSur',
-            '11.2.3': 'BigSur'
+            '10': {
+                '10': 'Yosemite',
+                '11': 'El Capitan',
+                '12': 'Sierra',
+                '13': 'High Sierra',
+                '14': 'Mojave',
+                '15': 'Catalina'
+            },
+            '11': 'BigSur',
+            '12': 'Monterey'
         }
     }
 }
@@ -49,13 +46,31 @@ class OSName(MacArtefact):
         super().__init__(*args, **kwargs)
 
     def _collect(self):
+        logger = logging.getLogger(__name__)
         if sys.platform == 'darwin':
             platformversion = platform.mac_ver()[VERSION_NUMBER_INDEX]
             try:
-                self.data = _platform_lookup[sys.platform][LOOKUP_KEY][platformversion]
+                self._verify_version_string(platformversion)
+                version_tuple = platformversion.split('.')
+                tmp = _platform_lookup[sys.platform][LOOKUP_KEY][platformversion]
+                # if type is dict, it is an older platform like Mojave, whichs name is decided in the
+                # minor revision number
+                if type(tmp) is dict:
+                    self.data = _platform_lookup[sys.platform][LOOKUP_KEY][version_tuple[0]][version_tuple[1]]
+                # if type is a string it is a newer platform whichs name is decided in the major revision number
+                elif type(tmp) is str:
+                    self.data = _platform_lookup[sys.platform][LOOKUP_KEY][platformversion][version_tuple[0]]
+            except ValueError:
+                self.data = f"Cannot collect OS name. Unexpected version string format '{platformversion}'."
             except KeyError:
                 self.data = f"Cannot collect OS name for platform version '{platformversion}'"
 
+    @staticmethod
+    def _verify_version_string(cls, platformversion):
+        # Assume, that this code will never see older platforms, than 10.x.
+        expected_version_format = re.compile(r'^\d{2,}\.\d{2,}$')
+        if not expected_version_format.match(platformversion):
+            raise ValueError(f"Unexpected version string '{platformversion}'.")
 
 class OSVersion(MacArtefact):
     """
