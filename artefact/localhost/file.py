@@ -124,7 +124,7 @@ class FileCopy(MacArtefact):
             else:
                 unique_name = f"{filename}_{timestamp}{str(counter).zfill(2)}"
 
-            if(counter == max_counter):
+            if counter == max_counter:
                 logger.warning("Max counter reached.")
                 raise OverflowError("Max counter reached. Consider less calling 'FileCopy' collectors.")
 
