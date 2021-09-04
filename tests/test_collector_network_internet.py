@@ -1,3 +1,4 @@
+import logging
 from unittest import TestCase, mock
 from unittest.mock import MagicMock
 
@@ -165,7 +166,11 @@ class TestTemperatureFromOpenWeatherDotComWeatherDataIsValid(TestCase):
 
         actual_data = FunkyHTTPResponseMockup()
 
-        actual_result = collector._weather_data_is_valid(actual_data)
+        try:
+            logging.disable(logging.ERROR)
+            actual_result = collector._weather_data_is_valid(actual_data)
+        finally:
+            logging.disable(logging.NOTSET)
 
         self.assertFalse(actual_result)
 

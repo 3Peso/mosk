@@ -1,3 +1,4 @@
+import logging
 from unittest import TestCase, mock
 from unittest.mock import MagicMock
 
@@ -137,9 +138,12 @@ class TestArtefactBaseDunderCall(TestCase):
                            "Exception: There is something wrong with your values."
         actual_artefact = ExceptionArtefactMockup(parent=None, parameters={})
         actual_artefact._supportedsystem = None
-
-        # Collect by using __call__
-        actual_artefact()
+        try:
+            logging.disable(logging.ERROR)
+            # Collect by using __call__
+            actual_artefact()
+        finally:
+            logging.disable(logging.NOTSET)
         actual_message = actual_artefact.data[0].collecteddata
 
         self.assertEqual(actual_message, expected_message)

@@ -1,3 +1,4 @@
+import logging
 from unittest import TestCase
 
 
@@ -40,7 +41,11 @@ class TestTimeFromNTPServerCollect(TestCase):
         actual_colletor = TimeFromNTPServer(parameters={}, parent=None)
         actual_colletor.timeserver = expected_ntp_server
 
-        actual_colletor._collect()
+        try:
+            logging.disable(logging.ERROR)
+            actual_colletor._collect()
+        finally:
+            logging.disable(logging.NOTSET)
 
         self.assertEqual(str(actual_colletor.data[0].collecteddata), expected_data)
 
