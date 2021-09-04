@@ -69,3 +69,21 @@ class TestOSNameCollect(TestCase):
             actual_platform_name = collector.data[0].collecteddata
 
         self.assertEqual(expected_platform_name, actual_platform_name)
+
+
+class TestOSNameSupportedSystem(TestCase):
+    def test__supportedsystem(self):
+        """
+        Should be "Darwin"
+        :return:
+        """
+        self.fail()
+
+
+class TestOSVersionSupportedSystem(TestCase):
+    def test__supportedsystem(self):
+        """
+        Should be "Darwin".
+        :return:
+        """
+        self.fail()
