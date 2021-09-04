@@ -143,5 +143,15 @@
     "title": "DebugPlaceholder",
     "collectionmethod": "Internal method",
     "description": "Collector used to debug placeholder functionality. For internal / development use."
+  },
+  "artefact.file.FileCopy": {
+    "title": "FileCopy",
+    "collectionmethod": "To be implemented",
+    "description": "Collector tries to create a copy of the file."
+  },
+  "artefact.file.FileMetadata": {
+    "title": "FileMetadata",
+    "collectionmethod": "To be implemented",
+    "description": "Collector to collect as much metadata to a file as possible."
   }
 }
