@@ -80,13 +80,25 @@ class ShellHistoryOfAllUsers(MacArtefact):
 
 class FileCopy(MacArtefact):
     """
-    Tries to copy the file provided by 'filepath', and optionally, tries to collect the metadata of the file
-    also, stored in a seperated file acompanying the file copy itself.
+    Tries to copy the file in a live session provided by 'filepath'.
     The file copy is stored alongside the collection log. The collection log points to the copied file, but
     does not hold it.
     """
-    def __init__(self, *args, **kargs):
-        super().__init__(*args, **kargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _collect(self):
+        # check for file existence
+        # copy file to directory created inside
+        pass
+
+
+class FileMetadata(MacArtefact):
+    """
+    Tries to collect as much metadata to a target file, as possible.
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def _collect(self):
         pass
