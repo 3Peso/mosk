@@ -7,14 +7,16 @@ __all__ = ['FileExistence', 'FileContent', 'ShellHistoryOfAllUsers']
 
 import logging
 import os
+import shutil
 import datetime
 from collections import namedtuple
 from os import path
 from pathlib import Path
+from shutil import copyfile
 
 from baseclasses.artefact import ArtefactBase, MacArtefact
 from source.localhost import expandfilepath
-from businesslogic.support import get_userfolders
+from businesslogic.support import get_userfolders, md5
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
 
@@ -102,9 +104,15 @@ class FileCopy(MacArtefact):
         super().__init__(*args, **kwargs)
 
     def _collect(self):
-        # check for file existence
-        # copy file to directory created inside
-        pass
+        file_copy_destination = os.path.join(self._ensure_target_directory(), os.path.basename(self.filepath))
+        if path.exists(self.filepath):
+            copyfile(self.filepath, file_copy_destination)
+            self.data = f"Copied file '{self.filepath}' to '{file_copy_destination}'."
+            self.data[-1].sourcehash = md5(fpath=self.filepath)
+            self.data[-1].sourcepath = self.filepath
+        else:
+            self.data = f"The file '{self.filepath}' does not exist."
+            shutil.rmtree(path.dirname(file_copy_destination), True)
 
     def _ensure_target_directory(self):
         if not path.exists(self._target_directory):

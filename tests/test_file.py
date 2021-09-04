@@ -1,5 +1,6 @@
 import os
 import os.path
+import shutil
 
 from unittest import TestCase, mock
 from unittest.mock import MagicMock
@@ -88,23 +89,18 @@ class TestFileCopyDunderInit(TestCase):
 
 
 class TestFileCopyCollect(TestCase):
-    _expected_file_to_copy = './testfiles/test.txt'
-    _expected_target_directory = 'test_target'
+    _expected_source_file_path = './testfiles/test.txt'
+    _expected_target_directory = '.'
     _expected_unique_directory = 'unique'
 
-    def setUp(cls) -> None:
-        target_path = os.path.join(cls._expected_target_directory, cls._expected_unique_directory)
-        cls._expected_target_file_path = os.path.join(target_path, cls._expected_file_to_copy)
+    def setUp(self) -> None:
+        self._expected_source_file_name = os.path.basename(self._expected_source_file_path)
+        target_path = os.path.join(self._expected_target_directory, self._expected_unique_directory)
+        self._expected_target_file_path = os.path.join(target_path, self._expected_source_file_name)
+        self._expected_target_path = target_path
 
     def tearDown(self) -> None:
-        target_path = os.path.join(self._expected_target_directory, self._expected_unique_directory)
-
-        if os.path.exists(os.path.join(target_path, self._expected_file_to_copy)):
-            os.remove(target_path, self._expected_file_to_copy)
-
-        if os.path.exists(target_path):
-            os.remove(target_path)
-            os.remove(self._expected_target_directory)
+        shutil.rmtree(self._expected_target_path, True)
 
     def test__collect(self):
         """
@@ -114,7 +110,13 @@ class TestFileCopyCollect(TestCase):
         from artefact.localhost.file import FileCopy
 
         collector = FileCopy(parameters={}, parent=None)
-        collector._collect()
+        collector.filepath = self._expected_source_file_path
+        with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
+                        MagicMock(return_value=self._expected_target_path)):
+            # Create the target path here, because we mocked _ensure_target_directory
+            if not os.path.exists(self._expected_target_path):
+                os.mkdir(self._expected_target_path)
+            collector._collect()
 
         self.assertTrue(os.path.exists(self._expected_target_file_path))
 
@@ -124,7 +126,20 @@ class TestFileCopyCollect(TestCase):
         Should collect the md5 hash of the file, and the sha1 hash of the file.
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileCopy
+
+        expected_data = f"Copied file '{self._expected_source_file_path}' to '{self._expected_target_file_path}'."
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = self._expected_source_file_path
+        with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
+                        MagicMock(return_value=self._expected_target_path)):
+            # Create the target path here, because we mocked _ensure_target_directory
+            if not os.path.exists(self._expected_target_path):
+                os.mkdir(self._expected_target_path)
+            collector._collect()
+        actual_data = collector.data[0].collecteddata
+
+        self.assertEqual(expected_data, actual_data)
 
     def test__collect_destination_full(self):
         """
@@ -141,14 +156,37 @@ class TestFileCopyCollect(TestCase):
         collected, does not exist.
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileCopy
+
+        expected_source_file_path = "./somedir/IDoNotExist.txt"
+        expected_data = f"The file '{expected_source_file_path}' does not exist."
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = expected_source_file_path
+        with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
+                        MagicMock(return_value=self._expected_target_path)):
+            collector._collect()
+        actual_data = collector.data[0].collecteddata
+
+        self.assertEqual(expected_data, actual_data)
 
     def test__collect_could_not_copy_file(self):
         """
         Should ensure that unique target directory is deleted.
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileCopy
+
+        expected_source_file_path = f"{self._expected_unique_directory}/IDoNotExist.txt"
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = expected_source_file_path
+        with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
+                        MagicMock(return_value=self._expected_target_path)):
+            # Create the target path here, because we mocked _ensure_target_directory
+            if not os.path.exists(self._expected_target_path):
+                os.mkdir(self._expected_target_path)
+            collector._collect()
+
+        self.assertFalse(os.path.exists(self._expected_target_path))
 
 
 class TestFileCopyEnsureTargetDirectory(TestCase):
