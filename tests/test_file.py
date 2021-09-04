@@ -1,4 +1,5 @@
-from unittest import TestCase
+from unittest import TestCase, mock
+from unittest.mock import MagicMock
 
 
 class TestFileContentCollect(TestCase):
@@ -8,45 +9,79 @@ class TestFileContentCollect(TestCase):
         collected, does not exist.
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileContent
+
+        expected_file = "./IDoNotExist.txt"
+        expected_data = f"File '{expected_file}' does not exist."
+        collector = FileContent(parameters={}, parent={})
+        collector.filepath = expected_file
+        collector._collect()
+
+        self.assertEqual(expected_data, collector.data[0].collecteddata)
 
     def test__collect(self):
         """
         Should store the content of the target file inside the log.
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileContent
 
-    def test__collect_file_bigger_than_10MB(self):
+        expected_file = "./testfiles/test.txt"
+        expected_data = "This is a test file.\n\nIt should be used to test\nworking with file content."
+        collector = FileContent(parameters={}, parent={})
+        collector.filepath = expected_file
+        collector._collect()
+
+        self.assertEqual(expected_data, collector.data[0].collecteddata)
+
+
+class TestFileContentReadFile(TestCase):
+    def test__read_file_with_too_large_file(self):
         """
         Should store a message in data, which says, that the file is to big for its content to be stored
         inside the collection log.
         :return:
         """
-        self.fail()
+        from collections import namedtuple
+        from artefact.localhost.file import FileContent
+
+        expected_file = "dummyfile.txt"
+        expected_data = f"File '{expected_file}' is bigger than {FileContent._max_file_size/1024/1024} MiBs. " \
+                        f"File Content Collector max file size is {FileContent._max_file_size/1024/1024} MiBs."
+        collector = FileContent(parameters={}, parent={})
+        Mock_Stats = namedtuple('Mock_Stats', ['st_size'])
+        mock_stats = Mock_Stats(st_size=1024*1024*10+1)
+        with mock.patch('artefact.localhost.file.Path.stat', MagicMock(return_value=mock_stats)):
+            with mock.patch('artefact.localhost.file.path.exists', MagicMock(return_value=True)):
+                collector._read_file(filepath=expected_file, filetoload=None)
+
+        self.assertEqual(expected_data, collector.data[0].collecteddata)
+
+
+class TestFileContentDunderInit(TestCase):
+    def test___init___max_file_size(self):
+        """
+        Should be by default 10 MiBs
+        :return:
+        """
+        expected_size = 10485760 # which is 10 MiBs
+        from artefact.localhost.file import FileContent
+        collector = FileContent(parameters={}, parent={})
+
+        self.assertEqual(expected_size, collector._max_file_size)
 
 
 class TestFileCopyDunderInit(TestCase):
-    def test___init__(self):
-        """
-        Should do nothing.
-        :return:
-        """
-        self.fail()
-
     def test___init___targert_directory(self):
         """
         By default _target_directory should be set to '.'
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileCopy
+        expected_target_dir = '.'
+        collector = FileCopy(parameters={}, parent=None)
 
-    def test___init___target_directory_does_not_exist(self):
-        """
-        Should raise an exception, if the target directory does not exist.
-        :return:
-        """
-        self.fail()
+        self.assertEqual(expected_target_dir, collector._target_directory)
 
 
 class TestFileCopyCollect(TestCase):
@@ -89,6 +124,79 @@ class TestFileCopyCollect(TestCase):
         """
         self.fail()
 
+    def test__collect_could_not_copy_file(self):
+        """
+        Should ensure that unique target directory is deleted.
+        :return:
+        """
+        self.fail()
+
+
+class TestFileCopyEnsureTargetDirectory(TestCase):
+    def test__ensure_target_directory(self):
+        """
+        Should create target directory, if it does not exist.
+        Should create directory with unique name inside target directory.
+        Should return path of unique target directory
+        :return:
+        """
+        self.fail()
+
+
+class TestFileCopyGetUniqueDirectoryName(TestCase):
+    @mock.patch('artefact.localhost.file.path.exists', MagicMock(return_value=False))
+    @mock.patch('artefact.localhost.file.ArtefactBase._init_description_properties', MagicMock())
+    def test__get_unique_directory_name(self):
+        """
+        Should return directory name which is unique to target directory using
+        file name, datetime stamp, and counter
+        :return:
+        """
+        from datetime import datetime
+        from artefact.localhost.file import FileCopy
+        expected_time = datetime(2009, 3, 20, 13, 12, 2)
+        expected_dir_name = 'some_file.txt_2009032013120201'
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = '~/somepath/some_file.txt'
+        actual_dir_name = collector._get_unique_directory_name('mock', expected_time)
+
+        self.assertEqual(expected_dir_name, actual_dir_name)
+
+    def test__get_unique_directory_name_timestamp_already_taken(self):
+        """
+        Should return a unique name with the same datetime stamp but with the
+        counter incremented by one
+        :return:
+        """
+        import os
+        from datetime import datetime
+        from artefact.localhost.file import FileCopy
+        expected_time = datetime(2009, 3, 20, 13, 12, 2)
+        expected_dir_name = 'some_file.txt_2009032013120202'
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = '~/somepath/some_file.txt'
+        try:
+            os.mkdir('./some_file.txt_2009032013120201')
+            actual_dir_name = collector._get_unique_directory_name('.', expected_time)
+        finally:
+            os.rmdir('./some_file.txt_2009032013120201')
+
+        self.assertEqual(expected_dir_name, actual_dir_name)
+
+    @mock.patch('artefact.localhost.file.path.exists', MagicMock(return_value=True))
+    def test__get_unique_directory_name_max_counter_reached(self):
+        """
+        Should raise an exception.
+        :return:
+        """
+        from datetime import datetime
+        from artefact.localhost.file import FileCopy
+        expected_time = datetime(2009, 3, 20, 13, 12, 2)
+        expected_dir_name = 'some_file.txt_2009032013120201'
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = '~/somepath/some_file.txt'
+        self.assertRaises(OverflowError, collector._get_unique_directory_name, '.', expected_time)
+
 
 class TestFileCopySupportedSystem(TestCase):
     def test__supportedsystem(self):
@@ -96,7 +204,10 @@ class TestFileCopySupportedSystem(TestCase):
         Should be "Darwin"
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileCopy
+        collector = FileCopy(parameters={}, parent={})
+
+        self.assertEqual("Darwin", collector._supportedsystem)
 
 
 class TestFileMetadataDunderInit(TestCase):
@@ -123,4 +234,7 @@ class TestFileMetadataSupportedSystem(TestCase):
         Should be "Darwin"
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileMetadata
+        collector = FileMetadata(parameters={}, parent={})
+
+        self.assertEqual("Darwin", collector._supportedsystem)

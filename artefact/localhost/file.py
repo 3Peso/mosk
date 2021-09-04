@@ -6,8 +6,10 @@ __author__ = '3Peso'
 __all__ = ['FileExistence', 'FileContent', 'ShellHistoryOfAllUsers']
 
 import logging
+import datetime
 from collections import namedtuple
 from os import path
+from pathlib import Path
 
 from baseclasses.artefact import ArtefactBase, MacArtefact
 from source.localhost import expandfilepath
@@ -38,6 +40,8 @@ class FileContent(ArtefactBase):
     Retrieves the file content of a file provided by path. It does NOT copy the file itself. The
     content is stored inside the log created during the collection session.
     """
+    _max_file_size = 1024*1024*10 # by default at max 10 MiBs
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -45,10 +49,17 @@ class FileContent(ArtefactBase):
         filepath = expandfilepath(self.filepath)
         if path.exists(filepath):
             with open(filepath, "r") as filetoload:
-                self.data = filetoload.read()
+                self._read_file(filetoload, filepath)
             self.data[-1].sourcepath = filepath
         else:
             self.data = f"File '{self.filepath}' does not exist."
+
+    def _read_file(self, filetoload, filepath):
+        if Path(filepath).stat().st_size > self._max_file_size:
+            self.data = f"File '{filepath}' is bigger than {self._max_file_size / 1024 / 1024} MiBs. " \
+                        f"File Content Collector max file size is {self._max_file_size / 1024 / 1024} MiBs."
+        else:
+            self.data = filetoload.read()
 
 
 class ShellHistoryOfAllUsers(MacArtefact):
@@ -93,6 +104,31 @@ class FileCopy(MacArtefact):
         # check for file existence
         # copy file to directory created inside
         pass
+
+    def _ensure_target_directory(self):
+        pass
+
+    def _get_unique_directory_name(self, target_directory, datetime):
+        logger = logging.getLogger(__name__)
+        # Assume, target directory exists.
+        # REMARKS: This only works correct on macOS and Linux.
+        filename = path.basename(self.filepath)
+        timestamp = f"{datetime.year}{str(datetime.month).zfill(2)}{str(datetime.day).zfill(2)}" \
+                    f"{str(datetime.hour).zfill(2)}{str(datetime.minute).zfill(2)}{str(datetime.second).zfill(2)}"
+
+        unique_name = f"{filename}_{timestamp}{str(1).zfill(2)}"
+        max_counter = 99
+        for counter in range(2,max_counter+1):
+            if not path.exists(path.join(target_directory, unique_name)):
+                break
+            else:
+                unique_name = f"{filename}_{timestamp}{str(counter).zfill(2)}"
+
+            if(counter == max_counter):
+                logger.warning("Max counter reached.")
+                raise OverflowError("Max counter reached. Consider less calling 'FileCopy' collectors.")
+
+        return unique_name
 
 
 class FileMetadata(MacArtefact):
