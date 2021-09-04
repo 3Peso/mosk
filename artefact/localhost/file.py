@@ -35,7 +35,8 @@ class FileExistence(ArtefactBase):
 
 class FileContent(ArtefactBase):
     """
-    Retrieves the file content of a file provided by path.
+    Retrieves the file content of a file provided by path. It does NOT copy the file itself. The
+    content is stored inside the log created during the collection session.
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -77,9 +78,13 @@ class ShellHistoryOfAllUsers(MacArtefact):
                     yield TermianlHistory(Path=historyfile, Content=hf.read())
 
 
-class FileWithMetadata(MacArtefact):
-    FILE_PATH_PARAMETER = "filepath"
-
+class FileCopy(MacArtefact):
+    """
+    Tries to copy the file provided by 'filepath', and optionally, tries to collect the metadata of the file
+    also, stored in a seperated file acompanying the file copy itself.
+    The file copy is stored alongside the collection log. The collection log points to the copied file, but
+    does not hold it.
+    """
     def __init__(self, *args, **kargs):
         super().__init__(*args, **kargs)
 
