@@ -34,6 +34,20 @@ class TestFileCopyDunderInit(TestCase):
         """
         self.fail()
 
+    def test___init___targert_directory(self):
+        """
+        By default _target_directory should be set to '.'
+        :return:
+        """
+        self.fail()
+
+    def test___init___target_directory_does_not_exist(self):
+        """
+        Should raise an exception, if the target directory does not exist.
+        :return:
+        """
+        self.fail()
+
 
 class TestFileCopyCollect(TestCase):
     def test__collect(self):

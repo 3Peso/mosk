@@ -84,6 +84,8 @@ class FileCopy(MacArtefact):
     The file copy is stored alongside the collection log. The collection log points to the copied file, but
     does not hold it.
     """
+    _target_directory = '.'
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
