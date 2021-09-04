@@ -3,6 +3,12 @@
 
 # Implement SQLite Storage for protocol and collected data/files
 
+# Add target directory parameter for mosk to define where logfiles and collected items
+# needs to be stored
+
+# Add content collection limit parameter for mosk, with which the size can be controlled
+# which limits if the content of file will be stored inside the collection log itself. (Collector FileContent)
+
 # Implement integration test with complete dryrun and check for unhandled exceptions
 
 # Detect, if VPNs are used (TOR over VPN)
