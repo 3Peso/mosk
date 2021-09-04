@@ -117,13 +117,6 @@ class TestFileCopyCollect(TestCase):
         """
         self.fail()
 
-    def test__collect_copy_inside_unique_sub_dir(self):
-        """
-        Stores copy of file inside a uniquely named sub dir of target dir.
-        :return:
-        """
-        self.fail()
-
     def test__collect_could_not_copy_file(self):
         """
         Should ensure that unique target directory is deleted.
@@ -135,13 +128,74 @@ class TestFileCopyCollect(TestCase):
 class TestFileCopyEnsureTargetDirectory(TestCase):
     def test__ensure_target_directory(self):
         """
-        Should create target directory, if it does not exist.
-        Should create directory with unique name inside target directory.
         Should return path of unique target directory
         :return:
         """
-        self.fail()
+        import os.path
+        from artefact.localhost.file import FileCopy
 
+        expected_target_dir = "./test_target"
+        expected_unique_dir_name = "me_unique"
+        expected_return_value = './test_target/me_unique'
+        collector = FileCopy(parameters={}, parent=None)
+        collector._target_directory = expected_target_dir
+        try:
+            with mock.patch('artefact.localhost.file.FileCopy._get_unique_directory_name',
+                            MagicMock(return_value=expected_unique_dir_name)):
+                acutal_return_value = collector._ensure_target_directory()
+                self.assertEqual(expected_return_value, acutal_return_value)
+        finally:
+            if(os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name))):
+                os.rmdir(os.path.join(expected_target_dir, expected_unique_dir_name))
+            if os.path.exists(expected_target_dir):
+                os.rmdir(expected_target_dir)
+
+    def test__ensure_target_directory_target_does_not_exist(self):
+        """
+        Should create target directory, if it does not exist.
+        :return:
+        """
+        import os.path
+        from artefact.localhost.file import FileCopy
+
+        expected_target_dir = "./test_target"
+        expected_unique_dir_name = "me_unique"
+        collector = FileCopy(parameters={}, parent=None)
+        collector._target_directory = expected_target_dir
+        try:
+            with mock.patch('artefact.localhost.file.FileCopy._get_unique_directory_name',
+                            MagicMock(return_value=expected_unique_dir_name)):
+                collector._ensure_target_directory()
+            self.assertTrue(os.path.exists(expected_target_dir))
+        finally:
+            if(os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name))):
+                os.rmdir(os.path.join(expected_target_dir, expected_unique_dir_name))
+            if os.path.exists(expected_target_dir):
+                os.rmdir(expected_target_dir)
+
+    def test__ensure_target_directory_unique_inside_target_dir(self):
+        """
+        Should create directory with unique name inside target directory.
+        :return:
+        """
+        import os.path
+        from artefact.localhost.file import FileCopy
+
+        expected_target_dir = "./test_target"
+        expected_unique_dir_name = "me_unique"
+        collector = FileCopy(parameters={}, parent=None)
+        collector._target_directory = expected_target_dir
+        try:
+            with mock.patch('artefact.localhost.file.FileCopy._get_unique_directory_name',
+                            MagicMock(return_value=expected_unique_dir_name)):
+                collector._ensure_target_directory()
+            self.assertTrue(os.path.exists(
+                os.path.join(expected_target_dir, expected_unique_dir_name)))
+        finally:
+            if os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name)):
+                os.rmdir(os.path.join(expected_target_dir, expected_unique_dir_name))
+            if(os.path.exists(expected_target_dir)):
+                os.rmdir(expected_target_dir)
 
 class TestFileCopyGetUniqueDirectoryName(TestCase):
     @mock.patch('artefact.localhost.file.path.exists', MagicMock(return_value=False))
