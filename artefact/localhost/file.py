@@ -37,8 +37,6 @@ class FileContent(ArtefactBase):
     """
     Retrieves the file content of a file provided by path.
     """
-    FILE_PATH_PARAMETER = "filepath"
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -77,3 +75,13 @@ class ShellHistoryOfAllUsers(MacArtefact):
                 ShellHistoryOfAllUsers._logger.debug("Found terminal history file '{}'.".format(historyfile))
                 with open(historyfile, encoding='unicode_escape') as hf:
                     yield TermianlHistory(Path=historyfile, Content=hf.read())
+
+
+class FileWithMetadata(MacArtefact):
+    FILE_PATH_PARAMETER = "filepath"
+
+    def __init__(self, *args, **kargs):
+        super().__init__(*args, **kargs)
+
+    def _collect(self):
+        pass
