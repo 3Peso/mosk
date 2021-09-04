@@ -1,3 +1,6 @@
+import os
+import os.path
+
 from unittest import TestCase, mock
 from unittest.mock import MagicMock
 
@@ -85,12 +88,35 @@ class TestFileCopyDunderInit(TestCase):
 
 
 class TestFileCopyCollect(TestCase):
+    _expected_file_to_copy = './testfiles/test.txt'
+    _expected_target_directory = 'test_target'
+    _expected_unique_directory = 'unique'
+
+    def setUp(cls) -> None:
+        target_path = os.path.join(cls._expected_target_directory, cls._expected_unique_directory)
+        cls._expected_target_file_path = os.path.join(target_path, cls._expected_file_to_copy)
+
+    def tearDown(self) -> None:
+        target_path = os.path.join(self._expected_target_directory, self._expected_unique_directory)
+
+        if os.path.exists(os.path.join(target_path, self._expected_file_to_copy)):
+            os.remove(target_path, self._expected_file_to_copy)
+
+        if os.path.exists(target_path):
+            os.remove(target_path)
+            os.remove(self._expected_target_directory)
+
     def test__collect(self):
         """
         Should copy the file, identified by the member 'filepath'.
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileCopy
+
+        collector = FileCopy(parameters={}, parent=None)
+        collector._collect()
+
+        self.assertTrue(os.path.exists(self._expected_target_file_path))
 
     def test__collect_log_data(self):
         """
