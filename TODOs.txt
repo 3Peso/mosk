@@ -28,6 +28,8 @@
 
 # Collector to copy complete files
 
+# Collector FileCopy: Think about guard against too long paths (old Windows issue)
+
 # Collector to collect directory of file
 
 # Collector to execute a generic command and collect the output (for example the "find" command)
