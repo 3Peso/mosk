@@ -9,6 +9,12 @@
 # Add content collection limit parameter for mosk, with which the size can be controlled
 # which limits if the content of file will be stored inside the collection log itself. (Collector FileContent)
 
+# Add SHA1 collection in addition to MD5 collection.
+
+# Add parameter, to control if SHA1 should be collected alongside MD5, to speed things up
+
+# Add parameter, for very quick collection (for example, no hash calculation, etc.)
+
 # Implement integration test with complete dryrun and check for unhandled exceptions
 
 # Detect, if VPNs are used (TOR over VPN)
