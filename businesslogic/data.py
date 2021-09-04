@@ -92,6 +92,10 @@ class CollectionData:
     def sourcehash(self):
         return self._sourcehash
 
+    @sourcehash.setter
+    def sourcehash(self, value):
+        self._sourcehash = value
+
     def save_as_md5(self, value: str):
         self._sourcehash = businesslogic.support.md5(data=value)
 
