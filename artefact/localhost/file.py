@@ -15,9 +15,6 @@ from os import path
 from pathlib import Path
 from shutil import copyfile
 
-# Required for FileMetadata
-import biplist
-
 from baseclasses.artefact import ArtefactBase, MacArtefact
 from source.localhost import expandfilepath
 from businesslogic.support import get_userfolders, md5
