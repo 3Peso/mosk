@@ -179,13 +179,13 @@ at the end of the subdirectories name.
 * LocalTime (macOS only)
 * NVRAMCollector
 * FileContent
-* [FileCopy](#filecopy) (macOS, and should also work on Linux)
+* [FileCopy](#filecopy) (macOS only)
 * FileExistence
 * MachineName
 * OSName (macOS only)
 * OSVersinon (macOS only)
 * OSTimezone
-* SudoVersion
+* SudoVersion (macOS only)
 * OSPlatform
 * NVRAMCollector (macOS only)
 * DetectFusionDrive (macOS only)

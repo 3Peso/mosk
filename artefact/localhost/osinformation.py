@@ -93,7 +93,7 @@ class OSTimezone(ArtefactBase):
         self.data = datetime.now().astimezone().tzname()
 
 
-class SudoVersion(ArtefactBase):
+class SudoVersion(MacArtefact):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._supportedsystem = ('Darwin', 'Linux')
