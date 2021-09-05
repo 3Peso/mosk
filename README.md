@@ -179,7 +179,7 @@ at the end of the subdirectories name.
 * LocalTime (macOS only)
 * NVRAMCollector
 * FileContent
-* FileCopy (macOS, and should also work on Linux)
+* [FileCopy](#filecopy) (macOS, and should also work on Linux)
 * FileExistence
 * MachineName
 * OSName (macOS only)
@@ -194,7 +194,7 @@ at the end of the subdirectories name.
 * InstalledApplications (macOS only)
 * FileSystemInformation (macOS only)
 * HardwareInformation (macOS only)
-* AllUsernames
+* [AllUsernames](#allusernames)
 * CurrentUser
 
 #### Scope 'Internet'
