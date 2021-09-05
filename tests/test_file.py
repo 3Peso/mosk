@@ -420,6 +420,22 @@ class TestFileMetadataCollect(TestCase):
         """
         self.fail()
 
+    def test__collect_file_does_not_exist(self):
+        """
+        Should store info about not existing file in data.
+        :return:
+        """
+        from artefact.localhost.file import FileMetadata
+
+        expected_filepath = "IDoNotExist.txt"
+        expected_data = f"File '{expected_filepath}' does not exist."
+        collector = FileMetadata(parameters={}, parent={})
+        collector.filepath = expected_filepath
+        collector._collect()
+        actual_data = collector.data[0].collecteddata
+
+        self.assertEqual(expected_data, actual_data)
+
 
 class TestFileMetadataSupportedSystem(TestCase):
     def test__supportedsystem(self):
@@ -431,3 +447,31 @@ class TestFileMetadataSupportedSystem(TestCase):
         collector = FileMetadata(parameters={}, parent={})
 
         self.assertEqual("Darwin", collector._supportedsystem)
+
+
+class TestFileMetadataCollectTimestamps(TestCase):
+    def test__collect_timestamps(self):
+        """
+        Should collect created, modifed, used timestamp in data.
+        :return:
+        """
+        from artefact.localhost.file import FileMetadata
+
+        expected_modified_time_data = "2021-03-06 15:43:03 UTC"
+        expected_created_time_data = "2021-06-06 15:37:35 UTC"
+        expected_access_time_data = "2021-06-04 08:33:32 UTC"
+        expected_file = './testfiles/test.txt'
+
+        collector = FileMetadata(parameters={}, parent=None)
+        collector.filepath = expected_file
+        with mock.patch('artefact.localhost.file.os.path.getatime', MagicMock(return_value=1622795612.874454)):
+            collector._collect_timestamps()
+
+        actual_modified_time_data = collector.data[0].collecteddata
+        actual_created_time_data = collector.data[1].collecteddata
+        actual_access_time_data = collector.data[2].collecteddata
+
+        self.assertEqual(expected_modified_time_data, actual_modified_time_data)
+        self.assertEqual(expected_created_time_data, actual_created_time_data)
+        self.assertEqual(expected_access_time_data, actual_access_time_data)
+

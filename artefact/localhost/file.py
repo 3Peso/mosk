@@ -186,7 +186,7 @@ class FileCopy(MacArtefact):
             return False
 
 
-class FileMetadata(MacArtefact):
+class FileMetadata(ArtefactBase):
     """
     Tries to collect as much metadata to a target file, as possible.
     """
@@ -194,4 +194,21 @@ class FileMetadata(MacArtefact):
         super().__init__(*args, **kwargs)
 
     def _collect(self):
-        pass
+        file_exists = os.path.exists(self.filepath)
+        if not file_exists:
+            self.data = f"File '{self.filepath}' does not exist."
+            self.data[-1].sourcehash = md5(fpath=self.filepath)
+            self.data[-1].sourcepath = self.filepath
+
+        if file_exists:
+            self._collect_timestamps()
+
+    def _collect_timestamps(self):
+        modified_datetime = os.path.getmtime(self.filepath)
+        self.data = datetime.datetime.utcfromtimestamp(modified_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+        created_datetime = os.path.getctime(self.filepath)
+        self.data = datetime.datetime.utcfromtimestamp(created_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+        accessd_datetime = os.path.getatime(self.filepath)
+        self.data = datetime.datetime.utcfromtimestamp(accessd_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")

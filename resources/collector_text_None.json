@@ -151,7 +151,7 @@
   },
   "artefact.file.FileMetadata": {
     "title": "FileMetadata",
-    "collectionmethod": "To be implemented",
-    "description": "Collector to collect as much metadata to a file as possible."
+    "collectionmethod": "Copies collects metadata of a file by using Python standard modules 'os.path'",
+    "description": "Collector to collect the create date, modiefied date, and accessed date of a file."
   }
 }

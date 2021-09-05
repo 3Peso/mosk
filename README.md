@@ -143,6 +143,7 @@ mosk does its collection through collectors. There are already several collector
 * FileExsistence
 * FileContent
 * [FileCopy](#filecopy)
+* [FileMetadata](#filemetadata)
 * MachineName
 * OSPlatform
 * OSName
@@ -168,11 +169,27 @@ Allowed attributes/parameters:
 Copies files from the target to a definable target directory, where it will create a uniquely named subdirectory.
 
 ```xml
-<FileCopy module="artefact.localhost.file" filepath="/users/testuser/test.txt" />
+<FileCopy module="artefact.localhost.file" 
+          filepath="/users/testuser/test.txt" />
 ```
 This would copy the file `/users/testuser/test.txt` into the folder under which mosk is been executed inside a new 
 subdirectory, for example named `test.txt_2021010112120001`, where there is a timestamp incorporated, and a counter 
 at the end of the subdirectories name.
+
+##### FileMetada
+Collectes metadata of a file by harnessing Python default modules:
+* os.path
+
+Metadata collected:
+* Create Date and Time in UTC
+* Modifed Date and Time in UTC
+* Last Accessed Date and Time in UTC
+
+Example:
+```xml
+<FileMetadata module="artefact.localhost.file" 
+              filepath="/usr/somefile" />
+```
 
 #### Scope 'localhost'
 * ShellHistoryOfAllUsers (macOS only)
@@ -180,6 +197,7 @@ at the end of the subdirectories name.
 * NVRAMCollector
 * FileContent
 * [FileCopy](#filecopy) (macOS only)
+* [FileMetadata](#filemetadata)
 * FileExistence
 * MachineName
 * OSName (macOS only)
