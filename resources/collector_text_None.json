@@ -146,7 +146,7 @@
   },
   "artefact.file.FileCopy": {
     "title": "FileCopy",
-    "collectionmethod": "To be implemented",
+    "collectionmethod": "Copy file with shutil.copyfile",
     "description": "Collector tries to create a copy of the file."
   },
   "artefact.file.FileMetadata": {

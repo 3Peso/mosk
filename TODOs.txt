@@ -26,8 +26,6 @@
 
 # Use print function of macOS to print PDF exports of things like calendars, etc.
 
-# Collector to copy complete files
-
 # Collector FileCopy: Think about guard against too long paths (old Windows issue)
 
 # Collector to collect directory of file

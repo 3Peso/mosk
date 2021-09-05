@@ -142,6 +142,7 @@ mosk does its collection through collectors. There are already several collector
 * CurrentUsername
 * FileExsistence
 * FileContent
+* [FileCopy](#filecopy)
 * MachineName
 * OSPlatform
 * OSName
@@ -162,6 +163,16 @@ Allowed attributes/parameters:
 
 *users_with_homedir*<br/>
 'True' or 'False', if true only users with user folders are been collected.
+
+##### FileCopy
+Copies files from the target to a definable target directory, where it will create a uniquely named subdirectory.
+
+```xml
+<FileCopy module="artefact.localhost.file" filepath="/users/testuser/test.txt" />
+```
+This would copy the file `/users/testuser/test.txt` into the folder under which mosk is been executed inside a new 
+subdirectory, for example named `test.txt_2021010112120001`, where there is a timestamp incorporated, and a counter 
+at the end of the subdirectories name.
 
 #### Scope 'localhost.mac'
 * ShellHistoryOfAllUsers
