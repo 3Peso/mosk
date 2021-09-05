@@ -214,6 +214,7 @@ class FileMetadata(ArtefactBase):
         if file_exists:
             self._collect_timestamps()
             self._collect_sizes()
+            self._collect_other()
             self.data = self._metadata
             self.data[-1].sourcehash = md5(fpath=self.filepath)
             self.data[-1].sourcepath = self.filepath
@@ -223,6 +224,13 @@ class FileMetadata(ArtefactBase):
         self._metadata['Size in Bytes'] = stats.st_size
         self._metadata['Used Blocks'] = stats.st_blocks
         self._metadata['Block Size'] = stats.st_blksize
+
+    def _collect_other(self):
+        stats = Path(self.filepath).stat()
+        self._metadata['INode Number'] = stats.st_ino
+        self._metadata['Owner ID'] = stats.st_uid
+        self._metadata['Group ID'] = stats.st_gid
+        self._metadata['File Type and Permissions'] = stats.st_mode
 
     def _collect_timestamps(self):
         modified_datetime = os.path.getmtime(self.filepath)
