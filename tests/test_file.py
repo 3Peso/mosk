@@ -85,7 +85,7 @@ class TestFileCopyDunderInit(TestCase):
         expected_target_dir = '.'
         collector = FileCopy(parameters={}, parent=None)
 
-        self.assertEqual(expected_target_dir, collector._target_directory)
+        self.assertEqual(expected_target_dir, collector._destination_directory)
 
 
 class TestFileCopyCollect(TestCase):
@@ -202,7 +202,7 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
         expected_unique_dir_name = "me_unique"
         expected_return_value = './test_target/me_unique'
         collector = FileCopy(parameters={}, parent=None)
-        collector._target_directory = expected_target_dir
+        collector._destination_directory = expected_target_dir
         try:
             with mock.patch('artefact.localhost.file.FileCopy._get_unique_directory_name',
                             MagicMock(return_value=expected_unique_dir_name)):
@@ -225,7 +225,7 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
         expected_target_dir = "./test_target"
         expected_unique_dir_name = "me_unique"
         collector = FileCopy(parameters={}, parent=None)
-        collector._target_directory = expected_target_dir
+        collector._destination_directory = expected_target_dir
         try:
             with mock.patch('artefact.localhost.file.FileCopy._get_unique_directory_name',
                             MagicMock(return_value=expected_unique_dir_name)):
@@ -248,7 +248,7 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
         expected_target_dir = "./test_target"
         expected_unique_dir_name = "me_unique"
         collector = FileCopy(parameters={}, parent=None)
-        collector._target_directory = expected_target_dir
+        collector._destination_directory = expected_target_dir
         try:
             with mock.patch('artefact.localhost.file.FileCopy._get_unique_directory_name',
                             MagicMock(return_value=expected_unique_dir_name)):

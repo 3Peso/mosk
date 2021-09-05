@@ -98,7 +98,7 @@ class FileCopy(MacArtefact):
     The file copy is stored alongside the collection log. The collection log points to the copied file, but
     does not hold it.
     """
-    _target_directory = '.'
+    _destination_directory = '.'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -115,11 +115,11 @@ class FileCopy(MacArtefact):
             shutil.rmtree(path.dirname(file_copy_destination), True)
 
     def _ensure_target_directory(self):
-        if not path.exists(self._target_directory):
-            os.mkdir(self._target_directory)
+        if not path.exists(self._destination_directory):
+            os.mkdir(self._destination_directory)
 
-        unique_dir_name = self._get_unique_directory_name(self._target_directory, datetime.datetime.now())
-        new_unique_directory = os.path.join(self._target_directory, unique_dir_name)
+        unique_dir_name = self._get_unique_directory_name(self._destination_directory, datetime.datetime.now())
+        new_unique_directory = os.path.join(self._destination_directory, unique_dir_name)
         os.mkdir(new_unique_directory)
 
         return new_unique_directory
