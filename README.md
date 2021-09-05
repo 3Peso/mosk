@@ -188,6 +188,10 @@ Metadata collected:
 * Size in Bytes
 * Number of used Blocks
 * Block Size
+* INode Number
+* Owner ID
+* Group ID
+* Filetype and Permissions
 
 Example:
 ```xml
