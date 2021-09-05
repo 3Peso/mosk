@@ -31,12 +31,21 @@ class CollectionData:
 
     def __str__(self):
         result = f'-- Collection Data     {"-" * 10}\r\n\r\n'
-        result += f"{self.collecteddata}"
+        result += f"{self._get_collection_data_as_str()}"
         result += f'\r\n\r\n-- Collection Metadata {"-" * 10}'
         result += f'\r\n\r\n{self.get_metadata_as_str()}'
         result += f'\r\n{self.get_collector_info_as_str()}'
         result += f'\r\n{"-" * 33}\r\n'
         return result
+
+    def _get_collection_data_as_str(self):
+        if type(self.collecteddata) is not dict:
+            return self.collecteddata
+        else:
+            data_as_string = ""
+            for datafield in self.collecteddata:
+                data_as_string += f"{datafield}: {self.collecteddata[datafield]}\n"
+            return data_as_string.rstrip('\n')
 
     def get_metadata_as_str(self):
         """
