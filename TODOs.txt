@@ -1,6 +1,9 @@
 # Refactoring run with logging in focus.
 #  Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
 
+# FileMetadata: Implement interpreter for "filetype and permissions (st_mode)"
+# https://man7.org/linux/man-pages/man7/inode.7.html
+
 # Implement SQLite Storage for protocol and collected data/files
 
 # Support for collectors which support multiple platforms like "macOS and Linux".
