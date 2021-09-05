@@ -102,6 +102,19 @@ class FileCopy(MacArtefact):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._filepath = ""
+
+    @property
+    def filepath(self):
+        return self._filepath
+
+    @filepath.setter
+    def filepath(self, value):
+        logger = logging.getLogger(__name__)
+        if not os.path.exists(value):
+            logger.warning(f"File path '{value}' does not exist.")
+
+        self._filepath = expandfilepath(value)
 
     def _collect(self):
         file_copy_destination = os.path.join(self._ensure_target_directory(), os.path.basename(self.filepath))

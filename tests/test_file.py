@@ -189,6 +189,25 @@ class TestFileCopyCollect(TestCase):
         self.assertFalse(os.path.exists(self._expected_target_path))
 
 
+class TestFileCopyFilePath(TestCase):
+    def test__collect_setter_with_abreviated_path(self):
+        """
+        Should expand the targert file path, if the file path provided is an abreviation, like
+        for example ~/test.txt
+        :return:
+        """
+        from pathlib import Path
+        from artefact.localhost.file import FileCopy
+
+        source_file_path = "~/IDoNotExist.txt"
+        expected_file_path = f"{str(Path.home())}/IDoNotExist.txt"
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = source_file_path
+        actual_filepath = collector._filepath
+
+        self.assertEqual(expected_file_path, actual_filepath)
+
+
 class TestFileCopyEnsureTargetDirectory(TestCase):
     def test__ensure_target_directory(self):
         """
