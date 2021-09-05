@@ -101,8 +101,9 @@ class FileCopy(MacArtefact):
     _destination_directory = '.'
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        # Will be filled in super with the property setter filepath.
         self._filepath = ""
+        super().__init__(*args, **kwargs)
 
     @property
     def filepath(self):
