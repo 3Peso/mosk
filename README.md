@@ -184,6 +184,10 @@ Metadata collected:
 * Create Date and Time in UTC
 * Modifed Date and Time in UTC
 * Last Accessed Date and Time in UTC
+* Birth Date and Time in UTC
+* Size in Bytes
+* Number of used Blocks
+* Block Size
 
 Example:
 ```xml

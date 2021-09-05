@@ -213,16 +213,29 @@ class FileMetadata(ArtefactBase):
 
         if file_exists:
             self._collect_timestamps()
+            self._collect_sizes()
             self.data = self._metadata
             self.data[-1].sourcehash = md5(fpath=self.filepath)
             self.data[-1].sourcepath = self.filepath
 
+    def _collect_sizes(self):
+        stats = Path(self.filepath).stat()
+        self._metadata['Size in Bytes'] = stats.st_size
+        self._metadata['Used Blocks'] = stats.st_blocks
+        self._metadata['Block Size'] = stats.st_blksize
+
     def _collect_timestamps(self):
         modified_datetime = os.path.getmtime(self.filepath)
-        self._metadata['Modified'] = datetime.datetime.utcfromtimestamp(modified_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+        self._metadata['Modified'] = datetime.datetime.utcfromtimestamp(modified_datetime)\
+            .strftime("%Y-%m-%d %H:%M:%S UTC")
 
         created_datetime = os.path.getctime(self.filepath)
-        self._metadata['Created'] = datetime.datetime.utcfromtimestamp(created_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+        self._metadata['Created'] = datetime.datetime.utcfromtimestamp(created_datetime)\
+            .strftime("%Y-%m-%d %H:%M:%S UTC")
 
         accessd_datetime = os.path.getatime(self.filepath)
-        self._metadata['Accessed'] = datetime.datetime.utcfromtimestamp(accessd_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+        self._metadata['Accessed'] = datetime.datetime.utcfromtimestamp(accessd_datetime)\
+            .strftime("%Y-%m-%d %H:%M:%S UTC")
+
+        birth_datetime = Path(self.filepath).stat().st_birthtime
+        self._metadata['Birth'] = datetime.datetime.utcfromtimestamp(birth_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")

@@ -406,20 +406,19 @@ class TestFileCopySupportedSystem(TestCase):
 class TestFileMetadataDunderInit(TestCase):
     def test___init(self):
         """
-        Should do nothing.
+        Should initialize filepath.
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import FileMetadata
+
+        expected_filepath = "IDoNotExist.txt"
+        collector = FileMetadata(parameters={'filepath': expected_filepath}, parent={})
+        collector._collect()
+
+        self.assertEqual(expected_filepath, collector.filepath)
 
 
 class TestFileMetadataCollect(TestCase):
-    def test__collect(self):
-        """
-        Should collect metadata of a file inside data.
-        :return:
-        """
-        self.fail()
-
     def test__collect_file_does_not_exist(self):
         """
         Should store info about not existing file in data.
@@ -435,18 +434,6 @@ class TestFileMetadataCollect(TestCase):
         actual_data = collector.data[0].collecteddata
 
         self.assertEqual(expected_data, actual_data)
-
-
-class TestFileMetadataSupportedSystem(TestCase):
-    def test__supportedsystem(self):
-        """
-        Should be "Darwin"
-        :return:
-        """
-        from artefact.localhost.file import FileMetadata
-        collector = FileMetadata(parameters={}, parent={})
-
-        self.assertEqual("Darwin", collector._supportedsystem)
 
 
 class TestFileMetadataCollectTimestamps(TestCase):
