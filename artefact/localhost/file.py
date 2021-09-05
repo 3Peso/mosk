@@ -118,14 +118,25 @@ class FileCopy(MacArtefact):
         self._filepath = expandfilepath(value)
 
     def _collect(self):
-        file_copy_destination = os.path.join(self._ensure_target_directory(), os.path.basename(self.filepath))
-        if path.exists(self.filepath):
+        target_path = self._ensure_target_directory()
+        file_copy_destination = os.path.join(target_path, os.path.basename(self.filepath))
+
+        enough_space = self._enough_space_on_target(target_path)
+        if not enough_space:
+            self.data = f"File '{self.filepath}' could not be copied, " \
+                        f"because there is not enough space on target '{target_path}'."
+
+        source_exists = os.path.exists(self.filepath)
+        if source_exists and enough_space:
             copyfile(self.filepath, file_copy_destination)
             self.data = f"Copied file '{self.filepath}' to '{file_copy_destination}'."
             self.data[-1].sourcehash = md5(fpath=self.filepath)
             self.data[-1].sourcepath = self.filepath
-        else:
+
+        if not source_exists:
             self.data = f"The file '{self.filepath}' does not exist."
+
+        if not source_exists or not enough_space:
             shutil.rmtree(path.dirname(file_copy_destination), True)
 
     def _ensure_target_directory(self):
@@ -159,6 +170,20 @@ class FileCopy(MacArtefact):
                 raise OverflowError("Max counter reached. Consider less calling 'FileCopy' collectors.")
 
         return unique_name
+
+    def _enough_space_on_target(self, target_path):
+        if not os.path.exists(target_path):
+            return False
+
+        if not os.path.exists(self.filepath):
+            return False
+
+        freespace = shutil.disk_usage(target_path).free
+        size_of_file_to_copy = Path(self.filepath).stat().st_size
+        if freespace > size_of_file_to_copy:
+            return True
+        else:
+            return False
 
 
 class FileMetadata(MacArtefact):

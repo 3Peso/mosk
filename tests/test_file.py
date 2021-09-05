@@ -1,6 +1,7 @@
 import os
 import os.path
 import shutil
+from collections import namedtuple
 
 from unittest import TestCase, mock
 from unittest.mock import MagicMock
@@ -141,15 +142,7 @@ class TestFileCopyCollect(TestCase):
 
         self.assertEqual(expected_data, actual_data)
 
-    def test__collect_destination_full(self):
-        """
-        If the file to be copied is to large for the destination, a message should be collected
-        stating, that the copy could not happen. Only a stub file should be created at destination
-        instead.
-        :return:
-        """
-        self.fail()
-
+    @mock.patch('artefact.localhost.file.FileCopy._enough_space_on_target', MagicMock(return_value=True))
     def test__collect_file_does_not_exist(self):
         """
         Should store a message in data, that says that the file from which the content should be
@@ -169,6 +162,7 @@ class TestFileCopyCollect(TestCase):
 
         self.assertEqual(expected_data, actual_data)
 
+    @mock.patch('artefact.localhost.file.FileCopy._enough_space_on_target', MagicMock(return_value=True))
     def test__collect_could_not_copy_file(self):
         """
         Should ensure that unique target directory is deleted.
@@ -333,6 +327,68 @@ class TestFileCopyGetUniqueDirectoryName(TestCase):
         collector = FileCopy(parameters={}, parent=None)
         collector.filepath = '~/somepath/some_file.txt'
         self.assertRaises(OverflowError, collector._get_unique_directory_name, '.', expected_time)
+
+
+class TestFileCopyEnoughSpaceOnTarget(TestCase):
+    @mock.patch('artefact.localhost.file.os.path.exists', MagicMock(return_value=True))
+    def test__enough_space_on_target_suffice_space(self):
+        """
+        Should return true.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        MockedDiskUsage = namedtuple('MockedDiskUsage',['free'])
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = './testfiles/test.txt'
+        with mock.patch('artefact.localhost.file.shutil.disk_usage',
+                        MagicMock(return_value=MockedDiskUsage(free=100000))):
+            self.assertTrue(collector._enough_space_on_target('.'))
+
+    @mock.patch('artefact.localhost.file.os.path.exists', MagicMock(return_value=True))
+    def test__enough_space_on_target_not_enough(self):
+        """
+        Should return false.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        MockedDiskUsage = namedtuple('MockedDiskUsage',['free'])
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = './testfiles/test.txt'
+        with mock.patch('artefact.localhost.file.shutil.disk_usage',
+                        MagicMock(return_value=MockedDiskUsage(free=1))):
+            self.assertFalse(collector._enough_space_on_target('.'))
+
+    @mock.patch('artefact.localhost.file.os.path.exists', MagicMock(return_value=False))
+    @mock.patch('artefact.localhost.file.ArtefactBase._init_description_properties', MagicMock())
+    def test__enough_space_on_target_does_not_exist(self):
+        """
+        Should return false.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        MockedDiskUsage = namedtuple('MockedDiskUsage', ['free'])
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = './testfiles/test.txt'
+        with mock.patch('artefact.localhost.file.shutil.disk_usage',
+                        MagicMock(return_value=MockedDiskUsage(free=1000000))):
+            self.assertFalse(collector._enough_space_on_target('.'))
+
+    def test__enough_space_on_target_source_does_not_exist(self):
+        """
+        Should return false
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        MockedDiskUsage = namedtuple('MockedDiskUsage', ['free'])
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = './testfiles/doesnotexist.txt'
+        with mock.patch('artefact.localhost.file.shutil.disk_usage',
+                        MagicMock(return_value=MockedDiskUsage(free=1000000))):
+            self.assertFalse(collector._enough_space_on_target('.'))
 
 
 class TestFileCopySupportedSystem(TestCase):
