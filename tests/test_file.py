@@ -467,9 +467,9 @@ class TestFileMetadataCollectTimestamps(TestCase):
         with mock.patch('artefact.localhost.file.os.path.getatime', MagicMock(return_value=1622795612.874454)):
             collector._collect_timestamps()
 
-        actual_modified_time_data = collector.data[0].collecteddata
-        actual_created_time_data = collector.data[1].collecteddata
-        actual_access_time_data = collector.data[2].collecteddata
+        actual_modified_time_data = collector._metadata['Modified']
+        actual_created_time_data = collector._metadata['Created']
+        actual_access_time_data = collector._metadata['Accessed']
 
         self.assertEqual(expected_modified_time_data, actual_modified_time_data)
         self.assertEqual(expected_created_time_data, actual_created_time_data)

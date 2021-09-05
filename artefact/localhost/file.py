@@ -192,23 +192,37 @@ class FileMetadata(ArtefactBase):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._metadata = {}
+
+    @property
+    def filepath(self):
+        return self._filepath
+
+    @filepath.setter
+    def filepath(self, value):
+        logger = logging.getLogger(__name__)
+        if not os.path.exists(value):
+            logger.warning(f"File path '{value}' does not exist.")
+
+        self._filepath = expandfilepath(value)
 
     def _collect(self):
         file_exists = os.path.exists(self.filepath)
         if not file_exists:
             self.data = f"File '{self.filepath}' does not exist."
-            self.data[-1].sourcehash = md5(fpath=self.filepath)
-            self.data[-1].sourcepath = self.filepath
 
         if file_exists:
             self._collect_timestamps()
+            self.data = self._metadata
+            self.data[-1].sourcehash = md5(fpath=self.filepath)
+            self.data[-1].sourcepath = self.filepath
 
     def _collect_timestamps(self):
         modified_datetime = os.path.getmtime(self.filepath)
-        self.data = datetime.datetime.utcfromtimestamp(modified_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+        self._metadata['Modified'] = datetime.datetime.utcfromtimestamp(modified_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
 
         created_datetime = os.path.getctime(self.filepath)
-        self.data = datetime.datetime.utcfromtimestamp(created_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+        self._metadata['Created'] = datetime.datetime.utcfromtimestamp(created_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
 
         accessd_datetime = os.path.getatime(self.filepath)
-        self.data = datetime.datetime.utcfromtimestamp(accessd_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+        self._metadata['Accessed'] = datetime.datetime.utcfromtimestamp(accessd_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
