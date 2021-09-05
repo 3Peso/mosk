@@ -7,12 +7,16 @@ __all__ = ['FileExistence', 'FileContent', 'ShellHistoryOfAllUsers']
 
 import logging
 import os
+import platform
 import shutil
 import datetime
 from collections import namedtuple
 from os import path
 from pathlib import Path
 from shutil import copyfile
+
+# Required for FileMetadata
+import biplist
 
 from baseclasses.artefact import ArtefactBase, MacArtefact
 from source.localhost import expandfilepath
@@ -215,9 +219,14 @@ class FileMetadata(ArtefactBase):
             self._collect_timestamps()
             self._collect_sizes()
             self._collect_other()
+            self._collect_extended_attributes()
             self.data = self._metadata
             self.data[-1].sourcehash = md5(fpath=self.filepath)
             self.data[-1].sourcepath = self.filepath
+
+    def _collect_extended_attributes(self):
+        if platform.system() == "Darwin":
+            return
 
     def _collect_sizes(self):
         stats = Path(self.filepath).stat()

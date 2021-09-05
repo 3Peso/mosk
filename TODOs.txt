@@ -4,6 +4,8 @@
 # FileMetadata: Implement interpreter for "filetype and permissions (st_mode)"
 # https://man7.org/linux/man-pages/man7/inode.7.html
 
+# FileMetadata: Implement extended attribute collection for intel macs and arm macs.
+
 # Implement SQLite Storage for protocol and collected data/files
 
 # Support for collectors which support multiple platforms like "macOS and Linux".
