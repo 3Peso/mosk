@@ -174,10 +174,33 @@ This would copy the file `/users/testuser/test.txt` into the folder under which 
 subdirectory, for example named `test.txt_2021010112120001`, where there is a timestamp incorporated, and a counter 
 at the end of the subdirectories name.
 
-#### Scope 'localhost.mac'
-* ShellHistoryOfAllUsers
-* LocalTime
+#### Scope 'localhost'
+* ShellHistoryOfAllUsers (macOS only)
+* LocalTime (macOS only)
 * NVRAMCollector
+* FileContent
+* FileCopy (macOS, and should also work on Linux)
+* FileExistence
+* MachineName
+* OSName (macOS only)
+* OSVersinon (macOS only)
+* OSTimezone
+* SudoVersion
+* OSPlatform
+* NVRAMCollector (macOS only)
+* DetectFusionDrive (macOS only)
+* DetectFileFault (macOS only)
+* DetectFileByName (macOS only)
+* InstalledApplications (macOS only)
+* FileSystemInformation (macOS only)
+* HardwareInformation (macOS only)
+* AllUsernames
+* CurrentUser
+
+#### Scope 'Internet'
+* ExternalLinksOnUrl
+* TemperatureFromOpenWeatherDotCom
+* TimeFromNTPServer
 
 #### Scope 'network'
 * TemperatureFromOpenWeatherDotCom
