@@ -66,8 +66,13 @@ class LogFileProtocol(ProtocolBase):
         return
 
     def _write(self, data):
-        self._messagelogger.info(data)
+        self._messagelogger.info(self._sanitize_data(data))
         return
+
+    @staticmethod
+    def _sanitize_data(data):
+        data = data.lstrip("\r\n").rstrip("\r\n")
+        return f"{data}"
 
     @classmethod
     def _prepare_protocol_entry(cls, entryheader, entrydata):
