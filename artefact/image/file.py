@@ -54,3 +54,5 @@ class CompleteFileSystemInfo(ArtefactBase):
             for folder in folders:
                 for item in folder.get_folder_items_in_csv_format():
                     outfile.write(item + '\r\n')
+
+        # Store metadata in log file, like where is the filesystem.csv file located?s
