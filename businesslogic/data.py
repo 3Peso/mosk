@@ -36,7 +36,7 @@ class CollectionData:
         result += f'\r\n{self.get_metadata_as_str()}'
         result += f'\r\n{self.get_collector_info_as_str()}'
         result += f'\r\n{"-" * 33}\r\n'
-        return result.lstrip('\r\n').rstrip('\r\n')
+        return result.lstrip('\r\n')
 
     def _get_collection_data_as_str(self):
         if type(self.collecteddata) is not dict:

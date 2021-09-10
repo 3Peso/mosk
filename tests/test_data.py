@@ -147,7 +147,7 @@ class TestCollectionDataDunderStr(TestCase):
         expected_string = '-- Collection Data     ----------\r\n\r\nTest data\r\n\r\n' \
                           '-- Collection Metadata ----------\r\nCollection Time Stamp: Timestamp\r\n' \
                           'Source MD5: MD5Hash\r\nSource Path: SourcePath\r\nCollector: Collector\r\n' \
-                          'filepath: FilePath\r\n---------------------------------'
+                          'filepath: FilePath\r\n---------------------------------\r\n'
 
         self.assertEqual(expected_string, str(actual_data))
 
@@ -187,7 +187,7 @@ class TestCollectionDataDunderStr(TestCase):
                           "Source Path: SourcePath\r\n" \
                           "Collector: Collector\r\n" \
                           "filepath: FilePath\r\n" \
-                          "---------------------------------"
+                          "---------------------------------\r\n"
 
         self.assertEqual(expected_string, str(actual_data))
 
