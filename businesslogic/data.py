@@ -33,10 +33,10 @@ class CollectionData:
         result = f'-- Collection Data     {"-" * 10}\r\n\r\n'
         result += f"{self._get_collection_data_as_str()}"
         result += f'\r\n\r\n-- Collection Metadata {"-" * 10}'
-        result += f'\r\n\r\n{self.get_metadata_as_str()}'
+        result += f'\r\n{self.get_metadata_as_str()}'
         result += f'\r\n{self.get_collector_info_as_str()}'
         result += f'\r\n{"-" * 33}\r\n'
-        return result
+        return result.lstrip('\r\n').rstrip('\r\n')
 
     def _get_collection_data_as_str(self):
         if type(self.collecteddata) is not dict:
@@ -45,7 +45,7 @@ class CollectionData:
             data_as_string = ""
             for datafield in self.collecteddata:
                 data_as_string += f"{datafield}: {self.collecteddata[datafield]}\n"
-            return data_as_string.rstrip('\n')
+            return data_as_string.lstrip('\r\n').rstrip('\r\n')
 
     def get_metadata_as_str(self):
         """
@@ -61,7 +61,7 @@ class CollectionData:
         if self.sourcepath is not None:
             metadata += f"\r\nSource path: {self.sourcepath}"
 
-        return metadata
+        return metadata.lstrip('\r\n').rstrip('\r\n')
 
     def get_collector_info_as_str(self):
         """
@@ -78,7 +78,7 @@ class CollectionData:
             for param in self.collector_parameters.keys():
                 info += f"\r\n{param}: '{self.collector_parameters[param]}'"
 
-        return info
+        return info.lstrip('\r\n').rstrip('\r\n')
 
     def get_json(self):
         """

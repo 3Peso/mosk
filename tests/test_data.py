@@ -26,7 +26,7 @@ class TestCollectionDataGetCollectorInfoAsStr(TestCase):
         actual_parameters = {'Param1': 12, 'Param2': 'Test'}
         actual_data = CollectionData(data="Test data", collector_name="TestCollector")
         actual_data.collector_parameters = actual_parameters
-        expected = "\r\n\r\nCollector: TestCollector\r\nParam1: '12'\r\nParam2: 'Test'"
+        expected = "Collector: TestCollector\r\nParam1: '12'\r\nParam2: 'Test'"
         actual = actual_data.get_collector_info_as_str()
 
         self.assertEqual(actual, expected)
@@ -38,7 +38,7 @@ class TestCollectionDataGetCollectorInfoAsStr(TestCase):
         from businesslogic.data import CollectionData
 
         actual_data = CollectionData(data="Test data", collector_name="TestCollector")
-        expected = "\r\n\r\nCollector: TestCollector"
+        expected = "Collector: TestCollector"
         actual = actual_data.get_collector_info_as_str()
 
         self.assertEqual(actual, expected)
@@ -142,22 +142,12 @@ class TestCollectionDataDunderStr(TestCase):
         from businesslogic.data import CollectionData
 
         actual_data = CollectionData(collector_name="Collector", data="Test data")
-        metadata_mock.return_value = "Collection Time Stamp: Timestamp\r\nSource MD5: MD5Hash\r\nSource Path: SourcePath\r\n"
-        collector_info_mock.return_value = "Collector: Collector\r\nfilepath: FilePath\r\n"
-        expected_string = "-- Collection Data     ----------\r\n" \
-                          "\r\n" \
-                          "Test data\r\n" \
-                          "\r\n" \
-                          "-- Collection Metadata ----------\r\n" \
-                          "\r\n" \
-                          "Collection Time Stamp: Timestamp\r\n" \
-                          "Source MD5: MD5Hash\r\n" \
-                          "Source Path: SourcePath\r\n" \
-                          "\r\n" \
-                          "Collector: Collector\r\n" \
-                          "filepath: FilePath\r\n" \
-                          "\r\n" \
-                          "---------------------------------\r\n"
+        metadata_mock.return_value = "Collection Time Stamp: Timestamp\r\nSource MD5: MD5Hash\r\nSource Path: SourcePath"
+        collector_info_mock.return_value = "Collector: Collector\r\nfilepath: FilePath"
+        expected_string = '-- Collection Data     ----------\r\n\r\nTest data\r\n\r\n' \
+                          '-- Collection Metadata ----------\r\nCollection Time Stamp: Timestamp\r\n' \
+                          'Source MD5: MD5Hash\r\nSource Path: SourcePath\r\nCollector: Collector\r\n' \
+                          'filepath: FilePath\r\n---------------------------------'
 
         self.assertEqual(expected_string, str(actual_data))
 
@@ -185,22 +175,19 @@ class TestCollectionDataDunderStr(TestCase):
         from businesslogic.data import CollectionData
 
         actual_data = CollectionData(collector_name="Collector", data="")
-        metadata_mock.return_value = "Collection Time Stamp: Timestamp\r\nSource MD5: MD5Hash\r\nSource Path: SourcePath\r\n"
-        collector_info_mock.return_value = "Collector: Collector\r\nfilepath: FilePath\r\n"
+        metadata_mock.return_value = "Collection Time Stamp: Timestamp\r\nSource MD5: MD5Hash\r\nSource Path: SourcePath"
+        collector_info_mock.return_value = "Collector: Collector\r\nfilepath: FilePath"
         expected_string = "-- Collection Data     ----------\r\n" \
                           "\r\n" \
                           "*No data collected*\r\n" \
                           "\r\n" \
                           "-- Collection Metadata ----------\r\n" \
-                          "\r\n" \
                           "Collection Time Stamp: Timestamp\r\n" \
                           "Source MD5: MD5Hash\r\n" \
                           "Source Path: SourcePath\r\n" \
-                          "\r\n" \
                           "Collector: Collector\r\n" \
                           "filepath: FilePath\r\n" \
-                          "\r\n" \
-                          "---------------------------------\r\n"
+                          "---------------------------------"
 
         self.assertEqual(expected_string, str(actual_data))
 
