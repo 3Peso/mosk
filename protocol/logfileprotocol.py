@@ -13,6 +13,8 @@ from businesslogic.data import CollectionMetaData
 
 
 class LogFileProtocol(ProtocolBase):
+    log_file_name_pattern = r"(\d{5})_\w+_\d{4}-\d{2}-\d{2}\.\w+"
+
     """
     Class to write a text protocol of the colleted data.
     """
@@ -50,14 +52,13 @@ class LogFileProtocol(ProtocolBase):
 
         currlogger.addHandler(filehandler)
 
-    @staticmethod
-    def _get_current_file_counter(searchpattern):
+    def _get_current_file_counter(self, searchpattern):
         nextcounter = 1
 
         protocols = glob(searchpattern)
         protocols.sort()
         if len(protocols) > 0:
-            if m := re.match(r"(\d{5})_\w+_\d{4}-\d{2}-\d{2}\.\w+", protocols[-1]):
+            if m := re.match(self.log_file_name_pattern, protocols[-1]):
                 nextcounter = int(m[1])+1
                 if nextcounter >= 100000:
                     raise ValueError('You reached the limit of 99999 protocols. Delete old protocols.')
