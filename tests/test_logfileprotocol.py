@@ -184,6 +184,11 @@ class TestLogFileProtocolSetTaskMetadata(TestCase):
 
 
 class TestLogFileProtocolDunderInit(TestCase):
+    expected_log_file = "test_log.txt"
+
+    def tearDown(self) -> None:
+        os.remove(self.expected_log_file)
+
     def test___init__with_own_protocol_log_file(self):
         """
         self._procotollogfile should be set to the provided protocol log file name.
@@ -191,7 +196,6 @@ class TestLogFileProtocolDunderInit(TestCase):
         """
         from protocol.logfileprotocol import LogFileProtocol
 
-        expected_log_file = "test_log.txt"
-        protocol = LogFileProtocol(own_protocol_filename=expected_log_file, examiner='tada')
+        protocol = LogFileProtocol(own_protocol_filename=self.expected_log_file, examiner='tada')
 
-        self.assertEqual(expected_log_file, protocol._protocolfilename)
+        self.assertEqual(self.expected_log_file, protocol._protocolfilename)
