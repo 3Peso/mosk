@@ -144,7 +144,7 @@ mosk does its collection through collectors. There are already several collector
 * FileContent
 * [FileCopy](#filecopy) (macOS only)
 * [FileMetadata](#filemetadata)
-* [FileHash](#filehash)
+* <a href="#localhost-filehash">FileHash</a>
 * FileExistence
 * MachineName
 * OSName (macOS only)
@@ -203,8 +203,7 @@ Example:
 <FileMetadata module="artefact.localhost.file" 
               filepath="/usr/somefile" />
 ```
-
-##### FileHash
+##### <a name="localhost-filehash"></a>FileHash 
 Calculates the hash of a provided file and compares it against a 
 provided MD5 hash using businessclass.support.md5() to calculate
 the MD5 hash.
@@ -230,7 +229,20 @@ Example:
 * ImageMetadata
 * PartitionTable
 * File
+* <a href="#image-filehash">FileHash</a>
 * CompleteFileSystemInfo
+
+##### <a name="image-filehash"></a>FileHash
+Calculates the hash of a provided file inside of a image file and compares it against a 
+provided MD5 hash using businessclass.support.md5() to calculate
+the MD5 hash.
+
+```xml
+<FileHash module="artefact.image.file" 
+          filepath="/08 Email/eml/" 
+          filename="68E31B21-00033004.eml"
+          filehash="ae797b8a31413cb96fde720488a4ec0e" />
+```
 
 #### Scope 'Debug'
 * DebugPlaceholder

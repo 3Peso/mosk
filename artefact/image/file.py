@@ -1,5 +1,7 @@
 import logging
 import os
+import hashlib
+import re
 
 from baseclasses.artefact import ArtefactBase
 from source.baseclasses.image import FolderInfo
@@ -24,6 +26,34 @@ class File(ArtefactBase):
                                  f"'{self._out_path}'.")
 
         self.data = f"File '{self._file_path}{self._filename}' exported to path '{self._out_path}'."
+
+
+class FileHash(ArtefactBase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._file_path = self.get_parameter('filepath')
+        self._filename = self.get_parameter('filename')
+
+    def _collect(self):
+        if not re.compile(r'^[a-f0-9]{32}$').match(self.filehash):
+            self.data = f"MD5 hash '{self.filehash}' is invalid."
+
+        hash_md5 = hashlib.md5()
+        try:
+            chunks = self._parent.get_file_stream(filepath=self._file_path, filename=self._filename,
+                                                buffer_size=4096)
+            for file_chunk in chunks:
+                hash_md5.update(file_chunk)
+        except FileNotFoundError:
+            self._logger.warning(f"Could not find file '{self._file_path}.'")
+
+        file_hash = hash_md5.hexdigest()
+        if file_hash != self.filehash:
+            self.data = f"The hash '{file_hash}' of file '{self._filename}', path in image '{self._file_path}', \r\n" \
+                        f"does not match the provided hash '{self.filehash}'."
+        else:
+            self.data = f"The hash '{file_hash}' of file '{self._filename}', path in image '{self._file_path}', \r\n" \
+                        f"matches the provided hash '{self.filehash}'."
 
 
 class FolderInformation(ArtefactBase):

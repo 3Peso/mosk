@@ -89,6 +89,25 @@ class EWFImage(Image):
         else:
             raise FileNotFoundError(f"Could not find '{filepath}{filename}' in image '{self._imagefilepath}'.")
 
+    def get_file_stream(self, filepath: str, filename: str, buffer_size: int):
+        """
+        Yields a stream to go over a file in the image file to, for example, calculate the hash
+        of the file without the need to export the file before hash calculation.
+        :param filepath:
+        :param filename:
+        :param buffer_size: Size of the file chunks retunred by the genexp.
+        :return:
+        """
+        fs_objects = list(self._get_fs_object(path=filepath, file=filename))
+        if fs_objects is not None:
+            for partitionindex, fso in fs_objects:
+                try:
+                    return self._get_file_stream(fso, filename, filepath, partitionindex, buffer_size=buffer_size)
+                except OSError as oserror:
+                    self._logger.error(f"Could not aquire filestream from image.\r\n{oserror}")
+        else:
+            raise FileNotFoundError(f"Could not find '{filepath}{filename}' in image '{self._imagefilepath}'.")
+
     def _initialize_partitions(self):
         """
         Try to build a file system representatio of every partition in the provided image.
@@ -197,6 +216,19 @@ class EWFImage(Image):
                 outfile.write(data)
 
             offset = offset + len(data)
+
+    @classmethod
+    def _get_file_stream(cls, fs_object: pytsk3.File, filename: str, path: str, partitionindex: int, buffer_size: int):
+        offset: int = 0
+        size: int = fs_object.info.meta.size
+        while offset < size:
+            available_to_read = min(buffer_size, size - offset)
+            data = fs_object.read_random(offset, available_to_read)
+            if not data:
+                break
+            offset = offset + len(data)
+
+            yield data
 
     def _get_volume_from_image(self):
         """
