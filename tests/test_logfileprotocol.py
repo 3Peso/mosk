@@ -64,7 +64,7 @@ class TestLogFileProtocolGetCurrentFileCounter(TestCase):
         """
         from protocol.logfileprotocol import LogFileProtocol
         glob_mock.return_value = ['00001_tst_2020-05-26.txt', '00002_tst_2020-05-26.txt', '00003_tst_2020-05-26.txt']
-        actual_protocol = LogFileProtocol(examiner='tst', filedate=self.actual_filedate)
+        actual_protocol = LogFileProtocol(examiner='tst', filedate=self.actual_filedate, own_protocol_filename='')
         actual_counter = actual_protocol._get_current_file_counter(actual_protocol._search_pattern)
         expected_counter = 4
 
@@ -181,3 +181,12 @@ class TestLogFileProtocolSetTaskMetadata(TestCase):
 
         self.assertEqual(expected_data1, write_mock.call_args_list[0].args[0])
         self.assertEqual(expected_data2, write_mock.call_args_list[1].args[0])
+
+
+class TestLogFileProtocolDunderInit(TestCase):
+    def test___init__with_own_protocol_log_file(self):
+        """
+        self._procotollogfile should be set to the provided protocol log file name.
+        :return:
+        """
+        self.fail()

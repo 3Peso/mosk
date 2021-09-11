@@ -34,34 +34,30 @@ LOG_LEVEL = {
                                               f"'<Counter>_<Examiner>_<DateTime Stamp>.txt' "
                                               f"RegEx Pattern: {get_logfilename_pattern()}'."
                                               f"Example: '00001_amr_2021-09-11.txt'")
-def main(globalplaceholders: str, instructionsfile: str, examiner: str, loglevel: str, protocollogfile: str):
+def mosk_main(globalplaceholders: str, instructionsfile: str, examiner: str, loglevel: str, protocollogfile: str):
     if loglevel.upper() in LOG_LEVEL.keys():
         logging.basicConfig(level=LOG_LEVEL[loglevel.upper()],
                             format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
     else:
-        raise KeyError("'{}' not a valid log level.".format(loglevel))
+        print(f"'{loglevel}' not a valid log level.")
+        return 2
 
     if globalplaceholders is None or not os.path.exists(globalplaceholders):
         print(f"Globale placeholder file does not exist. Value of parameter 'globalplaceholders': {globalplaceholders}")
-        sys.exit(2)
+        return 2
 
     if instructionsfile is None or not os.path.exists(instructionsfile):
         print(f"Instructions file does not exist. Value of parameter 'instructionsfile': {instructionsfile}")
-        sys.exit(2)
+        return 2
 
-    try:
-        logger = logging.getLogger(__name__)
-        collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner,
-                                            placeholderfile=globalplaceholders, protocollogfile=protocollogfile)
-        collector.collect()
-        logger.info("Collection complete.")
-    except NameError:
-        print("The arguments 'instructionsfile', and 'examiner' are mandatory.")
-        sys.exit(2)
-    except FileNotFoundError:
-        print(f"Could not initialize parser. Instructions file '{instructionsfile}' does not exist.")
-        sys.exit(2)
+    logger = logging.getLogger(__name__)
+    collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner,
+                                        placeholderfile=globalplaceholders, protocollogfile=protocollogfile)
+    collector.collect()
+    logger.info("Collection complete.")
+
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(mosk_main())
