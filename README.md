@@ -181,7 +181,7 @@ This would copy the file `/users/testuser/test.txt` into the folder under which 
 subdirectory, for example named `test.txt_2021010112120001`, where there is a timestamp incorporated, and a counter 
 at the end of the subdirectories name.
 
-##### FileMetada
+##### FileMetadata
 Collectes metadata of a file by harnessing Python default modules:
 * os.path
 
