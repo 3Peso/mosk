@@ -5,7 +5,7 @@ import os
 
 import click
 
-from businesslogic.collector import Collector
+from businesslogic.collector import Collector, get_logfilename_pattern
 
 
 LOG_LEVEL = {
@@ -28,7 +28,11 @@ LOG_LEVEL = {
               help='Controls which log messages will be written to stdout. Default is "INFO". Other allowed values are:'
                    ' CRITICAL, ERROR, WARNING, DEBUG.')
 @click.option('--instructionsfile', '-i', help='The XML instructions file which tells mosk what to collect.')
-def main(globalplaceholders: str, instructionsfile: str, examiner: str, loglevel: str):
+@click.option('--protocollogfile', '-p', help=f"Use this parameter to log out collection messages into your own log "
+                                              f"file with your own custom path. If this is not set mosk will create a "
+                                              f"protocol in the current working directory with format "
+                                              f"'{get_logfilename_pattern()}'.")
+def main(globalplaceholders: str, instructionsfile: str, examiner: str, loglevel: str, protocollogfile: str):
     if loglevel.upper() in LOG_LEVEL.keys():
         logging.basicConfig(level=LOG_LEVEL[loglevel.upper()],
                             format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
