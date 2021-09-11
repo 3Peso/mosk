@@ -102,10 +102,11 @@ class FileHash(ArtefactBase):
         if not re.compile(r'^[a-f0-9]{32}$').match(self.filehash):
             self.data = f"MD5 hash '{self.filehash}' is invalid."
 
-        if not os.path.exists(self.filepath):
+        filepath = expandfilepath(self.filepath)
+        if not os.path.exists(filepath):
             self.data = f"The file '{self.filepath}' does not exist."
         else:
-            file_hash = md5(self.filepath)
+            file_hash = md5(filepath)
             if file_hash != self.filehash:
                 self.data = f"The hash '{file_hash}' of file '{self.filepath}' does not match the provided " \
                             f"hash '{self.filehash}'."
