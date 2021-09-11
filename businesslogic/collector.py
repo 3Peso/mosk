@@ -48,6 +48,10 @@ class Collector:
         # Log the date and time when collection ended.
         self._protocol.collection_end = datetime.now()
 
+    @property
+    def protocol(self):
+        return self._protocol
+
     def _collect_from_instrcutions(self, current_instruction: InstructionWrapper, callpath: str = ''):
         if callpath == '':
             callpath = str(current_instruction)
