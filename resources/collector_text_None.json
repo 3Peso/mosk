@@ -158,5 +158,25 @@
     "title": "FileHash",
     "collectionmethod": "Uses library method businesslogic.support.md5 to calculate the MD5 has of a provided file.",
     "description": "Calcuates the MD5 hash of a provided file and compares it against a provided MD5 hash."
+  },
+  "artefact.image.file.FileHash": {
+    "titel": "FileHash",
+    "collectionmethod": "Uses library method businesslogic.support.md5 to calculate the MD5 has of a provided file.",
+    "description": "Calcuates the MD5 hash of a provided file and compares it against a provided MD5 hash."
+  },
+  "artefact.localhost.system.HardwareInformation": {
+    "title": "HardwareInformation",
+    "collectionmethod": "system_profiler",
+    "description": "Uses the system_profiler cli tool to collect the hardware information."
+  },
+  "artefact.localhost.system.NVRAMCollector": {
+    "title": "NVRAMCollector",
+    "collectionmethod": "nvram -xp",
+    "description": "Uses the cli tool nvram to collect the NVRAM contents."
+  },
+  "artefact.localhost.system.LocalTime": {
+    "title": "LocalTime",
+    "collectionmethod": "zdump",
+    "description": "Uses cli tool zdump to extract the local time from '/etc/localtime'."
   }
 }
