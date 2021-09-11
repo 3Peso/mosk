@@ -10,6 +10,7 @@ import os
 import platform
 import shutil
 import datetime
+import re
 from collections import namedtuple
 from os import path
 from pathlib import Path
@@ -91,6 +92,26 @@ class ShellHistoryOfAllUsers(MacArtefact):
                 ShellHistoryOfAllUsers._logger.debug("Found terminal history file '{}'.".format(historyfile))
                 with open(historyfile, encoding='unicode_escape') as hf:
                     yield TermianlHistory(Path=historyfile, Content=hf.read())
+
+
+class FileHash(ArtefactBase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _collect(self):
+        if not re.compile(r'^[a-f0-9]{32}$').match(self.filehash):
+            self.data = f"MD5 hash '{self.filehash}' is invalid."
+
+        if not os.path.exists(self.filepath):
+            self.data = f"The file '{self.filepath}' does not exist."
+        else:
+            file_hash = md5(self.filepath)
+            if file_hash != self.filehash:
+                self.data = f"The hash '{file_hash}' of file '{self.filepath}' does not match the provided " \
+                            f"hash '{self.filehash}'."
+            else:
+                self.data = f"The hash '{file_hash}' of file '{self.filepath}' matches the provided " \
+                            f"hash '{self.filehash}'."
 
 
 class FileCopy(MacArtefact):

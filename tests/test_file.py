@@ -51,11 +51,11 @@ class TestFileContentReadFile(TestCase):
         from artefact.localhost.file import FileContent
 
         expected_file = "dummyfile.txt"
-        expected_data = f"File '{expected_file}' is bigger than {FileContent._max_file_size/1024/1024} MiBs. " \
-                        f"File Content Collector max file size is {FileContent._max_file_size/1024/1024} MiBs."
+        expected_data = f"File '{expected_file}' is bigger than {FileContent._max_file_size / 1024 / 1024} MiBs. " \
+                        f"File Content Collector max file size is {FileContent._max_file_size / 1024 / 1024} MiBs."
         collector = FileContent(parameters={}, parent={})
         Mock_Stats = namedtuple('Mock_Stats', ['st_size'])
-        mock_stats = Mock_Stats(st_size=1024*1024*10+1)
+        mock_stats = Mock_Stats(st_size=1024 * 1024 * 10 + 1)
         with mock.patch('artefact.localhost.file.Path.stat', MagicMock(return_value=mock_stats)):
             with mock.patch('artefact.localhost.file.path.exists', MagicMock(return_value=True)):
                 collector._read_file(filepath=expected_file, filetoload=None)
@@ -69,7 +69,7 @@ class TestFileContentDunderInit(TestCase):
         Should be by default 10 MiBs
         :return:
         """
-        expected_size = 10485760 # which is 10 MiBs
+        expected_size = 10485760  # which is 10 MiBs
         from artefact.localhost.file import FileContent
         collector = FileContent(parameters={}, parent={})
 
@@ -222,7 +222,7 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
                 acutal_return_value = collector._ensure_target_directory()
                 self.assertEqual(expected_return_value, acutal_return_value)
         finally:
-            if(os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name))):
+            if (os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name))):
                 os.rmdir(os.path.join(expected_target_dir, expected_unique_dir_name))
             if os.path.exists(expected_target_dir):
                 os.rmdir(expected_target_dir)
@@ -245,7 +245,7 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
                 collector._ensure_target_directory()
             self.assertTrue(os.path.exists(expected_target_dir))
         finally:
-            if(os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name))):
+            if (os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name))):
                 os.rmdir(os.path.join(expected_target_dir, expected_unique_dir_name))
             if os.path.exists(expected_target_dir):
                 os.rmdir(expected_target_dir)
@@ -271,8 +271,9 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
         finally:
             if os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name)):
                 os.rmdir(os.path.join(expected_target_dir, expected_unique_dir_name))
-            if(os.path.exists(expected_target_dir)):
+            if (os.path.exists(expected_target_dir)):
                 os.rmdir(expected_target_dir)
+
 
 class TestFileCopyGetUniqueDirectoryName(TestCase):
     @mock.patch('artefact.localhost.file.path.exists', MagicMock(return_value=False))
@@ -338,7 +339,7 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
         """
         from artefact.localhost.file import FileCopy
 
-        MockedDiskUsage = namedtuple('MockedDiskUsage',['free'])
+        MockedDiskUsage = namedtuple('MockedDiskUsage', ['free'])
         collector = FileCopy(parameters={}, parent=None)
         collector.filepath = './testfiles/test.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
@@ -353,7 +354,7 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
         """
         from artefact.localhost.file import FileCopy
 
-        MockedDiskUsage = namedtuple('MockedDiskUsage',['free'])
+        MockedDiskUsage = namedtuple('MockedDiskUsage', ['free'])
         collector = FileCopy(parameters={}, parent=None)
         collector.filepath = './testfiles/test.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
@@ -462,3 +463,91 @@ class TestFileMetadataCollectTimestamps(TestCase):
         self.assertEqual(expected_created_time_data, actual_created_time_data)
         self.assertEqual(expected_access_time_data, actual_access_time_data)
 
+
+class TestFileHashDunderInit(TestCase):
+    def test___init__(self):
+        """
+        Should initialize members 'filepath' and 'hash'
+        :return:
+        """
+        from artefact.localhost.file import FileHash
+
+        expected_filepath = "some_path"
+        expected_filehash = "12345"
+        collector = FileHash(parent=None, parameters={'filepath': expected_filepath, 'filehash': expected_filehash})
+
+        self.assertEqual(expected_filepath, collector.filepath)
+        self.assertEqual(expected_filehash, collector.filehash)
+
+
+class TestFileHashCollect(TestCase):
+    def test__collect_invalid_hash(self):
+        """
+        Should write message in data that hash is invalid.
+        :return:
+        """
+        from artefact.localhost.file import FileHash
+
+        expected_hash = "12345"
+        expected_message = f"MD5 hash '{expected_hash}' is invalid."
+        collector = FileHash(parameters={'filehash': expected_hash, 'filepath': ''}, parent=None)
+        collector._collect()
+
+        actual_message = collector.data[0].collecteddata
+
+        self.assertEqual(expected_message, actual_message)
+
+    def test__collect_file_does_not_exist(self):
+        """
+        Should write message in data that file does not exist.
+        :return:
+        """
+        from artefact.localhost.file import FileHash
+
+        expected_hash = "00236a2ae558018ed13b5222ef1bd987"
+        expected_file = "IDoNotExist.txt"
+        expected_message = f"The file '{expected_file}' does not exist."
+        collector = FileHash(parameters={'filehash': expected_hash, 'filepath': expected_file}, parent=None)
+        collector._collect()
+
+        actual_message = collector.data[0].collecteddata
+
+        self.assertEqual(expected_message, actual_message)
+
+    def test__collect_file_hash_not_identical(self):
+        """
+        Should write message in data, that the file hash does not match.
+        :return:
+        """
+        from artefact.localhost.file import FileHash
+
+        expected_hash = "00236a2ae558018ed13b5222ef1bd987"
+        expected_file = "./testfiles/test.txt"
+        file_hash = '0db7d1adf349b912f612c9be06278706'
+        expected_message = f"The hash '{file_hash}' of file '{expected_file}' does not match the provided hash " \
+                           f"'{expected_hash}'."
+        collector = FileHash(parameters={'filehash': expected_hash, 'filepath': expected_file}, parent=None)
+        collector._collect()
+
+        actual_message = collector.data[0].collecteddata
+
+        self.assertEqual(expected_message, actual_message)
+
+    def test__collect_file_hash_identical(self):
+        """
+        Should write message in data, that the file hash is identical.
+        :return:
+        """
+        from artefact.localhost.file import FileHash
+
+        expected_hash = "0db7d1adf349b912f612c9be06278706"
+        expected_file = "./testfiles/test.txt"
+        file_hash = '0db7d1adf349b912f612c9be06278706'
+        expected_message = f"The hash '{file_hash}' of file '{expected_file}' matches the provided hash " \
+                           f"'{expected_hash}'."
+        collector = FileHash(parameters={'filehash': expected_hash, 'filepath': expected_file}, parent=None)
+        collector._collect()
+
+        actual_message = collector.data[0].collecteddata
+
+        self.assertEqual(expected_message, actual_message)

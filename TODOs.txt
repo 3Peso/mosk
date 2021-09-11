@@ -23,8 +23,6 @@
 
 # Add parameter, for very quick collection (for example, no hash calculation, etc.)
 
-# Implement integration test with complete dryrun and check for unhandled exceptions
-
 # Detect, if VPNs are used (TOR over VPN)
 
 # FolderInformation must provide the partition index
@@ -52,7 +50,7 @@
 
 # Add collector to get system report of mac ("About this Mac.app" -> Systemreport)
 
-# collector for comparing MD5 hashes
+# collector for comparing MD5 hashes in images.
 
 # There is a bug somewhere in the EWFImage class or lower in the pytsk3 module. There are some files in the test
 #  image which will be separadet from their path when creating the overview csv file
