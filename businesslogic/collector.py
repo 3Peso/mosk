@@ -16,6 +16,10 @@ from businesslogic.placeholders import Placeholder
 from protocol.logfileprotocol import LogFileProtocol
 
 
+def get_logfilename_pattern():
+    return LogFileProtocol.log_file_name_pattern
+
+
 # TODO There should be a way to provide comments for the protocol by defining them in the instructions file
 class Collector:
     """
@@ -47,10 +51,6 @@ class Collector:
         self._collect_from_instrcutions(self._parser.instructions)
         # Log the date and time when collection ended.
         self._protocol.collection_end = datetime.now()
-
-    @property
-    def protocol(self):
-        return self._protocol
 
     def _collect_from_instrcutions(self, current_instruction: InstructionWrapper, callpath: str = ''):
         if callpath == '':
