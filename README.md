@@ -270,6 +270,17 @@ Additional arguments are:
 ```
 By default this is 'global_placeholders.json'.
 
+#### Protocol Log File
+```
+-p <Custom Protocol Log File path>
+```
+Use this to create your own protocol log file instead of going with the log files automatically created by mosk.
+
+#### Help
+````
+--help
+````
+Get a short description of the script parameters.
 ## Providing automatic documentation
 As described in the introduction, mosk should provide some layer of documentation of the "what", "when" and "how". Big part (if not all) of the "how" is currently placed inside the resource files for the text strings. Per default only *resources/collector_text_None.json* is provided and you have to translate or modify it yourself to provide the documentation in your language, or if you need a more detailed explanation what a collector did. Currently the collector documentation is very rudimenatry for the sake of speed of development.
 
