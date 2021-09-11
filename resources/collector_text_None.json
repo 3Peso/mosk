@@ -144,14 +144,19 @@
     "collectionmethod": "Internal method",
     "description": "Collector used to debug placeholder functionality. For internal / development use."
   },
-  "artefact.file.FileCopy": {
+  "artefact.localhost.file.FileCopy": {
     "title": "FileCopy",
     "collectionmethod": "Copy file with shutil.copyfile",
     "description": "Collector tries to create a copy of the file."
   },
-  "artefact.file.FileMetadata": {
+  "artefact.localhost.file.FileMetadata": {
     "title": "FileMetadata",
     "collectionmethod": "Copies collects metadata of a file by using Python standard modules 'os.path'",
     "description": "Collector to collect the create date, modiefied date, and accessed date of a file, birth datetime,\n used blocks, block size, inode number, owner id, group id, filetype and permissions.\n"
+  },
+  "artefact.localhost.file.FileHash": {
+    "title": "FileHash",
+    "collectionmethod": "Uses library method businesslogic.support.md5 to calculate the MD5 has of a provided file.",
+    "description": "Calcuates the MD5 hash of a provided file and compares it against a provided MD5 hash."
   }
 }

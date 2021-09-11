@@ -138,24 +138,29 @@ mosk does its collection through collectors. There are already several collector
 
 ### Supported collectors
 #### Scope 'localhost'
-* [AllUsernames](#allusernames)
-* CurrentUsername
-* FileExsistence
+* ShellHistoryOfAllUsers (macOS only)
+* LocalTime (macOS only)
+* NVRAMCollector
 * FileContent
-* [FileCopy](#filecopy)
+* [FileCopy](#filecopy) (macOS only)
 * [FileMetadata](#filemetadata)
+* [FileHash](#filehash)
+* FileExistence
 * MachineName
-* OSPlatform
-* OSName
-* OSVersion
+* OSName (macOS only)
+* OSVersinon (macOS only)
 * OSTimezone
-* SudoVersion
-* DetectFusionDrive
-* DetectFileByName
-* InstalledApplications
-* DetectFileVault
-* FileSystemInformation
-* HardwareInformation
+* SudoVersion (macOS only)
+* OSPlatform
+* NVRAMCollector (macOS only)
+* DetectFusionDrive (macOS only)
+* DetectFileFault (macOS only)
+* DetectFileByName (macOS only)
+* InstalledApplications (macOS only)
+* FileSystemInformation (macOS only)
+* HardwareInformation (macOS only)
+* [AllUsernames](#allusernames)
+* CurrentUser
 
 ##### AllUsernames
 Allowed attributes/parameters:
@@ -199,30 +204,17 @@ Example:
               filepath="/usr/somefile" />
 ```
 
-#### Scope 'localhost'
-* ShellHistoryOfAllUsers (macOS only)
-* LocalTime (macOS only)
-* NVRAMCollector
-* FileContent
-* [FileCopy](#filecopy) (macOS only)
-* [FileMetadata](#filemetadata)
-* FileExistence
-* MachineName
-* OSName (macOS only)
-* OSVersinon (macOS only)
-* OSTimezone
-* SudoVersion (macOS only)
-* OSPlatform
-* NVRAMCollector (macOS only)
-* DetectFusionDrive (macOS only)
-* DetectFileFault (macOS only)
-* DetectFileByName (macOS only)
-* InstalledApplications (macOS only)
-* FileSystemInformation (macOS only)
-* HardwareInformation (macOS only)
-* [AllUsernames](#allusernames)
-* CurrentUser
+##### FileHash
+Calculates the hash of a provided file and compares it against a 
+provided MD5 hash using businessclass.support.md5() to calculate
+the MD5 hash.
 
+Example:
+```xml
+<FileHash module="artefact.localhost.file" 
+          filepath="sometestfile.txt" 
+          filehash="0db7d1adf349b912f612c9be06278706"/>
+```
 #### Scope 'Internet'
 * ExternalLinksOnUrl
 * TemperatureFromOpenWeatherDotCom
