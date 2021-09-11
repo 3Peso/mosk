@@ -31,7 +31,9 @@ LOG_LEVEL = {
 @click.option('--protocollogfile', '-p', help=f"Use this parameter to log out collection messages into your own log "
                                               f"file with your own custom path. If this is not set mosk will create a "
                                               f"protocol in the current working directory with format "
-                                              f"'{get_logfilename_pattern()}'.")
+                                              f"'<Counter>_<Examiner>_<DateTime Stamp>.txt' "
+                                              f"RegEx Pattern: {get_logfilename_pattern()}'."
+                                              f"Example: '00001_amr_2021-09-11.txt'")
 def main(globalplaceholders: str, instructionsfile: str, examiner: str, loglevel: str, protocollogfile: str):
     if loglevel.upper() in LOG_LEVEL.keys():
         logging.basicConfig(level=LOG_LEVEL[loglevel.upper()],
