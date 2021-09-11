@@ -20,6 +20,7 @@ class LogFileProtocol(ProtocolBase):
     """
 
     def __init__(self, examiner, artifactid='', filedate=date.today(), taskid='', own_protocol_filename: str = ''):
+        logger = logging.getLogger(__name__)
         super().__init__(artifactid=artifactid, examiner=examiner, taskid=taskid)
         self._date = filedate
         self._protocolfilename = ''
@@ -27,10 +28,11 @@ class LogFileProtocol(ProtocolBase):
         self._search_pattern = "*_{}_{}-{:0>2d}-{:0>2d}.{}".format(self._examiner, self._date.year, self._date.month,
                                                                    self._date.day, self._protocolfiletype)
 
-        if own_protocol_filename is None or own_protocol_filename != '':
-            self._protocolfilename = self.protocol_filename
-        else:
+        if own_protocol_filename is not None and own_protocol_filename != '':
+            logger.debug(f"Using custom protocol log file '{own_protocol_filename}'.")
             self._protocolfilename = own_protocol_filename
+        else:
+            self._protocolfilename = self.protocol_filename
 
         self._artefactlogger = logging.getLogger('LogFile Protocol Artefact')
         self._messagelogger = logging.getLogger('LogFile Protocol Message')

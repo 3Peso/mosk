@@ -40,6 +40,7 @@ class Collector:
                       placeholderfile: str = Placeholder.get_globalplaceholderfile(),
                       protocollogfile: str = ''):
         Placeholder.set_globalplaceholderfile(placeholderfile)
+        cls._logger.debug(f"Protocol log file: '{protocollogfile}'")
         protocol = LogFileProtocol(examiner, own_protocol_filename=protocollogfile)
         xmlparser = XmlParser(instructionsfile, protocol)
         collector = cls(parser=xmlparser, protocol=protocol)
