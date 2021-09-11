@@ -17,10 +17,6 @@ LOG_LEVEL = {
 }
 
 
-def is_globalplaceholder_valid(placeholderpath):
-    return os.path.exists(placeholderpath)
-
-
 @click.command()
 @click.option('--globalplaceholders', '-g', help='json file that contains the key value tuples to fill in placeholders '
                                                  'like "!@examiner@!" in the instructions file. Default is:'
@@ -33,39 +29,18 @@ def is_globalplaceholder_valid(placeholderpath):
                    ' CRITICAL, ERROR, WARNING, DEBUG.')
 @click.option('--instructionsfile', '-i', help='The XML instructions file which tells mosk what to collect.')
 def main(globalplaceholders: str, instructionsfile: str, examiner: str, loglevel: str):
-    #argv = sys.argv[1:]
-
-    #try:
-    #    opts, args = getopt.getopt(argv, 'i:l:e:g:', ['instructions=', 'loglevel=', 'examiner=', 'globalplaceholders='])
-    #except getopt.GetoptError:
-    #    print("mosk.py -i <instructionsfile> -l [CRITICAL]")
-    #    sys.exit(2)
-
-    #for opt, arg in opts:
-    #    if opt in ('-i', '--instructions'):
-    #        instructionsfile = arg
-    #    elif opt in ('-l', '--loglevel'):
-    #        if arg.upper() in LOG_LEVEL.keys():
-    #            logging.basicConfig(level=LOG_LEVEL[arg.upper()], format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
-    #        else:
-    #            raise KeyError("'{}' not a valid log level.".format(arg))
-    #    elif opt in ('-e', '--examiner'):
-     #       examiner = arg
-        #elif opt in ('-g', '--globalplaceholders'):
-        #    if is_globalplaceholder_valid(arg):
-        #        globalplaceholders = arg
-        #    else:
-        #        print(f"Globale placeholder file '{arg}' does not exist.")
-        #        sys.exit(2)
-
     if loglevel.upper() in LOG_LEVEL.keys():
         logging.basicConfig(level=LOG_LEVEL[loglevel.upper()],
                             format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
     else:
         raise KeyError("'{}' not a valid log level.".format(loglevel))
 
-    if not is_globalplaceholder_valid(globalplaceholders):
-        print(f"Globale placeholder file '{globalplaceholders}' does not exist.")
+    if globalplaceholders is None or not os.path.exists(globalplaceholders):
+        print(f"Globale placeholder file does not exist. Value of parameter 'globalplaceholders': {globalplaceholders}")
+        sys.exit(2)
+
+    if instructionsfile is None or not os.path.exists(instructionsfile):
+        print(f"Instructions file does not exist. Value of parameter 'instructionsfile': {instructionsfile}")
         sys.exit(2)
 
     try:
