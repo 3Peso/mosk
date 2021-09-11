@@ -37,9 +37,10 @@ class Collector:
 
     @classmethod
     def get_collector(cls, instructionsfile: str, examiner: str = '',
-                      placeholderfile: str = Placeholder.get_globalplaceholderfile()):
+                      placeholderfile: str = Placeholder.get_globalplaceholderfile(),
+                      protocollogfile: str = ''):
         Placeholder.set_globalplaceholderfile(placeholderfile)
-        protocol = LogFileProtocol(examiner)
+        protocol = LogFileProtocol(examiner, own_protocol_filename=protocollogfile)
         xmlparser = XmlParser(instructionsfile, protocol)
         collector = cls(parser=xmlparser, protocol=protocol)
         return collector

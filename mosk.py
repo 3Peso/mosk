@@ -52,7 +52,7 @@ def main(globalplaceholders: str, instructionsfile: str, examiner: str, loglevel
     try:
         logger = logging.getLogger(__name__)
         collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner,
-                                            placeholderfile=globalplaceholders)
+                                            placeholderfile=globalplaceholders, protocollogfile=protocollogfile)
         collector.collect()
         logger.info("Collection complete.")
     except NameError:
