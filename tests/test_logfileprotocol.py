@@ -189,4 +189,9 @@ class TestLogFileProtocolDunderInit(TestCase):
         self._procotollogfile should be set to the provided protocol log file name.
         :return:
         """
-        self.fail()
+        from protocol.logfileprotocol import LogFileProtocol
+
+        expected_log_file = "test_log.txt"
+        protocol = LogFileProtocol(own_protocol_filename=expected_log_file, examiner='tada')
+
+        self.assertEqual(expected_log_file, protocol._protocolfilename)
