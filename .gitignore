@@ -9,6 +9,6 @@ dependencies_private.txt
 ideas.txt
 collector_text_de_DE.json
 /tests/testfiles/EWFDemoFat32.e01
-/tests/test_integration_test.py
+/tests/integration_test.py
 /output/
 /internal/
