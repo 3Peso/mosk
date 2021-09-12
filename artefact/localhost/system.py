@@ -31,7 +31,7 @@ class LocalTime(MacArtefact):
 
     def _collect(self):
         self.data = run_terminal_command(['zdump', '/etc/localtime'])
-        self.data.sourcepath = '/etc/localtime'
+        self.data[-1].sourcepath = '/etc/localtime'
 
 
 class DetectFusionDrive(MacArtefact):

@@ -23,6 +23,6 @@ class MachineName(ArtefactBase):
     def _collect(self):
         self.data = socket.gethostname()
         if self.data is not None:
-            MachineName._logger.debug(f"Machine name '{self.data.collecteddata}' has been collected.")
+            MachineName._logger.debug(f"Machine name '{self.data[-1].collecteddata}' has been collected.")
         else:
             MachineName._logger.info("Could not colelct machine name.")
