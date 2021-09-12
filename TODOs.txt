@@ -48,8 +48,6 @@
 # Add a database with MD5 hashes for systemfiles of macOS
 #  see: https://eclecticlight.co/2021/03/02/what-has-changed-in-macos-and-why-it-matters/
 
-# Add collector to get system report of mac ("About this Mac.app" -> Systemreport)
-
 # There is a bug somewhere in the EWFImage class or lower in the pytsk3 module. There are some files in the test
 #  image which will be separadet from their path when creating the overview csv file
 #  in FolerInfo.get_folder_items_in_csv_format()
