@@ -8,9 +8,6 @@
 
 # Implement SQLite Storage for protocol and collected data/files
 
-# Support for collectors which support multiple platforms like "macOS and Linux".
-# Currently there is only "macOS" (MacArtefact) and "all" (ArtefactBase).
-
 # Add target directory parameter for mosk to define where logfiles and collected items
 # needs to be stored
 
