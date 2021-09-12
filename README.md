@@ -142,7 +142,7 @@ mosk does its collection through collectors. There are already several collector
 * LocalTime (macOS only)
 * NVRAMCollector
 * FileContent
-* [FileCopy](#filecopy) (macOS only)
+* [FileCopy](#filecopy) (macOS, Linux)
 * [FileMetadata](#filemetadata)
 * <a href="#localhost-filehash">FileHash</a>
 * FileExistence
