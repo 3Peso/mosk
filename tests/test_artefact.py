@@ -284,3 +284,55 @@ class TestArtefactBaseInitDescriptionProperties(TestCase):
             actual_artefact._init_description_properties()
 
         self.assertEqual("No Collection Method Found", actual_artefact._collectionmethod)
+
+
+class TestArtefactBaseSupportedPlatform(TestCase):
+    def test_supported_platform_set_multiple_platforms(self):
+        """
+        Should add all platforms to the member list _supportedplatform
+        :return:
+        """
+        from tests.support.mockups import SimpleArtefactMockup
+
+        expected_platforms = "['Platform1', 'Platform2', 'Platform3']"
+        collector = SimpleArtefactMockup(parameters={}, parent=None)
+
+        collector.supported_platform = "Platform1"
+        collector.supported_platform = "Platform2"
+        collector.supported_platform = "Platform3"
+
+        self.assertEqual(expected_platforms, str(collector._supportedplatform))
+
+    def test_supported_platform_set_same_platform_twice(self):
+        """
+        Should add a supported platform just once.
+        :return:
+        """
+        from tests.support.mockups import SimpleArtefactMockup
+
+        expected_platforms = "['Platform1', 'Platform2']"
+        collector = SimpleArtefactMockup(parameters={}, parent=None)
+
+        collector.supported_platform = "Platform1"
+        collector.supported_platform = "Platform2"
+        collector.supported_platform = "Platform2"
+
+        self.assertEqual(expected_platforms, str(collector._supportedplatform))
+
+    def test_supported_platform_getter(self):
+        """
+        Should return the memberlist _supportedplatform
+        :return:
+        """
+        from tests.support.mockups import SimpleArtefactMockup
+
+        expected_platforms = "['Platform1', 'Platform2', 'Platform3']"
+        collector = SimpleArtefactMockup(parameters={}, parent=None)
+
+        collector.supported_platform = "Platform1"
+        collector.supported_platform = "Platform2"
+        collector.supported_platform = "Platform3"
+
+        actual_platforms = collector.supported_platform
+
+        self.assertEqual(expected_platforms, str(actual_platforms))
