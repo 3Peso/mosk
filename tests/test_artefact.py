@@ -336,3 +336,24 @@ class TestArtefactBaseSupportedPlatform(TestCase):
         actual_platforms = collector.supported_platform
 
         self.assertEqual(expected_platforms, str(actual_platforms))
+
+
+class TestArtefactBase(TestCase):
+    def test_is_platform_supported_with_multiple_supported_platforms(self):
+        """
+        Should return true
+        :return:
+        """
+        from tests.support.mockups import SimpleArtefactMockup
+
+        expected_support = True
+        collector = SimpleArtefactMockup(parameters={}, parent=None)
+
+        collector.supported_platform = "Platform1"
+        collector.supported_platform = "Platform2"
+        collector.supported_platform = "Platform3"
+
+        with mock.patch('baseclasses.artefact.platform.system', MagicMock(return_value='Platform1')):
+            actual_support = collector.is_platform_supported()
+
+        self.assertEqual(expected_support, actual_support)
