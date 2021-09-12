@@ -28,10 +28,10 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
     """
 
     def __init__(self, *args, **kwargs):
+        self._apikey = ""
         super().__init__(*args, **kwargs)
         self.__url = "https://api.openweathermap.org/data/2.5/weather"
         self.__querytemplate = "{}?q={},{}&units=Metric&&APPID={}"
-        self._apikey = ""
 
     def _collect(self):
         try:
@@ -84,12 +84,15 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
 
     @apikey.setter
     def apikey(self, value):
-        valid_apikey_expression = re.compile('^[a-z0-9]{32}$')
-        if valid_apikey_expression.match(value):
+        if self._validate_api_key(value):
             self._apikey = value
         else:
             raise ValueError(f"Provided api key '{value}' does not match the valid format.")
 
+    @staticmethod
+    def _validate_api_key(apikey):
+        valid_apikey_expression = re.compile('^[a-z0-9]{32}$')
+        return valid_apikey_expression.match(apikey)
 
 class ExternalLinksOnUrl(ArtefactBase):
     """
