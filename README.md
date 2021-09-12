@@ -142,23 +142,23 @@ mosk does its collection through collectors. There are already several collector
 * LocalTime (macOS only)
 * NVRAMCollector
 * FileContent
-* [FileCopy](#filecopy) (macOS, Linux)
+* [FileCopy (macOS, Linux)](#filecopy) 
 * [FileMetadata](#filemetadata)
 * <a href="#localhost-filehash">FileHash</a>
 * FileExistence
 * MachineName
-* OSName (macOS only)
-* OSVersinon (macOS only)
+* OSName (macOS)
+* OSVersinon (macOS)
 * OSTimezone
-* SudoVersion (macOS only)
+* SudoVersion (macOS)
 * OSPlatform
-* NVRAMCollector (macOS only)
-* DetectFusionDrive (macOS only)
-* DetectFileFault (macOS only)
-* DetectFileByName (macOS only)
-* InstalledApplications (macOS only)
-* FileSystemInformation (macOS only)
-* [HardwareInformation (macOS only)](#hardwareinformation)
+* NVRAMCollector (macOS)
+* DetectFusionDrive (macOS)
+* DetectFileFault (macOS)
+* DetectFileByName (macOS)
+* InstalledApplications (macOS)
+* FileSystemInformation (macOS)
+* [HardwareInformation (macOS)](#hardwareinformation)
 * [AllUsernames](#allusernames)
 * CurrentUser
 
