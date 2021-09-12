@@ -392,17 +392,34 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
             self.assertFalse(collector._enough_space_on_target('.'))
 
 
-class TestFileCopySupportedSystem(TestCase):
-    def test__supportedsystem(self):
+class TestFileCopySupportedPlatform(TestCase):
+    def test__supportedplatform_on_darwin(self):
         """
-        Should be "Darwin"
+        Should support "Darwin"
         :return:
         """
         from artefact.localhost.file import FileCopy
-        collector = FileCopy(parameters={}, parent={})
 
-        self.assertEqual("['Darwin']", str(collector.supported_platform))
+        expected_support = True
+        with mock.patch('artefact.localhost.file.platform.system', MagicMock(return_value='Darwin')):
+            collector = FileCopy(parameters={}, parent={})
+            actual_support = collector.is_platform_supported()
 
+        self.assertEqual(expected_support, actual_support)
+
+    def test__supportedplatform_on_linux(self):
+        """
+        Should suport "Linux"
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        expected_support = True
+        with mock.patch('artefact.localhost.file.platform.system', MagicMock(return_value='Linux')):
+            collector = FileCopy(parameters={}, parent={})
+            actual_support = collector.is_platform_supported()
+
+        self.assertEqual(expected_support, actual_support)
 
 class TestFileMetadataDunderInit(TestCase):
     def test___init(self):
