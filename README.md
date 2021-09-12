@@ -158,7 +158,7 @@ mosk does its collection through collectors. There are already several collector
 * DetectFileByName (macOS only)
 * InstalledApplications (macOS only)
 * FileSystemInformation (macOS only)
-* HardwareInformation (macOS only)
+* [HardwareInformation (macOS only)](#hardwareinformation)
 * [AllUsernames](#allusernames)
 * CurrentUser
 
@@ -214,6 +214,24 @@ Example:
           filepath="sometestfile.txt" 
           filehash="0db7d1adf349b912f612c9be06278706"/>
 ```
+
+##### HardwareInformation
+Will use the command `system_profiler` to collect hardware information similar 
+to the info you get, when opening "About this Mac".
+
+The following information will be collected:
+* Model Name
+* Model Identifier
+* Chip
+* Total Number of Cores
+* Memory
+* System Firmware Version
+* OS Loader Version
+* Serial Number
+* Hardware UUID
+* Provisioning UDID
+* Activation Lock Status
+
 #### Scope 'Internet'
 * ExternalLinksOnUrl
 * TemperatureFromOpenWeatherDotCom
