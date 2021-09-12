@@ -160,7 +160,7 @@
     "description": "Calcuates the MD5 hash of a provided file and compares it against a provided MD5 hash."
   },
   "artefact.image.file.FileHash": {
-    "titel": "FileHash",
+    "title": "FileHash",
     "collectionmethod": "Uses library method businesslogic.support.md5 to calculate the MD5 has of a provided file.",
     "description": "Calcuates the MD5 hash of a provided file and compares it against a provided MD5 hash."
   },
