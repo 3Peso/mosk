@@ -16,7 +16,7 @@ from os import path
 from pathlib import Path
 from shutil import copyfile
 
-from baseclasses.artefact import ArtefactBase, MacArtefact
+from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact
 from source.localhost import expandfilepath
 from businesslogic.support import get_userfolders, md5
 
@@ -115,7 +115,7 @@ class FileHash(ArtefactBase):
                             f"hash '{self.filehash}'."
 
 
-class FileCopy(MacArtefact):
+class FileCopy(MacArtefact, LinuxArtefact):
     """
     Tries to copy the file in a live session provided by 'filepath'.
     The file copy is stored alongside the collection log. The collection log points to the copied file, but
