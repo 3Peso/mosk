@@ -80,7 +80,7 @@ class TestOSNameSupportedSystem(TestCase):
         from artefact.localhost.osinformation import OSName
         collector = OSName(parameters={}, parent={})
 
-        self.assertEqual("Darwin", collector._supportedsystem)
+        self.assertEqual("Darwin", collector._supportedplatform)
 
 class TestOSVersionSupportedSystem(TestCase):
     def test__supportedsystem(self):
@@ -91,4 +91,4 @@ class TestOSVersionSupportedSystem(TestCase):
         from artefact.localhost.osinformation import OSVersion
         collector = OSVersion(parameters={}, parent={})
 
-        self.assertEqual("Darwin", collector._supportedsystem)
+        self.assertEqual("Darwin", collector._supportedplatform)

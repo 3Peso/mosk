@@ -401,7 +401,7 @@ class TestFileCopySupportedSystem(TestCase):
         from artefact.localhost.file import FileCopy
         collector = FileCopy(parameters={}, parent={})
 
-        self.assertEqual("Darwin", collector._supportedsystem)
+        self.assertEqual("Darwin", collector._supportedplatform)
 
 
 class TestFileMetadataDunderInit(TestCase):

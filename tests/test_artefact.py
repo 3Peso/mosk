@@ -137,7 +137,7 @@ class TestArtefactBaseDunderCall(TestCase):
         expected_message = "Caught unhandled exception during collection of artefact. " \
                            "Exception: There is something wrong with your values."
         actual_artefact = ExceptionArtefactMockup(parent=None, parameters={})
-        actual_artefact._supportedsystem = None
+        actual_artefact._supportedplatform = None
         try:
             logging.disable(logging.ERROR)
             # Collect by using __call__
