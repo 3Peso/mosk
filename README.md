@@ -138,8 +138,8 @@ mosk does its collection through collectors. There are already several collector
 
 ### Supported collectors
 #### Scope 'localhost'
-* ShellHistoryOfAllUsers (macOS only)
-* LocalTime (macOS only)
+* ShellHistoryOfAllUsers (macOS)
+* LocalTime (macOS)
 * NVRAMCollector
 * FileContent
 * [FileCopy (macOS, Linux)](#filecopy) 
