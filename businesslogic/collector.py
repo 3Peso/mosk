@@ -20,7 +20,6 @@ def get_logfilename_pattern():
     return LogFileProtocol.log_file_name_pattern
 
 
-# TODO There should be a way to provide comments for the protocol by defining them in the instructions file
 class Collector:
     """
     The Collector class is the actual part where all the logic of the protocol instance, the instruction parser

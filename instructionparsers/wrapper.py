@@ -5,7 +5,6 @@ class InstructionWrapper:
     is been normalized so that the manager can (in theory) consume the instructions from any instruction parser.
     """
 
-    # TODO parentinstrcution currently is not used anywhere. Is it really needed?
     def __init__(self, instruction, parentinstrutction, instructionid: 'int > 0', placeholdername: str = ''):
         self._instruction = instruction
         self._parentinstruction = parentinstrutction
