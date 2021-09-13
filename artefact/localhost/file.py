@@ -153,7 +153,6 @@ class FileCopy(MacArtefact, LinuxArtefact):
         if source_exists and enough_space:
             copyfile(self.filepath, file_copy_destination)
             self.data = f"Copied file '{self.filepath}' to '{file_copy_destination}'."
-            self.data[-1].sourcehash = md5(fpath=self.filepath)
             self.data[-1].sourcepath = self.filepath
 
         if not source_exists:
