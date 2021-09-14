@@ -98,9 +98,18 @@ If you want to add a collector to the instructions you have to use the class nam
 
 ### Placeholders
 
-You can define placeholders inside the instructions enclosed by '!@' '@!', for example '!@test@!. mosk will try to fill in the "blanks" in two runs. First run is before the actual collectors are been instanciated. You can provide the values for this in the file 'global_placeholders.json'. Second run actually happens during collection. If one collector collects the value for the placeholder before another collector consumes it.
+You can define placeholders inside the instructions enclosed by '!@' '@!', 
+for example '!@test@!. mosk will try to fill in the "blanks" in two runs. First 
+run is before the actual collectors are been instanciated. You can provide the 
+values for this in the file 'global_placeholders.json'. Second run actually 
+happens during collection. If one collector collects the value for the 
+placeholder before another collector consumes it.
 
-Currently only XML is supported as instructions format. So currently the only way to provide values for placeholders collected by collectors is by providing the attribute "placeholdername" for the collector which should collect the value for later use.
+Currently only XML is supported as instructions format. So currently the only 
+way to provide values for placeholders collected by collectors is by providing 
+the attribute "placeholdername" for the collector which should collect the value 
+for later use.
+
 Example:
 
 ```xml
@@ -111,7 +120,9 @@ Example:
               ...
             </LocalHost>
 ```
-The above example also implies that you can reuse placeholders throught the instructions as often as you want, as long as they already have been intiailzed before usage.
+The above example also implies that you can reuse placeholders throught the 
+instructions as often as you want, as long as they already have been intiailzed 
+before usage.
 
 ### 'global_placeholders.json'
 

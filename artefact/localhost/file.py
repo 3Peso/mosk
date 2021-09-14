@@ -124,25 +124,33 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         super().__init__(*args, **kwargs)
 
     def _collect(self):
-        target_path = self._ensure_target_directory()
-        file_copy_destination = os.path.join(target_path, os.path.basename(self.filepath))
-
-        enough_space = self._enough_space_on_target(target_path)
-        if not enough_space:
-            self.data = f"File '{self.filepath}' could not be copied, " \
-                        f"because there is not enough space on target '{target_path}'."
-
+        is_file = path.isfile(self.filepath)
         source_exists = os.path.exists(self.filepath)
-        if source_exists and enough_space:
-            copyfile(self.filepath, file_copy_destination)
-            self.data = f"Copied file '{self.filepath}' to '{file_copy_destination}'."
-            self.data[-1].sourcepath = self.filepath
+        enough_space = True
+        target_path = ""
 
-        if not source_exists:
-            self.data = f"The file '{self.filepath}' does not exist."
+        try:
+            if source_exists and is_file:
+                target_path = self._ensure_target_directory()
+                file_copy_destination = os.path.join(target_path, os.path.basename(self.filepath))
+                enough_space = self._enough_space_on_target(target_path)
 
-        if not source_exists or not enough_space:
-            shutil.rmtree(path.dirname(file_copy_destination), True)
+                if not enough_space:
+                    self.data = f"File '{self.filepath}' could not be copied, " \
+                                f"because there is not enough space on target '{target_path}'."
+                else:
+                    copyfile(self.filepath, file_copy_destination)
+                    self.data = f"Copied file '{self.filepath}' to '{file_copy_destination}'."
+                    self.data[-1].sourcepath = self.filepath
+
+            if not is_file:
+                self.data = f"The provided filepath '{self.filepath}' is not a file."
+
+            if not source_exists:
+                self.data = f"The file '{self.filepath}' does not exist."
+        finally:
+            if not enough_space:
+                shutil.rmtree(path.dirname(file_copy_destination), True)
 
     def _ensure_target_directory(self):
         if not path.exists(self._destination_directory):

@@ -112,12 +112,13 @@ class TestFileCopyCollect(TestCase):
 
         collector = FileCopy(parameters={}, parent=None)
         collector.filepath = self._expected_source_file_path
-        with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
-                        MagicMock(return_value=self._expected_target_path)):
-            # Create the target path here, because we mocked _ensure_target_directory
-            if not os.path.exists(self._expected_target_path):
-                os.mkdir(self._expected_target_path)
-            collector._collect()
+        with mock.patch('artefact.localhost.file.os.path.isfile', MagicMock(return_value=True)):
+            with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
+                            MagicMock(return_value=self._expected_target_path)):
+                # Create the target path here, because we mocked _ensure_target_directory
+                if not os.path.exists(self._expected_target_path):
+                    os.mkdir(self._expected_target_path)
+                collector._collect()
 
         self.assertTrue(os.path.exists(self._expected_target_file_path))
 
@@ -155,10 +156,11 @@ class TestFileCopyCollect(TestCase):
         expected_data = f"The file '{expected_source_file_path}' does not exist."
         collector = FileCopy(parameters={}, parent=None)
         collector.filepath = expected_source_file_path
-        with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
-                        MagicMock(return_value=self._expected_target_path)):
-            collector._collect()
-        actual_data = collector.data[0].collecteddata
+        with mock.patch('artefact.localhost.file.os.path.isfile', MagicMock(return_value=True)):
+            with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
+                            MagicMock(return_value=self._expected_target_path)):
+                collector._collect()
+            actual_data = collector.data[0].collecteddata
 
         self.assertEqual(expected_data, actual_data)
 
@@ -173,14 +175,25 @@ class TestFileCopyCollect(TestCase):
         expected_source_file_path = f"{self._expected_unique_directory}/IDoNotExist.txt"
         collector = FileCopy(parameters={}, parent=None)
         collector.filepath = expected_source_file_path
-        with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
-                        MagicMock(return_value=self._expected_target_path)):
-            # Create the target path here, because we mocked _ensure_target_directory
-            if not os.path.exists(self._expected_target_path):
-                os.mkdir(self._expected_target_path)
-            collector._collect()
+        collector._collect()
 
         self.assertFalse(os.path.exists(self._expected_target_path))
+
+    def test__collect_filepath_is_a_directory(self):
+        """
+        Should "collect" an error message which states that the "filepath" provided is actually a directory.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        expected_file = "/iamnotafile"
+        expected_message = f"The provided filepath '{expected_file}' is not a file."
+        collector = FileCopy(parameters={'filepath': expected_file}, parent=None)
+        collector._collect()
+
+        actual_message = collector.data[0].collecteddata
+
+        self.assertEqual(expected_message, actual_message)
 
 
 class TestFileCopyFilePath(TestCase):
