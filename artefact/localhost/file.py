@@ -181,7 +181,6 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         if not os.path.exists(target_path):
             return False
 
-        # TODO: This does not work for "special" paths like apps are in macOS
         if not os.path.exists(self.filepath):
             return False
 
