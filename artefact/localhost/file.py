@@ -17,7 +17,6 @@ from pathlib import Path
 from shutil import copyfile
 
 from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact, FileClass
-from source.localhost import expandfilepath
 from businesslogic.support import get_userfolders, md5
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
