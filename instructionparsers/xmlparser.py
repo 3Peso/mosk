@@ -14,6 +14,7 @@ import xmlschema
 from instructionparsers.wrapper import InstructionWrapper
 from baseclasses.protocol import ProtocolBase
 from businesslogic.data import CollectionMetaData
+from businesslogic.placeholders import Placeholder
 
 
 class XmlParser:
@@ -126,10 +127,17 @@ class XmlParser:
 
         currentinstruction.protocol = self._protocol
 
+        placeholder_name = XmlParser._get_placeholder_name(current)
+        # If there is a placeholder in the element store it for later use in the global placeholders
+        if placeholder_name is not None and placeholder_name != "":
+            Placeholder.update_placeholder(placeholder_name,
+                                           f"{Placeholder.PLACEHOLDER_START}"
+                                           f"{placeholder_name}"
+                                           f"{Placeholder.PLACEHOLDER_END}")
         instructionwrapper = InstructionWrapper(instruction=currentinstruction,
                                                 parentinstrutction=parentinstruction,
                                                 instructionid=instructionid,
-                                                placeholdername=XmlParser._get_placeholder_name(current))
+                                                placeholdername=placeholder_name)
 
         for child in current.childNodes:
             if type(child) is Element:
@@ -166,7 +174,7 @@ class XmlParser:
     @classmethod
     def _get_placeholder_name(cls, current: Element):
         """
-        Returns the value of the attribute "placeholder" of a given xml elmenet.
+        Returns the value of the attribute "placeholdername" of a given xml elmenet.
         :param current:
         :return:
         """

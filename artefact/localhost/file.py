@@ -16,14 +16,14 @@ from os import path
 from pathlib import Path
 from shutil import copyfile
 
-from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact
+from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact, FileClass
 from source.localhost import expandfilepath
 from businesslogic.support import get_userfolders, md5
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
 
 
-class FileExistence(ArtefactBase):
+class FileExistence(ArtefactBase, FileClass):
     """
     Tests if a file exsists under the provided path and returns True or False accordingly.
     """
@@ -32,15 +32,14 @@ class FileExistence(ArtefactBase):
         super().__init__(*args, **kwargs)
 
     def _collect(self):
-        filepath = expandfilepath(self.filepath)
-        if path.exists(filepath):
-            self.data = f"File '{filepath}' exists."
-            self.data[-1].sourcepath = filepath
+        if path.exists(self.filepath):
+            self.data = f"File '{self.filepath}' exists."
+            self.data[-1].sourcepath = self.filepath
         else:
-            self.data = f"File '{filepath}' does not exist."
+            self.data = f"File '{self.filepath}' does not exist."
 
 
-class FileContent(ArtefactBase):
+class FileContent(ArtefactBase, FileClass):
     """
     Retrieves the file content of a file provided by path. It does NOT copy the file itself. The
     content is stored inside the log created during the collection session.
@@ -51,11 +50,10 @@ class FileContent(ArtefactBase):
         super().__init__(*args, **kwargs)
 
     def _collect(self):
-        filepath = expandfilepath(self.filepath)
-        if path.exists(filepath):
-            with open(filepath, "r") as filetoload:
-                self._read_file(filetoload, filepath)
-            self.data[-1].sourcepath = filepath
+        if path.exists(self.filepath):
+            with open(self.filepath, "r") as filetoload:
+                self._read_file(filetoload, self.filepath)
+            self.data[-1].sourcepath = self.filepath
         else:
             self.data = f"File '{self.filepath}' does not exist."
 
@@ -94,7 +92,7 @@ class ShellHistoryOfAllUsers(MacArtefact):
                     yield TermianlHistory(Path=historyfile, Content=hf.read())
 
 
-class FileHash(ArtefactBase):
+class FileHash(ArtefactBase, FileClass):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -102,11 +100,10 @@ class FileHash(ArtefactBase):
         if not re.compile(r'^[a-f0-9]{32}$').match(self.filehash):
             self.data = f"MD5 hash '{self.filehash}' is invalid."
 
-        filepath = expandfilepath(self.filepath)
-        if not os.path.exists(filepath):
+        if not os.path.exists(self.filepath):
             self.data = f"The file '{self.filepath}' does not exist."
         else:
-            file_hash = md5(filepath)
+            file_hash = md5(self.filepath)
             if file_hash != self.filehash:
                 self.data = f"The hash '{file_hash}' of file '{self.filepath}' does not match the provided " \
                             f"hash '{self.filehash}'."
@@ -115,7 +112,7 @@ class FileHash(ArtefactBase):
                             f"hash '{self.filehash}'."
 
 
-class FileCopy(MacArtefact, LinuxArtefact):
+class FileCopy(MacArtefact, LinuxArtefact, FileClass):
     """
     Tries to copy the file in a live session provided by 'filepath'.
     The file copy is stored alongside the collection log. The collection log points to the copied file, but
@@ -125,20 +122,7 @@ class FileCopy(MacArtefact, LinuxArtefact):
 
     def __init__(self, *args, **kwargs):
         # Will be filled in super with the property setter filepath.
-        self._filepath = ""
         super().__init__(*args, **kwargs)
-
-    @property
-    def filepath(self):
-        return self._filepath
-
-    @filepath.setter
-    def filepath(self, value):
-        logger = logging.getLogger(__name__)
-        if not os.path.exists(value):
-            logger.warning(f"File path '{value}' does not exist.")
-
-        self._filepath = expandfilepath(value)
 
     def _collect(self):
         target_path = self._ensure_target_directory()
@@ -197,6 +181,7 @@ class FileCopy(MacArtefact, LinuxArtefact):
         if not os.path.exists(target_path):
             return False
 
+        # TODO: This does not work for "special" paths like apps are in macOS
         if not os.path.exists(self.filepath):
             return False
 
@@ -208,25 +193,13 @@ class FileCopy(MacArtefact, LinuxArtefact):
             return False
 
 
-class FileMetadata(ArtefactBase):
+class FileMetadata(ArtefactBase, FileClass):
     """
     Tries to collect as much metadata to a target file, as possible.
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._metadata = {}
-
-    @property
-    def filepath(self):
-        return self._filepath
-
-    @filepath.setter
-    def filepath(self, value):
-        logger = logging.getLogger(__name__)
-        if not os.path.exists(value):
-            logger.warning(f"File path '{value}' does not exist.")
-
-        self._filepath = expandfilepath(value)
 
     def _collect(self):
         file_exists = os.path.exists(self.filepath)
@@ -274,3 +247,12 @@ class FileMetadata(ArtefactBase):
 
         birth_datetime = Path(self.filepath).stat().st_birthtime
         self._metadata['Birth'] = datetime.datetime.utcfromtimestamp(birth_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+
+class FileDirectoryPath(MacArtefact):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _collect(self):
+        # result = run_terminal_command(['mdfind', self._get_mdfind_parameter(filename)])
+        pass

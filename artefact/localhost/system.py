@@ -74,7 +74,7 @@ class DetectFileByName(MacArtefact):
         if result is None or result == "":
             self.data = f"Application '{filename}' not found."
         else:
-            self.data = f"Application '{filename}' found.\r\n{result}"
+            self.data = result
 
     @classmethod
     def _get_mdfind_parameter(cls, filename):

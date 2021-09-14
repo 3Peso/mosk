@@ -3,6 +3,7 @@
 /design/
 /nofritzbox/
 /examples/collect-test.xml
+/examples/collect-test-small.xml
 global_placeholders_private.json
 dependencies_private.txt
 /artefact/network/router.py

@@ -201,6 +201,23 @@ class TestFileCopyFilePath(TestCase):
 
         self.assertEqual(expected_file_path, actual_filepath)
 
+    def test__collect_getter_with_newline_at_the_end(self):
+        """
+        Should sanitize the file path. There must not be any new line, carriage return, etc. at
+        the end. Otherwise things like os.path.exists do not work.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        expected_file_path = "./somepath"
+
+        with mock.patch('artefact.localhost.file.os.path.exists', MagicMock(return_value=True)):
+            collector = FileCopy(parameters={'filepath': './somepath\r\n'}, parent=None)
+
+        actual_file_path = collector.filepath
+
+        self.assertEqual(expected_file_path, actual_file_path)
+
 
 class TestFileCopyEnsureTargetDirectory(TestCase):
     def test__ensure_target_directory(self):
@@ -420,6 +437,7 @@ class TestFileCopySupportedPlatform(TestCase):
             actual_support = collector.is_platform_supported()
 
         self.assertEqual(expected_support, actual_support)
+
 
 class TestFileMetadataDunderInit(TestCase):
     def test___init(self):

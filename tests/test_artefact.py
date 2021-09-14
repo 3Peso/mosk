@@ -357,3 +357,66 @@ class TestArtefactBase(TestCase):
             actual_support = collector.is_platform_supported()
 
         self.assertEqual(expected_support, actual_support)
+
+
+class TestFileClassFilePathProperty(TestCase):
+    def test_filepath_setter_with_trailing_whitespace_chars(self):
+        """
+        Should remove whitespace chars like '\r' and '\n'
+        :return:
+        """
+        from baseclasses.artefact import FileClass
+
+        expected_file_path = "./somepath"
+        fileobj = FileClass()
+
+        fileobj.filepath = './somepath\r\n'
+        actual_file_path = fileobj.filepath
+
+        self.assertEqual(expected_file_path, actual_file_path)
+
+    def test_filepath_setter_with_home_abbreviation(self):
+        """
+        Should expand the file path.
+        :return:
+        """
+        from baseclasses.artefact import FileClass
+
+        expected_file_path = "/home/testuser/somepath"
+        fileobj = FileClass()
+
+        with mock.patch('baseclasses.artefact.expandfilepath', MagicMock(return_value=expected_file_path)):
+            fileobj.filepath = '~/somepath'
+            actual_file_path = fileobj.filepath
+
+        self.assertEqual(expected_file_path, actual_file_path)
+
+    def test_failpath_setter(self):
+        """
+        Should set the value of _filepath
+        :return:
+        """
+        from baseclasses.artefact import FileClass
+
+        expected_file_path = "./somepath"
+        fileobj = FileClass()
+
+        fileobj.filepath = './somepath'
+        actual_file_path = fileobj._filepath
+
+        self.assertEqual(expected_file_path, actual_file_path)
+
+    def test_filepath_getter(self):
+        """
+        Should return the value of _filepath
+        :return:
+        """
+        from baseclasses.artefact import FileClass
+
+        expected_file_path = "./somepath"
+        fileobj = FileClass()
+
+        fileobj._filepath = './somepath'
+        actual_file_path = fileobj.filepath
+
+        self.assertEqual(expected_file_path, actual_file_path)
