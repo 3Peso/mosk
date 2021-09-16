@@ -4,20 +4,21 @@ import pyewf
 import os
 from contextlib import suppress
 from functools import lru_cache
+from logging import Logger
 
 from source.baseclasses.image import Image, FolderInfo, FolderItemInfo
 from businesslogic.support import str_to_bool, format_bytes
 
 
 class EWFImage(Image):
-    _logger = logging.getLogger(__name__)
+    _logger: Logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._imageinfo: EWFImageInfo = self._get_image_information()
         self._initialize_partition_lookup()
-        self._filesysteminfo = {}
-        self._fs_discoverd = False
+        self._filesysteminfo: dict = {}
+        self._fs_discoverd: bool = False
         if str_to_bool(self.get_parameter('discover')):
             self._fs_discoverd = True
             self._initialize_partitions()
@@ -38,13 +39,13 @@ class EWFImage(Image):
         folderinfo: FolderInfo = None
         try:
             if folderpath not in self.filesysteminfo[partitionindex].keys():
-                folderinfo = FolderInfo(folderpath=folderpath,
+                folderinfo: FolderInfo = FolderInfo(folderpath=folderpath,
                                         folderitems=set(self._discover_folder(folderpath, partitionindex)),
                                         imagefile=self._imagefilepath, partitionindex=partitionindex)
             else:
-                folderinfo = self.filesysteminfo[partitionindex][folderpath]
+                folderinfo: FolderInfo = self.filesysteminfo[partitionindex][folderpath]
         except KeyError:
-            folderinfo = FolderInfo(folderpath=folderpath,
+            folderinfo: FolderInfo = FolderInfo(folderpath=folderpath,
                                     folderitems=set(self._discover_folder(folderpath, partitionindex)),
                                     imagefile=self._imagefilepath, partitionindex=partitionindex)
 
@@ -79,7 +80,7 @@ class EWFImage(Image):
         :return: Nothing, but will copy the exported file to the output path. The partition index will be
         append to the output path as folder.
         """
-        fs_objects = list(self._get_fs_object(path=filepath, file=filename))
+        fs_objects: list = list(self._get_fs_object(path=filepath, file=filename))
         if fs_objects is not None:
             for partitionindex, fso in fs_objects:
                 try:
@@ -98,7 +99,7 @@ class EWFImage(Image):
         :param buffer_size: Size of the file chunks retunred by the genexp.
         :return:
         """
-        fs_objects = list(self._get_fs_object(path=filepath, file=filename))
+        fs_objects: list = list(self._get_fs_object(path=filepath, file=filename))
         if fs_objects is not None:
             for partitionindex, fso in fs_objects:
                 try:
@@ -123,8 +124,8 @@ class EWFImage(Image):
         :return: Will initialize the member _partitions.
         """
         self._volume: pytsk3.Volume_Info = self._get_volume_from_image()
-        tmp = list(self._volume)
-        self._partitions = {paritionindex: self._get_partition_object(tmp[paritionindex])
+        tmp: list = list(self._volume)
+        self._partitions: dict = {paritionindex: self._get_partition_object(tmp[paritionindex])
                             for paritionindex in range(0, len(tmp))}
 
     def _get_partition_object(self, partition):

@@ -1,10 +1,11 @@
 import logging
+from logging import Logger
 
 from baseclasses.source import SourceBase
 from os import path
 from pathlib import Path
 
-_logger = logging.getLogger(__name__)
+_logger: Logger = logging.getLogger(__name__)
 
 
 class LocalHost(SourceBase):
@@ -14,10 +15,10 @@ class LocalHost(SourceBase):
 
 def expandfilepath(filepath: str):
     if '~' in filepath:
-        homepath = str(Path.home())
+        homepath: str = str(Path.home())
         filepath = filepath.split('~')[-1]
         if filepath.startswith('/'):
-            filepath = filepath[1:]
+            filepath: str = filepath[1:]
         filepath = path.join(homepath, filepath)
         _logger.debug("Path '{}' expanded.".format(filepath))
         return filepath
