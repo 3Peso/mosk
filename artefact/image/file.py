@@ -2,21 +2,22 @@ import logging
 import os
 import hashlib
 import re
+from logging import Logger
 
 from baseclasses.artefact import ArtefactBase
 from source.baseclasses.image import FolderInfo
 
 
 class File(ArtefactBase):
-    _logger = logging.getLogger(__name__)
+    _logger: Logger = logging.getLogger(__name__)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._file_path = self.get_parameter('filepath')
-        self._out_path = self.get_parameter('outpath')
-        self._filename = self.get_parameter('filename')
+        self._file_path: str = self.get_parameter('filepath')
+        self._out_path: str = self.get_parameter('outpath')
+        self._filename: str = self.get_parameter('filename')
 
-    def _collect(self):
+    def _collect(self) -> None:
         try:
             self._parent.export_file(filepath=self._file_path, outpath=self._out_path, filename=self._filename)
         except FileNotFoundError:
@@ -29,12 +30,12 @@ class File(ArtefactBase):
 
 
 class FileHash(ArtefactBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._file_path = self.get_parameter('filepath')
         self._filename = self.get_parameter('filename')
 
-    def _collect(self):
+    def _collect(self) -> None:
         if not re.compile(r'^[a-f0-9]{32}$').match(self.filehash):
             self.data = f"MD5 hash '{self.filehash}' is invalid."
 
@@ -57,26 +58,26 @@ class FileHash(ArtefactBase):
 
 
 class FolderInformation(ArtefactBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._folder = self.get_parameter('folder')
         self._partitionindex = self.get_parameter('partitionindex')
 
-    def _collect(self):
+    def _collect(self) -> None:
         folderinfo = self._parent.get_folder_information(self._folder, int(self._partitionindex))
         self.data = str(folderinfo)
 
 
 class CompleteFileSystemInfo(ArtefactBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._outpath = self.get_parameter('outpath')
 
-    def _collect(self):
+    def _collect(self) -> None:
         if not os.path.exists(self._outpath):
             os.makedirs(self._outpath)
 
-        outfilepath = os.path.join(self._outpath, "filesystem.csv")
+        outfilepath: bytes = os.path.join(self._outpath, "filesystem.csv")
         with open(outfilepath, "a") as outfile:
             outfile.write(FolderInfo.get_cvs_header() + '\r\n')
             folders = [folder for _, partition in self._parent.filesysteminfo.items()
@@ -85,4 +86,4 @@ class CompleteFileSystemInfo(ArtefactBase):
                 for item in folder.get_folder_items_in_csv_format():
                     outfile.write(item + '\r\n')
 
-        # Store metadata in log file, like where is the filesystem.csv file located?s
+        # TODO: Store metadata in log file, like where is the filesystem.csv file located?s
