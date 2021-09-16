@@ -11,6 +11,7 @@ import platform
 import shutil
 import datetime
 import re
+from logging import Logger
 from collections import namedtuple
 from os import path
 from pathlib import Path
@@ -27,10 +28,10 @@ class FileExistence(ArtefactBase, FileClass):
     Tests if a file exsists under the provided path and returns True or False accordingly.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         if path.exists(self.filepath):
             self.data = f"File '{self.filepath}' exists."
             self.data[-1].sourcepath = self.filepath
@@ -43,12 +44,12 @@ class FileContent(ArtefactBase, FileClass):
     Retrieves the file content of a file provided by path. It does NOT copy the file itself. The
     content is stored inside the log created during the collection session.
     """
-    _max_file_size = 1024*1024*10 # by default at max 10 MiBs
+    _max_file_size: int = 1024*1024*10 # by default at max 10 MiBs
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         if path.exists(self.filepath):
             with open(self.filepath, "r") as filetoload:
                 self._read_file(filetoload, self.filepath)
@@ -56,7 +57,7 @@ class FileContent(ArtefactBase, FileClass):
         else:
             self.data = f"File '{self.filepath}' does not exist."
 
-    def _read_file(self, filetoload, filepath):
+    def _read_file(self, filetoload, filepath) -> None:
         if Path(filepath).stat().st_size > self._max_file_size:
             self.data = f"File '{filepath}' is bigger than {self._max_file_size / 1024 / 1024} MiBs. " \
                         f"File Content Collector max file size is {self._max_file_size / 1024 / 1024} MiBs."
@@ -69,13 +70,13 @@ class ShellHistoryOfAllUsers(MacArtefact):
     Tries to access all user folders of a macOS installation and then it iterates over the possible shell history
     files (.bash_history and .zhs_history).
     """
-    _logger = logging.getLogger(__name__)
+    _logger: Logger = logging.getLogger(__name__)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
-        userfolders = set(get_userfolders())
+    def _collect(self) -> None:
+        userfolders: set = set(get_userfolders())
         for history in ShellHistoryOfAllUsers._collect_bash_history(userfolders):
             self.data = history.Content
             self.data[-1].sourcepath = history.Path
@@ -92,10 +93,10 @@ class ShellHistoryOfAllUsers(MacArtefact):
 
 
 class FileHash(ArtefactBase, FileClass):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         if not re.compile(r'^[a-f0-9]{32}$').match(self.filehash):
             self.data = f"MD5 hash '{self.filehash}' is invalid."
 
@@ -117,17 +118,16 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
     The file copy is stored alongside the collection log. The collection log points to the copied file, but
     does not hold it.
     """
-    _destination_directory = '.'
+    _destination_directory: str = '.'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         # Will be filled in super with the property setter filepath.
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         is_file = path.isfile(self.filepath)
         source_exists = os.path.exists(self.filepath)
         enough_space = True
-        target_path = ""
 
         try:
             if source_exists and is_file:
@@ -152,26 +152,26 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
             if not enough_space:
                 shutil.rmtree(path.dirname(file_copy_destination), True)
 
-    def _ensure_target_directory(self):
+    def _ensure_target_directory(self) -> str:
         if not path.exists(self._destination_directory):
             os.mkdir(self._destination_directory)
 
         unique_dir_name = self._get_unique_directory_name(self._destination_directory, datetime.datetime.now())
-        new_unique_directory = os.path.join(self._destination_directory, unique_dir_name)
+        new_unique_directory: bytes = os.path.join(self._destination_directory, unique_dir_name)
         os.mkdir(new_unique_directory)
 
         return new_unique_directory
 
-    def _get_unique_directory_name(self, target_directory, datetime):
-        logger = logging.getLogger(__name__)
+    def _get_unique_directory_name(self, target_directory, datetime: datetime) -> str:
+        logger: Logger = logging.getLogger(__name__)
         # Assume, target directory exists.
         # REMARKS: This only works correct on macOS and Linux.
-        filename = path.basename(self.filepath)
-        timestamp = f"{datetime.year}{str(datetime.month).zfill(2)}{str(datetime.day).zfill(2)}" \
+        filename: str = path.basename(self.filepath)
+        timestamp: str = f"{datetime.year}{str(datetime.month).zfill(2)}{str(datetime.day).zfill(2)}" \
                     f"{str(datetime.hour).zfill(2)}{str(datetime.minute).zfill(2)}{str(datetime.second).zfill(2)}"
 
-        unique_name = f"{filename}_{timestamp}{str(1).zfill(2)}"
-        max_counter = 99
+        unique_name: str = f"{filename}_{timestamp}{str(1).zfill(2)}"
+        max_counter: int = 99
         for counter in range(2,max_counter+1):
             if not path.exists(path.join(target_directory, unique_name)):
                 break
@@ -184,7 +184,7 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
 
         return unique_name
 
-    def _enough_space_on_target(self, target_path):
+    def _enough_space_on_target(self, target_path) -> bool:
         if not os.path.exists(target_path):
             return False
 
@@ -203,12 +203,12 @@ class FileMetadata(ArtefactBase, FileClass):
     """
     Tries to collect as much metadata to a target file, as possible.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self._metadata = {}
+        self._metadata: dict = {}
 
-    def _collect(self):
-        file_exists = os.path.exists(self.filepath)
+    def _collect(self) -> None:
+        file_exists: bool = os.path.exists(self.filepath)
         if not file_exists:
             self.data = f"File '{self.filepath}' does not exist."
 
@@ -221,24 +221,26 @@ class FileMetadata(ArtefactBase, FileClass):
             self.data[-1].sourcehash = md5(fpath=self.filepath)
             self.data[-1].sourcepath = self.filepath
 
-    def _collect_extended_attributes(self):
+    # TODO: Implement
+    @staticmethod
+    def _collect_extended_attributes():
         if platform.system() == "Darwin":
-            return
+            pass
 
-    def _collect_sizes(self):
+    def _collect_sizes(self) -> None:
         stats = Path(self.filepath).stat()
         self._metadata['Size in Bytes'] = stats.st_size
         self._metadata['Used Blocks'] = stats.st_blocks
         self._metadata['Block Size'] = stats.st_blksize
 
-    def _collect_other(self):
+    def _collect_other(self) -> None:
         stats = Path(self.filepath).stat()
         self._metadata['INode Number'] = stats.st_ino
         self._metadata['Owner ID'] = stats.st_uid
         self._metadata['Group ID'] = stats.st_gid
         self._metadata['File Type and Permissions'] = stats.st_mode
 
-    def _collect_timestamps(self):
+    def _collect_timestamps(self) -> None:
         modified_datetime = os.path.getmtime(self.filepath)
         self._metadata['Modified'] = datetime.datetime.utcfromtimestamp(modified_datetime)\
             .strftime("%Y-%m-%d %H:%M:%S UTC")
@@ -256,9 +258,9 @@ class FileMetadata(ArtefactBase, FileClass):
 
 
 class FileDirectoryPath(MacArtefact):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         # result = run_terminal_command(['mdfind', self._get_mdfind_parameter(filename)])
         pass

@@ -7,6 +7,7 @@ __all__ = ['MachineName']
 
 import logging
 import socket
+from logging import Logger
 
 from baseclasses.artefact import ArtefactBase
 
@@ -15,12 +16,12 @@ class MachineName(ArtefactBase):
     """
     Retrieves the name of the machine running this script.
     """
-    _logger = logging.getLogger(__name__)
+    _logger: Logger = logging.getLogger(__name__)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         self.data = socket.gethostname()
         if self.data is not None:
             MachineName._logger.debug(f"Machine name '{self.data[-1].collecteddata}' has been collected.")

@@ -9,6 +9,7 @@ import logging
 import platform
 import sys
 import re
+from logging import Logger
 from datetime import datetime
 
 from baseclasses.artefact import MacArtefact, ArtefactBase
@@ -20,7 +21,7 @@ DESCRIPTION_KEY = 'Description'
 LOOKUP_KEY = 'lookup'
 VERSION_NUMBER_INDEX = 0
 
-_platform_lookup = {
+_platform_lookup: dict = {
     'darwin': {
         LOOKUP_KEY: {
             '10': {
@@ -42,10 +43,10 @@ class OSName(MacArtefact):
     """
     Tries to look up the installed OS name.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         logger = logging.getLogger(__name__)
         if sys.platform == 'darwin':
             platformversion = platform.mac_ver()[VERSION_NUMBER_INDEX]
@@ -66,7 +67,7 @@ class OSName(MacArtefact):
                 self.data = f"Cannot collect OS name for platform version '{platformversion}'"
 
     @staticmethod
-    def _verify_version_string(platformversion):
+    def _verify_version_string(platformversion) -> None:
         # Assume, that this code will never see older platforms, than 10.x.
         expected_version_format = re.compile(r'^\d{2,}(\.\d{1,})?(\.\d{1,})?$')
         if not expected_version_format.match(platformversion):
@@ -77,35 +78,35 @@ class OSVersion(MacArtefact):
     """
     Tries to retrieve the OS version number.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         if sys.platform == 'darwin':
             self.data = platform.mac_ver()[VERSION_NUMBER_INDEX]
 
 
 class OSTimezone(ArtefactBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         self.data = datetime.now().astimezone().tzname()
 
 
 class SudoVersion(MacArtefact):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._supportedsystem = ('Darwin', 'Linux')
 
-    def _collect(self):
+    def _collect(self) -> None:
         self.data = run_terminal_command(['sudo', '-V'])
 
 
 class OSPlatform(ArtefactBase):
     """Collects the platform on which this script is running on."""
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def _collect(self):
+    def _collect(self) -> None:
         self.data = platform.system()
