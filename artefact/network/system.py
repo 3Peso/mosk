@@ -8,6 +8,7 @@ __all__ = ['TimeFromNTPServer']
 import collections
 import logging
 import socket
+from logging import Logger
 
 from businesslogic.support import get_time, DEFAULT_TIME_SERVER
 from baseclasses.artefact import ArtefactBase
@@ -20,17 +21,12 @@ class TimeFromNTPServer(ArtefactBase):
     """
     Retrieves the current time from a provided NTP server.
     """
-    #__timeServer = DEFAULT_TIME_SERVER
-    _logger = logging.getLogger(__name__)
+    _logger: Logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._title = 'TimeFromNTPServer'
-        self._collectionmethod = 'Network call using socket connect.'
-        self._description = 'Retrieves the time from a time server. Can be used as reference time.\r\n' \
-                            'Requires network connection.'
 
-    def _collect(self):
+    def _collect(self) -> None:
         try:
             self.__timeServer = self.timeserver
         except AttributeError:
