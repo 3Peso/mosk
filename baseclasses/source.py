@@ -6,25 +6,26 @@ __author__ = '3Peso'
 __all__ = ['SourceBase']
 
 import logging
+from logging import Logger
 from collections import UserDict
 
 from businesslogic.placeholders import Placeholder
 
 
 class SourceBase:
-    _logger = logging.getLogger(__name__)
+    _logger: Logger = logging.getLogger(__name__)
 
-    def __init__(self, parent, parameters, path: str = '', *args, **kwargs):
+    def __init__(self, parent, parameters: dict, path: str = '', *args, **kwargs):
         self._parent = parent
-        self._path = path
-        self._parameters = parameters
+        self._path: str = path
+        self._parameters: dict = parameters
         self._protocol = None
         SourceBase.cache_parameters(self._parameters)
 
     # get_path currently has the soule purpose to document the complete path
     # of an artefact.
     def getpath(self) -> str:
-        path = None
+        path: str = None
         if self._path is None or self._path == '':
             path = self._path
 
@@ -36,13 +37,13 @@ class SourceBase:
         return path
 
     @Placeholder
-    def get_parameter(self, parameter: str):
+    def get_parameter(self, parameter: str) -> str:
         parametervalue = self._parameters[parameter]
         self._logger.debug(f"Retrieved parameter '{parameter}': '{parametervalue}'")
         return parametervalue
 
     @classmethod
-    def cache_parameters(cls, attributes: UserDict = None):
+    def cache_parameters(cls, attributes: UserDict = None) -> None:
         for attributename in attributes.keys():
             attributevalue = Placeholder.replace_placeholders(attributes[attributename])
             Placeholder.update_placeholder(attributename, attributevalue)
@@ -54,5 +55,5 @@ class SourceBase:
         return self._protocol
 
     @protocol.setter
-    def protocol(self, newprotocol):
+    def protocol(self, newprotocol) -> None:
         self._protocol = newprotocol

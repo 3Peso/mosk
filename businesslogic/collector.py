@@ -6,6 +6,7 @@ __author__ = '3Peso'
 __all__ = ['Collector']
 
 import logging
+from logging import Logger
 from datetime import datetime
 from instructionparsers.xmlparser import XmlParser
 from contextlib import suppress
@@ -16,7 +17,7 @@ from businesslogic.placeholders import Placeholder
 from protocol.logfileprotocol import LogFileProtocol
 
 
-def get_logfilename_pattern():
+def get_logfilename_pattern() -> str:
     return LogFileProtocol.log_file_name_pattern
 
 
@@ -25,13 +26,13 @@ class Collector:
     The Collector class is the actual part where all the logic of the protocol instance, the instruction parser
     and the collector artefacts is been instantiated and invoked.
     """
-    _logger = logging.getLogger(__name__)
+    _logger: Logger = logging.getLogger(__name__)
 
     def __init__(self, parser: XmlParser, protocol):
-        self._parser = parser
+        self._parser: XmlParser = parser
         self._protocol = protocol
-        self._collectionstart = None
-        self._collectionend = None
+        self._collectionstart: str = None
+        self._collectionend: str = None
         self._logger.debug("Collector object initialized.")
 
     @classmethod
@@ -45,7 +46,7 @@ class Collector:
         collector = cls(parser=xmlparser, protocol=protocol)
         return collector
 
-    def collect(self):
+    def collect(self) -> None:
         # Log the date and time when collection started.
         self._protocol.collection_start = datetime.now()
         self._protocol.set_task_metadata(self._parser.metadata)
@@ -53,7 +54,7 @@ class Collector:
         # Log the date and time when collection ended.
         self._protocol.collection_end = datetime.now()
 
-    def _collect_from_instrcutions(self, current_instruction: InstructionWrapper, callpath: str = ''):
+    def _collect_from_instrcutions(self, current_instruction: InstructionWrapper, callpath: str = '') -> None:
         if callpath == '':
             callpath = str(current_instruction)
         else:
@@ -82,7 +83,7 @@ class Collector:
         else:
             Collector._logger.debug(callpath)
 
-    def _collect_and_document(self, artefact: ArtefactBase, callpath: str):
+    def _collect_and_document(self, artefact: ArtefactBase, callpath: str) -> None:
         # The following implicitly calls ArtefactBase.collect() because
         # ArtefactBase implements __call__.
         # Supress exeptions during collect because we never know what may go wrong.

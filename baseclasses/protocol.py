@@ -9,12 +9,12 @@ from baseclasses.artefact import ArtefactBase
 
 
 class ProtocolBase:
-    def __init__(self, examiner = '', taskid = '', artifactid = ''):
-        self._examiner = str(examiner)
-        self._taskid = str(taskid)
-        self._artifactid = str(artifactid)
-        self._collection_start = None
-        self._collection_end = None
+    def __init__(self, examiner: str = '', taskid: str = '', artifactid: str = ''):
+        self._examiner: str = str(examiner)
+        self._taskid: str = str(taskid)
+        self._artifactid: str = str(artifactid)
+        self._collection_start: str = None
+        self._collection_end: str = None
 
     @abstractmethod
     def store_artefact(self, artefact: ArtefactBase, callpath: str):
