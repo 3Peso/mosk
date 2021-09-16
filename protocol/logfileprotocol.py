@@ -6,6 +6,7 @@ import re
 from datetime import date
 from glob import glob
 from contextlib import suppress
+from logging import Logger
 
 from baseclasses.protocol import ProtocolBase
 from baseclasses.artefact import ArtefactBase
@@ -20,8 +21,9 @@ class LogFileProtocol(ProtocolBase):
     Class to write a text protocol of the colleted data.
     """
 
-    def __init__(self, examiner, artifactid='', filedate=date.today(), taskid='', own_protocol_filename: str = ''):
-        logger = logging.getLogger(__name__)
+    def __init__(self, examiner: str, artifactid: str = '', filedate: date = date.today(), taskid: str = '',
+                 own_protocol_filename: str = ''):
+        logger: Logger = logging.getLogger(__name__)
         super().__init__(artifactid=artifactid, examiner=examiner, taskid=taskid)
         self._date = filedate
         self._protocolfilename = ''
@@ -35,16 +37,16 @@ class LogFileProtocol(ProtocolBase):
         else:
             self._protocolfilename = self.protocol_filename
 
-        self._artefactlogger = logging.getLogger('LogFile Protocol Artefact')
-        self._messagelogger = logging.getLogger('LogFile Protocol Message')
+        self._artefactlogger: Logger = logging.getLogger('LogFile Protocol Artefact')
+        self._messagelogger: Logger = logging.getLogger('LogFile Protocol Message')
 
         self._setup_protocol_logging(self._artefactlogger, self._protocolfilename, formatstring='')
         self._setup_protocol_logging(self._messagelogger, self._protocolfilename, formatstring='')
         return
 
     @staticmethod
-    def _setup_protocol_logging(currlogger: logging.Logger, protocolfilepath,
-                                formatstring='%(asctime)s : %(message)s'):
+    def _setup_protocol_logging(currlogger: logging.Logger, protocolfilepath: str,
+                                formatstring: str ='%(asctime)s : %(message)s'):
         currlogger.setLevel(logging.INFO)
         currlogger.propagate = False
         filehandler = logging.FileHandler(protocolfilepath)
@@ -57,8 +59,8 @@ class LogFileProtocol(ProtocolBase):
         currlogger.addHandler(filehandler)
 
     @classmethod
-    def _get_current_file_counter(cls, searchpattern):
-        nextcounter = 1
+    def _get_current_file_counter(cls, searchpattern: str):
+        nextcounter: int = 1
 
         protocols = glob(searchpattern)
         protocols.sort()
@@ -69,23 +71,23 @@ class LogFileProtocol(ProtocolBase):
                     raise ValueError('You reached the limit of 99999 protocols. Delete old protocols.')
         return nextcounter
 
-    def _write_protocol_entry(self, entryheader, entrydata):
+    def _write_protocol_entry(self, entryheader: str, entrydata: str):
         entry = LogFileProtocol._prepare_protocol_entry(entryheader=entryheader, entrydata=entrydata)
         self._write(entry)
         return
 
-    def _write(self, data):
+    def _write(self, data: str):
         self._messagelogger.info(self._sanitize_data(data))
         return
 
     @staticmethod
-    def _sanitize_data(data):
+    def _sanitize_data(data: str):
         data = data.lstrip("\r\n").rstrip("\r\n")
         return f"{data}"
 
     @classmethod
-    def _prepare_protocol_entry(cls, entryheader, entrydata):
-        entry = ""
+    def _prepare_protocol_entry(cls, entryheader: str, entrydata: str):
+        entry: str = ""
         if entryheader is not None and entryheader != '':
             entry = \
                 f"{LogFileProtocol._get_header_seperator(entryheader)}\r\n" \
@@ -96,7 +98,7 @@ class LogFileProtocol(ProtocolBase):
         return entry
 
     @classmethod
-    def _get_header_seperator(cls, header):
+    def _get_header_seperator(cls, header: str):
         return '*' * len(header)
 
     @property
