@@ -14,6 +14,7 @@ import time
 import struct
 import hashlib
 import subprocess
+from logging import Logger
 
 
 REF_TIME_1970 = 2208988800  # Reference time
@@ -37,7 +38,7 @@ def get_time(ntpserver: str = DEFAULT_TIME_SERVER):
     :param ntpserver: NTP Server to use. Default is 0.de.pool.ntp.org.
     :return: The current time.
     """
-    client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    client: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     data = b'\x1b' + 47 * b'\0'
     socket_error = None
     t = None
@@ -92,7 +93,7 @@ def md5(fpath: str = "", data: str = ""):
     if fpath is not None and fpath != "" and data is not None and data != "":
         raise ValueError("You can only provide a file OR a data string to calculate the MD5 hash.")
 
-    logger = logging.getLogger(__name__)
+    logger: Logger = logging.getLogger(__name__)
     hash_md5 = hashlib.md5()
     if fpath is not None and fpath != "":
         logger.debug(f"Calculating MD5 hash for '{fpath}'.")
@@ -125,7 +126,7 @@ def get_collector_resources(resourcespath: str = "./resources"):
 
 
 def _get_resources_path(resourcespath: str, countrycode: str):
-    logger = logging.getLogger(__name__)
+    logger: Logger = logging.getLogger(__name__)
     if resourcespath == '':
         raise ValueError('Resources path is empty.')
     if countrycode == '':
@@ -166,7 +167,7 @@ def _load_resources(resourcesfilepath: str, countrycode: str):
 
 
 def _change_cwd_to_module_root():
-    basepath = os.path.dirname(sys.modules[__name__].__file__)
+    basepath: str = os.path.dirname(sys.modules[__name__].__file__)
     old = os.getcwd()
     os.chdir(basepath)
     os.chdir('..')
