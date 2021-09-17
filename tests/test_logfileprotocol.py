@@ -77,9 +77,11 @@ class TestLogFileProtocolGetCurrentFileCounter(TestCase):
         Should raise an ValueError if there are 99999 protocols already.
         """
         from protocol.logfileprotocol import LogFileProtocol
+        from businesslogic.errors import LogFileMaximumReachedError
+
         glob_mock.return_value = ['99999_tst_2020-05-26.txt']
 
-        self.assertRaises(ValueError, LogFileProtocol._get_current_file_counter, '*')
+        self.assertRaises(LogFileMaximumReachedError, LogFileProtocol._get_current_file_counter, '*')
 
 
 class TestLogFileProtocolPrepareProtocolEntry(TestCase):

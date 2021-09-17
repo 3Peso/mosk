@@ -11,6 +11,7 @@ from logging import Logger
 from baseclasses.protocol import ProtocolBase
 from baseclasses.artefact import ArtefactBase
 from businesslogic.data import CollectionMetaData
+from businesslogic.errors import LogFileMaximumReachedError
 
 
 
@@ -68,7 +69,7 @@ class LogFileProtocol(ProtocolBase):
             if m := re.match(cls.log_file_name_pattern, protocols[-1]):
                 nextcounter = int(m[1])+1
                 if nextcounter >= 100000:
-                    raise ValueError('You reached the limit of 99999 protocols. Delete old protocols.')
+                    raise LogFileMaximumReachedError('You reached the limit of 99999 protocols. Delete old protocols.')
         return nextcounter
 
     def _write_protocol_entry(self, entryheader: str, entrydata: str):

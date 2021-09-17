@@ -1,6 +1,7 @@
 __author__ = '3Peso'
 __all__ = ['MaxDirectoriesReachedError', 'UnknownVersionStringError', 'ApiKeyNotSetError', 'ApiKeyFormatError',
-           'PathNotSetError', 'NoCollectorError', 'MD5SupportError', 'NoCountryCodeError', 'NoStringResourcesError']
+           'PathNotSetError', 'NoCollectorError', 'MD5SupportError', 'NoCountryCodeError', 'NoStringResourcesError',
+           'LogFileMaximumReachedError']
 
 
 class MaxDirectoriesReachedError(Exception):
@@ -44,5 +45,10 @@ class NoStringResourcesError(Exception):
 
 
 class NoCountryCodeError(Exception):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+
+
+class LogFileMaximumReachedError(Exception):
     def __init__(self, message: str) -> None:
         super().__init__(message)
