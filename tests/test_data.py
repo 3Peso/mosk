@@ -48,12 +48,13 @@ class TestCollectionDataGetCollectorInfoAsStr(TestCase):
         With no collector provided it should raise a ValueError
         """
         from businesslogic.data import CollectionData
+        from businesslogic.errors import NoCollectorError
 
         actual_parameters = {'Param1': 12, 'Param2': 'Test'}
         actual_data = CollectionData(data="Test data")
         actual_data.collector_parameters = actual_parameters
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(NoCollectorError):
             actual_data.get_collector_info_as_str()
 
     def test_get_collector_info_as_str_no_collector_name_and_no_params(self):

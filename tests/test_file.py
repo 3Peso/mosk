@@ -352,12 +352,13 @@ class TestFileCopyGetUniqueDirectoryName(TestCase):
         :return:
         """
         from datetime import datetime
+        from businesslogic.errors import MaxDirectoriesReachedError
         from artefact.localhost.file import FileCopy
         expected_time = datetime(2009, 3, 20, 13, 12, 2)
         expected_dir_name = 'some_file.txt_2009032013120201'
         collector = FileCopy(parameters={}, parent=None)
         collector.filepath = '~/somepath/some_file.txt'
-        self.assertRaises(OverflowError, collector._get_unique_directory_name, '.', expected_time)
+        self.assertRaises(MaxDirectoriesReachedError, collector._get_unique_directory_name, '.', expected_time)
 
 
 class TestFileCopyEnoughSpaceOnTarget(TestCase):

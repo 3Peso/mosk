@@ -63,8 +63,9 @@ class TestGetCollectorResources(TestCase):
         :return:
         """
         from businesslogic.support import _get_resources_path
+        from businesslogic.errors import NoCountryCodeError
 
-        self.assertRaises(ValueError, _get_resources_path, '.', '')
+        self.assertRaises(NoCountryCodeError, _get_resources_path, '.', '')
 
     def test__get_resources_path_resourcepath_empty(self):
         """
@@ -72,8 +73,9 @@ class TestGetCollectorResources(TestCase):
         :return:
         """
         from businesslogic.support import _get_resources_path
+        from businesslogic.errors import NoStringResourcesError
 
-        self.assertRaises(ValueError, _get_resources_path, '', 'de_DE')
+        self.assertRaises(NoStringResourcesError, _get_resources_path, '', 'de_DE')
 
     def test__load_resources_resourcefilepath_empty(self):
         """
@@ -198,5 +200,7 @@ class TestMd5(TestCase):
         """
         Should raise ValueError.
         """
-        with self.assertRaises(ValueError):
+        from businesslogic.errors import MD5SupportError
+
+        with self.assertRaises(MD5SupportError):
             md5(data="data", fpath="./testfiles/empty.txt")

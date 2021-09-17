@@ -10,6 +10,7 @@ from logging import Logger
 from collections import UserDict
 
 from businesslogic.placeholders import Placeholder
+from businesslogic.errors import PathNotSetError
 
 
 class SourceBase:
@@ -22,7 +23,7 @@ class SourceBase:
         self._protocol = None
         SourceBase.cache_parameters(self._parameters)
 
-    # get_path currently has the soule purpose to document the complete path
+    # get_path currently has the soule purpose to document the complete call path
     # of an artefact.
     def getpath(self) -> str:
         path: str = None
@@ -32,7 +33,7 @@ class SourceBase:
         if path is None and self._parent is not None:
             path = self._parent.get_path()
         elif path is None and self._parent is None:
-            raise Exception("_path and _parent cannot be None at the same time.")
+            raise PathNotSetError("_path and _parent cannot be None at the same time.")
 
         return path
 

@@ -126,10 +126,12 @@ class TestTemperatureFromOpenWeatherDotComGetQuery(TestCase):
         Should raise an exception.
         :return:
         """
+        from businesslogic.errors import ApiKeyNotSetError
+
         collector = TemperatureFromOpenWeatherDotCom(parameters={'city': 'Munich', 'countrycode': 'ger'},
                                                      parent=None)
 
-        self.assertRaises(AttributeError, collector._get_query)
+        self.assertRaises(ApiKeyNotSetError, collector._get_query)
 
 class TestTemperatureFromOpenWeatherDotComWeatherDataIsValid(TestCase):
     def test__weather_data_is_valid(self):
@@ -181,9 +183,11 @@ class TestTemperatureFromOpenWeatherDotComApiKey(TestCase):
         Should raise an exception.
         :return:
         """
+        from businesslogic.errors import ApiKeyNotSetError
+
         collector = TemperatureFromOpenWeatherDotCom(parent=None, parameters={})
 
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(ApiKeyNotSetError):
             tmp = collector.apikey
 
     def test_apikey_getter(self):
@@ -204,9 +208,11 @@ class TestTemperatureFromOpenWeatherDotComApiKey(TestCase):
         Should raise an error.
         :return:
         """
+        from businesslogic.errors import ApiKeyFormatError
+
         collector = TemperatureFromOpenWeatherDotCom(parent=None, parameters={})
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ApiKeyFormatError):
             collector.apikey = '12345'
 
     def test_apikey_setter(self):

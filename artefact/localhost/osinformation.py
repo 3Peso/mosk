@@ -14,6 +14,7 @@ from datetime import datetime
 
 from baseclasses.artefact import MacArtefact, ArtefactBase
 from businesslogic.support import run_terminal_command
+from businesslogic.errors import UnknownVersionStringError
 
 
 METHOD_KEY = 'CollectionMethod'
@@ -61,7 +62,7 @@ class OSName(MacArtefact):
                 # if type is a string it is a newer platform whichs name is decided in the major revision number
                 elif type(tmp) is str:
                     self.data = tmp
-            except ValueError:
+            except UnknownVersionStringError:
                 self.data = f"Cannot collect OS name. Unexpected version string format '{platformversion}'."
             except KeyError:
                 self.data = f"Cannot collect OS name for platform version '{platformversion}'"
@@ -71,7 +72,7 @@ class OSName(MacArtefact):
         # Assume, that this code will never see older platforms, than 10.x.
         expected_version_format = re.compile(r'^\d{2,}(\.\d{1,})?(\.\d{1,})?$')
         if not expected_version_format.match(platformversion):
-            raise ValueError(f"Unexpected version string '{platformversion}'.")
+            raise UnknownVersionStringError(f"Unexpected version string '{platformversion}'.")
 
 
 class OSVersion(MacArtefact):

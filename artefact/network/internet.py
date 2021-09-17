@@ -18,6 +18,7 @@ from bs4 import BeautifulSoup
 from collections import UserDict
 
 from baseclasses.artefact import ArtefactBase
+from businesslogic.errors import ApiKeyFormatError, ApiKeyNotSetError
 
 
 class TemperatureFromOpenWeatherDotCom(ArtefactBase):
@@ -79,7 +80,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
     @property
     def apikey(self) -> str:
         if self._apikey == "":
-            raise AttributeError("apikey not set.")
+            raise ApiKeyNotSetError("apikey not set.")
         else:
             return self._apikey
 
@@ -88,7 +89,7 @@ class TemperatureFromOpenWeatherDotCom(ArtefactBase):
         if self._validate_api_key(value):
             self._apikey = value
         else:
-            raise ValueError(f"Provided api key '{value}' does not match the valid format.")
+            raise ApiKeyFormatError(f"Provided api key '{value}' does not match the valid format.")
 
     @staticmethod
     def _validate_api_key(apikey) -> bool:

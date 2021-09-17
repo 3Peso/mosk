@@ -16,6 +16,8 @@ import hashlib
 import subprocess
 from logging import Logger
 
+from businesslogic.errors import MD5SupportError, NoStringResourcesError, NoCountryCodeError
+
 
 REF_TIME_1970 = 2208988800  # Reference time
 DEFAULT_TIME_SERVER = '0.de.pool.ntp.org'
@@ -91,7 +93,7 @@ def md5(fpath: str = "", data: str = ""):
     :return: Returns the string representation of the MD5 hash.
     """
     if fpath is not None and fpath != "" and data is not None and data != "":
-        raise ValueError("You can only provide a file OR a data string to calculate the MD5 hash.")
+        raise MD5SupportError("You can only provide a file OR a data string to calculate the MD5 hash.")
 
     logger: Logger = logging.getLogger(__name__)
     hash_md5 = hashlib.md5()
@@ -128,9 +130,9 @@ def get_collector_resources(resourcespath: str = "./resources"):
 def _get_resources_path(resourcespath: str, countrycode: str):
     logger: Logger = logging.getLogger(__name__)
     if resourcespath == '':
-        raise ValueError('Resources path is empty.')
+        raise NoStringResourcesError('Resources path is empty.')
     if countrycode == '':
-        raise ValueError('Country code is empty.')
+        raise NoCountryCodeError('Country code is empty.')
     resourcesfilepath = os.path.join(resourcespath, f"collector_text_{countrycode}.json")
     logger.debug("Trying to load text resources from '{} ...'".format(resourcesfilepath))
     # TODO Move into a contextmanager

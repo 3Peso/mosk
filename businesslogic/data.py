@@ -11,6 +11,7 @@ from collections import OrderedDict
 
 import businesslogic.support
 from businesslogic.placeholders import Placeholder
+from businesslogic.errors import NoCollectorError
 
 
 class CollectionData:
@@ -69,7 +70,7 @@ class CollectionData:
         as string.
         """
         if self._collector_name is None and self.collector_parameters is not None:
-            raise ValueError('You must provide a collector name.')
+            raise NoCollectorError('You must provide a collector name.')
 
         info: str = ""
         if self._collector_name is not None:

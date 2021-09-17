@@ -19,6 +19,7 @@ from shutil import copyfile
 
 from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact, FileClass
 from businesslogic.support import get_userfolders, md5
+from businesslogic.errors import MaxDirectoriesReachedError
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
 
@@ -180,7 +181,7 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
 
             if counter == max_counter:
                 logger.warning("Max counter reached.")
-                raise OverflowError("Max counter reached. Consider less calling 'FileCopy' collectors.")
+                raise MaxDirectoriesReachedError("Max counter reached. Consider less calling 'FileCopy' collectors.")
 
         return unique_name
 

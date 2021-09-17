@@ -44,3 +44,17 @@ class TestSourceBaseGetParameter(TestCase):
         """
         source = SourceBase(parent=None, parameters={})
         self.assertRaises(KeyError, source.get_parameter, "does_not_exist")
+
+
+class TestSourceBaseGetPath(TestCase):
+    def test_getpath_path_and_parent_none(self):
+        """
+        Should raise exception
+        :return:
+        """
+        from businesslogic.errors import PathNotSetError
+
+        source = SourceBase(parent=None, parameters={})
+        source._path = None
+
+        self.assertRaises(PathNotSetError, source.getpath)
