@@ -149,7 +149,7 @@ def _get_resources_path(resourcespath: str, countrycode: str):
 
 def _load_resources(resourcesfilepath: str, countrycode: str):
     if resourcesfilepath == '':
-        raise ValueError('Resourcefilepath is empty.')
+        raise NoStringResourcesError('Resourcefilepath is empty.')
     logger = logging.getLogger(__name__)
     resources = None
     if os.path.exists(resourcesfilepath):

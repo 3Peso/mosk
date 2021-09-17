@@ -83,8 +83,9 @@ class TestGetCollectorResources(TestCase):
         :return:
         """
         from businesslogic.support import _load_resources
+        from businesslogic.errors import NoStringResourcesError
 
-        self.assertRaises(ValueError, _load_resources, '', 'de_DE')
+        self.assertRaises(NoStringResourcesError, _load_resources, '', 'de_DE')
 
     def test__load_resources_resourcefilepath_does_not_exist(self):
         """
