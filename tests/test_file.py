@@ -90,6 +90,43 @@ class TestFileCopyDunderInit(TestCase):
 
 
 class TestFileCopyCollect(TestCase):
+    def test__collect_with_one_file(self):
+        """
+        Should call _collect_single
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        collector = FileCopy(parameters={}, parent=None)
+
+        single_mock: MagicMock = MagicMock()
+        with mock.patch('artefact.localhost.file.FileCopy._collect_single', single_mock):
+            collector._filepath = "/somepath"
+            collector._collect()
+
+        single_mock.assert_called_once()
+
+    def test__collect_with_two_files(self):
+        """
+        Should call _collect_single two times.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        collector = FileCopy(parameters={}, parent=None)
+        expected_file_path = f"/SomePath{FileCopy._FILE_PATH_SEPERATOR}/Another Path"
+        collector.filepath = expected_file_path
+
+        expected_call_count = 2
+        single_mock: MagicMock = MagicMock()
+        with mock.patch('artefact.localhost.file.FileCopy._collect_single', single_mock):
+            collector._collect()
+
+        self.assertEqual(expected_call_count, single_mock.call_count)
+
+
+
+class TestFileCopyCollectSingle(TestCase):
     _expected_source_file_path = './testfiles/test.txt'
     _expected_target_directory = '.'
     _expected_unique_directory = 'unique'
@@ -103,7 +140,7 @@ class TestFileCopyCollect(TestCase):
     def tearDown(self) -> None:
         shutil.rmtree(self._expected_target_path, True)
 
-    def test__collect(self):
+    def test__collect_single(self):
         """
         Should copy the file, identified by the member 'filepath'.
         :return:
@@ -118,11 +155,11 @@ class TestFileCopyCollect(TestCase):
                 # Create the target path here, because we mocked _ensure_target_directory
                 if not os.path.exists(self._expected_target_path):
                     os.mkdir(self._expected_target_path)
-                collector._collect()
+                collector._collect_single(collector.filepath)
 
         self.assertTrue(os.path.exists(self._expected_target_file_path))
 
-    def test__collect_log_data(self):
+    def test__collect_single_log_data(self):
         """
         Should log inside data which file was copied and what is the target destination of the copy.
         Should collect the md5 hash of the file, and the sha1 hash of the file.
@@ -138,13 +175,13 @@ class TestFileCopyCollect(TestCase):
             # Create the target path here, because we mocked _ensure_target_directory
             if not os.path.exists(self._expected_target_path):
                 os.mkdir(self._expected_target_path)
-            collector._collect()
+            collector._collect_single(collector.filepath)
         actual_data = collector.data[0].collecteddata
 
         self.assertEqual(expected_data, actual_data)
 
     @mock.patch('artefact.localhost.file.FileCopy._enough_space_on_target', MagicMock(return_value=True))
-    def test__collect_file_does_not_exist(self):
+    def test__collect_single_file_does_not_exist(self):
         """
         Should store a message in data, that says that the file from which the content should be
         collected, does not exist.
@@ -159,13 +196,13 @@ class TestFileCopyCollect(TestCase):
         with mock.patch('artefact.localhost.file.os.path.isfile', MagicMock(return_value=True)):
             with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
                             MagicMock(return_value=self._expected_target_path)):
-                collector._collect()
+                collector._collect_single(file_path=collector.filepath)
             actual_data = collector.data[0].collecteddata
 
         self.assertEqual(expected_data, actual_data)
 
     @mock.patch('artefact.localhost.file.FileCopy._enough_space_on_target', MagicMock(return_value=True))
-    def test__collect_could_not_copy_file(self):
+    def test__collect_single_could_not_copy_file(self):
         """
         Should ensure that unique target directory is deleted.
         :return:
@@ -175,11 +212,11 @@ class TestFileCopyCollect(TestCase):
         expected_source_file_path = f"{self._expected_unique_directory}/IDoNotExist.txt"
         collector = FileCopy(parameters={}, parent=None)
         collector.filepath = expected_source_file_path
-        collector._collect()
+        collector._collect_single()
 
         self.assertFalse(os.path.exists(self._expected_target_path))
 
-    def test__collect_filepath_is_a_directory(self):
+    def test__collect_single_filepath_is_a_directory(self):
         """
         Should "collect" an error message which states that the "filepath" provided is actually a directory.
         :return:
@@ -189,7 +226,7 @@ class TestFileCopyCollect(TestCase):
         expected_file = "/iamnotafile"
         expected_message = f"The provided filepath '{expected_file}' is not a file."
         collector = FileCopy(parameters={'filepath': expected_file}, parent=None)
-        collector._collect()
+        collector._collect_single(file_path=expected_file)
 
         actual_message = collector.data[0].collecteddata
 
@@ -252,7 +289,7 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
                 acutal_return_value = collector._ensure_target_directory()
                 self.assertEqual(expected_return_value, acutal_return_value)
         finally:
-            if (os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name))):
+            if os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name)):
                 os.rmdir(os.path.join(expected_target_dir, expected_unique_dir_name))
             if os.path.exists(expected_target_dir):
                 os.rmdir(expected_target_dir)
@@ -275,7 +312,7 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
                 collector._ensure_target_directory()
             self.assertTrue(os.path.exists(expected_target_dir))
         finally:
-            if (os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name))):
+            if os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name)):
                 os.rmdir(os.path.join(expected_target_dir, expected_unique_dir_name))
             if os.path.exists(expected_target_dir):
                 os.rmdir(expected_target_dir)
@@ -301,7 +338,7 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
         finally:
             if os.path.exists(os.path.join(expected_target_dir, expected_unique_dir_name)):
                 os.rmdir(os.path.join(expected_target_dir, expected_unique_dir_name))
-            if (os.path.exists(expected_target_dir)):
+            if os.path.exists(expected_target_dir):
                 os.rmdir(expected_target_dir)
 
 
@@ -375,7 +412,7 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
         collector.filepath = './testfiles/test.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
                         MagicMock(return_value=MockedDiskUsage(free=100000))):
-            self.assertTrue(collector._enough_space_on_target('.'))
+            self.assertTrue(collector._enough_space_on_target(target_path='.', source_path=collector.filepath))
 
     @mock.patch('artefact.localhost.file.os.path.exists', MagicMock(return_value=True))
     def test__enough_space_on_target_not_enough(self):
@@ -390,7 +427,7 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
         collector.filepath = './testfiles/test.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
                         MagicMock(return_value=MockedDiskUsage(free=1))):
-            self.assertFalse(collector._enough_space_on_target('.'))
+            self.assertFalse(collector._enough_space_on_target(target_path='.', source_path=collector.filepath))
 
     @mock.patch('artefact.localhost.file.os.path.exists', MagicMock(return_value=False))
     @mock.patch('artefact.localhost.file.ArtefactBase._init_description_properties', MagicMock())
@@ -406,7 +443,7 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
         collector.filepath = './testfiles/test.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
                         MagicMock(return_value=MockedDiskUsage(free=1000000))):
-            self.assertFalse(collector._enough_space_on_target('.'))
+            self.assertFalse(collector._enough_space_on_target(target_path='.', source_path=collector.filepath))
 
     def test__enough_space_on_target_source_does_not_exist(self):
         """
@@ -420,7 +457,7 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
         collector.filepath = './testfiles/doesnotexist.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
                         MagicMock(return_value=MockedDiskUsage(free=1000000))):
-            self.assertFalse(collector._enough_space_on_target('.'))
+            self.assertFalse(collector._enough_space_on_target(target_path='.', source_path=collector.filepath))
 
 
 class TestFileCopySupportedPlatform(TestCase):

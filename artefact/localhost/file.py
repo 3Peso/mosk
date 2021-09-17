@@ -3,7 +3,7 @@ mosk localhost module for classes collecting file information.
 """
 
 __author__ = '3Peso'
-__all__ = ['FileExistence', 'FileContent', 'ShellHistoryOfAllUsers']
+__all__ = ['FileExistence', 'FileContent', 'ShellHistoryOfAllUsers', 'FileCopy']
 
 import logging
 import os
@@ -120,35 +120,40 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
     does not hold it.
     """
     _destination_directory: str = '.'
+    _FILE_PATH_SEPERATOR = '\n'
 
     def __init__(self, *args, **kwargs) -> None:
         # Will be filled in super with the property setter filepath.
         super().__init__(*args, **kwargs)
 
     def _collect(self) -> None:
-        is_file = path.isfile(self.filepath)
-        source_exists = os.path.exists(self.filepath)
+        for file_path in self.filepath.split(self._FILE_PATH_SEPERATOR):
+            self._collect_single(file_path=file_path)
+
+    def _collect_single(self, file_path: str = '') -> None:
+        is_file = path.isfile(file_path)
+        source_exists = os.path.exists(file_path)
         enough_space = True
 
         try:
             if source_exists and is_file:
                 target_path = self._ensure_target_directory()
-                file_copy_destination = os.path.join(target_path, os.path.basename(self.filepath))
-                enough_space = self._enough_space_on_target(target_path)
+                file_copy_destination = os.path.join(target_path, os.path.basename(file_path))
+                enough_space = self._enough_space_on_target(target_path=target_path, source_path=file_path)
 
                 if not enough_space:
-                    self.data = f"File '{self.filepath}' could not be copied, " \
+                    self.data = f"File '{file_path}' could not be copied, " \
                                 f"because there is not enough space on target '{target_path}'."
                 else:
-                    copyfile(self.filepath, file_copy_destination)
-                    self.data = f"Copied file '{self.filepath}' to '{file_copy_destination}'."
-                    self.data[-1].sourcepath = self.filepath
+                    copyfile(file_path, file_copy_destination)
+                    self.data = f"Copied file '{file_path}' to '{file_copy_destination}'."
+                    self.data[-1].sourcepath = file_path
 
             if not is_file:
-                self.data = f"The provided filepath '{self.filepath}' is not a file."
+                self.data = f"The provided filepath '{file_path}' is not a file."
 
             if not source_exists:
-                self.data = f"The file '{self.filepath}' does not exist."
+                self.data = f"The file '{file_path}' does not exist."
         finally:
             if not enough_space:
                 shutil.rmtree(path.dirname(file_copy_destination), True)
@@ -163,17 +168,17 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
 
         return new_unique_directory
 
-    def _get_unique_directory_name(self, target_directory, datetime: datetime) -> str:
+    def _get_unique_directory_name(self, target_directory, dt: datetime.datetime) -> str:
         logger: Logger = logging.getLogger(__name__)
         # Assume, target directory exists.
         # REMARKS: This only works correct on macOS and Linux.
         filename: str = path.basename(self.filepath)
-        timestamp: str = f"{datetime.year}{str(datetime.month).zfill(2)}{str(datetime.day).zfill(2)}" \
-                    f"{str(datetime.hour).zfill(2)}{str(datetime.minute).zfill(2)}{str(datetime.second).zfill(2)}"
+        timestamp: str = f"{dt.year}{str(dt.month).zfill(2)}{str(dt.day).zfill(2)}" \
+                         f"{str(dt.hour).zfill(2)}{str(dt.minute).zfill(2)}{str(dt.second).zfill(2)}"
 
         unique_name: str = f"{filename}_{timestamp}{str(1).zfill(2)}"
         max_counter: int = 99
-        for counter in range(2,max_counter+1):
+        for counter in range(2, max_counter+1):
             if not path.exists(path.join(target_directory, unique_name)):
                 break
             else:
@@ -185,15 +190,16 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
 
         return unique_name
 
-    def _enough_space_on_target(self, target_path) -> bool:
+    @staticmethod
+    def _enough_space_on_target(target_path, source_path) -> bool:
         if not os.path.exists(target_path):
             return False
 
-        if not os.path.exists(self.filepath):
+        if not os.path.exists(source_path):
             return False
 
         freespace = shutil.disk_usage(target_path).free
-        size_of_file_to_copy = Path(self.filepath).stat().st_size
+        size_of_file_to_copy = Path(source_path).stat().st_size
         if freespace > size_of_file_to_copy:
             return True
         else:
