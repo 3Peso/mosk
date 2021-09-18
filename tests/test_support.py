@@ -1,4 +1,5 @@
-from unittest import TestCase
+from unittest import TestCase, mock
+from unittest.mock import MagicMock
 import os
 
 from businesslogic.support import str_to_bool, get_collector_resources, format_bytes, md5
@@ -107,6 +108,7 @@ class TestGetCollectorResources(TestCase):
 
         self.assertIsInstance(actual_json_object, dict)
 
+
 class TestFormatBytes(TestCase):
     def test_format_bytes_Kilo(self):
         """Should return 1KB"""
@@ -205,3 +207,61 @@ class TestMd5(TestCase):
 
         with self.assertRaises(MD5SupportError):
             md5(data="data", fpath="./testfiles/empty.txt")
+
+
+class TestChangeToModuleRootDunderInit(TestCase):
+    def test___init__(self):
+        """
+        Should store current working directory.
+        :return:
+        """
+        from businesslogic.support import ChangeToModuleRoot
+
+        expected_wd = "test"
+        with mock.patch('businesslogic.support.os.getcwd', MagicMock(return_value=expected_wd)):
+            wd_context_manager = ChangeToModuleRoot()
+            actual_wd = wd_context_manager._original_working_dir
+
+        self.assertEqual(expected_wd, actual_wd)
+
+
+class TestChangeToModuleRootDunderEnter(TestCase):
+    def setUp(self) -> None:
+        self._current_wd = os.getcwd()
+
+    def tearDown(self) -> None:
+        os.chdir(self._current_wd)
+
+    def test___enter__(self):
+        """
+        Should change working directory to module root.
+        :return:
+        """
+        from businesslogic.support import ChangeToModuleRoot
+
+        expected_wd = os.path.abspath('..')
+        expected_module_dir = os.path.abspath(".")
+        with mock.patch('businesslogic.support.os.path.dirname', MagicMock(return_value=expected_module_dir)):
+            wd_context_manager = ChangeToModuleRoot()
+            wd_context_manager.__enter__()
+            actual_wd = os.getcwd()
+
+        self.assertEqual(expected_wd, actual_wd)
+
+
+class TestChangeToModuleRoot(TestCase):
+    def test_with(self):
+        """
+        Should change working directory back to original working directory.
+        :return:
+        """
+        from businesslogic.support import ChangeToModuleRoot
+
+        expected_wd = os.path.abspath('.')
+        expected_module_dir = os.path.abspath(".")
+        with mock.patch('businesslogic.support.os.path.dirname', MagicMock(return_value=expected_module_dir)):
+            with ChangeToModuleRoot():
+                print("idle")
+            actual_wd = os.getcwd()
+
+        self.assertEqual(expected_wd, actual_wd)
