@@ -1,6 +1,5 @@
 import os
 import os.path
-import platform
 import shutil
 from collections import namedtuple
 

@@ -127,6 +127,23 @@ def get_collector_resources(resourcespath: str = "./resources"):
     return resources
 
 
+class ChangeToModuleRoot:
+    def __init__(self):
+        self._original_working_dir = os.getcwd()
+
+    def __enter__(self):
+        self._change_cwd_to_module_root()
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        os.chdir(self._original_working_dir)
+
+    @staticmethod
+    def _change_cwd_to_module_root():
+        basepath: str = os.path.dirname(sys.modules[__name__].__file__)
+        os.chdir(basepath)
+        os.chdir('..')
+
+
 def _get_resources_path(resourcespath: str, countrycode: str):
     logger: Logger = logging.getLogger(__name__)
     if resourcespath == '':
@@ -135,14 +152,11 @@ def _get_resources_path(resourcespath: str, countrycode: str):
         raise NoCountryCodeError('Country code is empty.')
     resourcesfilepath = os.path.join(resourcespath, f"collector_text_{countrycode}.json")
     logger.debug("Trying to load text resources from '{} ...'".format(resourcesfilepath))
-    # TODO Move into a contextmanager
-    # HACK
     # Do the following steps to ensure we are operating in the root directory of mosk
     # so that os.abspath works
-    # IMPORTANT: Depends on support module stored one level above root
-    old_wd = _change_cwd_to_module_root()
-    resourcesfilepath = os.path.abspath(resourcesfilepath)
-    os.chdir(old_wd)
+    # Depends on support module stored one level above root
+    with ChangeToModuleRoot():
+        resourcesfilepath = os.path.abspath(resourcesfilepath)
 
     return resourcesfilepath
 
@@ -166,14 +180,6 @@ def _load_resources(resourcesfilepath: str, countrycode: str):
                 logger.info(f'Resources file for country code {countrycode} not found.')
 
     return resources
-
-
-def _change_cwd_to_module_root():
-    basepath: str = os.path.dirname(sys.modules[__name__].__file__)
-    old = os.getcwd()
-    os.chdir(basepath)
-    os.chdir('..')
-    return old
 
 
 def run_terminal_command(arguments: list):
