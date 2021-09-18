@@ -42,7 +42,7 @@ class FileHash(ArtefactBase):
         hash_md5 = hashlib.md5()
         try:
             chunks = self._parent.get_file_stream(filepath=self._file_path, filename=self._filename,
-                                                buffer_size=4096)
+                                                  buffer_size=4096)
             for file_chunk in chunks:
                 hash_md5.update(file_chunk)
         except FileNotFoundError:
@@ -78,6 +78,10 @@ class CompleteFileSystemInfo(ArtefactBase):
             os.makedirs(self._outpath)
 
         outfilepath: bytes = os.path.join(self._outpath, "filesystem.csv")
+        if os.path.exists(outfilepath):
+            self.data = f"'{outfilepath}' already exists. Collection cancelled."
+            return
+
         with open(outfilepath, "a") as outfile:
             outfile.write(FolderInfo.get_cvs_header() + '\r\n')
             folders = [folder for _, partition in self._parent.filesysteminfo.items()
@@ -85,5 +89,4 @@ class CompleteFileSystemInfo(ArtefactBase):
             for folder in folders:
                 for item in folder.get_folder_items_in_csv_format():
                     outfile.write(item + '\r\n')
-
-        # TODO: Store metadata in log file, like where is the filesystem.csv file located?s
+            self.data = f"File '{outfilepath}' saved."
