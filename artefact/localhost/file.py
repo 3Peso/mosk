@@ -3,7 +3,7 @@ mosk localhost module for classes collecting file information.
 """
 
 __author__ = '3Peso'
-__all__ = ['FileExistence', 'FileContent', 'ShellHistoryOfAllUsers', 'FileCopy']
+__all__ = ['FileExistence', 'FileContent', 'ShellHistoryOfAllUsers', 'FileCopy', 'FileMetadata']
 
 import logging
 import os
@@ -18,7 +18,7 @@ from pathlib import Path
 from shutil import copyfile
 
 from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact, FileClass
-from businesslogic.support import get_userfolders, md5
+from businesslogic.support import get_userfolders, md5, run_terminal_command
 from businesslogic.errors import MaxDirectoriesReachedError
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
@@ -228,11 +228,15 @@ class FileMetadata(ArtefactBase, FileClass):
             self.data[-1].sourcehash = md5(fpath=self.filepath)
             self.data[-1].sourcepath = self.filepath
 
-    # TODO: Implement
-    @staticmethod
-    def _collect_extended_attributes():
-        if platform.system() == "Darwin":
-            pass
+    def _collect_extended_attributes(self):
+        if platform.system() != "Darwin":
+            self.data = f"Collection of extended attributes on platform '{platform.system()}' is not supported."
+            return
+
+        extended_attributes = run_terminal_command(['xattr', self.filepath])
+
+        if extended_attributes is not None and extended_attributes != "":
+            self.data = f"Extended Attributes: {extended_attributes}"
 
     def _collect_sizes(self) -> None:
         stats = Path(self.filepath).stat()

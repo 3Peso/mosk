@@ -1,5 +1,6 @@
 import os
 import os.path
+import platform
 import shutil
 from collections import namedtuple
 
@@ -548,6 +549,43 @@ class TestFileMetadataCollectTimestamps(TestCase):
         self.assertEqual(expected_modified_time_data, actual_modified_time_data)
         self.assertEqual(expected_created_time_data, actual_created_time_data)
         self.assertEqual(expected_access_time_data, actual_access_time_data)
+
+
+class TestFileMetadataCollectExtendedAttributes(TestCase):
+    def test__collect_extended_attributes(self):
+        """
+        Should store extended attributes in data
+        :return:
+        """
+        from artefact.localhost.file import FileMetadata
+
+        expected_attribute = "my.extended.attribute"
+        expected_message = f"Extended Attributes: {expected_attribute}"
+        collector = FileMetadata(parameters={}, parent=None)
+        collector.filepath = "mocked_file_path"
+        with mock.patch('artefact.localhost.file.run_terminal_command',
+                        MagicMock(return_value="my.extended.attribute")):
+            collector._collect_extended_attributes()
+            actual_message = collector.data[-1].collecteddata
+
+        self.assertEqual(expected_message, actual_message)
+
+    def test__collect_extended_attributes_platform_not_darwin(self):
+        """
+        Should store message in data, that platform is not supported.
+        :return:
+        """
+        from artefact.localhost.file import FileMetadata
+
+        expected_platform = "Windows"
+        expected_message = f"Collection of extended attributes on platform '{expected_platform}' is not supported."
+        collector = FileMetadata(parameters={}, parent=None)
+        with mock.patch('artefact.localhost.file.platform.system',
+                        MagicMock(return_value=expected_platform)):
+            collector._collect_extended_attributes()
+            actual_message = collector.data[-1].collecteddata
+
+        self.assertEqual(expected_message, actual_message)
 
 
 class TestFileHashDunderInit(TestCase):
