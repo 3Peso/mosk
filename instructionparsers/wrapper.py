@@ -11,8 +11,7 @@ class InstructionWrapper:
         self._instructionid = int(instructionid)
         self._instructionchildren = []
         # The placeholder name will be used in the placeholder cache to store the results of the
-        # collection of the instruction in the objects of the wrapper class. The results should be
-        # scalar results, but this is currently not enfored.s
+        # collection of the instruction in the objects of the wrapper class.
         self._placeholdername = placeholdername
 
     def __str__(self):

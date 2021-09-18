@@ -47,6 +47,8 @@ class Collector:
         return collector
 
     def collect(self) -> None:
+        """Use the collection list, for example provided by the instructions file, to try to collect all the
+        artefacts"""
         # Log the date and time when collection started.
         self._protocol.collection_start = datetime.now()
         self._protocol.set_task_metadata(self._parser.metadata)
