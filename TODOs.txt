@@ -4,8 +4,6 @@
 # FileMetadata: Implement interpreter for "filetype and permissions (st_mode)"
 # https://man7.org/linux/man-pages/man7/inode.7.html
 
-# FileMetadata: Implement extended attribute collection for intel macs and arm macs.
-
 # Implement SQLite Storage for protocol and collected data/files
 
 # Add target directory parameter for mosk to define where logfiles and collected items
@@ -26,8 +24,6 @@
 # Use print function of macOS to print PDF exports of things like calendars, etc.
 
 # Collector FileCopy: Think about guard against too long paths (old Windows issue)
-
-# Collector to collect directory of file
 
 # Collector to execute a generic command and collect the output (for example the "find" command)
 

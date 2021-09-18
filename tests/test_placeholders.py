@@ -261,7 +261,7 @@ class TestPlaceholderInitializeGlobalPlaceholders(TestCase):
         for ph in expected_placeholders.keys():
             self.assertEqual(expected_placeholders[ph], Placeholder._instruction_placeholders[ph])
 
-    #def test__initialize_global_placeholders_with_former_initialized_placehoders(self):
+    # def test__initialize_global_placeholders_with_former_initialized_placehoders(self):
     #    """
     #    Should overwrite the global placeholders dictionary, deleting the already initialized placeholders.
     #    :return:
@@ -345,9 +345,102 @@ class TestPlaceholderGetPlaceholders(TestCase):
         REMARKS:
         Currently deactivated.
         """
-        #expected_text = f"test{Placeholder.PLACEHOLDER_START}inner{Placeholder.PLACEHOLDER_END}"
-        #text = f"{Placeholder.PLACEHOLDER_START}{expected_text}{Placeholder.PLACEHOLDER_END}"
+        # expected_text = f"test{Placeholder.PLACEHOLDER_START}inner{Placeholder.PLACEHOLDER_END}"
+        # text = f"{Placeholder.PLACEHOLDER_START}{expected_text}{Placeholder.PLACEHOLDER_END}"
 
-        #with self.assertRaises(ValueError):
+        # with self.assertRaises(ValueError):
         #    Placeholder._get_placeholders(text_to_check=text)
         pass
+
+
+class TestPlaceholderGetPlaceholders(TestCase):
+    def test__get_placeholders_no_placeholder(self):
+        """
+        Should return empty Matches
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_string = "string without placeholders"
+        expected_matches = []
+        actual_matches = Placeholder._get_placeholders(expected_string)
+
+        self.assertEqual(expected_matches, actual_matches)
+
+    def test__get_placeholders_one_placeholder(self):
+        """
+        Should return Matches with the provided placeholder
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_string = "string !@one@! placeholder"
+        expected_matches = ['one']
+        actual_matches = Placeholder._get_placeholders(expected_string)
+
+        self.assertEqual(expected_matches, actual_matches)
+
+    def test__get_placeholders_three_placeholders(self):
+        """
+        Should return Matches with the three provided placeholders
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_string = "string !@one@!, !@two@!, !@three@! placeholder"
+        expected_matches = ['one', 'two', 'three']
+        actual_matches = Placeholder._get_placeholders(expected_string)
+
+        self.assertEqual(expected_matches, actual_matches)
+
+    def test__get_placeholder_nested_placeholder(self):
+        """
+        Should only return the nested placeholder
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_string = "string !@one!@nested@!@! placeholder"
+        expected_matches = ['nested']
+        actual_matches = Placeholder._get_placeholders(expected_string)
+
+        self.assertEqual(expected_matches, actual_matches)
+
+    def test__get_placeholder_placeholder_start_in_string(self):
+        """
+        Should return empty Matches
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_string = "string !@one!@nested@! placeholder"
+        expected_matches = ['nested']
+        actual_matches = Placeholder._get_placeholders(expected_string)
+
+        self.assertEqual(expected_matches, actual_matches)
+
+    def test__get_placeholder_placeholder_end_in_string(self):
+        """
+        Should return empty Matches
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_string = "string one!@nested@! placeholder"
+        expected_matches = ['nested']
+        actual_matches = Placeholder._get_placeholders(expected_string)
+
+        self.assertEqual(expected_matches, actual_matches)
+
+    def test__get_placeholder_placeholder_with_whitespace_in_string(self):
+        """
+        Should return empty Matches
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_string = "string one!@nested @! placeholder"
+        expected_matches = []
+        actual_matches = Placeholder._get_placeholders(expected_string)
+
+        self.assertEqual(expected_matches, actual_matches)
