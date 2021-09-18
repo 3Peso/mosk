@@ -304,7 +304,6 @@ class EWFImage(Image):
 
     @lru_cache()
     def _built_filesystem_information(self, folderpath='/', partitionindex=0):
-        # TODO Could potentially be speed up by using a set instead of a list for the folder info objects
         """
         Recursivly discovers the filesystem of a partition, decalred by its index. Initializes the
         member _filesystem on the go.
