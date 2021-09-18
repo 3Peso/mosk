@@ -250,6 +250,12 @@ class TestChangeToModuleRootDunderEnter(TestCase):
 
 
 class TestChangeToModuleRoot(TestCase):
+    def setUp(self) -> None:
+        self._current_wd = os.getcwd()
+
+    def tearDown(self) -> None:
+        os.chdir(self._current_wd)
+
     def test_with(self):
         """
         Should change working directory back to original working directory.
