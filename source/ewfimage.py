@@ -14,6 +14,80 @@ from businesslogic.support import str_to_bool, format_bytes
 from businesslogic.errors import CollectorParameterError
 
 
+class EWFPartition:
+    def __init__(self, partition, fs_object) -> None:
+        self.partition: dict = partition
+        self._fs_object: pytsk3.FS_Info = fs_object
+
+    def fs_object_initialized(self) -> pytsk3.FS_Info:
+        return self._fs_object is not None
+
+    @property
+    def fs_object(self) -> pytsk3.FS_Info:
+        if self._fs_object is not None:
+            return self._fs_object
+        else:
+            raise LookupError(f"Filesystem for partiton is unkown.")
+
+
+class EWFImageInfo(pytsk3.Img_Info):
+    def __init__(self, ewf_handle) -> None:
+        self._ewf_handle: pyewf.handle = ewf_handle
+        super(EWFImageInfo, self).__init__(url="",
+                                           type=pytsk3.TSK_IMG_TYPE_EXTERNAL)
+
+    def close(self) -> None:
+        self._ewf_handle.close()
+
+    def read(self, offset, size) -> str:
+        self._ewf_handle.seek(offset)
+        return self._ewf_handle.read(size)
+
+    def get_size(self) -> int:
+        return self._ewf_handle.get_media_size()
+
+    @property
+    def ewf_handle(self) -> pyewf.handle:
+        return self._ewf_handle
+
+
+class EWFMetadata:
+    def __init__(self, headers, hashes, bytes_per_sector, number_of_sectors, image_size):
+        self._headers = headers
+        self._hashes = hashes
+        self._bytes_per_sector = bytes_per_sector
+        self._number_of_sectors = number_of_sectors
+        self._image_size = image_size
+
+    def __str__(self):
+        result = ""
+        for header, value in self._headers.items():
+            result += f"\r\n{header}: {value}"
+
+        for imghash, value in self._hashes.items():
+            result += f"\r\n{imghash}: {value}"
+
+        result += f"\r\nBytes per Sector: {self._bytes_per_sector}\r\n" \
+                  f"Number of Sectors: {self._number_of_sectors}\r\nImage Size: {self._image_size}"
+
+        return result
+
+
+class EWFPartitionTable:
+    def __init__(self, volume):
+        self._volume = volume
+
+    def __str__(self):
+        rowformat = "{:<9}{:<32}{:<21}{:<21}"
+        result = rowformat.format('Index', 'Type', 'Offest Start Sector', 'Lenght in Sectors') + "\r\n\r\n"
+
+        for partition in self._volume:
+            result += \
+                rowformat.format(partition.addr, partition.desc.decode('UTF-8'), partition.start, partition.len) + \
+                "\r\n"
+
+        return result
+
 class EWFImage(Image):
     _logger: Logger = logging.getLogger(__name__)
 
@@ -55,7 +129,7 @@ class EWFImage(Image):
 
         return folderinfo
 
-    def get_partition_table(self):
+    def get_partition_table(self) -> EWFPartitionTable:
         """
         Creates an EWFPartitionTable object containing all the partitions included in the image file.
         """
@@ -130,7 +204,7 @@ class EWFImage(Image):
         self._volume: pytsk3.Volume_Info = self._get_volume_from_image()
         tmp: list = list(self._volume)
         self._partitions: dict = {paritionindex: self._get_partition_object(tmp[paritionindex])
-                            for paritionindex in range(0, len(tmp))}
+                                  for paritionindex in range(0, len(tmp))}
 
     def _get_partition_object(self, partition):
         """
@@ -328,78 +402,3 @@ class EWFImage(Image):
             for item in folderinfo:
                 if item.Type == "DIR" and item.Name != b'.' and item.Name != b'..':
                     self._built_filesystem_information(f"{folderpath}{item.Name.decode()}/", partitionindex)
-
-
-class EWFPartition:
-    def __init__(self, partition, fs_object):
-        self.partition = partition
-        self._fs_object = fs_object
-
-    def fs_object_initialized(self):
-        return self._fs_object is not None
-
-    @property
-    def fs_object(self):
-        if self._fs_object is not None:
-            return self._fs_object
-        else:
-            raise LookupError(f"Filesystem for partiton is unkown.")
-
-
-class EWFImageInfo(pytsk3.Img_Info):
-    def __init__(self, ewf_handle):
-        self._ewf_handle: pyewf.handle = ewf_handle
-        super(EWFImageInfo, self).__init__(url="",
-                                           type=pytsk3.TSK_IMG_TYPE_EXTERNAL)
-
-    def close(self):
-        self._ewf_handle.close()
-
-    def read(self, offset, size):
-        self._ewf_handle.seek(offset)
-        return self._ewf_handle.read(size)
-
-    def get_size(self):
-        return self._ewf_handle.get_media_size()
-
-    @property
-    def ewf_handle(self):
-        return self._ewf_handle
-
-
-class EWFMetadata:
-    def __init__(self, headers, hashes, bytes_per_sector, number_of_sectors, image_size):
-        self._headers = headers
-        self._hashes = hashes
-        self._bytes_per_sector = bytes_per_sector
-        self._number_of_sectors = number_of_sectors
-        self._image_size = image_size
-
-    def __str__(self):
-        result = ""
-        for header, value in self._headers.items():
-            result += f"\r\n{header}: {value}"
-
-        for imghash, value in self._hashes.items():
-            result += f"\r\n{imghash}: {value}"
-
-        result += f"\r\nBytes per Sector: {self._bytes_per_sector}\r\n" \
-                  f"Number of Sectors: {self._number_of_sectors}\r\nImage Size: {self._image_size}"
-
-        return result
-
-
-class EWFPartitionTable:
-    def __init__(self, volume):
-        self._volume = volume
-
-    def __str__(self):
-        rowformat = "{:<9}{:<32}{:<21}{:<21}"
-        result = rowformat.format('Index', 'Type', 'Offest Start Sector', 'Lenght in Sectors') + "\r\n\r\n"
-
-        for partition in self._volume:
-            result += \
-                rowformat.format(partition.addr, partition.desc.decode('UTF-8'), partition.start, partition.len) + \
-                "\r\n"
-
-        return result
