@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 
-class Test(TestCase):
+class TestSourceLocalhostExpandFilepath(TestCase):
     @patch('source.localhost.Path.home')
     @patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders')
     def test_expandfilepath_home_in_path(self, placeholder_mock, home_mock):
