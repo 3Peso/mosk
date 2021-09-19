@@ -2,10 +2,9 @@
 Module to retrieve system information from an image file
 """
 
-from baseclasses.artefact import ArtefactBase
-
 __author__ = "3Peso"
-__all__ = ['ImageMetadata']
+
+from baseclasses.artefact import ArtefactBase
 
 
 class ImageMetadata(ArtefactBase):

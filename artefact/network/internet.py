@@ -3,7 +3,6 @@ mosk network module for classes collecting information from the internet.
 """
 
 __author__ = '3Peso'
-__all__ = ['TemperatureFromOpenWeatherDotCom', 'ExternalLinksOnUrl']
 
 import http.client
 import json

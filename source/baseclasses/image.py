@@ -8,6 +8,10 @@ from baseclasses.source import SourceBase
 from businesslogic.support import format_bytes
 
 
+__author__ = '3Peso'
+__all__ = ['Image', 'FolderInfo', 'FolderItemInfo']
+
+
 ImageType = namedtuple('ImageType', ['Type', 'FileEnding'])
 
 

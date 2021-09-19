@@ -9,7 +9,6 @@ import logging
 import platform
 import sys
 import re
-from logging import Logger
 from datetime import datetime
 
 from baseclasses.artefact import MacArtefact, ArtefactBase

@@ -3,7 +3,6 @@ mosk localhost module for classes collecting file information.
 """
 
 __author__ = '3Peso'
-__all__ = ['FileExistence', 'FileContent', 'ShellHistoryOfAllUsers', 'FileCopy', 'FileMetadata']
 
 import logging
 import os
@@ -20,6 +19,7 @@ from shutil import copyfile
 from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact, FileClass
 from businesslogic.support import get_userfolders, md5, run_terminal_command
 from businesslogic.errors import MaxDirectoriesReachedError
+
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
 

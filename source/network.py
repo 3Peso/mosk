@@ -1,3 +1,6 @@
+__author__ = '3Peso'
+__all__ = ['Network']
+
 from baseclasses.source import SourceBase
 
 

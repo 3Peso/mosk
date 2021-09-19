@@ -1,12 +1,11 @@
+__author__ = '3Peso'
+__all__ = ['LocalHost', 'expandfilepath']
+
 import logging
 
 from baseclasses.source import SourceBase
 from os import path
 from pathlib import Path
-
-
-__author__ = '3Peso'
-__all__ = ['LocalHost']
 
 
 class LocalHost(SourceBase):

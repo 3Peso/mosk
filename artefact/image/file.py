@@ -1,3 +1,5 @@
+__author__ = "3Peso"
+
 import logging
 import os
 import hashlib

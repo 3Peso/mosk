@@ -14,6 +14,9 @@ from businesslogic.data import CollectionMetaData
 from businesslogic.errors import LogFileMaximumReachedError
 
 
+__author__ = '3Peso'
+__all__ = ['LogFileProtocol']
+
 
 class LogFileProtocol(ProtocolBase):
     log_file_name_pattern = r"(\d{5})_\w+_\d{4}-\d{2}-\d{2}\.\w+"

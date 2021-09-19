@@ -3,7 +3,6 @@ mosk localhost module for classes collecting infromation about the current user.
 """
 
 __author__ = '3Peso'
-__all__ = ['CurrentUser', 'AllUsernames']
 
 import logging
 from logging import Logger

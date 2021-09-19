@@ -1,3 +1,6 @@
+__author__ = '3Peso'
+__all__ = ['EWFImage']
+
 import logging
 import pytsk3
 import pyewf
