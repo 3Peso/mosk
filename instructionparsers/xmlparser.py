@@ -96,9 +96,6 @@ class XmlParser:
             current = parse(self._instructionspath).documentElement
 
         if 'title' in current.attributes:
-            # HACK
-            # TODO This way of retrieving the text value from the element seems a little bit uncertain in the result
-            # depending on how the xml file has been formatted, etc. But for now it works.
             self._metadata[current.attributes['title'].nodeValue] = current.firstChild.nodeValue
 
         for child in current.childNodes:
@@ -120,10 +117,10 @@ class XmlParser:
         if current is None:
             current = self._get_first_instruction_element()
 
-        # TODO Implement a way to create source objects so that they also get their path attribute.
         currentinstruction = getattr(importlib.import_module(current.attributes[XmlParser.MODULE_ATTRIBUTE].nodeValue),
                                      current.tagName)(parent=parentinstruction,
-                                    parameters=XmlParser._get_parameter_attributes(current.attributes))
+                                                      parameters=XmlParser._get_parameter_attributes(
+                                                          current.attributes))
 
         currentinstruction.protocol = self._protocol
 
