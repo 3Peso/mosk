@@ -5,6 +5,9 @@ from os import path
 from pathlib import Path
 
 
+__all__ = ['LocalHost']
+
+
 class LocalHost(SourceBase):
     def __init__(self, *args, **kwargs):
         SourceBase.__init__(self, *args, **kwargs)
