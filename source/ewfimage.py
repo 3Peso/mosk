@@ -11,12 +11,13 @@ from logging import Logger
 
 from source.baseclasses.image import Image, FolderInfo, FolderItemInfo
 from businesslogic.support import str_to_bool, format_bytes
+from businesslogic.errors import CollectorParameterError
 
 
 class EWFImage(Image):
     _logger: Logger = logging.getLogger(__name__)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._imageinfo: EWFImageInfo = self._get_image_information()
         self._initialize_partition_lookup()
@@ -27,13 +28,13 @@ class EWFImage(Image):
             self._initialize_partitions()
 
     @property
-    def filesysteminfo(self):
+    def filesysteminfo(self) -> dict:
         if not self._fs_discoverd:
-            raise RuntimeError("You can only export files with parameter 'discover' set to True during image object"
-                               " creation.")
+            raise CollectorParameterError("You can only export files with parameter 'discover' set to True during "
+                                          "image object creation.")
         return self._filesysteminfo
 
-    def get_folder_information(self, folderpath: str, partitionindex: int):
+    def get_folder_information(self, folderpath: str, partitionindex: int) -> FolderInfo:
         """
         Gets a FolderInfo object if the source partition contains the folder.
         :param folderpath: Path of the folder for which the folder info is request.
@@ -43,14 +44,14 @@ class EWFImage(Image):
         try:
             if folderpath not in self.filesysteminfo[partitionindex].keys():
                 folderinfo: FolderInfo = FolderInfo(folderpath=folderpath,
-                                        folderitems=set(self._discover_folder(folderpath, partitionindex)),
-                                        imagefile=self._imagefilepath, partitionindex=partitionindex)
+                                                    folderitems=set(self._discover_folder(folderpath, partitionindex)),
+                                                    imagefile=self._imagefilepath, partitionindex=partitionindex)
             else:
                 folderinfo: FolderInfo = self.filesysteminfo[partitionindex][folderpath]
         except KeyError:
             folderinfo: FolderInfo = FolderInfo(folderpath=folderpath,
-                                    folderitems=set(self._discover_folder(folderpath, partitionindex)),
-                                    imagefile=self._imagefilepath, partitionindex=partitionindex)
+                                                folderitems=set(self._discover_folder(folderpath, partitionindex)),
+                                                imagefile=self._imagefilepath, partitionindex=partitionindex)
 
         return folderinfo
 

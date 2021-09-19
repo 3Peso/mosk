@@ -1,7 +1,9 @@
 from unittest import TestCase, mock
 from unittest.mock import MagicMock, patch
 
+import businesslogic.placeholders
 from businesslogic.placeholders import Placeholder
+from businesslogic.errors import GlobalPlaceholderFileError
 
 
 class TestPlaceholderSetPlaceholderFile(TestCase):
@@ -444,3 +446,55 @@ class TestPlaceholderGetPlaceholders(TestCase):
         actual_matches = Placeholder._get_placeholders(expected_string)
 
         self.assertEqual(expected_matches, actual_matches)
+
+
+class TestPlaceholderSetGlobalPlaceholderfile(TestCase):
+    def tearDown(self) -> None:
+        businesslogic.placeholders.Placeholder._globalplaceholderfile = Placeholder.GLOBAL_PLACEHOLDER_FILE_PATH
+
+    def test_set_globalplaceholderfile(self):
+        """
+        Should store file in _globalplaceholderfile
+        Should call _initialize_global_placeholders()
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_file = "dummy"
+        mock = MagicMock(return_value=None)
+        with patch('businesslogic.placeholders.path.exists', MagicMock(return_value=True)):
+            with patch('businesslogic.placeholders.Placeholder._initialize_global_placeholders', mock):
+                Placeholder.set_globalplaceholderfile(expected_file)
+
+        mock.assert_called_once()
+        self.assertEqual(expected_file, Placeholder._globalplaceholderfile)
+
+    def test_set_globalplaceholderfile_invalid_json(self):
+        """
+        Should not change _globalplaceholderfile
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_test_file = "./testfiles/test.txt"
+        expected_file = Placeholder.GLOBAL_PLACEHOLDER_FILE_PATH
+        with patch('businesslogic.placeholders.path.exists', MagicMock(return_value=True)):
+            Placeholder.set_globalplaceholderfile(expected_test_file)
+
+        self.assertEqual(expected_file, Placeholder._globalplaceholderfile)
+
+
+class TestPlaceholderInitializeGlobalPlaceholders(TestCase):
+    def tearDown(self) -> None:
+        Placeholder._globalplaceholderfile = Placeholder.GLOBAL_PLACEHOLDER_FILE_PATH
+
+    def test__initialize_global_placeholders_invalid_json(self):
+        """
+        Should raise GlabalplaceholderFileError.
+        :return:
+        """
+        from businesslogic.placeholders import Placeholder
+
+        expected_test_file = "./testfiles/test.txt"
+        Placeholder._globalplaceholderfile = expected_test_file
+        self.assertRaises(GlobalPlaceholderFileError, Placeholder._initialize_global_placeholders)

@@ -1,7 +1,7 @@
 __author__ = '3Peso'
 __all__ = ['MaxDirectoriesReachedError', 'UnknownVersionStringError', 'ApiKeyNotSetError', 'ApiKeyFormatError',
            'PathNotSetError', 'NoCollectorError', 'MD5SupportError', 'NoCountryCodeError', 'NoStringResourcesError',
-           'LogFileMaximumReachedError']
+           'LogFileMaximumReachedError', 'CollectorParameterError', 'GlobalPlaceholderFileError']
 
 
 class MaxDirectoriesReachedError(Exception):
@@ -50,5 +50,15 @@ class NoCountryCodeError(Exception):
 
 
 class LogFileMaximumReachedError(Exception):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+
+
+class CollectorParameterError(Exception):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+
+
+class GlobalPlaceholderFileError(Exception):
     def __init__(self, message: str) -> None:
         super().__init__(message)

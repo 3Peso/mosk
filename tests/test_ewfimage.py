@@ -114,3 +114,23 @@ class TestEWFImageDunderInit(TestCase):
                 EWFImage(parent=None, parameters={'filepath': 'test.e01', 'discover': False})
 
         init_mock.assert_not_called()
+
+
+class TestEWFImage(TestCase):
+    @patch('source.ewfimage.os.path.exists', MagicMock(return_value=True))
+    @patch('source.ewfimage.EWFImage._initialize_partition_lookup', MagicMock(return_value=None))
+    @patch('businesslogic.placeholders.Placeholder.replace_placeholders', MagicMock(return_value='test.e01'))
+    @patch('source.ewfimage.str_to_bool', MagicMock(return_value=False))
+    def test_filesysteminfo_discover_not_set(self):
+        """
+        Should raise an error
+        :return:
+        """
+        from source.ewfimage import EWFImage, EWFImageInfo
+        from businesslogic.errors import CollectorParameterError
+
+        expected_image_info: EWFImageInfo = EWFImageInfo(ewf_handle=pyewf.handle())
+        with patch('source.ewfimage.EWFImage._get_image_information', MagicMock(return_value=expected_image_info)):
+            ewf_image = EWFImage(parent=None, parameters={'filepath': 'test.e01', 'discover': False})
+            with self.assertRaises(CollectorParameterError):
+                ewf_image.filesysteminfo
