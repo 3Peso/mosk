@@ -1,33 +1,32 @@
+__author__ = '3Peso'
+__all__ = ['Image', 'FolderInfo', 'FolderItemInfo']
+
 import logging
 import datetime
 import os
+from logging import Logger
 from collections import namedtuple
 from abc import abstractmethod
 
 from baseclasses.source import SourceBase
 from businesslogic.support import format_bytes
 
-
-__author__ = '3Peso'
-__all__ = ['Image', 'FolderInfo', 'FolderItemInfo']
-
-
 ImageType = namedtuple('ImageType', ['Type', 'FileEnding'])
 
 
 class Image(SourceBase):
-    IMAGE_TYPE_EWF = ImageType(Type='ewf', FileEnding='.e01')
-    DEFAULT_FS_TYPE = 'MAC'
-    _logger = logging.getLogger(__name__)
+    IMAGE_TYPE_EWF: ImageType = ImageType(Type='ewf', FileEnding='.e01')
+    DEFAULT_FS_TYPE: str = 'MAC'
 
     def __init__(self, *args, **kwargs):
+        logger: Logger = logging.getLogger(__name__)
         super().__init__(*args, **kwargs)
         self._imagetype: ImageType = None
         self.imagefilepath = self.get_parameter('filepath')
         try:
             self._fstype = self.get_parameter('fstype')
         except KeyError:
-            self._logger.warning("No image type parameter 'fstype' provided. Defaulting to 'MAC'.")
+            logger.warning("No image type parameter 'fstype' provided. Defaulting to 'MAC'.")
             self._fstype = self.DEFAULT_FS_TYPE
 
     @property
