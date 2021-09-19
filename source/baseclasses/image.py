@@ -10,6 +10,7 @@ from abc import abstractmethod
 
 from baseclasses.source import SourceBase
 from businesslogic.support import format_bytes
+from businesslogic.errors import ImageFileError
 
 ImageType = namedtuple('ImageType', ['Type', 'FileEnding'])
 
@@ -108,15 +109,14 @@ class Image(SourceBase):
 
     @imagefilepath.setter
     def imagefilepath(self, value: str) -> None:
-        if value.lower().endswith(self.IMAGE_TYPE_EWF.FileEnding):
-            self._imagetype: ImageType = self.IMAGE_TYPE_EWF
-            if os.path.exists(value):
-                self._imagefilepath: str = value
-            else:
-                raise FileNotFoundError(f"Image file '{value}' not found.")
-        else:
-            raise ValueError(f"Currently only {self.IMAGE_TYPE_EWF.Type} files"
+        if not value.lower().endswith(self.IMAGE_TYPE_EWF.FileEnding):
+            raise ImageFileError(f"Currently only {self.IMAGE_TYPE_EWF.Type} files"
                              f" (file ending '{self.IMAGE_TYPE_EWF.FileEnding}' are supported.")
+        if not os.path.exists(value):
+            raise FileNotFoundError(f"Image file '{value}' not found.")
+
+        self._imagetype: ImageType = self.IMAGE_TYPE_EWF
+        self._imagefilepath: str = value
 
     @abstractmethod
     def get_folder_information(self, folderpath: str, partitionindex: int) -> FolderInfo:
