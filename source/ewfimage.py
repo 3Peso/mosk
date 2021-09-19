@@ -19,7 +19,7 @@ class EWFPartition:
         self.partition: dict = partition
         self._fs_object: pytsk3.FS_Info = fs_object
 
-    def fs_object_initialized(self) -> pytsk3.FS_Info:
+    def fs_object_initialized(self) -> bool:
         return self._fs_object is not None
 
     @property

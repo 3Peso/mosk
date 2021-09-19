@@ -134,3 +134,14 @@ class TestEWFImage(TestCase):
             ewf_image = EWFImage(parent=None, parameters={'filepath': 'test.e01', 'discover': False})
             with self.assertRaises(CollectorParameterError):
                 ewf_image.filesysteminfo
+
+
+class TestEWFPartitionFSObjectGetter(TestCase):
+    def test_fs_object(self):
+        """Should raise LookupError if _fs_object is none"""
+        from source.ewfimage import EWFPartition
+
+        partition = EWFPartition(fs_object=None, partition={})
+
+        with self.assertRaises(LookupError):
+            partition.fs_object
