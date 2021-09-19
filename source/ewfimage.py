@@ -1,5 +1,5 @@
 __author__ = '3Peso'
-__all__ = ['EWFImage']
+__all__ = ['EWFImage', 'EWFImageInfo']
 
 import logging
 import pytsk3
