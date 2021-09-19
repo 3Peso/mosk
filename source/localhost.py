@@ -1,5 +1,4 @@
 import logging
-from logging import Logger
 
 from baseclasses.source import SourceBase
 from os import path
