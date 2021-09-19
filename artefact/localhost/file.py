@@ -132,18 +132,23 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
 
     def _collect_single(self, file_path: str = '') -> None:
         is_file = path.isfile(file_path)
-        source_exists = os.path.exists(file_path)
-        enough_space = True
+        source_exists: bool = os.path.exists(file_path)
+        enough_space: bool = True
 
         try:
             if source_exists and is_file:
-                target_path = self._ensure_target_directory()
-                file_copy_destination = os.path.join(target_path, os.path.basename(file_path))
+                target_path: str = self._ensure_target_directory()
+                file_copy_destination: str = os.path.join(target_path, os.path.basename(file_path))
                 enough_space = self._enough_space_on_target(target_path=target_path, source_path=file_path)
+                target_path_length_valid: bool = self._validate_target_path_length(file_copy_destination)
 
                 if not enough_space:
                     self.data = f"File '{file_path}' could not be copied, " \
                                 f"because there is not enough space on target '{target_path}'."
+                if not target_path_length_valid:
+                    self.data = f"File '{file_path}' could not be copied, because the target path " \
+                                f"length of '{target_path}' is too long for the underlying system."
+
                 else:
                     copyfile(file_path, file_copy_destination)
                     self.data = f"Copied file '{file_path}' to '{file_copy_destination}'."
@@ -204,6 +209,16 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
             return True
         else:
             return False
+
+    @staticmethod
+    def _validate_target_path_length(targert_path) -> bool:
+        if platform.system() != "Windows":
+            return True
+
+        max_windows_path_length = 260
+        is_valid = len(targert_path) <= max_windows_path_length
+
+        return is_valid
 
 
 class FileMetadata(ArtefactBase, FileClass):

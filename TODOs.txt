@@ -16,14 +16,10 @@
 
 # Add parameter, for very quick collection (for example, no hash calculation, etc.)
 
-# FolderInformation must provide the partition index
-
 # Evaluate python imagemounter to mount image for collecting data from images - imount
 # https://imagemounter.readthedocs.io/en/latest/python.html
 
 # Use print function of macOS to print PDF exports of things like calendars, etc.
-
-# Collector FileCopy: Think about guard against too long paths (old Windows issue)
 
 # Collector to execute a generic command and collect the output (for example the "find" command)
 

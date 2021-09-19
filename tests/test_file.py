@@ -125,7 +125,6 @@ class TestFileCopyCollect(TestCase):
         self.assertEqual(expected_call_count, single_mock.call_count)
 
 
-
 class TestFileCopyCollectSingle(TestCase):
     _expected_source_file_path = './testfiles/test.txt'
     _expected_target_directory = '.'
@@ -232,6 +231,27 @@ class TestFileCopyCollectSingle(TestCase):
 
         self.assertEqual(expected_message, actual_message)
 
+    def test__collect_single_filepath_to_long_for_windows(self):
+        """
+        Should "collect" an error message which states that the target path is too long for the underlying
+        platform.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        collector = FileCopy(parameters={}, parent=None)
+        collector.filepath = self._expected_source_file_path
+        expected_message = "File './testfiles/test.txt' could not be copied, because the target path length of " \
+                           "'./unique' is too long for the underlying system."
+        with mock.patch('artefact.localhost.file.os.path.isfile', MagicMock(return_value=True)):
+            with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
+                            MagicMock(return_value=self._expected_target_path)):
+                with mock.patch('artefact.localhost.file.FileCopy._validate_target_path_length',
+                                MagicMock(return_value=False)):
+                    collector._collect_single(collector.filepath)
+                    actual_message = collector.data[-1].collecteddata
+
+        self.assertEqual(expected_message, actual_message)
 
 class TestFileCopyFilePath(TestCase):
     def test__collect_setter_with_abreviated_path(self):
@@ -674,3 +694,53 @@ class TestFileHashCollect(TestCase):
         actual_message = collector.data[0].collecteddata
 
         self.assertEqual(expected_message, actual_message)
+
+
+class TestFileCopyValidateTargetPathLength(TestCase):
+    def test__validate_target_path_length_platform_is_windows_path_length_260(self):
+        """
+        Should return True
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        collector = FileCopy(parent=None, parameters={})
+
+        expected_target_path = f"D:\{'d' * 249}\file.txt"
+        expected_result = True
+        with mock.patch('artefact.localhost.file.platform.system', MagicMock(return_value="Windows")):
+            actual_result = collector._validate_target_path_length(expected_target_path)
+
+        self.assertEqual(expected_result, actual_result)
+
+    def test__validate_target_path_length_platform_is_windows_path_length_261(self):
+        """
+        Should return False
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        collector = FileCopy(parent=None, parameters={})
+
+        expected_target_path = f"D:\{'d' * 250}\file.txt"
+        expected_result = False
+        with mock.patch('artefact.localhost.file.platform.system', MagicMock(return_value="Windows")):
+            actual_result = collector._validate_target_path_length(expected_target_path)
+
+        self.assertEqual(expected_result, actual_result)
+
+    def test__validate_target_path_length_platform_is_not_windows(self):
+        """
+        Should return True
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        collector = FileCopy(parent=None, parameters={})
+
+        expected_target_path = f"/{'d' * 300}/file.txt"
+        expected_result = True
+        with mock.patch('artefact.localhost.file.platform.system', MagicMock(return_value="Darwin")):
+            actual_result = collector._validate_target_path_length(expected_target_path)
+
+        self.assertEqual(expected_result, actual_result)
