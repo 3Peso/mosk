@@ -5,6 +5,7 @@ from os import path
 from pathlib import Path
 
 
+__author__ = '3Peso'
 __all__ = ['LocalHost']
 
 
