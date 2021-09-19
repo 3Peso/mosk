@@ -103,6 +103,10 @@ class EWFImage(Image):
 
     @property
     def filesysteminfo(self) -> dict:
+        """
+        Dictionary containing partitions and their content / files.
+        :return:
+        """
         if not self._fs_discoverd:
             raise CollectorParameterError("You can only export files with parameter 'discover' set to True during "
                                           "image object creation.")
