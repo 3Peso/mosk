@@ -47,17 +47,17 @@ class OSName(MacArtefact):
         super().__init__(*args, **kwargs)
 
     def _collect(self) -> None:
-        logger = logging.getLogger(__name__)
-        if sys.platform == 'darwin':
+        current_platform = platform.system().lower()
+        if current_platform == 'darwin':
             platformversion = platform.mac_ver()[VERSION_NUMBER_INDEX]
             try:
                 self._verify_version_string(platformversion)
                 version_tuple = platformversion.split('.')
-                tmp = _platform_lookup[sys.platform][LOOKUP_KEY][version_tuple[0]]
+                tmp = _platform_lookup[current_platform][LOOKUP_KEY][version_tuple[0]]
                 # if type is dict, it is an older platform like Mojave, whichs name is decided in the
                 # minor revision number
                 if type(tmp) is dict:
-                    self.data = _platform_lookup[sys.platform][LOOKUP_KEY][version_tuple[0]][version_tuple[1]]
+                    self.data = _platform_lookup[current_platform][LOOKUP_KEY][version_tuple[0]][version_tuple[1]]
                 # if type is a string it is a newer platform whichs name is decided in the major revision number
                 elif type(tmp) is str:
                     self.data = tmp

@@ -5,6 +5,7 @@ from artefact.localhost.osinformation import OSName
 
 
 class TestOSNameCollect(TestCase):
+    @mock.patch('artefact.localhost.osinformation.platform.system', MagicMock(return_value='Darwin'))
     def test__collect(self):
         """
         Should return the macOS platform name for a platform version, which is known.
@@ -18,6 +19,7 @@ class TestOSNameCollect(TestCase):
 
         self.assertEqual(expected_platform_name, actual_platform_name)
 
+    @mock.patch('artefact.localhost.osinformation.platform.system', MagicMock(return_value='Darwin'))
     def test__collect_platform_is_bigsur(self):
         """
         Should return always BigSur for all possible revisions of it.
@@ -31,6 +33,7 @@ class TestOSNameCollect(TestCase):
 
         self.assertEqual(expected_platform_name, actual_platform_name)
 
+    @mock.patch('artefact.localhost.osinformation.platform.system', MagicMock(return_value='Darwin'))
     def test__collect_platform_is_monterey(self):
         """
         Should return always Monterey for all possible revisions of it.
@@ -44,6 +47,7 @@ class TestOSNameCollect(TestCase):
 
         self.assertEqual(expected_platform_name, actual_platform_name)
 
+    @mock.patch('artefact.localhost.osinformation.platform.system', MagicMock(return_value='Darwin'))
     def test__collect_unkwon_platform(self):
         """
         Should collect a string saying, that the platform name cannot be collected.
@@ -57,6 +61,7 @@ class TestOSNameCollect(TestCase):
 
         self.assertEqual(expected_platform_name, actual_platform_name)
 
+    @mock.patch('artefact.localhost.osinformation.platform.system', MagicMock(return_value='Darwin'))
     def test__collection_version_string_unkown_format(self):
         """
         Should raise an exception
