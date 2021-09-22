@@ -1,5 +1,6 @@
 import os
 import os.path
+import platform
 import shutil
 from collections import namedtuple
 
@@ -243,6 +244,10 @@ class TestFileCopyCollectSingle(TestCase):
         collector.filepath = self._expected_source_file_path
         expected_message = "File './testfiles/test.txt' could not be copied, because the target path length of " \
                            "'./unique' is too long for the underlying system."
+        if platform.system() == "Windows":
+            expected_message = "File './testfiles/test.txt' could not be copied, because the target path length of " \
+                               "'.\\unique' is too long for the underlying system."
+
         with mock.patch('artefact.localhost.file.os.path.isfile', MagicMock(return_value=True)):
             with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
                             MagicMock(return_value=self._expected_target_path)):
@@ -265,6 +270,8 @@ class TestFileCopyFilePath(TestCase):
 
         source_file_path = "~/IDoNotExist.txt"
         expected_file_path = f"{str(Path.home())}/IDoNotExist.txt"
+        if platform.system() == "Windows":
+            expected_file_path = f"{str(Path.home())}\IDoNotExist.txt"
         collector = FileCopy(parameters={}, parent=None)
         collector.filepath = source_file_path
         actual_filepath = collector._filepath
@@ -301,6 +308,8 @@ class TestFileCopyEnsureTargetDirectory(TestCase):
         expected_target_dir = "./test_target"
         expected_unique_dir_name = "me_unique"
         expected_return_value = './test_target/me_unique'
+        if platform.system() == "Windows":
+            expected_return_value = './test_target\\me_unique'
         collector = FileCopy(parameters={}, parent=None)
         collector._destination_directory = expected_target_dir
         try:
@@ -544,15 +553,13 @@ class TestFileMetadataCollect(TestCase):
 
 
 class TestFileMetadataCollectTimestamps(TestCase):
-    def test__collect_timestamps(self):
+    def test__collect_timestamps_accessed_time(self):
         """
-        Should collect created, modifed, used timestamp in data.
+        Should collect used timestamp in data.
         :return:
         """
         from artefact.localhost.file import FileMetadata
 
-        expected_modified_time_data = "2021-03-06 15:43:03 UTC"
-        expected_created_time_data = "2021-06-06 15:37:35 UTC"
         expected_access_time_data = "2021-06-04 08:33:32 UTC"
         expected_file = './testfiles/test.txt'
 
@@ -561,13 +568,64 @@ class TestFileMetadataCollectTimestamps(TestCase):
         with mock.patch('artefact.localhost.file.os.path.getatime', MagicMock(return_value=1622795612.874454)):
             collector._collect_timestamps()
 
-        actual_modified_time_data = collector._metadata['Modified']
-        actual_created_time_data = collector._metadata['Created']
         actual_access_time_data = collector._metadata['Accessed']
 
-        self.assertEqual(expected_modified_time_data, actual_modified_time_data)
-        self.assertEqual(expected_created_time_data, actual_created_time_data)
         self.assertEqual(expected_access_time_data, actual_access_time_data)
+
+    def test__collect_timestamps_created_time(self):
+        """
+        Should collect used timestamp in data.
+        :return:
+        """
+        from artefact.localhost.file import FileMetadata
+
+        expected_created_time_data = "2021-06-04 08:33:32 UTC"
+        expected_file = './testfiles/test.txt'
+
+        collector = FileMetadata(parameters={}, parent=None)
+        collector.filepath = expected_file
+        with mock.patch('artefact.localhost.file.os.path.getctime', MagicMock(return_value=1622795612.874454)):
+            collector._collect_timestamps()
+
+        actual_created_time_data = collector._metadata['Created']
+
+        self.assertEqual(expected_created_time_data, actual_created_time_data)
+
+    def test__collect_timestamps_accessed_time(self):
+        """
+        Should collect used timestamp in data.
+        :return:
+        """
+        from artefact.localhost.file import FileMetadata
+
+        expected_modified_time_data = "2021-06-04 08:33:32 UTC"
+        expected_file = './testfiles/test.txt'
+
+        collector = FileMetadata(parameters={}, parent=None)
+        collector.filepath = expected_file
+        with mock.patch('artefact.localhost.file.os.path.getmtime', MagicMock(return_value=1622795612.874454)):
+            collector._collect_timestamps()
+
+        actual_modified_time_data = collector._metadata['Modified']
+
+        self.assertEqual(expected_modified_time_data, actual_modified_time_data)
+
+    def test__collect_timestamps_platform_windows(self):
+        """
+        Should should throw KeyError when accessing 'Birth'
+        :param self:
+        :return:
+        """
+        from artefact.localhost.file import FileMetadata
+
+        expected_file = './testfiles/test.txt'
+        collector = FileMetadata(parameters={}, parent=None)
+        collector.filepath = expected_file
+        with mock.patch('artefact.localhost.file.os.path.getmtime', MagicMock(return_value=1622795612.874454)):
+            collector._collect_timestamps()
+
+            with self.assertRaises(KeyError):
+                collector._metadata['Birth']
 
 
 class TestFileMetadataCollectExtendedAttributes(TestCase):
@@ -586,6 +644,27 @@ class TestFileMetadataCollectExtendedAttributes(TestCase):
                         MagicMock(return_value="my.extended.attribute")):
             collector._collect_extended_attributes()
             actual_message = collector.data[-1].collecteddata
+
+        if platform.system() != "Windows":
+            self.assertEqual(expected_message, actual_message)
+        else:
+            pass
+
+    def test__collect_extended_attributes_on_windows(self):
+        """
+        Should return error message stating that this is not supported on windows.
+        :return:
+        """
+        from artefact.localhost.file import FileMetadata
+
+        expected_message = "Collection of extended attributes on platform 'Windows' is not supported."
+        collector = FileMetadata(parameters={}, parent=None)
+        collector.filepath = "mocked_file_path"
+        with mock.patch('artefact.localhost.file.run_terminal_command',
+                        MagicMock(return_value="my.extended.attribute")):
+            with mock.patch('artefact.localhost.file.platform.system', MagicMock(return_value='Windows')):
+                collector._collect_extended_attributes()
+                actual_message = collector.data[-1].collecteddata
 
         self.assertEqual(expected_message, actual_message)
 
@@ -667,6 +746,9 @@ class TestFileHashCollect(TestCase):
         expected_hash = "00236a2ae558018ed13b5222ef1bd987"
         expected_file = "./testfiles/test.txt"
         file_hash = '0db7d1adf349b912f612c9be06278706'
+        if platform.system() == "Windows":
+            file_hash = 'eb9741896e5a38b773be6da56fe90c3a'
+
         expected_message = f"The hash '{file_hash}' of file '{expected_file}' does not match the provided hash " \
                            f"'{expected_hash}'."
         collector = FileHash(parameters={'filehash': expected_hash, 'filepath': expected_file}, parent=None)
@@ -684,8 +766,14 @@ class TestFileHashCollect(TestCase):
         from artefact.localhost.file import FileHash
 
         expected_hash = "0db7d1adf349b912f612c9be06278706"
+        if platform.system() == "Windows":
+            expected_hash = 'eb9741896e5a38b773be6da56fe90c3a'
+
         expected_file = "./testfiles/test.txt"
         file_hash = '0db7d1adf349b912f612c9be06278706'
+        if platform.system() == "Windows":
+            file_hash = 'eb9741896e5a38b773be6da56fe90c3a'
+
         expected_message = f"The hash '{file_hash}' of file '{expected_file}' matches the provided hash " \
                            f"'{expected_hash}'."
         collector = FileHash(parameters={'filehash': expected_hash, 'filepath': expected_file}, parent=None)

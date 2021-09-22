@@ -279,8 +279,13 @@ class FileMetadata(ArtefactBase, FileClass):
         self._metadata['Accessed'] = datetime.datetime.utcfromtimestamp(accessd_datetime)\
             .strftime("%Y-%m-%d %H:%M:%S UTC")
 
-        birth_datetime = Path(self.filepath).stat().st_birthtime
-        self._metadata['Birth'] = datetime.datetime.utcfromtimestamp(birth_datetime).strftime("%Y-%m-%d %H:%M:%S UTC")
+        if platform.system() != "Windows":
+            birth_datetime = Path(self.filepath).stat().st_birthtime
+            self._metadata['Birth'] = datetime.datetime.utcfromtimestamp(birth_datetime).\
+                strftime("%Y-%m-%d %H:%M:%S UTC")
+        else:
+            logger: Logger = logging.getLogger(__name__)
+            logger.info(f"The platform '{platform.system()}' does not support st_birthtime.")
 
 
 class FileDirectoryPath(MacArtefact):
