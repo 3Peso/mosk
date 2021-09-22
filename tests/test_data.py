@@ -224,7 +224,6 @@ class TestCollectionDataSourcePath(TestCase):
         actual_data = CollectionData(data="")
         actual_data.sourcepath = expected_path
 
-        self.assertEqual(expected_hash, actual_data._sourcehash)
         self.assertEqual(expected_path, actual_data._sourcepath)
 
     def test_sourcepath_does_not_exist(self):

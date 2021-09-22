@@ -610,6 +610,7 @@ class TestFileMetadataCollectTimestamps(TestCase):
 
         self.assertEqual(expected_modified_time_data, actual_modified_time_data)
 
+    @mock.patch('artefact.localhost.file.platform.system', MagicMock(return_value="Windows"))
     def test__collect_timestamps_platform_windows(self):
         """
         Should should throw KeyError when accessing 'Birth'
@@ -623,7 +624,6 @@ class TestFileMetadataCollectTimestamps(TestCase):
         collector.filepath = expected_file
         with mock.patch('artefact.localhost.file.os.path.getmtime', MagicMock(return_value=1622795612.874454)):
             collector._collect_timestamps()
-
             with self.assertRaises(KeyError):
                 collector._metadata['Birth']
 
