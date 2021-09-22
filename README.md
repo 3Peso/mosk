@@ -170,7 +170,7 @@ mosk does its collection through collectors. There are already several collector
 * InstalledApplications (macOS)
 * FileSystemInformation (macOS)
 * [HardwareInformation (macOS)](#hardwareinformation)
-* [AllUsernames](#allusernames)
+* [AllUsernames (macOS, Linux)](#allusernames)
 * CurrentUser
 
 ##### AllUsernames
