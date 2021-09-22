@@ -9,7 +9,7 @@ from logging import Logger
 from pwd import getpwall
 from getpass import getuser
 
-from baseclasses.artefact import ArtefactBase
+from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact
 from businesslogic.support import str_to_bool, get_userfolders
 
 
@@ -24,7 +24,7 @@ class CurrentUser(ArtefactBase):
         self.data = getuser()
 
 
-class AllUsernames(ArtefactBase):
+class AllUsernames(MacArtefact, LinuxArtefact):
     """
     Gets all user names retrievable by python.
     """

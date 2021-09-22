@@ -178,5 +178,10 @@
     "title": "LocalTime",
     "collectionmethod": "zdump",
     "description": "Uses cli tool zdump to extract the local time from '/etc/localtime'."
+  },
+  "tests.support.mockups.SimpleArtefactMockup": {
+    "title": "SimpleArtefactMockup",
+    "collectionmethod": "mockup",
+    "description": "This is a mockup collector."
   }
 }

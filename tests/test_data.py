@@ -1,5 +1,6 @@
 import os
 import json
+import platform
 from datetime import datetime
 from unittest import TestCase
 from unittest.mock import patch
@@ -216,7 +217,9 @@ class TestCollectionDataSourcePath(TestCase):
         """
         from businesslogic.data import CollectionData
 
-        expected_hash = "23de9120d4b70ba8cb3f0a980bb6c039"
+        expected_hash = "22de9120d4b70ba8cb3f0a980bb6c039"
+        if platform.system() == "Windows":
+            expected_hash = "69b7d4403901e694c554f8798893e8d9"
         expected_path = "./testfiles/longtext.txt"
         actual_data = CollectionData(data="")
         actual_data.sourcepath = expected_path

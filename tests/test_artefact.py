@@ -1,4 +1,5 @@
 import logging
+import platform
 from unittest import TestCase, mock
 from unittest.mock import MagicMock
 
@@ -76,12 +77,12 @@ class TestArtefactBaseInitDescription(TestCase):
         """
         Should initialize properties _title, _description, and _collectionmethod
         """
-        from artefact.localhost.user import CurrentUser
-        artefact = CurrentUser(parent=None, parameters={})
+        from tests.support.mockups import SimpleArtefactMockup
+        artefact = SimpleArtefactMockup(parent=None, parameters={})
 
-        self.assertEqual(artefact._title, 'CurrentUser')
-        self.assertEqual(artefact._description, 'Collects the current user with the Python module getpass.')
-        self.assertEqual(artefact._collectionmethod, 'getpass.getuser')
+        self.assertEqual(artefact._title, 'SimpleArtefactMockup')
+        self.assertEqual(artefact._description, 'This is a mockup collector.')
+        self.assertEqual(artefact._collectionmethod, 'mockup')
 
 
 class TestArtefactBaseCacheParameters(TestCase):
@@ -155,8 +156,8 @@ class TestArtefactBaseDunderCall(TestCase):
         """
         from tests.support.mockups import ExceptionArtefactMockup
 
-        expected_message = 'The platform "Darwin" is not supported by this collector. ' \
-                           '\r\nPlatform supported: "[\'MamboJamboPlatform\']"'
+        expected_message = 'The platform "{}" is not supported by this collector. ' \
+                           '\r\nPlatform supported: "[\'MamboJamboPlatform\']"'.format(platform.system())
         actual_artefact = ExceptionArtefactMockup(parent=None, parameters={})
 
         # Collect by using __call__

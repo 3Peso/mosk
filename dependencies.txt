@@ -7,7 +7,7 @@ chardet==4.0.0
 cryptography==3.4.5
 elementpath==2.1.2
 expiringdict==1.2.1
-fastchunking==0.0.3
+#fastchunking==0.0.3
 fritzconnection==1.4.1
 future==0.17.1
 hexdump==3.3
