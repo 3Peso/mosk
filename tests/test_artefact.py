@@ -166,6 +166,33 @@ class TestArtefactBaseDunderCall(TestCase):
 
         self.assertEqual(actual_message, expected_message)
 
+    def test___call__with_unsupported_platform_version(self):
+        """
+        Should log in data, that the platform verion is not supported
+        :return:
+        """
+        from tests.support.mockups import SimpleArtefactMockup
+
+        expected_min_version = "1.0.0.0"
+        expected_max_version = "2.0.0.0"
+        expected_platform_version = "0.9.0.0"
+        expected_message = 'The platform "{}" with its version "{}" is not supported by this collector. ' \
+                           '\r\nMinimal version supported: "{}". Max version supported: "{}"'\
+            .format(platform.system(), expected_platform_version, expected_min_version, expected_max_version)
+        actual_artefact = SimpleArtefactMockup(parent=None, parameters={})
+        actual_artefact._platform_version = expected_platform_version
+        actual_artefact._min_platform_version = expected_min_version
+        actual_artefact._max_platform_version = expected_max_version
+
+        # Collect by using __call__
+        with mock.patch('baseclasses.artefact.ArtefactBase.is_platform_version_supported',
+                        MagicMock(return_value=False)):
+            actual_artefact()
+
+        actual_message = actual_artefact.data[0].collecteddata
+
+        self.assertEqual(actual_message, expected_message)
+
 
 class TestArtefactBaseDunderStr(TestCase):
     def test___str__data_is_none(self):
