@@ -1,9 +1,11 @@
-import pyewf
+import platform
+import unittest
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 
 class TestEWFImageDunderInit(TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     @patch('source.ewfimage.os.path.exists', MagicMock(return_value=True))
     @patch('source.ewfimage.EWFImage._initialize_partition_lookup', MagicMock(return_value=None))
     @patch('businesslogic.placeholders.Placeholder.replace_placeholders', MagicMock(return_value='test.e01'))
@@ -13,6 +15,7 @@ class TestEWFImageDunderInit(TestCase):
         Should initialize member _imageInfo with EwfImageInfo object.
         :return:
         """
+        import pyewf
         from source.ewfimage import EWFImage, EWFImageInfo
 
         expected_image_info: EWFImageInfo = EWFImageInfo(ewf_handle=pyewf.handle())
@@ -21,6 +24,7 @@ class TestEWFImageDunderInit(TestCase):
 
         self.assertEqual(expected_image_info, actual_ewf_image._imageinfo)
 
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     @patch('source.ewfimage.os.path.exists', MagicMock(return_value=True))
     @patch('businesslogic.placeholders.Placeholder.replace_placeholders', MagicMock(return_value='test.e01'))
     @patch('source.ewfimage.str_to_bool', MagicMock(return_value=False))
@@ -29,6 +33,7 @@ class TestEWFImageDunderInit(TestCase):
         Should call _initialize_partition_lookup
         :return:
         """
+        import pyewf
         from source.ewfimage import EWFImage, EWFImageInfo
 
         expected_image_info: EWFImageInfo = EWFImageInfo(ewf_handle=pyewf.handle())
@@ -39,6 +44,7 @@ class TestEWFImageDunderInit(TestCase):
 
         init_mock.assert_called_once()
 
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     @patch('source.ewfimage.os.path.exists', MagicMock(return_value=True))
     @patch('source.ewfimage.EWFImage._initialize_partition_lookup', MagicMock(return_value=None))
     @patch('businesslogic.placeholders.Placeholder.replace_placeholders', MagicMock(return_value='test.e01'))
@@ -48,6 +54,7 @@ class TestEWFImageDunderInit(TestCase):
         Should initialize member _filesysteminfo as empty dict.
         :return:
         """
+        import pyewf
         from source.ewfimage import EWFImage, EWFImageInfo
 
         expected_filesysteminfo: dict = {}
@@ -57,6 +64,7 @@ class TestEWFImageDunderInit(TestCase):
 
         self.assertEqual(expected_filesysteminfo, actual_ewf_image._filesysteminfo)
 
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     @patch('source.ewfimage.os.path.exists', MagicMock(return_value=True))
     @patch('source.ewfimage.EWFImage._initialize_partition_lookup', MagicMock(return_value=None))
     @patch('businesslogic.placeholders.Placeholder.replace_placeholders', MagicMock(return_value='test.e01'))
@@ -66,6 +74,7 @@ class TestEWFImageDunderInit(TestCase):
         Should initialize member _fs_discoverd with False
         :return:
         """
+        import pyewf
         from source.ewfimage import EWFImage, EWFImageInfo
 
         expected_fs_discovered: bool = False
@@ -75,6 +84,7 @@ class TestEWFImageDunderInit(TestCase):
 
         self.assertEqual(expected_fs_discovered, actual_ewf_image._fs_discoverd)
 
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     @patch('source.ewfimage.os.path.exists', MagicMock(return_value=True))
     @patch('source.ewfimage.EWFImage._initialize_partition_lookup', MagicMock(return_value=None))
     @patch('businesslogic.placeholders.Placeholder.replace_placeholders', MagicMock(return_value='test.e01'))
@@ -84,6 +94,7 @@ class TestEWFImageDunderInit(TestCase):
         Should initialize member _fs_discoverd with True and call _initialize_partitions.
         :return:
         """
+        import pyewf
         from source.ewfimage import EWFImage, EWFImageInfo
 
         expected_fs_discovered: bool = True
@@ -96,6 +107,7 @@ class TestEWFImageDunderInit(TestCase):
         self.assertEqual(expected_fs_discovered, actual_ewf_image._fs_discoverd)
         init_mock.assert_called_once()
 
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     @patch('source.ewfimage.os.path.exists', MagicMock(return_value=True))
     @patch('source.ewfimage.EWFImage._initialize_partition_lookup', MagicMock(return_value=None))
     @patch('businesslogic.placeholders.Placeholder.replace_placeholders', MagicMock(return_value='test.e01'))
@@ -105,6 +117,7 @@ class TestEWFImageDunderInit(TestCase):
         Should not call _initialize_partitions.
         :return:
         """
+        import pyewf
         from source.ewfimage import EWFImage, EWFImageInfo
 
         expected_image_info: EWFImageInfo = EWFImageInfo(ewf_handle=pyewf.handle())
@@ -117,6 +130,7 @@ class TestEWFImageDunderInit(TestCase):
 
 
 class TestEWFImage(TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     @patch('source.ewfimage.os.path.exists', MagicMock(return_value=True))
     @patch('source.ewfimage.EWFImage._initialize_partition_lookup', MagicMock(return_value=None))
     @patch('businesslogic.placeholders.Placeholder.replace_placeholders', MagicMock(return_value='test.e01'))
@@ -126,6 +140,7 @@ class TestEWFImage(TestCase):
         Should raise an error
         :return:
         """
+        import pyewf
         from source.ewfimage import EWFImage, EWFImageInfo
         from businesslogic.errors import CollectorParameterError
 
