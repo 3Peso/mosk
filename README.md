@@ -257,12 +257,12 @@ The following information will be collected:
 * TimeFromNTPServer
 
 #### Scope 'EWFImage'
-* FolderInformation
-* ImageMetadata
-* PartitionTable
-* File
-* <a href="#image-filehash">FileHash</a>
-* CompleteFileSystemInfo
+* FolderInformation (macOS, Linux)
+* ImageMetadata (macOS, Linux)
+* PartitionTable (macOS, Linux) 
+* File (macOS, Linux)
+* <a href="#image-filehash">FileHash (macOS, Linux)</a>
+* CompleteFileSystemInfo (macOS, Linux)
 
 ##### <a name="image-filehash"></a>FileHash
 Calculates the hash of a provided file inside of a image file and compares it against a 
