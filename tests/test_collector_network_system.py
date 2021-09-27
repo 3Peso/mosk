@@ -1,4 +1,5 @@
 import logging
+import platform
 from unittest import TestCase
 
 
@@ -14,6 +15,9 @@ class TestTimeFromNTPServerCollect(TestCase):
         expected_ntp_server = 'invalid.address.invi'
         expected_data = "Could not retrieve network time because of a runtime exception. " \
                         "socket.gaierror message: nodename nor servname provided, or not known"
+        if platform.system() == "Windows":
+            expected_data = "Could not retrieve network time because of a runtime exception. " \
+                            "socket.gaierror message: getaddrinfo failed"
 
         actual_colletor = TimeFromNTPServer(parameters={}, parent=None)
         actual_colletor.timeserver = expected_ntp_server
