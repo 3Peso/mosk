@@ -6,11 +6,11 @@ import hashlib
 import re
 from logging import Logger
 
-from baseclasses.artefact import ArtefactBase
+from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact
 from source.baseclasses.image import FolderInfo
 
 
-class File(ArtefactBase):
+class File(MacArtefact, LinuxArtefact):
     _logger: Logger = logging.getLogger(__name__)
 
     def __init__(self, *args, **kwargs) -> None:
@@ -31,7 +31,7 @@ class File(ArtefactBase):
         self.data = f"File '{self._file_path}{self._filename}' exported to path '{self._out_path}'."
 
 
-class FileHash(ArtefactBase):
+class FileHash(MacArtefact, LinuxArtefact):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._file_path = self.get_parameter('filepath')
@@ -59,7 +59,7 @@ class FileHash(ArtefactBase):
                         f"matches the provided hash '{self.filehash}'."
 
 
-class FolderInformation(ArtefactBase):
+class FolderInformation(MacArtefact, LinuxArtefact):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._folder = self.get_parameter('folder')
@@ -70,7 +70,7 @@ class FolderInformation(ArtefactBase):
         self.data = str(folderinfo)
 
 
-class CompleteFileSystemInfo(ArtefactBase):
+class CompleteFileSystemInfo(MacArtefact, LinuxArtefact):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._outpath = self.get_parameter('outpath')
