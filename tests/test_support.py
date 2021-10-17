@@ -1,6 +1,7 @@
 from unittest import TestCase, mock
 from unittest.mock import MagicMock
 import os
+import platform
 
 from businesslogic.support import str_to_bool, get_collector_resources, format_bytes, md5
 
@@ -159,6 +160,8 @@ class TestMd5(TestCase):
         Should return hash 0db7d1adf349b912f612c9be06278706
         """
         expected_hash = "0db7d1adf349b912f612c9be06278706"
+        if platform.system() == "Windows":
+            expected_hash = "eb9741896e5a38b773be6da56fe90c3a"
         actual_hash = md5(fpath="./testfiles/test.txt")
 
         self.assertEqual(expected_hash, actual_hash)
@@ -168,6 +171,8 @@ class TestMd5(TestCase):
         Should return hash 23de9120d4b70ba8cb3f0a980bb6c039
         """
         expected_hash = "23de9120d4b70ba8cb3f0a980bb6c039"
+        if platform.system() == "Windows":
+            expected_hash = "69b7d4403901e694c554f8798893e8d9"
         actual_hash = md5(fpath="./testfiles/longtext.txt")
 
         self.assertEqual(expected_hash, actual_hash)

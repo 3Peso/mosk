@@ -1,3 +1,5 @@
+import platform
+import unittest
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -10,6 +12,8 @@ class MyTestCaseExampleInstructions(TestCase):
         """
         from instructionparsers.xmlparser import XmlParser
         instructions = '../examples/collect-all.xml'
+        if platform.system() == 'Windows':
+            instructions = '..\examples\collect-all-windows.xml'
         try:
             xml_parser = XmlParser(instructionspath=instructions, protocol=None)
             xml_parser._instructionspath = instructions
@@ -17,6 +21,7 @@ class MyTestCaseExampleInstructions(TestCase):
         except Exception:
             self.fail(f"Failed to initialize parser for '{instructions}'.")
 
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     @patch('instructionparsers.xmlparser.XmlParser.instructionspath')
     def test_collect_from_image(self, path_mock):
         """

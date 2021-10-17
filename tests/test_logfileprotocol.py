@@ -3,11 +3,15 @@ from unittest.mock import patch
 from datetime import date
 from collections import OrderedDict
 import os
+import logging
 import re
 
 
 class TestLogFileProtocolFilename(TestCase):
     def tearDown(self) -> None:
+        # By calling logging.shutdown we ensure that the logfile handler is closed so that a system like
+        # Windows can savely remove the log files created by the tests.
+        logging.shutdown()
         filepattern = '^.*_tst_\d\d\d\d-\d\d-\d\d\.txt$'
         for f in os.listdir('.'):
             if re.search(filepattern, f):
@@ -137,6 +141,9 @@ class TestLogFileProtocolGetHeaderSeperator(TestCase):
 
 class TestLogFileProtocolWriteProtocolEntry(TestCase):
     def tearDown(self) -> None:
+        # By calling logging.shutdown we ensure that the logfile handler is closed so that a system like
+        # Windows can savely remove the log files created by the tests.
+        logging.shutdown()
         filepattern = '^.*_tst_\d\d\d\d-\d\d-\d\d\.txt$'
         for f in os.listdir('.'):
             if re.search(filepattern, f):
@@ -159,6 +166,9 @@ class TestLogFileProtocolWriteProtocolEntry(TestCase):
 
 class TestLogFileProtocolSetTaskMetadata(TestCase):
     def tearDown(self) -> None:
+        # By calling logging.shutdown we ensure that the logfile handler is closed so that a system like
+        # Windows can savely remove the log files created by the tests.
+        logging.shutdown()
         filepattern = '^.*_tst_\d\d\d\d-\d\d-\d\d\.txt$'
         for f in os.listdir('.'):
             if re.search(filepattern, f):
@@ -189,6 +199,7 @@ class TestLogFileProtocolDunderInit(TestCase):
     expected_log_file = "test_log.txt"
 
     def tearDown(self) -> None:
+        logging.shutdown()
         os.remove(self.expected_log_file)
 
     def test___init__with_own_protocol_log_file(self):
@@ -199,5 +210,7 @@ class TestLogFileProtocolDunderInit(TestCase):
         from protocol.logfileprotocol import LogFileProtocol
 
         protocol = LogFileProtocol(own_protocol_filename=self.expected_log_file, examiner='tada')
-
-        self.assertEqual(self.expected_log_file, protocol._protocolfilename)
+        try:
+            self.assertEqual(self.expected_log_file, protocol._protocolfilename)
+        finally:
+            protocol.__del__()

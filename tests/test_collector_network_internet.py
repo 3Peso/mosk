@@ -1,4 +1,5 @@
 import logging
+import platform
 from unittest import TestCase, mock
 from unittest.mock import MagicMock
 
@@ -28,6 +29,9 @@ class TestTemperatureFromOpenWeatherDotComCollect(TestCase):
         """
         excpeted_data = "Could not query http://plumbumm.ich.bin.nicht.da.haha." \
                         "\n<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+        if platform.system() == "Windows":
+            excpeted_data = "Could not query http://plumbumm.ich.bin.nicht.da.haha." \
+                            "\n<urlopen error [Errno 11001] getaddrinfo failed>"
         collector = TemperatureFromOpenWeatherDotCom(parameters={
             'countrycode': 'ger', 'apikey': '123456789abcdefghijkl1234567890a', 'city': 'Munich'}, parent=None)
 

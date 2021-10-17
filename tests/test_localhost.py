@@ -1,3 +1,4 @@
+import platform
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
@@ -11,6 +12,8 @@ class TestSourceLocalhostExpandFilepath(TestCase):
         import source.localhost
         actual_expanded_path = source.localhost.expandfilepath('~/test')
         expected_path = '/home/someuser/test'
+        if platform.system() == "Windows":
+            expected_path = '/home/someuser\\test'
 
         self.assertEqual(expected_path, actual_expanded_path)
 
@@ -31,6 +34,8 @@ class TestSourceLocalhostExpandFilepath(TestCase):
         """
         import source.localhost
         expected_path = '/home/somepath/test'
+        if platform.system() == "Windows":
+            expected_path = '/home/somepath\\test'
         with patch('source.localhost.Path.home', MagicMock(return_value="/home/somepath")):
             actual_path = source.localhost.expandfilepath('/~/test')
 

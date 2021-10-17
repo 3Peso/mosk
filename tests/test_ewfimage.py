@@ -152,6 +152,7 @@ class TestEWFImage(TestCase):
 
 
 class TestEWFPartitionFSObjectGetter(TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     def test_fs_object(self):
         """Should raise LookupError if _fs_object is none"""
         from source.ewfimage import EWFPartition

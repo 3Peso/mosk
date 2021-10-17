@@ -1,0 +1,63 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Assignment">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Client">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Description of Artefact">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Task Description">
+            Colellect everything you can.
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <LocalHost module="source.localhost">
+                <!-- The placeholder name implies, that the data collected by the artefact should be
+                stored in memory for later use in following artefacts in the tree as parameters -->
+                <MachineName module="artefact.localhost.machineinformation" placeholdername="machinename" />
+            </LocalHost>
+            <!--Problem is, the machinename will not be replaced because the machine name is only collected
+            at collection phase not initializition phase. So there must be a mechanism which automatically looks
+            up correct placeholder values on collection phase, too. This can be hooked in in the wrapper class object.
+            Only requirement in this case would be, that the machinename can only be looked up, after the collection
+            of the above "MachineName" artefact has taken place.-->
+            <LocalHost path="!@machinename@!" module="source.localhost">
+                <OSName module="artefact.localhost.osinformation" />
+                <OSVersion module="artefact.localhost.osinformation" />
+                <OSTimezone module="artefact.localhost.osinformation" />
+                <!--AllUsernames currently is not supported on Windows machines-->
+                <!--<AllUsernames module="artefact.localhost.user" properties="pw_name,pw_gecos,pw_dir"
+                              users_with_homedir="True"/>-->
+                <CurrentUser module="artefact.localhost.user" />
+                <SudoVersion module="artefact.localhost.osinformation" />
+                <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.json"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.plist"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/agent.sh"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="~/Library/._insu"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/l" />
+            </LocalHost>
+            <Network module="source.network">
+                <TemperatureFromOpenWeatherDotCom module="artefact.network.internet"
+                                                  city="london" countrycode="uk"
+                                                  apikey="!@APIKey@!" />
+                <ExternalLinksOnUrl module="artefact.network.internet"
+                                    url="!@MyUrl@!" />
+            </Network>
+        </Root>
+    </Instructions>
+</Task>
