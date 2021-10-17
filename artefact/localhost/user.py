@@ -5,8 +5,10 @@ mosk localhost module for classes collecting infromation about the current user.
 __author__ = '3Peso'
 
 import logging
+import platform
 from logging import Logger
-from pwd import getpwall
+if platform.system() != "Windows":
+    from pwd import getpwall
 from getpass import getuser
 
 from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact
