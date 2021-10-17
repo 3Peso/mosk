@@ -36,19 +36,23 @@ LOG_LEVEL = {
                                               f"Example: '00001_amr_2021-09-11.txt'")
 def mosk_main(globalplaceholders: str, instructionsfile: str, examiner: str, loglevel: str, protocollogfile: str):
     if loglevel.upper() in LOG_LEVEL.keys():
-        logging.basicConfig(level=LOG_LEVEL[loglevel.upper()],
-                            format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
+      logging.basicConfig(level=LOG_LEVEL[loglevel.upper()],
+                          format='%(asctime)s  %(name)s  %(levelname)s: %(message)s')
     else:
-        print(f"'{loglevel}' not a valid log level.")
-        return 2
+      print(f"'{loglevel}' not a valid log level.")
+      return 2
 
+    # Strip the leading and trailing ' from the path, otherwise os.path.exists will fail on Windows
+    globalplaceholders = globalplaceholders.strip('\'')
     if globalplaceholders is None or not os.path.exists(globalplaceholders):
-        print(f"Globale placeholder file does not exist. Value of parameter 'globalplaceholders': {globalplaceholders}")
-        return 2
+      print(f"Globale placeholder file does not exist. Value of parameter 'globalplaceholders': {globalplaceholders}")
+      return 2
 
+    # Strip the leading and trailing ' from the path, otherwise os.path.exists will fail on Windows
+    instructionsfile = instructionsfile.strip('\'')
     if instructionsfile is None or not os.path.exists(instructionsfile):
-        print(f"Instructions file does not exist. Value of parameter 'instructionsfile': {instructionsfile}")
-        return 2
+      print(f"Instructions file does not exist. Value of parameter 'instructionsfile': {instructionsfile}")
+      return 2
 
     logger = logging.getLogger(__name__)
     collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner,

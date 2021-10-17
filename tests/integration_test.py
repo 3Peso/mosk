@@ -2,7 +2,9 @@ import os
 import os.path
 import glob
 import logging
+import platform
 import shutil
+import unittest
 from unittest import TestCase
 
 from artefact.network.system import TimeFromNTPServer
@@ -27,7 +29,10 @@ class TestMoskIntegrationTest(TestCase):
 
     def _cleanup_artefacts(self):
         logger = logging.getLogger(__name__)
-        for test_dir in glob.glob('./test.txt_*'):
+        testfile_path = './test.txt_*'
+        if platform.system() == 'Windows':
+            testfile_path = '.\\test.txt_*'
+        for test_dir in glob.glob(testfile_path):
             try:
                 shutil.rmtree(test_dir)
                 logger.info(f"Removed test directory '{test_dir}' during test tear down.")
@@ -45,19 +50,33 @@ class TestMoskIntegrationTest(TestCase):
         logger.info(f"Removed test protocol log '{self._expected_log_file}' during test tear down.")
 
     def test_run_integration_test(self):
-        os.system(f"python3 ./mosk.py -g './global_placeholders.json' -i "
-                  f"'./examples/collect-integrationtest.xml' -e tst -l Debug -p {self._expected_log_file}")
+        if platform.system() != "Windows":
+            os.system(f"python3 ./mosk.py -g './global_placeholders.json' -i "
+                      f"'./examples/collect-integrationtest.xml' -e tst -l Debug -p {self._expected_log_file}")
+        else:
+            os.system(f"python mosk.py -g 'global_placeholders.json' -i "
+                      f"'.\examples\collect-integrationtest.xml' -e tst -l Debug -p {self._expected_log_file}")
 
         self.assertTrue(os.path.exists(self._expected_log_file))
-        self.assertTrue(self._validate_protocol_log_file_length(expected_length=650))
+        length = 650
+        if platform.system() == 'Windows':
+            length = 770
+        self.assertTrue(self._validate_protocol_log_file_length(expected_length=length))
         self.assertTrue(self._validate_protocol_log_file())
 
     def test_run_small_integration_test(self):
-        os.system(f"python3 ./mosk.py -g './global_placeholders.json' -i "
-                  f"'./examples/collect-integrationtest-small.xml' -e tst -l Debug -p {self._expected_log_file}")
+        if platform.system() != "Windows":
+            os.system(f"python3 ./mosk.py -g './global_placeholders.json' -i "
+                      f"'./examples/collect-integrationtest-small.xml' -e tst -l Debug -p {self._expected_log_file}")
+        else:
+            os.system(f"python .\\mosk.py -g 'global_placeholders.json' -i "
+                      f"'.\\examples\\collect-integrationtest-small.xml' -e tst -l Debug -p {self._expected_log_file}")
 
         self.assertTrue(os.path.exists(self._expected_log_file))
-        self.assertTrue(self._validate_protocol_log_file_length(expected_length=256))
+        length = 256
+        if platform.system() == 'Windows':
+            length = 249
+        self.assertTrue(self._validate_protocol_log_file_length(expected_length=length))
         self.assertTrue(self._validate_protocol_log_file())
 
     def _validate_protocol_log_file_length(self, expected_length):
@@ -128,6 +147,7 @@ class TestMoskIntegrationTest(TestCase):
 
 
 class TestArtefactLocalhostFileFileMetadataCollectExtendedAttributes(TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "Platform currently not supported.")
     def test__collectExtendedAttributes_on_file_with_ext_attribs(self):
         """
         Should store the extended attributes in data
