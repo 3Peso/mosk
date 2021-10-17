@@ -1,0 +1,33 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Task">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Client">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Description of the artefact">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Description of the task">
+            Collect basic information of the artefact.
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <LocalHost path="Machine" module="source.localhost">
+                <DebugPlaceholder module="artefact.support.debug" placeholder="machinename" />
+                <OSPlatform module="artefact.localhost.osinformation" />
+                <OSName module="artefact.localhost.osinformation" />
+                <OSVersion module="artefact.localhost.osinformation" />
+                <OSTimezone module="artefact.localhost.osinformation" />
+                <DetectFusionDrive module="artefact.localhost.system" />
+                <DetectFileVault module="artefact.localhost.system" />
+                <HardwareInformation module="artefact.localhost.system" />
+            </LocalHost>
+        </Root>
+    </Instructions>
+</Task>

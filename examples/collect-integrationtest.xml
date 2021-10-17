@@ -1,0 +1,99 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Task">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Client">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Description of the artefact">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Description of the task">
+            Collect basic information of the artefact.
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <!--Because collection from ewf images currently is not supported on all machine types,
+            this part is omitted for the integration test-->
+            <!--<EWFImage module="source.ewfimage" filepath="./tests/testfiles/EWFDemoFAT32.e01" discover="True"
+                      fstype="DOS">
+                <CompleteFileSystemInfo module="artefact.image.file" outpath="./output/" />
+                <ImageMetadata module="artefact.image.system" />
+                <PartitionTable module="artefact.image.system" />
+                <FolderInformation module="artefact.image.file" folder="/" partitionindex="2" />
+                <FolderInformation module="artefact.image.file" folder="/05 Email/eml/" partitionindex="2" />
+                <File module="artefact.image.file" filepath="/05 Email/eml/" filename="68F31B21-00000004.eml"
+                      outpath="./output/EWFDemoFAT32.e01/" />
+                <FileHash module="artefact.image.file" filepath="/05 Email/eml/" filename="68F31B21-00000004.eml"
+                          filehash="fe797b8a31413cb96fde720288a4ec0e" />
+            </EWFImage>-->
+            <LocalHost module="source.localhost">
+                <!-- The placeholder name implies, that the data collected by the artefact should be
+                stored in memory for later use in following artefacts in the tree as parameters -->
+                <MachineName module="artefact.localhost.machineinformation" placeholdername="machinename" />
+            </LocalHost>
+            <!-- In this specific case using the machinename collected above, does not work, because
+            currently sources are no collectors. So machine name will not be updated during collection phase
+            for sources, only for the following collectors. -->
+            <LocalHost path="!@machinename@!" module="source.localhost">
+                <DebugPlaceholder module="artefact.support.debug" placeholder="machinename" />
+                <OSPlatform module="artefact.localhost.osinformation" />
+                <OSName module="artefact.localhost.osinformation" />
+                <OSVersion module="artefact.localhost.osinformation" />
+                <OSTimezone module="artefact.localhost.osinformation" />
+                <DetectFusionDrive module="artefact.localhost.system" />
+                <DetectFileVault module="artefact.localhost.system" />
+                <HardwareInformation module="artefact.localhost.system" />
+                <!--<FileSystemInformation module="artefact.localhost.system" />-->
+                <DetectFileByName module="artefact.localhost.system" filename="Safari.app"
+                                  placeholdername="safaripath" />
+                <!--<FileCopy module="artefact.localhost.file" filepath="!@safaripath@!" />-->
+                <DetectFileByName module="artefact.localhost.system" filename="meNotHere.app" />
+                <DetectFileByName module="artefact.localhost.system" filename="tor*.*" />
+                <!--<InstalledApplications module="artefact.localhost.system" />-->
+                <!--Currently not supporte on Windows-->
+                <!--<AllUsernames module="artefact.localhost.user"
+                              properties="pw_name,pw_gecos,pw_dir" users_with_homedir="True" />-->
+                <CurrentUser module="artefact.localhost.user" />
+                <SudoVersion module="artefact.localhost.osinformation"
+                             description="According to CVE-2021-3156 the versions 1.7.7 through 1.7.10p9, 1.8.2 through 1.8.31p2,&#xD;&#xA;and 1.9.0 through 1.9.5p are vulnurable to get root level access if you have access to the machine."
+                             description-url="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3156" />
+                <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.json"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/version.plist"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="/tmp/agent.sh"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/" />
+                <FileExistence module="artefact.localhost.file" filepath="~/Library/._insu"
+                               description="Possible indicator for a 'Silver Sparrow' infection."
+                               describing-url="https://redcanary.com/blog/clipping-silver-sparrows-wings/l" />
+                <FileContent module="artefact.localhost.file"
+                             filepath="~/PycharmProjects/mosk/tests/testfiles/test.txt" />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="~/PycharmProjects/mosk/tests/testfiles/test.txt" />
+                <FileMetadata module="artefact.localhost.file"
+                              filepath="~/PycharmProjects/mosk/tests/testfiles/test.txt" />
+                <!--Obviously not supported on Windows-->
+                <!--<NVRAMCollector module="artefact.localhost.system" />-->
+                <!--<ShellHistoryOfAllUsers module="artefact.localhost.file" />-->
+                <LocalTime module="artefact.localhost.system" />
+                <FileHash module="artefact.localhost.file" filepath="~/PycharmProjects/mosk/tests/testfiles/test.txt"
+                          filehash="0db7d1adf349b912f612c9be06278706" />
+            </LocalHost>
+            <Network module="source.network">
+                <TimeFromNTPServer module="artefact.network.system" />
+                <!--<ExternalLinksOnUrl module="artefact.network.internet"
+                                    url="https://www.heise.de" />-->
+            </Network>
+        </Root>
+    </Instructions>
+</Task>
