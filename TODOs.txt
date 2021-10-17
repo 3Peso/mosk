@@ -6,6 +6,12 @@
 
 # Implement SQLite Storage for protocol and collected data/files
 
+# Adress issues on the platform "Windows", at first the issue regarding the paths which.
+
+# Update the dependencies.txt which may currently contain more dependencies, than needed.
+
+# Add a dependencies.txt file for every platform. (Mac, Linux, Windows)
+
 # Add target directory parameter for mosk to define where logfiles and collected items
 # needs to be stored
 
