@@ -14,10 +14,6 @@ from businesslogic.data import CollectionMetaData
 from businesslogic.errors import LogFileMaximumReachedError
 
 
-__author__ = '3Peso'
-__all__ = ['LogFileProtocol']
-
-
 class LogFileProtocol(ProtocolBase):
     log_file_name_pattern = r"(\d{5})_\w+_\d{4}-\d{2}-\d{2}\.\w+"
 
@@ -47,6 +43,16 @@ class LogFileProtocol(ProtocolBase):
         self._setup_protocol_logging(self._artefactlogger, self._protocolfilename, formatstring='')
         self._setup_protocol_logging(self._messagelogger, self._protocolfilename, formatstring='')
         return
+
+    def __del__(self):
+        for handler in self._artefactlogger.handlers:
+            handler.close()
+            self._artefactlogger.removeHandler(handler)
+    #    if self._artefactlogger is not None and len(self._artefactlogger.handlers) == 1:
+    #        self._artefactlogger.handlers[0].acquire()
+    #        #self._artefactlogger.handlers[0].stream.close()
+    #        self._artefactlogger.handlers[0].close()
+    #        self._artefactlogger.removeHandler(self._artefactlogger.handlers[0])
 
     @staticmethod
     def _setup_protocol_logging(currlogger: logging.Logger, protocolfilepath: str,
