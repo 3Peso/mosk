@@ -131,9 +131,9 @@ You can provide placeholders in a global placeholder file, by default "global_pl
 ```json
 {
   "examiner": "sho",
-  "clienttask": "Do something, dam it!",
+  "clienttask": "Collect data artefacts regarding the Darknet",
   "client": "Sgt Mustman",
-  "artefactdescription": "BrackBook Flair"
+  "artefactdescription": "BragBook Flair"
 }
 ```
 
