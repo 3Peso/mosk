@@ -10,8 +10,6 @@
 
 # Adress issues on the platform "Windows", at first the issue regarding the paths which.
 
-# Update the dependencies.txt which may currently contain more dependencies, than needed.
-
 # Add a dependencies.txt file for every platform. (Mac, Linux, Windows)
 
 # Add target directory parameter for mosk to define where logfiles and collected items
@@ -47,9 +45,3 @@
 #  Example: '2,./tests/EWFDemoFAT32.e01/2/02 Sig/Microsoft Windows Vista & Office 2007 Forensics, Office 2007 File Format.pptx'
 
 # Get module pyewf up and running on windows
-
-# Dependencies for every collector, if it has any special dependencies
-
-# Dependencies for live collection
-
-# Dependencies for collection from images
