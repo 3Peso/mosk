@@ -55,10 +55,13 @@ def mosk_main(globalplaceholders: str, instructionsfile: str, examiner: str, log
       return 2
 
     logger = logging.getLogger(__name__)
-    collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner,
-                                        placeholderfile=globalplaceholders, protocollogfile=protocollogfile)
-    collector.collect()
-    logger.info("Collection complete.")
+    try:
+        collector = Collector.get_collector(instructionsfile=instructionsfile, examiner=examiner,
+                                            placeholderfile=globalplaceholders, protocollogfile=protocollogfile)
+        collector.collect()
+        logger.info("Collection complete.")
+    except ModuleNotFoundError as mnf_err:
+        print(mnf_err)
 
     return 0
 
