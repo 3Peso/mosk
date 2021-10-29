@@ -52,13 +52,15 @@ class TestMoskIntegrationTest(TestCase):
     def test_run_integration_test(self):
         if platform.system() != "Windows":
             os.system(f"python3 ./mosk.py -g './global_placeholders.json' -i "
-                      f"'./tests/testfiles/instructions/integration_test.xml' -e tst -l Debug -p {self._expected_log_file}")
+                      f"'./tests/instructions/integration_test.xml' -e tst -l Debug "
+                      f"-p {self._expected_log_file}")
         else:
             os.system(f"python mosk.py -g 'global_placeholders.json' -i "
-                      f"'.\\tests\\testfiles\\instructions\\integration_test.xml' -e tst -l Debug -p {self._expected_log_file}")
+                      f"'.\\tests\\instructions\\integration_test.xml' -e tst -l Debug "
+                      f"-p {self._expected_log_file}")
 
         self.assertTrue(os.path.exists(self._expected_log_file))
-        length = 650
+        length = 907
         if platform.system() == 'Windows':
             length = 770
         self.assertTrue(self._validate_protocol_log_file_length(expected_length=length))
@@ -67,10 +69,12 @@ class TestMoskIntegrationTest(TestCase):
     def test_run_small_integration_test(self):
         if platform.system() != "Windows":
             os.system(f"python3 ./mosk.py -g './global_placeholders.json' -i "
-                      f"'./tests/testfiles/instructions/integration_test_small.xml' -e tst -l Debug -p {self._expected_log_file}")
+                      f"'./tests/instructions/integration_test_small.xml' -e tst -l Debug "
+                      f"-p {self._expected_log_file}")
         else:
             os.system(f"python .\\mosk.py -g 'global_placeholders.json' -i "
-                      f"'.\\tests\\testfiles\\instructions\\integration_test_small.xml' -e tst -l Debug -p {self._expected_log_file}")
+                      f"'.\\tests\\instructions\\integration_test_small.xml' -e tst -l Debug "
+                      f"-p {self._expected_log_file}")
 
         self.assertTrue(os.path.exists(self._expected_log_file))
         length = 256
@@ -84,6 +88,7 @@ class TestMoskIntegrationTest(TestCase):
         with open(self._expected_log_file) as file_to_count:
             num_lines = sum(1 for line in file_to_count)
         logger.info(f"Log file length: {num_lines}")
+        print(f"expected length: {expected_length} - actual length: {num_lines}")
         return True if expected_length == num_lines else False
 
     def _validate_protocol_log_file(self):
