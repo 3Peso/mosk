@@ -331,6 +331,19 @@ the following command:
 pip install -r <dependencies text file>
 ```
 
+NOTE:
+Not all collectors in a collector module needs to be tested independently. Reason is, that Python needs to load
+the external modules upon instatiating any of the collectors in a collectors module. So if any of the import statements
+at the beginning is raising an exception you can assume, that the collector cannot be used. Of course, there may
+be edge cases, where this is not true. But assume you have to install all external modules, which are being imported
+at the beginning of a collector module.
+
+<span style="color:red">
+NOTE on collectors for image files:
+You will have to provide your own image file for these tests. This project currently does not include a demo
+image file. So, when running the dependency tests for image collector modules, you will run into exceptions.
+</span>
+
 ## Protocol
 
 mosk will try to write a protocol of the collection process. Every collector for that reason will collect not only the data but also metadata. The following metadata may be collected:
