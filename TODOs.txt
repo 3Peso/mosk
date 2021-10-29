@@ -1,6 +1,8 @@
 # Refactoring run with logging in focus.
 #  Use https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/ as basis.
 
+# Check if admin rights are required for a collector. If so and user is not -> Logging
+
 # FileMetadata: Implement interpreter for "filetype and permissions (st_mode)"
 # https://man7.org/linux/man-pages/man7/inode.7.html
 
@@ -45,3 +47,9 @@
 #  Example: '2,./tests/EWFDemoFAT32.e01/2/02 Sig/Microsoft Windows Vista & Office 2007 Forensics, Office 2007 File Format.pptx'
 
 # Get module pyewf up and running on windows
+
+# Dependencies for every collector, if it has any special dependencies
+
+# Dependencies for live collection
+
+# Dependencies for collection from images
