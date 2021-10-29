@@ -19,7 +19,7 @@ class TestMinimumDependencies(TestCase):
         os.chdir('..')
 
     def tearDown(self) -> None:
-        logfiles = glob.glob('./dependency_test*.log')
+        logfiles = glob.glob('./dependency_test*.txt')
         for logfile in logfiles:
             os.remove(logfile)
         os.chdir(self._currentCWD)
