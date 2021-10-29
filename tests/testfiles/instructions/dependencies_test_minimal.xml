@@ -1,0 +1,31 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Sachbearbeiter">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Auftrag">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Auftraggeber">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Beschreibung des Asservats">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Beschreibung der Aufgabe">
+            Wie lauten die Eckdaten des Betriebssystems des zugrundeliegend Artefakts?
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <LocalHost path="Machine" module="source.localhost">
+                <DetectFileByName module="artefact.localhost.system" filename="Safari.app"
+                                  placeholdername="safaripath" />
+                <FileCopy module="artefact.localhost.file" filepath="!@safaripath@!" />
+                <DetectFileByName module="artefact.localhost.system" filename="test.xml"
+                                  placeholdername="testpath" />
+                <FileCopy module="artefact.localhost.file" filepath="!@testpath@!" />
+            </LocalHost>
+        </Root>
+    </Instructions>
+</Task>

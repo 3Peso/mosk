@@ -52,10 +52,10 @@ class TestMoskIntegrationTest(TestCase):
     def test_run_integration_test(self):
         if platform.system() != "Windows":
             os.system(f"python3 ./mosk.py -g './global_placeholders.json' -i "
-                      f"'./examples/collect-integrationtest.xml' -e tst -l Debug -p {self._expected_log_file}")
+                      f"'./tests/testfiles/instructions/integration_test.xml' -e tst -l Debug -p {self._expected_log_file}")
         else:
             os.system(f"python mosk.py -g 'global_placeholders.json' -i "
-                      f"'.\examples\collect-integrationtest.xml' -e tst -l Debug -p {self._expected_log_file}")
+                      f"'.\\tests\\testfiles\\instructions\\integration_test.xml' -e tst -l Debug -p {self._expected_log_file}")
 
         self.assertTrue(os.path.exists(self._expected_log_file))
         length = 650
@@ -67,10 +67,10 @@ class TestMoskIntegrationTest(TestCase):
     def test_run_small_integration_test(self):
         if platform.system() != "Windows":
             os.system(f"python3 ./mosk.py -g './global_placeholders.json' -i "
-                      f"'./examples/collect-integrationtest-small.xml' -e tst -l Debug -p {self._expected_log_file}")
+                      f"'./tests/testfiles/instructions/integration_test_small.xml' -e tst -l Debug -p {self._expected_log_file}")
         else:
             os.system(f"python .\\mosk.py -g 'global_placeholders.json' -i "
-                      f"'.\\examples\\collect-integrationtest-small.xml' -e tst -l Debug -p {self._expected_log_file}")
+                      f"'.\\tests\\testfiles\\instructions\\integration_test_small.xml' -e tst -l Debug -p {self._expected_log_file}")
 
         self.assertTrue(os.path.exists(self._expected_log_file))
         length = 256
