@@ -1,0 +1,26 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            Dependency test instruction
+        </examiner>
+        <originaltask title="Task">
+            Dependency test instruction
+        </originaltask>
+        <taskissuer title="Client">
+            Dependency test instruction
+        </taskissuer>
+        <artefactdescription title="Description of artefact">
+            Dependency test instruction
+        </artefactdescription>
+        <taskdescription title="Description of task">
+            Dependency test instruction
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <LocalHost path="Machine" module="source.localhost">
+                <HardwareInformation module="artefact.localhost.system" />
+            </LocalHost>
+        </Root>
+    </Instructions>
+</Task>

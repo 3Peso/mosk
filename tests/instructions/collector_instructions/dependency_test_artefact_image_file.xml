@@ -1,0 +1,28 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            Dependency test instruction
+        </examiner>
+        <originaltask title="Task">
+            Dependency test instruction
+        </originaltask>
+        <taskissuer title="Client">
+            Dependency test instruction
+        </taskissuer>
+        <artefactdescription title="Description of artefact">
+            Dependency test instruction
+        </artefactdescription>
+        <taskdescription title="Description of task">
+            Dependency test instruction
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <EWFImage module="source.ewfimage" filepath="./tests/testfiles/EWFDemoFAT32.e01" discover="True"
+                      fstype="DOS">
+                <FileHash module="artefact.image.file" filepath="/05 Email/eml/" filename="68F31B21-00000004.eml"
+                          filehash="fe797b8a31413cb96fde720288a4ec0e" />
+            </EWFImage>
+        </Root>
+    </Instructions>
+</Task>

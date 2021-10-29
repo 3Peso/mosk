@@ -1,0 +1,25 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            !@examiner@!
+        </examiner>
+        <originaltask title="Task">
+            !@clienttask@!
+        </originaltask>
+        <taskissuer title="Client">
+            !@client@!
+        </taskissuer>
+        <artefactdescription title="Description of the artefact">
+            !@artefactdescription@!
+        </artefactdescription>
+        <taskdescription title="Description of the task">
+            Wie lauten die Eckdaten des Betriebssystems des zugrundeliegend Artefakts?
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <LocalHost path="Machine" module="source.localhost">
+            </LocalHost>
+        </Root>
+    </Instructions>
+</Task>

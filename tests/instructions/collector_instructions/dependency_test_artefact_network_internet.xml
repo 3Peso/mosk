@@ -1,0 +1,27 @@
+<Task>
+    <TaskHeader>
+        <examiner title="Examiner">
+            Dependency test instruction
+        </examiner>
+        <originaltask title="Task">
+            Dependency test instruction
+        </originaltask>
+        <taskissuer title="Client">
+            Dependency test instruction
+        </taskissuer>
+        <artefactdescription title="Description of artefact">
+            Dependency test instruction
+        </artefactdescription>
+        <taskdescription title="Description of task">
+            Dependency test instruction
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <Network module="source.network">
+                <ExternalLinksOnUrl module="artefact.network.internet"
+                                    url="https://www.google.com" />
+            </Network>
+        </Root>
+    </Instructions>
+</Task>
