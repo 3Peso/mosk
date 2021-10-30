@@ -1,0 +1,41 @@
+<Task>
+    <TaskHeader>
+        <taskdescription title="Task Description">
+            Collector instructions to collect as many Mac artefacts as possible.
+        </taskdescription>
+    </TaskHeader>
+    <Instructions>
+        <Root module="source.root">
+            <LocalHost module="source.localhost">
+                <!-- The placeholder name implies, that the data collected by the artefact should be
+                stored in memory for later use in following artefacts in the tree as parameters -->
+                <MachineName module="artefact.localhost.machineinformation" placeholdername="machinename" />
+            </LocalHost>
+            <!--Problem is, the machinename will not be replaced because the machine name is only collected
+            at collection phase not initializition phase. So there must be a mechanism which automatically looks
+            up correct placeholder values on collection phase, too. This can be hooked in in the wrapper class object.
+            Only requirement in this case would be, that the machinename can only be looked up, after the collection
+            of the above "MachineName" artefact has taken place.-->
+            <LocalHost path="!@machinename@!" module="source.localhost">
+                <OSName module="artefact.localhost.osinformation"
+                        description="The macOS name installed on the machine."/>
+                <OSVersion module="artefact.localhost.osinformation"
+                           description="The macOS version number installed on the machine."/>
+                <OSTimezone module="artefact.localhost.osinformation" />
+                <AllUsernames module="artefact.localhost.user"
+                              properties="pw_name,pw_gecos,pw_dir"
+                              users_with_homedir="True"
+                              description="All user accounts configured on the system."
+                              pw_name_meaning="The user's login name."
+                              pw_name_description_url="https://www.gnu.org/software/libc/manual/html_node/User-Data-Structure.html"
+                              pw_gecos_meaning="The gecos field, or GECOS field is an entry in the /etc/passwd &#10; file on Unix, and similar operating systems.It is typically used to record general &#10; information about the account or its user(s) such as their real name and phone number. &#10; Some early Unix systems at Bell Labs used GECOS machines for print spooling and &#10; various other services, so this field was added to carry information on a user's GECOS &#10; identity."
+                              pw_gecos_description_url="https://en.wikipedia.org/wiki/Gecos_field"
+                              pw_dir_meaning="The user’s home directory, or initial working directory. &#10; This might be a null pointer, in which case the interpretation is system-dependent."
+                              pw_dir_description_url="https://www.gnu.org/software/libc/manual/html_node/User-Data-Structure.html" />
+                <CurrentUser module="artefact.localhost.user" />
+                <SudoVersion module="artefact.localhost.osinformation" />
+                <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
+            </LocalHost>
+        </Root>
+    </Instructions>
+</Task>
