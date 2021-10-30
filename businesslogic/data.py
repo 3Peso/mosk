@@ -77,7 +77,7 @@ class CollectionData:
             info += f"\r\n\r\nCollector: {self._collector_name}"
         if self.collector_parameters is not None:
             for param in self.collector_parameters.keys():
-                info += f"\r\n{param}: '{self.collector_parameters[param]}'"
+                info += f"\r\n{param}: '{self.collector_parameters[param].strip()}'"
 
         return info.lstrip('\r\n').rstrip('\r\n')
 
