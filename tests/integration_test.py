@@ -46,8 +46,11 @@ class TestMoskIntegrationTest(TestCase):
             except Exception:
                 logger.warning(f"Could not remove '{test_dir}'.")
 
-        os.remove(self._expected_log_file)
-        logger.info(f"Removed test protocol log '{self._expected_log_file}' during test tear down.")
+        try:
+            os.remove(self._expected_log_file)
+            logger.info(f"Removed test protocol log '{self._expected_log_file}' during test tear down.")
+        except FileNotFoundError:
+            logger.info(f"No test protocol '{self._expected_log_file}. Nothing to delete.'")
 
     def test_run_integration_test(self):
         if platform.system() != "Windows":
@@ -82,6 +85,15 @@ class TestMoskIntegrationTest(TestCase):
             length = 249
         self.assertTrue(self._validate_protocol_log_file_length(expected_length=length))
         self.assertTrue(self._validate_protocol_log_file())
+
+    @unittest.skipIf(platform.system() != "Darwin", "This test is only meant for macOS platforms.")
+    def test_run_macos_collection_instructions(self):
+        expected_log_file:str = "mac_artefacts_log.txt"
+        os.system(f"python3 ./mosk.py -g './global_placeholders.json' -i "
+                  f"'./examples/collect-mac-artefacts.xml' -e mac -l Debug "
+                  f"-p {expected_log_file}")
+
+        self.assertTrue(os.path.exists(expected_log_file))
 
     def _validate_protocol_log_file_length(self, expected_length):
         logger = logging.getLogger(__name__)
