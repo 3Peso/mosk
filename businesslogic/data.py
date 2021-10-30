@@ -77,7 +77,9 @@ class CollectionData:
             info += f"\r\n\r\nCollector: {self._collector_name}"
         if self.collector_parameters is not None:
             for param in self.collector_parameters.keys():
-                info += f"\r\n{param}: '{self.collector_parameters[param].strip()}'"
+                # It happens, that a parameter value is not of the type string. In that case the conversion
+                # helps. In every other case, type conversion will not hurt.
+                info += f"\r\n{param}: '{str(self.collector_parameters[param]).strip()}'"
 
         return info.lstrip('\r\n').rstrip('\r\n')
 
