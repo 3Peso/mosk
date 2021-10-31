@@ -34,7 +34,20 @@
                               pw_dir_description_url="https://www.gnu.org/software/libc/manual/html_node/User-Data-Structure.html" />
                 <CurrentUser module="artefact.localhost.user" />
                 <SudoVersion module="artefact.localhost.osinformation" />
-                <FileExistence module="artefact.localhost.file" filepath="/System/Library/LaunchAgents/com.apple.Dock.plist" />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="/System/Library/LaunchAgents/com.apple.Dock.plist"
+                          description="plist files in /System/Library/LaunchAgents/ contains the settings for all &#10; the user agents started up, when the user loggs in. &#10; 'com.apple.Dock.plist' contains the default settings for the Dock app, &#10; which are the apps docked by default." />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="~/Library/Preferences/com.apple.Dock.plist"
+                          description="Contains the apps of the current user, which are docked." />
+                <!-- Use your own copy of plutil for this collector to ensure it is free of malware, like in the
+                 commented out example below. If you do so, provide an md5 hash in the same folder as the copy
+                 named 'plutil.md5'.-->
+                <!--<PLUtil module="artefact.localhost.tools"
+                        filepath="~/Library/Preferences/com.apple.Dock.plist"
+                        tool_path="<Your Tools Folder>/plutil" />-->
+                <!--<PLUtil module="artefact.localhost.tools"
+                        filepath="~/Library/Preferences/com.apple.Dock.plist" />-->
             </LocalHost>
         </Root>
     </Instructions>

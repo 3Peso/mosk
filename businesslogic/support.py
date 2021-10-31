@@ -204,3 +204,15 @@ def format_bytes(size: int):
         size /= power
         n += 1
     return f"{round(size,2)}{power_labels[n]+'B'}"
+
+
+def validate_file_signature(filepath: str) -> bool:
+    """
+    Takes a file path, calculates its MD5 hash and compares this hash to the provided hash
+    the file should have.
+    Expects that in the folder of the file to check also is a file called <file>.md5 which contains
+    the expected hash.
+    :param filepath:
+    :return: Returns True if the hash of the file is the same as the implicitely provided hash.
+    """
+    pass

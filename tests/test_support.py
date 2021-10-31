@@ -276,3 +276,33 @@ class TestChangeToModuleRoot(TestCase):
             actual_wd = os.getcwd()
 
         self.assertEqual(expected_wd, actual_wd)
+
+
+class TestValidateFileSignature(TestCase):
+    def test_validate_file_signature_provided_file_does_not_exist(self):
+        """
+        Should return False.
+        :return:
+        """
+        self.fail()
+
+    def test_validate_file_signature_no_md5_hash_provided(self):
+        """
+        Should return False.
+        :return:
+        """
+        self.fail()
+
+    def test_validate_file_signature_md5_hash_does_not_match(self):
+        """
+        Should return False.
+        :return:
+        """
+        self.fail()
+
+    def test_validate_file_signature_md5_hash_matches(self):
+        """
+        Should return True.
+        :return:
+        """
+        self.fail()

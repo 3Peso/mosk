@@ -183,5 +183,10 @@
     "title": "SimpleArtefactMockup",
     "collectionmethod": "mockup",
     "description": "This is a mockup collector."
+  },
+  "artefact.localhost.tools.PLUtil": {
+    "title": "PLUtil",
+    "collectionmethod": "Uses the system command 'plutil' with -p",
+    "description": "Lists the contents of a provided plist file."
   }
 }
