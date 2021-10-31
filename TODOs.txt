@@ -47,3 +47,5 @@
 # Get module pyewf up and running on windows
 
 # enable wildcards for localhost.file.FileCopy.
+
+# add optional parameter 'destination path' to localhost.file.FileCopy.
