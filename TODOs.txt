@@ -45,3 +45,5 @@
 #  Example: '2,./tests/EWFDemoFAT32.e01/2/02 Sig/Microsoft Windows Vista & Office 2007 Forensics, Office 2007 File Format.pptx'
 
 # Get module pyewf up and running on windows
+
+# enable wildcards for localhost.file.FileCopy.
