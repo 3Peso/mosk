@@ -172,6 +172,10 @@ mosk does its collection through collectors. There are already several collector
 * [HardwareInformation (macOS)](#hardwareinformation)
 * [AllUsernames (macOS, Linux)](#allusernames)
 * CurrentUser
+* [PLUtil (macOS)](#PLUtil)
+
+##### PLUtil
+*Under development*
 
 ##### AllUsernames
 Allowed attributes/parameters:
