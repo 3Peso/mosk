@@ -3,7 +3,9 @@ support module continaing tool functions for mosk
 """
 
 __author__ = '3Peso'
-__all__ = ['get_userfolders', 'md5', 'run_terminal_command', 'str_to_bool', 'format_bytes']
+__all__ = ['get_userfolders', 'md5', 'run_terminal_command', 'str_to_bool', 'format_bytes',
+           'validate_file_signature']
+
 
 import json
 import locale
