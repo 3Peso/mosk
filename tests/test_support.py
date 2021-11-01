@@ -338,3 +338,15 @@ class TestValidateFileSignature(TestCase):
         actual_result = validate_file_signature(expected_file_path)
 
         self.assertTrue(actual_result)
+
+    def test_validate_file_signature_no_file_extension(self):
+        """
+        Should return True.
+        :return:
+        """
+        from businesslogic.support import validate_file_signature
+
+        expected_file_path = "./testfiles/test"
+        actual_result = validate_file_signature(expected_file_path)
+
+        self.assertTrue(actual_result)
