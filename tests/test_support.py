@@ -284,25 +284,57 @@ class TestValidateFileSignature(TestCase):
         Should return False.
         :return:
         """
-        self.fail()
+        from businesslogic.support import validate_file_signature
 
-    def test_validate_file_signature_no_md5_hash_provided(self):
+        expected_file_path = "./testfiles/longtext.txt"
+        actual_result = validate_file_signature(expected_file_path)
+
+        self.assertFalse(actual_result)
+
+    def test_validate_file_signature_empty_signature_file(self):
         """
         Should return False.
         :return:
         """
-        self.fail()
+        from businesslogic.support import validate_file_signature
+
+        expected_file_path = "./testfiles/test_file_with_empty_signature_file.txt"
+        actual_result = validate_file_signature(expected_file_path)
+
+        self.assertFalse(actual_result)
+
+    def test_validate_file_signature_sig_file_windows(self):
+        """
+        Should return True
+        :return:
+        """
+        from businesslogic.support import validate_file_signature
+
+        expected_file_path = "./testfiles/windows-1252_encoding.txt"
+        actual_result = validate_file_signature(expected_file_path)
+
+        self.assertTrue(actual_result)
 
     def test_validate_file_signature_md5_hash_does_not_match(self):
         """
         Should return False.
         :return:
         """
-        self.fail()
+        from businesslogic.support import validate_file_signature
+
+        expected_file_path = "./testfiles/sig_not_match.txt"
+        actual_result = validate_file_signature(expected_file_path)
+
+        self.assertFalse(actual_result)
 
     def test_validate_file_signature_md5_hash_matches(self):
         """
         Should return True.
         :return:
         """
-        self.fail()
+        from businesslogic.support import validate_file_signature
+
+        expected_file_path = "./testfiles/test.txt"
+        actual_result = validate_file_signature(expected_file_path)
+
+        self.assertTrue(actual_result)

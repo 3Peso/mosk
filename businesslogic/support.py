@@ -17,6 +17,8 @@ import hashlib
 import subprocess
 from logging import Logger
 
+import chardet
+
 from businesslogic.errors import MD5SupportError, NoStringResourcesError, NoCountryCodeError
 
 
@@ -215,4 +217,20 @@ def validate_file_signature(filepath: str) -> bool:
     :param filepath:
     :return: Returns True if the hash of the file is the same as the implicitely provided hash.
     """
-    pass
+    file_, file_ext = os.path.splitext(filepath)
+
+    signature_file:str = f"{file_}.md5"
+    if not os.path.exists(signature_file):
+        return False
+
+    # MD5 hashes are 128 bit long. Just roughly check for the size 32,
+    # for UTF8, for typical Windows encoding of textfiles,
+    # or 16 ASCII encoding.
+    if os.stat(signature_file).st_size != 32 and os.stat(signature_file).st_size != 16:
+        return False
+    with open(signature_file) as sig_file:
+        signature = sig_file.read()
+        if md5(filepath) != signature:
+            return False
+
+    return True
