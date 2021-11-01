@@ -49,3 +49,9 @@
 # enable wildcards for localhost.file.FileCopy.
 
 # add optional parameter 'destination path' to localhost.file.FileCopy.
+
+# Refactor artefact.localhost.file.FileMetadata, it uses external command 'xattr'
+
+# If possible, refactor artefact.localhost.osinformation.SudoVersion, it uses external command 'sudo'
+
+# Refactor collectors in artefact.localhost.system. They all use external commands.
