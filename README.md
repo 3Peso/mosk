@@ -176,7 +176,20 @@ mosk does its collection through collectors. There are already several collector
 * [PLUtil (macOS)](#PLUtil)
 
 ##### RecentUserItems
-*Under development*
+Uses the external cli command 'mdfind' with certain filters to collect the recently 
+opened files by a user in her or his homefolder. Recently means, in the last 60 Minutes.
+
+```xml
+<RecentUserItems module="artefact.localhost.user" 
+                 mdfind_path="./external_tools/mdfind" />
+```
+The above example uses the `mdfind` command of the machine the collector is running on. You can provide your own
+copy of the command by defining the parameter `mdfind_path`. Along side of your own copy of the command you also
+have to provide a text file containing the md5-hash of the copy. The md5-file has to be named like the copied
+command with the extension `.md5`, so in this case `mdfind.md5`.
+
+You can also not provide the parameter `mdfind_path`, then the `mdfind` cli command of the live running machine
+is used instead.
 
 ##### PLUtil
 Uses the external cli command `plutil` with the parameter `-p` to collect the conent of a .plist-file provided

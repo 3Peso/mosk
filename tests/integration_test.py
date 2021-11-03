@@ -63,7 +63,7 @@ class TestMoskIntegrationTest(TestCase):
                       f"-p {self._expected_log_file}")
 
         self.assertTrue(os.path.exists(self._expected_log_file))
-        length = 651
+        length = 657
         if platform.system() == 'Windows':
             length = 770
         self.assertTrue(self._validate_protocol_log_file_length(expected_length=length))

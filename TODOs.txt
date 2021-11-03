@@ -55,3 +55,10 @@
 # If possible, refactor artefact.localhost.osinformation.SudoVersion, it uses external command 'sudo'
 
 # Refactor collectors in artefact.localhost.system. They all use external commands.
+
+# Refactoring: Move PLUtil to another class and/or module.
+
+# Check if it is even possible to run your own copies of plutil or mdfind without the host os hindering you from
+# doing so. Have seen, that my older copy of "mdfind" or "plutil" was finised from the shell with the output
+# "zsh: killed", which suggests, that the os is protecting itself from "mailicous" applications, disguising them
+# as legit tools.
