@@ -143,3 +143,17 @@ class TestPLUtilSetToolPath(TestCase):
             expected_util_path = 'some_tool_path'
             with self.assertRaises(SignatureMatchError):
                 util.tool_path = expected_util_path
+
+    def test_tool_path_does_not_exist(self):
+        """
+        Should not set the attribute _tool_path
+        :return:
+        """
+        from artefact.localhost.tools import PLUtil
+
+        expected_tool_path = ""
+        util = PLUtil(parameters={}, parent=None)
+        util.tool_path = "IDoNotExist"
+        actual_tool_path = util._tool_path
+
+        self.assertEqual(expected_tool_path, actual_tool_path)

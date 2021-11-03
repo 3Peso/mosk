@@ -43,11 +43,11 @@
                 <!-- Use your own copy of plutil for this collector to ensure it is free of malware, like in the
                  commented out example below. If you do so, provide an md5 hash in the same folder as the copy
                  named 'plutil.md5'.-->
-                <!--<PLUtil module="artefact.localhost.tools"
-                        filepath="~/Library/Preferences/com.apple.Dock.plist"
-                        tool_path="<Your Tools Folder>/plutil" />-->
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="~/Library/Preferences/com.apple.Dock.plist" />
+                        filepath="~/Library/Preferences/com.apple.Dock.plist"
+                        tool_path="./external_tools/plutil" />
+                <!--<PLUtil module="artefact.localhost.tools"
+                        filepath="~/Library/Preferences/com.apple.Dock.plist" />-->
             </LocalHost>
         </Root>
     </Instructions>
