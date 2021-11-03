@@ -46,8 +46,8 @@
                 <!--<PLUtil module="artefact.localhost.tools"
                         filepath="~/Library/Preferences/com.apple.Dock.plist"
                         tool_path="<Your Tools Folder>/plutil" />-->
-                <!--<PLUtil module="artefact.localhost.tools"
-                        filepath="~/Library/Preferences/com.apple.Dock.plist" />-->
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="~/Library/Preferences/com.apple.Dock.plist" />
             </LocalHost>
         </Root>
     </Instructions>

@@ -10,10 +10,11 @@ from os import path
 from baseclasses.artefact import MacArtefact
 from businesslogic.support import run_terminal_command
 from businesslogic.support import validate_file_signature
-from businesslogic.errors import SignatureMatchError
+from businesslogic.errors import SignatureMatchError, CollectorParameterError
+from baseclasses.artefact import FileClass
 
 
-class PLUtil(MacArtefact):
+class PLUtil(MacArtefact, FileClass):
     """Uses the tool 'PLUtil' to collect information from plist files.
     This is a macOS specific tool.
     """
@@ -23,12 +24,19 @@ class PLUtil(MacArtefact):
         super().__init__(*args, **kwargs)
 
     def _collect(self) -> None:
-        if path.exists(self.filepath):
-            plutil_path = self.tool_path
-            self.data = run_terminal_command(['plutil', '-p', self.filepath])
-            self.data[-1].sourcepath = self.filepath
-        else:
-            self.data = f"File '{self.filepath}' does not exist."
+        try:
+            if not path.exists(self.filepath):
+                self.data = f"File '{self.filepath}' does not exist."
+                return
+        except AttributeError:
+            raise(CollectorParameterError("No 'filepath' parameter provided."))
+
+        plutil_path = self.tool_path
+        self.data = run_terminal_command([plutil_path, '-p', self.filepath])
+        self.data[-1].sourcepath = self.filepath
+        if plutil_path == 'plutil':
+            self.data = \
+                "WARNING: No own copy of 'PLUtil' provided. 'PLUtil' of the live artefact has been used."
 
     @property
     def tool_path(self):
