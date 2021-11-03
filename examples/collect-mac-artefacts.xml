@@ -33,6 +33,11 @@
                               pw_dir_meaning="The user’s home directory, or initial working directory. &#10; This might be a null pointer, in which case the interpretation is system-dependent."
                               pw_dir_description_url="https://www.gnu.org/software/libc/manual/html_node/User-Data-Structure.html" />
                 <CurrentUser module="artefact.localhost.user" />
+                <!-- Tries to retrieve the items inside the current users home directory which the user has
+                recently opened, recently means, in the last 60 Minutes. -->
+                <!--<RecentUserItems module="artefact.localhost.user" />-->
+                <RecentUserItems module="artefact.localhost.user"
+                                 mdfind_path="./external_tools/mdfind" />
                 <SudoVersion module="artefact.localhost.osinformation" />
                 <FileCopy module="artefact.localhost.file"
                           filepath="/System/Library/LaunchAgents/com.apple.Dock.plist"
@@ -48,6 +53,53 @@
                         tool_path="./external_tools/plutil" />
                 <!--<PLUtil module="artefact.localhost.tools"
                         filepath="~/Library/Preferences/com.apple.Dock.plist" />-->
+                <FileCopy module="artefact.localhost.file"
+                          filepath="/Library/Preferences/com.apple.Bluetooth.plist"
+                          description="Bluetooth preferences and paired devices."
+                          decription_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="/Library/Preferences/com.apple.Bluetooth.plist"
+                        tool_path="./external_tools/plutil"
+                        description="Bluetooth preferences and paired devices."
+                        description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="/Library/Preferences/.GlobalPreferences.plist"
+                          description="It contains Global Preferences information such as the local time zone, geographical coordinates, etc."
+                          description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="/Library/Preferences/.GlobalPreferences.plist"
+                        tool_path="./external_tools/plutil"
+                        description="It contains Global Preferences information such as the local time zone, geographical coordinates, etc."
+                        description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="/Library/Preferences/com.apple.SoftwareUpdate.plist"
+                          description="Plist describing last attempt and last successful attempt at updating OS X software."
+                          description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="/Library/Preferences/com.apple.SoftwareUpdate.plist"
+                        tool_path="./external_tools/plutil"
+                        description="Plist describing last attempt and last successful attempt at updating OS X software."
+                        description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="~/Library/Preferences/com.apple.loginitems.plist"
+                          description="Plists listing applications that automatically start when the user is logged in."
+                          description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#USER_ARTIFACTS" />
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="~/Library/Preferences/com.apple.loginitems.plist"
+                        tool_path="./external_tools/plutil"
+                        description="Plists listing applications that automatically start when the user is logged in."
+                        description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#USER_ARTIFACTS" />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="~/Library/Preferences/com.apple.recentitems.plist"
+                          last_supported_mac_os_version="10.10 (Yosemite)"
+                          description="Recently opened applications, files, and servers."
+                          description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#Recent_Items" />
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="~/Library/Preferences/com.apple.recentitems.plist"
+                        tool_path="./external_tools/plutil"
+                        last_supported_mac_os_version="10.10 (Yosemite)"
+                        description="Recently opened applications, files, and servers."
+                        description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#Recent_Items" />
             </LocalHost>
         </Root>
     </Instructions>

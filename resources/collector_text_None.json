@@ -188,5 +188,10 @@
     "title": "PLUtil",
     "collectionmethod": "Uses the system command 'plutil' with -p",
     "description": "Lists the contents of a provided plist file."
+  },
+  "artefact.localhost.user.RecentUserItems": {
+    "title": "RecentUserItems",
+    "collectionmethod": "Uses 'mdfind'.",
+    "descriptions": "Uses 'mdfind' with ceratain filters to collect the paths of all\n files a user has opened in her or his home directory\n in the last 60 minutes."
   }
 }

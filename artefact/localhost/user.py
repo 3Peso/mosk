@@ -6,13 +6,14 @@ __author__ = '3Peso'
 
 import logging
 import platform
+import os
 from logging import Logger
 if platform.system() != "Windows":
     from pwd import getpwall
 from getpass import getuser
 
 from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact
-from businesslogic.support import str_to_bool, get_userfolders
+from businesslogic.support import str_to_bool, get_userfolders, validate_file_signature
 
 
 class CurrentUser(ArtefactBase):
@@ -53,3 +54,25 @@ class AllUsernames(MacArtefact, LinuxArtefact):
                 if username in homedirs:
                     self._logger.debug('f"{username} user collected"')
                     self.data = [f"{prop}: {getattr(pw, prop)}" for prop in self.__properties]
+
+
+class RecentUserItems(MacArtefact):
+    """
+    Collects the recent items the current user has opened from the home directory of the user.
+    """
+
+    def __init__(self, *args, **kwargs):
+        #self._mdfind_path = ""
+        super().__init__(*args, **kwargs)
+
+    def _collect(self):
+        pass
+        #os.system(f"{mdfind_path} -onlyin $HOME '((kMDItemContentModificationDate > $time.now(-60m)) && (kMDItemContentModificationDate < $time.now()))'"")
+
+    #@property
+    #def mdfind_path(self):
+    #    return self._mdfind_path
+
+    #@mdfind_path.setter
+    #def mdfind_path(self, value):
+    #    self._mdfind_path = value

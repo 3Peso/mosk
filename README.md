@@ -172,7 +172,11 @@ mosk does its collection through collectors. There are already several collector
 * [HardwareInformation (macOS)](#hardwareinformation)
 * [AllUsernames (macOS, Linux)](#allusernames)
 * CurrentUser
+* [RecentUserItems (macOS)](#RecentUserItems)
 * [PLUtil (macOS)](#PLUtil)
+
+##### RecentUserItems
+*Under development*
 
 ##### PLUtil
 Uses the external cli command `plutil` with the parameter `-p` to collect the conent of a .plist-file provided
