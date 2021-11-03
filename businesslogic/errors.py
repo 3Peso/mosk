@@ -1,7 +1,8 @@
 __author__ = '3Peso'
 __all__ = ['MaxDirectoriesReachedError', 'UnknownVersionStringError', 'ApiKeyNotSetError', 'ApiKeyFormatError',
            'PathNotSetError', 'NoCollectorError', 'MD5SupportError', 'NoCountryCodeError', 'NoStringResourcesError',
-           'LogFileMaximumReachedError', 'CollectorParameterError', 'GlobalPlaceholderFileError']
+           'LogFileMaximumReachedError', 'CollectorParameterError', 'GlobalPlaceholderFileError',
+           'SignatureMatchError']
 
 
 class MaxDirectoriesReachedError(Exception):
@@ -65,5 +66,10 @@ class GlobalPlaceholderFileError(Exception):
 
 
 class ImageFileError(Exception):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+
+
+class SignatureMatchError(Exception):
     def __init__(self, message: str) -> None:
         super().__init__(message)

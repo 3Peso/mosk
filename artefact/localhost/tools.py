@@ -10,6 +10,7 @@ from os import path
 from baseclasses.artefact import MacArtefact
 from businesslogic.support import run_terminal_command
 from businesslogic.support import validate_file_signature
+from businesslogic.errors import SignatureMatchError
 
 
 class PLUtil(MacArtefact):
@@ -18,8 +19,8 @@ class PLUtil(MacArtefact):
     """
 
     def __init__(self, *args, **kwargs) -> None:
-        self.tool_path = ""
-        super.__init__(*args, **kwargs)
+        self._tool_path = ""
+        super().__init__(*args, **kwargs)
 
     def _collect(self) -> None:
         if path.exists(self.filepath):
@@ -32,8 +33,8 @@ class PLUtil(MacArtefact):
     @property
     def tool_path(self):
         logger = logging.getLogger(__name__)
-        if path.exists(self.tool_path):
-            return self.tool_path
+        if path.exists(self._tool_path):
+            return self._tool_path
         else:
             logger.warning("Using 'plutil' from artefact.")
             return 'plutil'
@@ -41,7 +42,10 @@ class PLUtil(MacArtefact):
     @tool_path.setter
     def tool_path(self, value):
         logger = logging.getLogger(__name__)
-        if path.exists(value) and validate_file_signature(value):
-            self.tool_path = value
+        if path.exists(value):
+            if validate_file_signature(value):
+                self._tool_path = value
+            else:
+                raise SignatureMatchError(f"The provided PLUtil at '{value}' does not match its signature.")
         else:
             logger.warning(f"Provided tool path '{value}' does not exist.")
