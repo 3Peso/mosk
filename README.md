@@ -175,7 +175,23 @@ mosk does its collection through collectors. There are already several collector
 * [PLUtil (macOS)](#PLUtil)
 
 ##### PLUtil
-*Under development*
+Uses the external cli command `plutil` with the parameter `-p` to collect the conent of a .plist-file provided
+by the collector parameter `filepath`.
+
+```xml
+<PLUtil module="artefact.localhost.tools" 
+        filepath="~/Library/Preferences/com.apple.Dock.plist" />
+```
+The above example uses the `plutil` command of the machine the collector is running on. You can provide your own
+copy of the command by defining the parameter `tool_path`. Along side of your own copy of the command you also
+have to provide a text file containing the md5-hash of the copy. The md5-file has to be named like the copied
+command with the extension `.md5`, so in this case `plutil.md5`.
+
+```xml
+<PLUtil module="artefact.localhost.tools" 
+        filepath="~/Library/Preferences/com.apple.Dock.plist" 
+        tool_path="<Your Tools Folder>/plutil" />
+```
 
 ##### AllUsernames
 Allowed attributes/parameters:
