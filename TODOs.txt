@@ -62,3 +62,5 @@
 # doing so. Have seen, that my older copy of "mdfind" or "plutil" was finised from the shell with the output
 # "zsh: killed", which suggests, that the os is protecting itself from "mailicous" applications, disguising them
 # as legit tools.
+
+# Create a ToolClass analog to the FileClass, to implement checksum validation of external tools once for all.
