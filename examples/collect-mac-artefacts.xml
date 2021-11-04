@@ -120,6 +120,15 @@
                         filepath="/System/Library/CoreServices/SystemVersion.plist"
                         tool_path="./external_tools/plutil"
                         description="PList describing the installed macOS version." />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="~/Library/Preferences/com.apple.Safari.plist"
+                          last_supported_mac_os_version="10.13 (High Sierra)"
+                          description="Contains recent safari search strings and downloads folder location in addition to preferences. &#10; Later versions store this in ~/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari.plist, which is protected by SIP." />
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="~/Library/Preferences/com.apple.loginitems.plist"
+                        last_supported_mac_os_version="10.12 (Sierra)"
+                        tool_path="./external_tools/plutil"
+                        description="Contains recent safari search strings and downloads folder location in addition to preferences. &#10; Later versions store this in ~/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari.plist, which is protected by SIP." />
             </LocalHost>
         </Root>
     </Instructions>
