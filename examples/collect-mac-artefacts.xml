@@ -113,6 +113,13 @@
                           last_supported_mac_os_version="10.10 (Yosemite)"
                           description="Recently opened applications, files, and servers."
                           description_url="https://eclecticlight.co/2021/09/16/how-to-run-an-app-or-tool-at-startup/" />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="/System/Library/CoreServices/SystemVersion.plist"
+                          description="PList describing the installed macOS version." />
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="/System/Library/CoreServices/SystemVersion.plist"
+                        tool_path="./external_tools/plutil"
+                        description="PList describing the installed macOS version." />
             </LocalHost>
         </Root>
     </Instructions>
