@@ -38,6 +38,12 @@
                 <!--<RecentUserItems module="artefact.localhost.user" />-->
                 <RecentUserItems module="artefact.localhost.user"
                                  mdfind_path="./external_tools/mdfind" />
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="~/Library/Preferences/com.apple.recentitems.plist"
+                        tool_path="./external_tools/plutil"
+                        last_supported_mac_os_version="10.10 (Yosemite)"
+                        description="Recently opened applications, files, and servers."
+                        description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#Recent_Items" />
                 <SudoVersion module="artefact.localhost.osinformation" />
                 <FileCopy module="artefact.localhost.file"
                           filepath="/System/Library/LaunchAgents/com.apple.Dock.plist"
@@ -82,24 +88,31 @@
                         description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
                 <FileCopy module="artefact.localhost.file"
                           filepath="~/Library/Preferences/com.apple.loginitems.plist"
-                          description="Plists listing applications that automatically start when the user is logged in."
+                          last_supported_mac_os_version="10.12 (Sierra)"
+                          description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings."
                           description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#USER_ARTIFACTS" />
                 <PLUtil module="artefact.localhost.tools"
                         filepath="~/Library/Preferences/com.apple.loginitems.plist"
+                        last_supported_mac_os_version="10.12 (Sierra)"
                         tool_path="./external_tools/plutil"
-                        description="Plists listing applications that automatically start when the user is logged in."
+                        description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings."
                         description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#USER_ARTIFACTS" />
+                <FileCopy module="artefact.localhost.file"
+                          filepath="~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm"
+                          first_supported_mac_os_version="10.13 (High Sierra)"
+                          description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings."
+                          description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#USER_ARTIFACTS"
+                          usage_hint="Use a script like https://github.com/mnrkbys/bgiparser/blob/master/bgiparser.py to interpret the contents of this file." />
+                <PLUtil module="artefact.localhost.tools"
+                        filepath="~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm"
+                        first_supported_mac_os_version="10.13 (High Sierra)"
+                        tool_path="./external_tools/plutil"
+                        description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings."
                 <FileCopy module="artefact.localhost.file"
                           filepath="~/Library/Preferences/com.apple.recentitems.plist"
                           last_supported_mac_os_version="10.10 (Yosemite)"
                           description="Recently opened applications, files, and servers."
-                          description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#Recent_Items" />
-                <PLUtil module="artefact.localhost.tools"
-                        filepath="~/Library/Preferences/com.apple.recentitems.plist"
-                        tool_path="./external_tools/plutil"
-                        last_supported_mac_os_version="10.10 (Yosemite)"
-                        description="Recently opened applications, files, and servers."
-                        description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#Recent_Items" />
+                          description_url="https://eclecticlight.co/2021/09/16/how-to-run-an-app-or-tool-at-startup/" />
             </LocalHost>
         </Root>
     </Instructions>
