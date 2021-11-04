@@ -107,7 +107,7 @@
                         filepath="~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm"
                         first_supported_mac_os_version="10.13 (High Sierra)"
                         tool_path="./external_tools/plutil"
-                        description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings."
+                        description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings." />
                 <FileCopy module="artefact.localhost.file"
                           filepath="~/Library/Preferences/com.apple.recentitems.plist"
                           last_supported_mac_os_version="10.10 (Yosemite)"
