@@ -67,4 +67,7 @@ def mosk_main(globalplaceholders: str, instructionsfile: str, examiner: str, log
 
 
 if __name__ == '__main__':
+    if sys.version_info[0:2] < (3, 8):
+        sys.exit("mosk requires Python 3.8 or higher to run.")
+
     sys.exit(mosk_main())
