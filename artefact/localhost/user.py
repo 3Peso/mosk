@@ -13,7 +13,7 @@ if platform.system() != "Windows":
     from pwd import getpwall
 from getpass import getuser
 
-from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact
+from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact, ToolClass
 from businesslogic.support import str_to_bool, get_userfolders, validate_file_signature
 from businesslogic.errors import SignatureMatchError
 
@@ -58,38 +58,40 @@ class AllUsernames(MacArtefact, LinuxArtefact):
                     self.data = [f"{prop}: {getattr(pw, prop)}" for prop in self.__properties]
 
 
-class RecentUserItems(MacArtefact):
+class RecentUserItems(MacArtefact, ToolClass):
     """
     Collects the recent items the current user has opened from the home directory of the user.
     """
 
     def __init__(self, *args, **kwargs):
-        self._mdfind_path = ""
+        #self._mdfind_path = ""
+        self._tool_path = ""
+        self._default_tool = "mdfind"
         super().__init__(*args, **kwargs)
 
     def _collect(self):
-        proc = subprocess.Popen([f"{self.mdfind_path} -onlyin $HOME "
+        proc = subprocess.Popen([f"{self.tool_path} -onlyin $HOME "
                                  f"'((kMDItemContentModificationDate > $time.now(-60m)) "
                                  f"&& (kMDItemContentModificationDate < $time.now()))'"],
                                 stdout=subprocess.PIPE, shell=True)
         (out, err) = proc.communicate()
         self.data = out.decode("utf-8")
 
-    @property
-    def mdfind_path(self):
-        logger = logging.getLogger(__name__)
-        if self._mdfind_path == "":
-            logger.warning("mdfind path not set. Using 'mdfind' of live system.")
-            return "mdfind"
-        return self._mdfind_path
+#    @property
+#    def mdfind_path(self):
+#        logger = logging.getLogger(__name__)
+#        if self._mdfind_path == "":
+#            logger.warning("mdfind path not set. Using 'mdfind' of live system.")
+#            return "mdfind"
+#        return self._mdfind_path
 
-    @mdfind_path.setter
-    def mdfind_path(self, value):
-        if path.exists(value):
-            if validate_file_signature(value):
-                self._mdfind_path = value
-            else:
-                raise SignatureMatchError(f"Signature for '{value}' does not match with expected signature.")
+#    @mdfind_path.setter
+#    def mdfind_path(self, value):
+#        if path.exists(value):
+#            if validate_file_signature(value):
+#                self._mdfind_path = value
+#            else:
+#                raise SignatureMatchError(f"Signature for '{value}' does not match with expected signature.")
 
 
 class UserStartUpPrograms(MacArtefact):

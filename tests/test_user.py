@@ -23,18 +23,18 @@ class TestRecentUserItemsCollect(TestCase):
 
 
 class TestRecentUserItemsDunderInit(TestCase):
-    def test___init(self):
+    def test___init__(self):
         """
         Should initialize attribute _mdfind_path.
         :return:
         """
         from artefact.localhost.user import RecentUserItems
 
-        expected_mdfind_path = ""
+        expected_tool_path = ""
         recent = RecentUserItems(parameters={}, parent=None)
-        actual_mdfind_path = recent._mdfind_path
+        actual_tool_path = recent._tool_path
 
-        self.assertEqual(expected_mdfind_path, actual_mdfind_path)
+        self.assertEqual(expected_tool_path, actual_tool_path)
 
 
 class TestRecentUserItemsMDFindPathGetter(TestCase):
@@ -47,7 +47,7 @@ class TestRecentUserItemsMDFindPathGetter(TestCase):
 
         expected_path = "mdfind"
         recent = RecentUserItems(parameters={}, parent=None)
-        actual_path = recent.mdfind_path
+        actual_path = recent.tool_path
 
         self.assertEqual(expected_path, actual_path)
 
@@ -62,50 +62,50 @@ class TestRecentUserItemsMDFindPathSetter(TestCase):
         from artefact.localhost.user import RecentUserItems
 
         recent = RecentUserItems(parameters={}, parent=None)
-        with patch('artefact.localhost.user.validate_file_signature', MagicMock(return_value=False)):
+        with patch('baseclasses.artefact.validate_file_signature', MagicMock(return_value=False)):
             with self.assertRaises(SignatureMatchError):
-                recent.mdfind_path = "HelloWorld"
+                recent.tool_path = "HelloWorld"
 
     def test_mdfind_path_does_not_exist(self):
         """
-        Should not set _mdfind_path
+        Should not set _tool_path
         :return:
         """
         from artefact.localhost.user import RecentUserItems
 
         expected_path = ""
         recent = RecentUserItems(parameters={}, parent=None)
-        recent.mdfind_path = "HelloWorld"
-        actual_path = recent._mdfind_path
+        recent.tool_path = "HelloWorld"
+        actual_path = recent._tool_path
 
         self.assertEqual(expected_path, actual_path)
 
     def test_mdfind_path_empty(self):
         """
-        Should set _mdfind_path to empty string
+        Should set _tool_path to empty string
         :return:
         """
         from artefact.localhost.user import RecentUserItems
 
         expected_path = ""
         recent = RecentUserItems(parameters={}, parent=None)
-        recent.mdfind_path = ""
-        actual_path = recent._mdfind_path
+        recent.tool_path = ""
+        actual_path = recent._tool_path
 
         self.assertEqual(expected_path, actual_path)
 
     @patch('artefact.localhost.user.path.exists', MagicMock(return_value=True))
     def test_mdfind_path_exists_and_sig_matches(self):
         """
-        Should set _mdfind_path
+        Should set _tool_path
         :return:
         """
         from artefact.localhost.user import RecentUserItems
 
         expected_path = "MyFindTool"
         recent = RecentUserItems(parameters={}, parent=None)
-        with patch('artefact.localhost.user.validate_file_signature', MagicMock(return_value=True)):
-            recent.mdfind_path = expected_path
-            actual_path = recent._mdfind_path
+        with patch('baseclasses.artefact.validate_file_signature', MagicMock(return_value=True)):
+            recent.tool_path = expected_path
+            actual_path = recent._tool_path
 
             self.assertEqual(expected_path, actual_path)
