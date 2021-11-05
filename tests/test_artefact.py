@@ -1,7 +1,7 @@
 import logging
 import platform
 from unittest import TestCase, mock
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 
 class TestArtefactBaseDataSetter(TestCase):
@@ -177,7 +177,7 @@ class TestArtefactBaseDunderCall(TestCase):
         expected_max_version = "2.0.0.0"
         expected_platform_version = "0.9.0.0"
         expected_message = 'The platform "{}" with its version "{}" is not supported by this collector. ' \
-                           '\r\nMinimal version supported: "{}". Max version supported: "{}"'\
+                           '\r\nMinimal version supported: "{}". Max version supported: "{}"' \
             .format(platform.system(), expected_platform_version, expected_min_version, expected_max_version)
         actual_artefact = SimpleArtefactMockup(parent=None, parameters={})
         actual_artefact._platform_version = expected_platform_version
@@ -448,3 +448,84 @@ class TestFileClassFilePathProperty(TestCase):
         actual_file_path = fileobj.filepath
 
         self.assertEqual(expected_file_path, actual_file_path)
+
+
+class TestToolClassToolPathGetter(TestCase):
+    def test_tool_path_with_empty__tool_path(self):
+        """
+        Should return 'plutil' indicating that the live plutil is used.
+        :return:
+        """
+        from baseclasses.artefact import ToolClass
+
+        expected_tool_path = "plutil"
+        tool = ToolClass()
+        tool._default_tool = "plutil"
+        actual_tool_path = tool.tool_path
+
+        self.assertEqual(expected_tool_path, actual_tool_path)
+
+
+class TestToolClassToolPathSetter(TestCase):
+    @patch('artefact.localhost.tools.path.exists', MagicMock(return_value=True))
+    def test_tool_path_existing_path(self):
+        """
+        Should return tool path.
+        """
+        from baseclasses.artefact import ToolClass
+
+        tool = ToolClass()
+        tool._default_tool = "plutil"
+        with patch('baseclasses.artefact.validate_file_signature', MagicMock(return_value=True)):
+            expected_tool_path = "some_tool_path"
+            tool.tool_path = expected_tool_path
+            actual_tool_path = tool._tool_path
+
+            self.assertEqual(expected_tool_path, actual_tool_path)
+
+    def test_tool_path_is_empty(self):
+        """
+        Should set _tool_path to empty string.
+        :return:
+        """
+        from baseclasses.artefact import ToolClass
+
+        expected_tool_path = ""
+        tool = ToolClass()
+        tool._default_path = "plutil"
+        tool.tool_path = ""
+        actual_tool_path = tool._tool_path
+
+        self.assertEqual(expected_tool_path, actual_tool_path)
+
+    @patch('artefact.localhost.tools.path.exists', MagicMock(return_value=True))
+    def test_tool_path_exisiting_path_but_wrong_signature(self):
+        """
+        Should throw an exception.
+        :return:
+        """
+        from baseclasses.artefact import ToolClass
+        from businesslogic.errors import SignatureMatchError
+
+        tool = ToolClass()
+        tool._default_tool = "plutil"
+        with patch('baseclasses.artefact.validate_file_signature', MagicMock(return_value=False)):
+            expected_util_path = 'some_tool_path'
+            with self.assertRaises(SignatureMatchError):
+                tool.tool_path = expected_util_path
+
+    def test_tool_path_does_not_exist(self):
+        """
+        Should not set the attribute _tool_path
+        :return:
+        """
+        from baseclasses.artefact import ToolClass
+
+        expected_tool_path = ""
+        tool = ToolClass()
+        tool._default_path = "plutil"
+        tool.tool_path = "IDoNotExist"
+        actual_tool_path = tool._tool_path
+
+        self.assertEqual(expected_tool_path, actual_tool_path)
+

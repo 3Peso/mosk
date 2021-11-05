@@ -6,7 +6,6 @@ __author__ = '3Peso'
 
 import logging
 import platform
-import os
 import subprocess
 from logging import Logger
 from os import path
@@ -91,3 +90,22 @@ class RecentUserItems(MacArtefact):
                 self._mdfind_path = value
             else:
                 raise SignatureMatchError(f"Signature for '{value}' does not match with expected signature.")
+
+
+class UserStartUpPrograms(MacArtefact):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _collect(self):
+        # Launched BEFORE login
+        # Collect LaunchAgents.plists from /System/Library/LaunchAgents
+        # Collect LaunchDeamons.plists from /System/Library/LaunchDeamnons
+
+        # Launched AFTER login
+        # Collect LaunchAgents.plists from ~/Library/LaunchAgents
+        #    RunAtLoad key must be set to True
+        #    ProgramAttributes (also interessting)
+        # Until 10.12 collect entries from ~/Library/Preferences/com.apple.loginitems.plist
+        # Starting with 10.13 collect entries from ~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm
+        # Collect all currently running apps (which can be relaunched after a reboot)
+        pass

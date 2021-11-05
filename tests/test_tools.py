@@ -83,77 +83,77 @@ class TestPLUtilCollect(TestCase):
 
 
 
-class TestPLUtilGetToolPath(TestCase):
-    def test_tool_path_with_empty__tool_path(self):
-        """
-        Should return 'plutil' indicating that the live plutil is used.
-        :return:
-        """
-        from artefact.localhost.tools import PLUtil
+#class TestPLUtilGetToolPath(TestCase):
+#    def test_tool_path_with_empty__tool_path(self):
+#        """
+#        Should return 'plutil' indicating that the live plutil is used.
+#        :return:
+#        """
+#        from artefact.localhost.tools import PLUtil
 
-        expected_tool_path = "plutil"
-        util = PLUtil(parameters={}, parent=None)
-        actual_tool_path = util.tool_path
+#        expected_tool_path = "plutil"
+#        util = PLUtil(parameters={}, parent=None)
+#        actual_tool_path = util.tool_path
 
-        self.assertEqual(expected_tool_path, actual_tool_path)
+#        self.assertEqual(expected_tool_path, actual_tool_path)
 
 
-class TestPLUtilSetToolPath(TestCase):
-    @patch('artefact.localhost.tools.path.exists', MagicMock(return_value=True))
-    def test_tool_path_existing_path(self):
-        """
-        Should return tool path.
-        """
-        from artefact.localhost.tools import PLUtil
+#class TestPLUtilSetToolPath(TestCase):
+#    @patch('artefact.localhost.tools.path.exists', MagicMock(return_value=True))
+#    def test_tool_path_existing_path(self):
+#        """
+#        Should return tool path.
+#        """
+#        from artefact.localhost.tools import PLUtil
 
-        util = PLUtil(parameters={}, parent=None)
-        with patch('artefact.localhost.tools.validate_file_signature', MagicMock(return_value=True)):
-            expected_tool_path = "some_tool_path"
-            util.tool_path = expected_tool_path
-            actual_tool_path = util._tool_path
+#        util = PLUtil(parameters={}, parent=None)
+#        with patch('artefact.localhost.tools.validate_file_signature', MagicMock(return_value=True)):
+#            expected_tool_path = "some_tool_path"
+#            util.tool_path = expected_tool_path
+#            actual_tool_path = util._tool_path
 
-            self.assertEqual(expected_tool_path, actual_tool_path)
+#            self.assertEqual(expected_tool_path, actual_tool_path)
 
-    def test_tool_path_is_empty(self):
-        """
-        Should set _tool_path to empty string.
-        :return:
-        """
-        from artefact.localhost.tools import PLUtil
+#    def test_tool_path_is_empty(self):
+#        """
+#        Should set _tool_path to empty string.
+#        :return:
+#        """
+#        from artefact.localhost.tools import PLUtil
 
-        expected_tool_path = ""
-        util = PLUtil(parameters={}, parent=None)
-        util.tool_path = ""
-        actual_tool_path = util._tool_path
+#        expected_tool_path = ""
+#        util = PLUtil(parameters={}, parent=None)
+#        util.tool_path = ""
+#        actual_tool_path = util._tool_path
 
-        self.assertEqual(expected_tool_path, actual_tool_path)
+#        self.assertEqual(expected_tool_path, actual_tool_path)
 
-    @patch('artefact.localhost.tools.path.exists', MagicMock(return_value=True))
+#    @patch('artefact.localhost.tools.path.exists', MagicMock(return_value=True))
 
-    def test_tool_path_exisiting_path_but_wrong_signature(self):
-        """
-        Should throw an exception.
-        :return:
-        """
-        from artefact.localhost.tools import PLUtil
-        from businesslogic.errors import SignatureMatchError
+#    def test_tool_path_exisiting_path_but_wrong_signature(self):
+#        """
+#        Should throw an exception.
+#        :return:
+#        """
+#        from artefact.localhost.tools import PLUtil
+#        from businesslogic.errors import SignatureMatchError
 
-        util = PLUtil(parameters={}, parent=None)
-        with patch('artefact.localhost.tools.validate_file_signature', MagicMock(return_value=False)):
-            expected_util_path = 'some_tool_path'
-            with self.assertRaises(SignatureMatchError):
-                util.tool_path = expected_util_path
+#        util = PLUtil(parameters={}, parent=None)
+#        with patch('artefact.localhost.tools.validate_file_signature', MagicMock(return_value=False)):
+#            expected_util_path = 'some_tool_path'
+#            with self.assertRaises(SignatureMatchError):
+#                util.tool_path = expected_util_path
 
-    def test_tool_path_does_not_exist(self):
-        """
-        Should not set the attribute _tool_path
-        :return:
-        """
-        from artefact.localhost.tools import PLUtil
+#    def test_tool_path_does_not_exist(self):
+#        """
+#        Should not set the attribute _tool_path
+#        :return:
+#        """
+#        from artefact.localhost.tools import PLUtil
 
-        expected_tool_path = ""
-        util = PLUtil(parameters={}, parent=None)
-        util.tool_path = "IDoNotExist"
-        actual_tool_path = util._tool_path
+#        expected_tool_path = ""
+#        util = PLUtil(parameters={}, parent=None)
+#        util.tool_path = "IDoNotExist"
+#        actual_tool_path = util._tool_path
 
-        self.assertEqual(expected_tool_path, actual_tool_path)
+#        self.assertEqual(expected_tool_path, actual_tool_path)

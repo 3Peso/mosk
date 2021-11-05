@@ -11,16 +11,17 @@ from baseclasses.artefact import MacArtefact
 from businesslogic.support import run_terminal_command
 from businesslogic.support import validate_file_signature
 from businesslogic.errors import SignatureMatchError, CollectorParameterError
-from baseclasses.artefact import FileClass
+from baseclasses.artefact import FileClass, ToolClass
 
 
-class PLUtil(MacArtefact, FileClass):
+class PLUtil(MacArtefact, FileClass, ToolClass):
     """Uses the tool 'PLUtil' to collect information from plist files.
     This is a macOS specific tool.
     """
 
     def __init__(self, *args, **kwargs) -> None:
         self._tool_path = ""
+        self._default_tool = "plutil" # The _default_tool attribute is used inside ToolClass
         super().__init__(*args, **kwargs)
 
     def _collect(self) -> None:
@@ -38,22 +39,22 @@ class PLUtil(MacArtefact, FileClass):
             self.data = \
                 "WARNING: No own copy of 'PLUtil' provided. 'PLUtil' of the live artefact has been used."
 
-    @property
-    def tool_path(self):
-        logger = logging.getLogger(__name__)
-        if path.exists(self._tool_path):
-            return self._tool_path
-        else:
-            logger.warning("Using 'plutil' from artefact.")
-            return 'plutil'
+    #@property
+    #def tool_path(self):
+    #    logger = logging.getLogger(__name__)
+    #    if path.exists(self._tool_path):
+    #        return self._tool_path
+    #    else:
+    #        logger.warning("Using 'plutil' from artefact.")
+    #        return 'plutil'
 
-    @tool_path.setter
-    def tool_path(self, value):
-        logger = logging.getLogger(__name__)
-        if path.exists(value):
-            if validate_file_signature(value):
-                self._tool_path = value
-            else:
-                raise SignatureMatchError(f"The provided PLUtil at '{value}' does not match its signature.")
-        else:
-            logger.warning(f"Provided tool path '{value}' does not exist.")
+    #@tool_path.setter
+    #def tool_path(self, value):
+    #    logger = logging.getLogger(__name__)
+    #    if path.exists(value):
+    #        if validate_file_signature(value):
+    #            self._tool_path = value
+    #        else:
+    #            raise SignatureMatchError(f"The provided PLUtil at '{value}' does not match its signature.")
+    #    else:
+    #        logger.warning(f"Provided tool path '{value}' does not exist.")
