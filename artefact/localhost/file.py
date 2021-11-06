@@ -163,20 +163,6 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
             if not enough_space:
                 shutil.rmtree(path.dirname(file_copy_destination), True)
 
-    @property
-    def destination_directory(self):
-        return self._destination_directory
-
-    @destination_directory.setter
-    def destination_directory(self, value):
-        if not path.exists(value):
-            raise FileNotFoundError(f"The destination directory '{value}' does not exist.")
-
-        if path.isfile(value):
-            raise CollectorParameterError(f"The provided destination directory '{value}' is a file.")
-
-        self._destination_directory = value
-
     def _ensure_target_directory(self) -> str:
         if not path.exists(self.destination_directory):
             os.mkdir(self.destination_directory)
@@ -233,6 +219,20 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         is_valid = len(targert_path) <= max_windows_path_length
 
         return is_valid
+
+    @property
+    def destination_directory(self):
+        return self._destination_directory
+
+    @destination_directory.setter
+    def destination_directory(self, value):
+        if not path.exists(value):
+            raise FileNotFoundError(f"The destination directory '{value}' does not exist.")
+
+        if path.isfile(value):
+            raise CollectorParameterError(f"The provided destination directory '{value}' is a file.")
+
+        self._destination_directory = value
 
 
 class FileMetadata(ArtefactBase, FileClass):
