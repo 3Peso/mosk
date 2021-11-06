@@ -864,3 +864,26 @@ class TestFileCopyDestinationDirectorySetter(TestCase):
         actual = file_._destination_directory
 
         self.assertEqual(expected, actual)
+
+    def test_destination_directory_does_not_exist(self):
+        """
+        Should raise an execption.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        file_ = FileCopy(parameters={}, parent=None)
+        with self.assertRaises(FileNotFoundError):
+            file_.destination_directory = "./doesNotExist/"
+
+    def test_destination_directory_is_file(self):
+        """
+        Should raise an exception.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+        from businesslogic.errors import CollectorParameterError
+
+        file_ = FileCopy(parameters={}, parent=None)
+        with self.assertRaises(CollectorParameterError):
+            file_.destination_directory = "./testfiles/test.txt"

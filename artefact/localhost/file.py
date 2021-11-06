@@ -18,7 +18,7 @@ from shutil import copyfile
 
 from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact, FileClass
 from businesslogic.support import get_userfolders, md5, run_terminal_command
-from businesslogic.errors import MaxDirectoriesReachedError
+from businesslogic.errors import MaxDirectoriesReachedError, CollectorParameterError
 
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
@@ -169,8 +169,13 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
 
     @destination_directory.setter
     def destination_directory(self, value):
-        if path.exists(value):
-            self._destination_directory = value
+        if not path.exists(value):
+            raise FileNotFoundError(f"The destination directory '{value}' does not exist.")
+
+        if path.isfile(value):
+            raise CollectorParameterError(f"The provided destination directory '{value}' is a file.")
+
+        self._destination_directory = value
 
     def _ensure_target_directory(self) -> str:
         if not path.exists(self.destination_directory):
