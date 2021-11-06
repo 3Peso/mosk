@@ -258,6 +258,7 @@ class TestFileCopyCollectSingle(TestCase):
 
         self.assertEqual(expected_message, actual_message)
 
+
 class TestFileCopyFilePath(TestCase):
     def test__collect_setter_with_abreviated_path(self):
         """
@@ -832,3 +833,34 @@ class TestFileCopyValidateTargetPathLength(TestCase):
             actual_result = collector._validate_target_path_length(expected_target_path)
 
         self.assertEqual(expected_result, actual_result)
+
+
+class TestFileCopyDestinationDirectoryGetter(TestCase):
+    def test_destination_directory_default(self):
+        """
+        By default, it should return '.'.
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        expected = '.'
+        file_ = FileCopy(parameters={}, parent=None)
+        actual = file_.destination_directory
+
+        self.assertEqual(expected, actual)
+
+
+class TestFileCopyDestinationDirectorySetter(TestCase):
+    def test_destination_directory_exists(self):
+        """
+        Should set the property _destination_directory
+        :return:
+        """
+        from artefact.localhost.file import FileCopy
+
+        expected = './copydestination/'
+        file_ = FileCopy(parameters={}, parent=None)
+        file_.destination_directory = expected
+        actual = file_._destination_directory
+
+        self.assertEqual(expected, actual)

@@ -163,12 +163,21 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
             if not enough_space:
                 shutil.rmtree(path.dirname(file_copy_destination), True)
 
-    def _ensure_target_directory(self) -> str:
-        if not path.exists(self._destination_directory):
-            os.mkdir(self._destination_directory)
+    @property
+    def destination_directory(self):
+        return self._destination_directory
 
-        unique_dir_name = self._get_unique_directory_name(self._destination_directory, datetime.datetime.now())
-        new_unique_directory: bytes = os.path.join(self._destination_directory, unique_dir_name)
+    @destination_directory.setter
+    def destination_directory(self, value):
+        if path.exists(value):
+            self._destination_directory = value
+
+    def _ensure_target_directory(self) -> str:
+        if not path.exists(self.destination_directory):
+            os.mkdir(self.destination_directory)
+
+        unique_dir_name = self._get_unique_directory_name(self.destination_directory, datetime.datetime.now())
+        new_unique_directory: bytes = os.path.join(self.destination_directory, unique_dir_name)
         os.mkdir(new_unique_directory)
 
         return new_unique_directory
