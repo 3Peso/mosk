@@ -50,8 +50,6 @@
 #  in File names (for example: /someDir/some*ile, ...)
 #  in folders (for example: /SomeDir/*/anotherDir/files or /someDir*/files, ...)
 
-# add optional parameter 'destination path' to localhost.file.FileCopy.
-
 # Refactor artefact.localhost.file.FileMetadata, it uses external command 'xattr'
 
 # If possible, refactor artefact.localhost.osinformation.SudoVersion, it uses external command 'sudo'
