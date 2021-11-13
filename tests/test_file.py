@@ -1052,3 +1052,7 @@ class TestTreeCopyExpandPath(TestCase):
         from artefact.localhost.file import TreeCopy
 
         expected = ['./testfiles', './testtree']
+        tree = TreeCopy(parameters={}, parent=None)
+        actual = tree._expand_path('./test*')
+
+        self.assertEqual(expected, actual)
