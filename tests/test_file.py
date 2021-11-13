@@ -887,3 +887,166 @@ class TestFileCopyDestinationDirectorySetter(TestCase):
         file_ = FileCopy(parameters={}, parent=None)
         with self.assertRaises(CollectorParameterError):
             file_.destination_directory = "./testfiles/test.txt"
+
+
+class TestTreeCopyDunderInit(TestCase):
+    def test___init__(self):
+        """
+        Should initialize _tree_path with empty list.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected = []
+        tree = TreeCopy(parameters={}, parent=None)
+        actual = tree._tree_path
+
+        self.assertEqual(expected, actual)
+
+
+class TestTreeCopyCollect(TestCase):
+    def test__collect_with_wildcard_in_leaf(self):
+        """
+        Should copy all files and folders which are on leaf level and below.
+        :return:
+        """
+        self.fail()
+
+    def test__collect_with_wildcard_in_node(self):
+        """
+        Should copy the whole files and folders with directories and folders on the level
+        which fit the wildcard.
+        :return:
+        """
+        self.fail()
+
+    def test__collect_with_empty_path(self):
+        """
+        Should copy nothing.
+        :return:
+        """
+        self.fail()
+
+    def test__collect_with_more_files_folders_sub_folders(self):
+        """
+        Should collect data for every file copied including its path.
+        :return:
+        """
+        self.fail()
+
+    def test__collect_with_many_paths_in_tree_path(self):
+        """
+        Should copy every path in _tree_path.
+        :return:
+        """
+        self.fail()
+
+
+class TestTreeCopyTreePathGetter(TestCase):
+    def test_tree_path(self):
+        """
+        Should return _tree_path.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected = ['test']
+        tree = TreeCopy(parameters={}, parent=None)
+        tree._tree_path = expected
+        actual = tree.tree_path
+
+        self.assertEqual(expected, actual)
+
+
+class TestTreeCopyTreePathSetter(TestCase):
+    def test_tree_path_no_wildcards_path_has_no_subdirectories(self):
+        """
+        Should add to _tree_path to provided path.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected_path = "./testfiles"
+        expected = [expected_path]
+        tree = TreeCopy(parameters={}, parent=None)
+        tree.tree_path = expected_path
+        actual = tree._tree_path
+
+        self.assertEqual(expected, actual)
+
+    def test_tree_path_no_wildcards_path_has_subdirectories(self):
+        """
+        Should add to _tree_path to provided path.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected_path = os.getcwd()
+        expected = [expected_path]
+        tree = TreeCopy(parameters={}, parent=None)
+        tree.tree_path = expected_path
+        actual = tree._tree_path
+
+        self.assertEqual(expected, actual)
+
+    def test_tree_path_path_does_not_exist(self):
+        """
+        Should raise exception.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected_path = "./doesnotexist"
+        tree = TreeCopy(parameters={}, parent=None)
+        with self.assertRaises(FileNotFoundError):
+            tree.tree_path = expected_path
+
+    def test_tree_path_with_wildcards_in_leaf(self):
+        """
+        Should add a path for every directory in the leaf fitting the wildcard to _tree_path.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected_path = ['./tests', './testfiles', './support']
+        tree = TreeCopy(parameters={}, parent=None)
+        tree.tree_path = './*'
+        with mock.patch('artefact.localhost.file._expand_path', MagicMock(return_value=expected_path)):
+            actual_path = tree._tree_path
+
+        self.assertEqual(expected_path, actual_path)
+
+    def test_tree_path_with_wildcards_in_one_node(self):
+        """
+        Should add a path for every directory fitting the wildcard to _tree_path.
+        :return:
+        """
+        self.fail()
+
+
+class TestTreeCopyExpandPath(TestCase):
+    def test__expand_path_with_wildcard_in_leaf(self):
+        """
+        Should add a path for every directory in the leaf fitting the wildcard to _tree_path.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected = ['./tests', './testfiles', './support']
+        tree = TreeCopy(parameters={}, parent=None)
+        actual = tree._expand_path("./*")
+
+        self.assertEqual(expected, actual)
+
+    def test__expand_path_with_no_wildcard(self):
+        """
+        Should return the input value in a list.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected = ['.']
+        tree = TreeCopy(parameters={}, parent=None)
+        actual = tree._expand_path('.')
+
+        self.assertEqual(expected, actual)

@@ -235,6 +235,35 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         self._destination_directory = value
 
 
+class TreeCopy(ArtefactBase):
+    """Use this collector to copy complete directories with sub directories in it"""
+
+    def __init__(self, *args, **kwargs) -> None:
+        self._tree_path = list()
+        super().__init__(*args, **kwargs)
+
+    def _collect(self) -> None:
+        pass
+
+    @property
+    def tree_path(self) -> list:
+        return self._tree_path
+
+    @tree_path.setter
+    def tree_path(self, value:str) -> None:
+        paths:list = self._expand_path(value)
+
+        for path_ in paths:
+            if not path.exists(path_):
+                raise FileNotFoundError(f"Path '{path_}' does not exist.")
+
+        self._tree_path = paths
+
+    def _expand_path(self, path:str) -> list:
+        if not '*' in path:
+            return [path]
+
+
 class FileMetadata(ArtefactBase, FileClass):
     """
     Tries to collect as much metadata to a target file, as possible.
