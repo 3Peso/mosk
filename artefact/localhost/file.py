@@ -235,8 +235,9 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         self._destination_directory = value
 
 
-class TreeCopy(ArtefactBase):
+class TreeCopy(MacArtefact, LinuxArtefact):
     """Use this collector to copy complete directories with sub directories in it"""
+    _WILDCARD:str = '*'
 
     def __init__(self, *args, **kwargs) -> None:
         self._tree_path = list()
@@ -259,9 +260,14 @@ class TreeCopy(ArtefactBase):
 
         self._tree_path = paths
 
-    def _expand_path(self, path:str) -> list:
-        if not '*' in path:
-            return [path]
+    def _expand_path(self, input_path:str) -> list:
+        if self._WILDCARD not in input_path:
+            return [input_path]
+
+        path_regex = re.compile(input_path)
+        # Currently only works for wildcard in leaf nodes in Linux and MacOS file systems
+        return [f.path for f in os.scandir(input_path.replace(input_path[input_path.rindex('/'):], ''))
+                if f.is_dir() and path_regex.match(f.path)]
 
 
 class FileMetadata(ArtefactBase, FileClass):

@@ -1008,20 +1008,13 @@ class TestTreeCopyTreePathSetter(TestCase):
         """
         from artefact.localhost.file import TreeCopy
 
-        expected_path = ['./tests', './testfiles', './support']
+        expected_path = ['./testfiles', './support']
         tree = TreeCopy(parameters={}, parent=None)
-        tree.tree_path = './*'
-        with mock.patch('artefact.localhost.file._expand_path', MagicMock(return_value=expected_path)):
+        with mock.patch('artefact.localhost.file.TreeCopy._expand_path', MagicMock(return_value=expected_path)):
+            tree.tree_path = './*'
             actual_path = tree._tree_path
 
         self.assertEqual(expected_path, actual_path)
-
-    def test_tree_path_with_wildcards_in_one_node(self):
-        """
-        Should add a path for every directory fitting the wildcard to _tree_path.
-        :return:
-        """
-        self.fail()
 
 
 class TestTreeCopyExpandPath(TestCase):
@@ -1032,9 +1025,9 @@ class TestTreeCopyExpandPath(TestCase):
         """
         from artefact.localhost.file import TreeCopy
 
-        expected = ['./tests', './testfiles', './support']
+        expected = ['./instructions', './testfiles', './copydestination', './support', './testtree']
         tree = TreeCopy(parameters={}, parent=None)
-        actual = tree._expand_path("./*")
+        actual = tree._expand_path(f"./{tree._WILDCARD}")
 
         self.assertEqual(expected, actual)
 
@@ -1050,3 +1043,12 @@ class TestTreeCopyExpandPath(TestCase):
         actual = tree._expand_path('.')
 
         self.assertEqual(expected, actual)
+
+    def test__expand_path_with_wildcard_in_folder_name_in_leaf(self):
+        """
+        Should return list with all subdirectories which do match with wildcard text
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected = ['./testfiles', './testtree']
