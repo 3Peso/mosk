@@ -193,10 +193,5 @@
     "title": "RecentUserItems",
     "collectionmethod": "Uses 'mdfind'.",
     "description": "Uses 'mdfind' with ceratain filters to collect the paths of all\n files a user has opened in her or his home directory\n in the last 60 minutes."
-  },
-  "artefact.localhost.file.TreeCopy": {
-    "title": "TreeCopy",
-    "collectionmethod": "shutil.copytree",
-    "description": "Under development"
   }
 }

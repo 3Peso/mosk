@@ -18,7 +18,7 @@ from shutil import copyfile
 
 from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact, FileClass
 from businesslogic.support import get_userfolders, md5, run_terminal_command
-from businesslogic.errors import MaxDirectoriesReachedError, CollectorParameterError, TreePathError
+from businesslogic.errors import MaxDirectoriesReachedError, TreePathError, CollectorParameterError
 
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
@@ -119,8 +119,10 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
     The file copy is stored alongside the collection log. The collection log points to the copied file, but
     does not hold it.
     """
-    _destination_directory: str = '.'
+    _destination_directory = '.'
     _FILE_PATH_SEPERATOR = '\n'
+    _WILDCARD:str = '*'
+    _OS_PATH_SEPERATOR = '/' if platform.system() != 'Windows' else '\\'
 
     def __init__(self, *args, **kwargs) -> None:
         # Will be filled in super with the property setter filepath.
@@ -128,7 +130,12 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
 
     def _collect(self) -> None:
         for file_path in self.source_path.split(self._FILE_PATH_SEPERATOR):
-            self._collect_single(file_path=file_path)
+            if path.isfile(file_path):
+                self._collect_single(file_path=file_path)
+            else:
+                tree_paths:list = self._expand_path(input_path=file_path)
+                for path_ in tree_paths:
+                    self._collect_tree(tree_path=path_)
 
     def _collect_single(self, file_path: str = '') -> None:
         is_file = path.isfile(file_path)
@@ -162,6 +169,12 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         finally:
             if not enough_space:
                 shutil.rmtree(path.dirname(file_copy_destination), True)
+
+    def _collect_tree(self, tree_path:str) -> None:
+        for path_ in self.tree_path:
+            for file_ in [f for f in os.listdir(path_) if path.isfile(path.join(path_, f))]:
+                self.data = f"Copied file '{path.join(path_, file_)}'."
+                self.data[-1].sourcepath = path.join(path_, file_)
 
     def _ensure_target_directory(self) -> str:
         if not path.exists(self.destination_directory):
@@ -226,54 +239,21 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
 
     @destination_directory.setter
     def destination_directory(self, value):
-        if not path.exists(value):
+        if not os.path.exists(value):
             raise FileNotFoundError(f"The destination directory '{value}' does not exist.")
 
-        if path.isfile(value):
+        if os.path.isfile(value):
             raise CollectorParameterError(f"The provided destination directory '{value}' is a file.")
 
         self._destination_directory = value
 
-
-class TreeCopy(ArtefactBase):
-    """Use this collector to copy complete directories with sub directories in it"""
-    _WILDCARD:str = '*'
-    _OS_PATH_SEPERATOR = '/' if platform.system() != 'Windows' else '\\'
-
-    def __init__(self, *args, **kwargs) -> None:
-        self._tree_path = list()
-        super().__init__(*args, **kwargs)
-
-    def _collect(self) -> None:
-        if len(self.tree_path) == 0:
-            self.data = "Parameter 'tree_path' is empty."
-
-        for path_ in self.tree_path:
-            for file_ in [f for f in os.listdir(path_) if path.isfile(path.join(path_, f))]:
-                self.data = f"Copied file '{path.join(path_, file_)}'."
-                self.data[-1].sourcepath = path.join(path_, file_)
-
-    @property
-    def tree_path(self) -> list:
-        return self._tree_path
-
-    @tree_path.setter
-    def tree_path(self, value:str) -> None:
+    def _expand_path(self, input_path:str) -> list:
         try:
-            if value.index(self._WILDCARD) < value.rindex(self._OS_PATH_SEPERATOR):
+            if input_path.index(self._WILDCARD) < input_path.rindex(self._OS_PATH_SEPERATOR):
                 raise TreePathError('Wildcards are only supported in leaf nodes.')
         except ValueError:
             pass
 
-        paths:list = self._expand_path(value)
-
-        for path_ in paths:
-            if not path.exists(path_):
-                raise FileNotFoundError(f"Path '{path_}' does not exist.")
-
-        self._tree_path = paths
-
-    def _expand_path(self, input_path:str) -> list:
         if self._WILDCARD not in input_path:
             return [input_path]
 
