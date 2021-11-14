@@ -232,6 +232,11 @@ at the end of the subdirectories name.
 You can provide more than one file to copy by separating each file path with a `\n`, 
 for example `/filepath1\n/filepath2`.
 
+FileCopy can also copy file trees. As source you have to provide the source
+directory. You can also provide a source path with wildcard characters in 
+the leaf, for example `/somepath/*path` for all directories which end with
+`path`, or `/somepath/*` for all directories in `somepath`.
+
 ##### FileMetadata
 Collectes metadata of a file by harnessing Python default modules:
 * os.path
