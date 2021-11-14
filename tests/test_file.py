@@ -123,6 +123,12 @@ class TestFileCopyCollect(TestCase):
             collector._collect()
             mock_.assert_called_once()
 
+    def test__collect_with_tree_path_which_does_not_exist(self):
+        """
+        Should collect message, that the tree path does not exist.
+        :return:
+        """
+        self.fail()
 
 class TestFileCopyCollectSingle(TestCase):
     _expected_source_file_path = './testfiles/test.txt'
@@ -255,6 +261,41 @@ class TestFileCopyCollectSingle(TestCase):
                     actual_message = collector.data[-1].collecteddata
 
         self.assertEqual(expected_message, actual_message)
+
+
+class TestFileCopyColletTree(TestCase):
+    @mock.patch('artefact.localhost.file.shutil.copytree', MagicMock(return_value=""))
+    def test__collect_tree_folder_with_two_files(self):
+        """
+        Should collect data of the two files in protocol before copy
+        :return:
+        """
+        self.fail()
+
+    @mock.patch('artefact.localhost.file.shutil.copytree', MagicMock(return_value=""))
+    def test__collect_tree_folder_with_subdirs(self):
+        """
+        Should collect data of all files in all dirs before copy
+        :return:
+        """
+        self.fail()
+
+    @mock.patch('artefact.localhost.file.shutil.copytree', MagicMock(return_value=""))
+    def test__collect_tree_not_enough_space(self):
+        """
+        Should collect data of all files in all dirs.
+        Should collect message stating that there is not enough space in target at the end.
+        :return:
+        """
+        self.fail()
+
+    @mock.patch('artefact.localhost.file.shutil.copytree', MagicMock(return_value=""))
+    def test__collect_tree_to_unique_destination(self):
+        """
+        Should copy the tree to a unique destination directory.
+        :return:
+        """
+        self.fail()
 
 
 class TestFileCopySourcePath(TestCase):

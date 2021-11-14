@@ -139,6 +139,10 @@
                         last_supported_mac_os_version="10.13 (High Sierra)"
                         tool_path="./external_tools/plutil"
                         description="Contains recent safari search strings and downloads folder location in addition to preferences. &#10; Later versions store this in ~/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari.plist, &#10; which is protected by SIP." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/LaunchAgents"
+                          destination_directory="./tests/copydestination/"
+                          description="All the launch agent plist files defining which user agents are started at user login time." />
             </LocalHost>
         </Root>
     </Instructions>

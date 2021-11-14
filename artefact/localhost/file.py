@@ -135,7 +135,10 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
             else:
                 tree_paths:list = self._expand_path(input_path=file_path)
                 for path_ in tree_paths:
-                    self._collect_tree(tree_path=path_)
+                    if not path.exists(path_):
+                        self.data = f"The path '{path_}' does not exist."
+                    else:
+                        self._collect_tree(tree_path=path_)
 
     def _collect_single(self, file_path: str = '') -> None:
         is_file = path.isfile(file_path)
@@ -171,10 +174,17 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
                 shutil.rmtree(path.dirname(file_copy_destination), True)
 
     def _collect_tree(self, tree_path:str) -> None:
-        for path_ in self.tree_path:
-            for file_ in [f for f in os.listdir(path_) if path.isfile(path.join(path_, f))]:
-                self.data = f"Copied file '{path.join(path_, file_)}'."
-                self.data[-1].sourcepath = path.join(path_, file_)
+        # TODO: validate length of destination path
+        for file_ in [f for f in os.listdir(tree_path) if path.isfile(path.join(tree_path, f))]:
+            try:
+                self.data = f"Copied file '{path.join(tree_path, file_)}'."
+                self.data[-1].sourcepath = path.join(tree_path, file_)
+            except PermissionError:
+                self.data = f"Could not collect data of file '{path.join(tree_path, file_)}'. Permission denied."
+
+            if self._enough_space_on_target(self.destination_directory, tree_path):
+                target_path:str = self._ensure_target_directory()
+                shutil.copytree(tree_path, os.path.join(target_path, 'tree'))
 
     def _ensure_target_directory(self) -> str:
         if not path.exists(self.destination_directory):
@@ -257,6 +267,7 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         if self._WILDCARD not in input_path:
             return [input_path]
 
+        # TODO: Support wildcards in parent dir names
         path_regex = re.compile(input_path)
         return [f.path for f in os.scandir(input_path.replace(
             input_path[input_path.rindex(self._OS_PATH_SEPERATOR):], ''))
