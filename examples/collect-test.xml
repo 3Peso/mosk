@@ -79,7 +79,7 @@
                 <FileContent module="artefact.localhost.file"
                              filepath="~/PycharmProjects/mosk/tests/testfiles/test.txt" />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="~/PycharmProjects/mosk/tests/testfiles/test.txt" />
+                          source_path="~/PycharmProjects/mosk/tests/testfiles/test.txt" />
                 <FileMetadata module="artefact.localhost.file"
                               filepath="~/PycharmProjects/mosk/tests/testfiles/test.txt" />
                 <!--Obviously not supported on Windows-->

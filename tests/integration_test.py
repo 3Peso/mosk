@@ -175,7 +175,7 @@ class TestArtefactLocalhostFileFileMetadataCollectExtendedAttributes(TestCase):
         expected_data = "Extended Attributes: com.apple.FinderInfo\n"
         expected_filepath = "/opt/local/var/macports"
         collector: FileMetadata = FileMetadata(parameters={}, parent=None)
-        collector.filepath = expected_filepath
+        collector.source_path = expected_filepath
         collector._collect_extended_attributes()
 
         actual_data = collector.data[-1].collecteddata

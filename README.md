@@ -197,11 +197,11 @@ is used instead.
 
 ##### PLUtil
 Uses the external cli command `plutil` with the parameter `-p` to collect the conent of a .plist-file provided
-by the collector parameter `filepath`.
+by the collector parameter `source_path`.
 
 ```xml
 <PLUtil module="artefact.localhost.tools" 
-        filepath="~/Library/Preferences/com.apple.Dock.plist" />
+        source_path="~/Library/Preferences/com.apple.Dock.plist" />
 ```
 The above example uses the `plutil` command of the machine the collector is running on. You can provide your own
 copy of the command by defining the parameter `tool_path`. Along side of your own copy of the command you also
@@ -210,7 +210,7 @@ command with the extension `.md5`, so in this case `plutil.md5`.
 
 ```xml
 <PLUtil module="artefact.localhost.tools" 
-        filepath="~/Library/Preferences/com.apple.Dock.plist" 
+        source_path="~/Library/Preferences/com.apple.Dock.plist" 
         tool_path="<Your Tools Folder>/plutil" />
 ```
 
@@ -227,7 +227,7 @@ Copies files from the target to a definable target directory, where it will crea
 
 ```xml
 <FileCopy module="artefact.localhost.file" 
-          filepath="/users/testuser/test.txt" />
+          source_path="/users/testuser/test.txt" />
 ```
 This would copy the file `/users/testuser/test.txt` into the folder under which mosk is been executed inside a new 
 subdirectory, for example named `test.txt_2021010112120001`, where there is a timestamp incorporated, and a counter 
@@ -256,7 +256,7 @@ Metadata collected:
 Example:
 ```xml
 <FileMetadata module="artefact.localhost.file" 
-              filepath="/usr/somefile" />
+              source_path="/usr/somefile" />
 ```
 ##### <a name="localhost-filehash"></a>FileHash 
 Calculates the hash of a provided file and compares it against a 
@@ -266,7 +266,7 @@ the MD5 hash.
 Example:
 ```xml
 <FileHash module="artefact.localhost.file" 
-          filepath="sometestfile.txt" 
+          source_path="sometestfile.txt" 
           filehash="0db7d1adf349b912f612c9be06278706"/>
 ```
 
@@ -312,7 +312,7 @@ the MD5 hash.
 
 ```xml
 <FileHash module="artefact.image.file" 
-          filepath="/08 Email/eml/" 
+          source_path="/08 Email/eml/" 
           filename="68E31B21-00033004.eml"
           filehash="ae797b8a31413cb96fde720488a4ec0e" />
 ```
@@ -429,7 +429,7 @@ The following instrcutions ...
            <LocalHost path="!@machinename@!" module="source.localhost">
                 <OSTimezone module="artefact.localhost.osinformation" />
                 <FileContent module="artefact.localhost.file" 
-                             filepath="~/tests/test.txt"
+                             source_path="~/tests/test.txt"
                              description="Collected the content of the file for demo purposes." />
             </LocalHost>
             <Network module="source.network">

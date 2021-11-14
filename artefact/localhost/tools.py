@@ -24,15 +24,15 @@ class PLUtil(MacArtefact, FileClass, ToolClass):
 
     def _collect(self) -> None:
         try:
-            if not path.exists(self.filepath):
-                self.data = f"File '{self.filepath}' does not exist."
+            if not path.exists(self.source_path):
+                self.data = f"File '{self.source_path}' does not exist."
                 return
         except AttributeError:
             raise(CollectorParameterError("No 'filepath' parameter provided."))
 
         plutil_path = self.tool_path
-        self.data = run_terminal_command([plutil_path, '-p', self.filepath])
-        self.data[-1].sourcepath = self.filepath
+        self.data = run_terminal_command([plutil_path, '-p', self.source_path])
+        self.data[-1].sourcepath = self.source_path
         if plutil_path == 'plutil':
             self.data = \
                 "WARNING: No own copy of 'PLUtil' provided. 'PLUtil' of the live artefact has been used."

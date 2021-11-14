@@ -398,8 +398,8 @@ class TestFileClassFilePathProperty(TestCase):
         expected_file_path = "./somepath"
         fileobj = FileClass()
 
-        fileobj.filepath = './somepath\r\n'
-        actual_file_path = fileobj.filepath
+        fileobj.source_path = './somepath\r\n'
+        actual_file_path = fileobj.source_path
 
         self.assertEqual(expected_file_path, actual_file_path)
 
@@ -414,8 +414,8 @@ class TestFileClassFilePathProperty(TestCase):
         fileobj = FileClass()
 
         with mock.patch('baseclasses.artefact.expandfilepath', MagicMock(return_value=expected_file_path)):
-            fileobj.filepath = '~/somepath'
-            actual_file_path = fileobj.filepath
+            fileobj.source_path = '~/somepath'
+            actual_file_path = fileobj.source_path
 
         self.assertEqual(expected_file_path, actual_file_path)
 
@@ -429,8 +429,8 @@ class TestFileClassFilePathProperty(TestCase):
         expected_file_path = "./somepath"
         fileobj = FileClass()
 
-        fileobj.filepath = './somepath'
-        actual_file_path = fileobj._filepath
+        fileobj.source_path = './somepath'
+        actual_file_path = fileobj._source_path
 
         self.assertEqual(expected_file_path, actual_file_path)
 
@@ -444,8 +444,8 @@ class TestFileClassFilePathProperty(TestCase):
         expected_file_path = "./somepath"
         fileobj = FileClass()
 
-        fileobj._filepath = './somepath'
-        actual_file_path = fileobj.filepath
+        fileobj._source_path = './somepath'
+        actual_file_path = fileobj.source_path
 
         self.assertEqual(expected_file_path, actual_file_path)
 

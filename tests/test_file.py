@@ -20,7 +20,7 @@ class TestFileContentCollect(TestCase):
         expected_file = "./IDoNotExist.txt"
         expected_data = f"File '{expected_file}' does not exist."
         collector = FileContent(parameters={}, parent={})
-        collector.filepath = expected_file
+        collector.source_path = expected_file
         collector._collect()
 
         self.assertEqual(expected_data, collector.data[0].collecteddata)
@@ -35,7 +35,7 @@ class TestFileContentCollect(TestCase):
         expected_file = "./testfiles/test.txt"
         expected_data = "This is a test file.\n\nIt should be used to test\nworking with file content."
         collector = FileContent(parameters={}, parent={})
-        collector.filepath = expected_file
+        collector.source_path = expected_file
         collector._collect()
 
         self.assertEqual(expected_data, collector.data[0].collecteddata)
@@ -102,7 +102,7 @@ class TestFileCopyCollect(TestCase):
 
         single_mock: MagicMock = MagicMock()
         with mock.patch('artefact.localhost.file.FileCopy._collect_single', single_mock):
-            collector._filepath = "/somepath"
+            collector._source_path = "/somepath"
             collector._collect()
 
         single_mock.assert_called_once()
@@ -116,7 +116,7 @@ class TestFileCopyCollect(TestCase):
 
         collector = FileCopy(parameters={}, parent=None)
         expected_file_path = f"/SomePath{FileCopy._FILE_PATH_SEPERATOR}/Another Path"
-        collector.filepath = expected_file_path
+        collector.source_path = expected_file_path
 
         expected_call_count = 2
         single_mock: MagicMock = MagicMock()
@@ -148,14 +148,14 @@ class TestFileCopyCollectSingle(TestCase):
         from artefact.localhost.file import FileCopy
 
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = self._expected_source_file_path
+        collector.source_path = self._expected_source_file_path
         with mock.patch('artefact.localhost.file.os.path.isfile', MagicMock(return_value=True)):
             with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
                             MagicMock(return_value=self._expected_target_path)):
                 # Create the target path here, because we mocked _ensure_target_directory
                 if not os.path.exists(self._expected_target_path):
                     os.mkdir(self._expected_target_path)
-                collector._collect_single(collector.filepath)
+                collector._collect_single(collector.source_path)
 
         self.assertTrue(os.path.exists(self._expected_target_file_path))
 
@@ -169,13 +169,13 @@ class TestFileCopyCollectSingle(TestCase):
 
         expected_data = f"Copied file '{self._expected_source_file_path}' to '{self._expected_target_file_path}'."
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = self._expected_source_file_path
+        collector.source_path = self._expected_source_file_path
         with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
                         MagicMock(return_value=self._expected_target_path)):
             # Create the target path here, because we mocked _ensure_target_directory
             if not os.path.exists(self._expected_target_path):
                 os.mkdir(self._expected_target_path)
-            collector._collect_single(collector.filepath)
+            collector._collect_single(collector.source_path)
         actual_data = collector.data[0].collecteddata
 
         self.assertEqual(expected_data, actual_data)
@@ -192,11 +192,11 @@ class TestFileCopyCollectSingle(TestCase):
         expected_source_file_path = "./somedir/IDoNotExist.txt"
         expected_data = f"The file '{expected_source_file_path}' does not exist."
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = expected_source_file_path
+        collector.source_path = expected_source_file_path
         with mock.patch('artefact.localhost.file.os.path.isfile', MagicMock(return_value=True)):
             with mock.patch('artefact.localhost.file.FileCopy._ensure_target_directory',
                             MagicMock(return_value=self._expected_target_path)):
-                collector._collect_single(file_path=collector.filepath)
+                collector._collect_single(file_path=collector.source_path)
             actual_data = collector.data[0].collecteddata
 
         self.assertEqual(expected_data, actual_data)
@@ -211,7 +211,7 @@ class TestFileCopyCollectSingle(TestCase):
 
         expected_source_file_path = f"{self._expected_unique_directory}/IDoNotExist.txt"
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = expected_source_file_path
+        collector.source_path = expected_source_file_path
         collector._collect_single()
 
         self.assertFalse(os.path.exists(self._expected_target_path))
@@ -241,7 +241,7 @@ class TestFileCopyCollectSingle(TestCase):
         from artefact.localhost.file import FileCopy
 
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = self._expected_source_file_path
+        collector.source_path = self._expected_source_file_path
         expected_message = "File './testfiles/test.txt' could not be copied, because the target path length of " \
                            "'./unique' is too long for the underlying system."
         if platform.system() == "Windows":
@@ -253,7 +253,7 @@ class TestFileCopyCollectSingle(TestCase):
                             MagicMock(return_value=self._expected_target_path)):
                 with mock.patch('artefact.localhost.file.FileCopy._validate_target_path_length',
                                 MagicMock(return_value=False)):
-                    collector._collect_single(collector.filepath)
+                    collector._collect_single(collector.source_path)
                     actual_message = collector.data[-1].collecteddata
 
         self.assertEqual(expected_message, actual_message)
@@ -274,8 +274,8 @@ class TestFileCopyFilePath(TestCase):
         if platform.system() == "Windows":
             expected_file_path = f"{str(Path.home())}\IDoNotExist.txt"
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = source_file_path
-        actual_filepath = collector._filepath
+        collector.source_path = source_file_path
+        actual_filepath = collector._source_path
 
         self.assertEqual(expected_file_path, actual_filepath)
 
@@ -290,9 +290,9 @@ class TestFileCopyFilePath(TestCase):
         expected_file_path = "./somepath"
 
         with mock.patch('artefact.localhost.file.os.path.exists', MagicMock(return_value=True)):
-            collector = FileCopy(parameters={'filepath': './somepath\r\n'}, parent=None)
+            collector = FileCopy(parameters={'source_path': './somepath\r\n'}, parent=None)
 
-        actual_file_path = collector.filepath
+        actual_file_path = collector.source_path
 
         self.assertEqual(expected_file_path, actual_file_path)
 
@@ -386,7 +386,7 @@ class TestFileCopyGetUniqueDirectoryName(TestCase):
         expected_time = datetime(2009, 3, 20, 13, 12, 2)
         expected_dir_name = 'some_file.txt_2009032013120201'
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = '~/somepath/some_file.txt'
+        collector.source_path = '~/somepath/some_file.txt'
         actual_dir_name = collector._get_unique_directory_name('mock', expected_time)
 
         self.assertEqual(expected_dir_name, actual_dir_name)
@@ -403,7 +403,7 @@ class TestFileCopyGetUniqueDirectoryName(TestCase):
         expected_time = datetime(2009, 3, 20, 13, 12, 2)
         expected_dir_name = 'some_file.txt_2009032013120202'
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = '~/somepath/some_file.txt'
+        collector.source_path = '~/somepath/some_file.txt'
         try:
             os.mkdir('./some_file.txt_2009032013120201')
             actual_dir_name = collector._get_unique_directory_name('.', expected_time)
@@ -424,7 +424,7 @@ class TestFileCopyGetUniqueDirectoryName(TestCase):
         expected_time = datetime(2009, 3, 20, 13, 12, 2)
         expected_dir_name = 'some_file.txt_2009032013120201'
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = '~/somepath/some_file.txt'
+        collector.source_path = '~/somepath/some_file.txt'
         self.assertRaises(MaxDirectoriesReachedError, collector._get_unique_directory_name, '.', expected_time)
 
 
@@ -439,10 +439,10 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
 
         MockedDiskUsage = namedtuple('MockedDiskUsage', ['free'])
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = './testfiles/test.txt'
+        collector.source_path = './testfiles/test.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
                         MagicMock(return_value=MockedDiskUsage(free=100000))):
-            self.assertTrue(collector._enough_space_on_target(target_path='.', source_path=collector.filepath))
+            self.assertTrue(collector._enough_space_on_target(target_path='.', source_path=collector.source_path))
 
     @mock.patch('artefact.localhost.file.os.path.exists', MagicMock(return_value=True))
     def test__enough_space_on_target_not_enough(self):
@@ -454,10 +454,10 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
 
         MockedDiskUsage = namedtuple('MockedDiskUsage', ['free'])
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = './testfiles/test.txt'
+        collector.source_path = './testfiles/test.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
                         MagicMock(return_value=MockedDiskUsage(free=1))):
-            self.assertFalse(collector._enough_space_on_target(target_path='.', source_path=collector.filepath))
+            self.assertFalse(collector._enough_space_on_target(target_path='.', source_path=collector.source_path))
 
     @mock.patch('artefact.localhost.file.os.path.exists', MagicMock(return_value=False))
     @mock.patch('artefact.localhost.file.ArtefactBase._init_description_properties', MagicMock())
@@ -470,10 +470,10 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
 
         MockedDiskUsage = namedtuple('MockedDiskUsage', ['free'])
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = './testfiles/test.txt'
+        collector.source_path = './testfiles/test.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
                         MagicMock(return_value=MockedDiskUsage(free=1000000))):
-            self.assertFalse(collector._enough_space_on_target(target_path='.', source_path=collector.filepath))
+            self.assertFalse(collector._enough_space_on_target(target_path='.', source_path=collector.source_path))
 
     def test__enough_space_on_target_source_does_not_exist(self):
         """
@@ -484,10 +484,10 @@ class TestFileCopyEnoughSpaceOnTarget(TestCase):
 
         MockedDiskUsage = namedtuple('MockedDiskUsage', ['free'])
         collector = FileCopy(parameters={}, parent=None)
-        collector.filepath = './testfiles/doesnotexist.txt'
+        collector.source_path = './testfiles/doesnotexist.txt'
         with mock.patch('artefact.localhost.file.shutil.disk_usage',
                         MagicMock(return_value=MockedDiskUsage(free=1000000))):
-            self.assertFalse(collector._enough_space_on_target(target_path='.', source_path=collector.filepath))
+            self.assertFalse(collector._enough_space_on_target(target_path='.', source_path=collector.source_path))
 
 
 class TestFileCopySupportedPlatform(TestCase):
@@ -529,10 +529,10 @@ class TestFileMetadataDunderInit(TestCase):
         from artefact.localhost.file import FileMetadata
 
         expected_filepath = "IDoNotExist.txt"
-        collector = FileMetadata(parameters={'filepath': expected_filepath}, parent={})
+        collector = FileMetadata(parameters={'source_path': expected_filepath}, parent={})
         collector._collect()
 
-        self.assertEqual(expected_filepath, collector.filepath)
+        self.assertEqual(expected_filepath, collector.source_path)
 
 
 class TestFileMetadataCollect(TestCase):
@@ -546,7 +546,7 @@ class TestFileMetadataCollect(TestCase):
         expected_filepath = "IDoNotExist.txt"
         expected_data = f"File '{expected_filepath}' does not exist."
         collector = FileMetadata(parameters={}, parent={})
-        collector.filepath = expected_filepath
+        collector.source_path = expected_filepath
         collector._collect()
         actual_data = collector.data[0].collecteddata
 
@@ -565,7 +565,7 @@ class TestFileMetadataCollectTimestamps(TestCase):
         expected_file = './testfiles/test.txt'
 
         collector = FileMetadata(parameters={}, parent=None)
-        collector.filepath = expected_file
+        collector.source_path = expected_file
         with mock.patch('artefact.localhost.file.os.path.getatime', MagicMock(return_value=1622795612.874454)):
             collector._collect_timestamps()
 
@@ -584,7 +584,7 @@ class TestFileMetadataCollectTimestamps(TestCase):
         expected_file = './testfiles/test.txt'
 
         collector = FileMetadata(parameters={}, parent=None)
-        collector.filepath = expected_file
+        collector.source_path = expected_file
         with mock.patch('artefact.localhost.file.os.path.getctime', MagicMock(return_value=1622795612.874454)):
             collector._collect_timestamps()
 
@@ -603,7 +603,7 @@ class TestFileMetadataCollectTimestamps(TestCase):
         expected_file = './testfiles/test.txt'
 
         collector = FileMetadata(parameters={}, parent=None)
-        collector.filepath = expected_file
+        collector.source_path = expected_file
         with mock.patch('artefact.localhost.file.os.path.getmtime', MagicMock(return_value=1622795612.874454)):
             collector._collect_timestamps()
 
@@ -622,7 +622,7 @@ class TestFileMetadataCollectTimestamps(TestCase):
 
         expected_file = './testfiles/test.txt'
         collector = FileMetadata(parameters={}, parent=None)
-        collector.filepath = expected_file
+        collector.source_path = expected_file
         with mock.patch('artefact.localhost.file.os.path.getmtime', MagicMock(return_value=1622795612.874454)):
             collector._collect_timestamps()
             with self.assertRaises(KeyError):
@@ -640,7 +640,7 @@ class TestFileMetadataCollectExtendedAttributes(TestCase):
         expected_attribute = "my.extended.attribute"
         expected_message = f"Extended Attributes: {expected_attribute}"
         collector = FileMetadata(parameters={}, parent=None)
-        collector.filepath = "mocked_file_path"
+        collector.source_path = "mocked_file_path"
         with mock.patch('artefact.localhost.file.run_terminal_command',
                         MagicMock(return_value="my.extended.attribute")):
             collector._collect_extended_attributes()
@@ -660,7 +660,7 @@ class TestFileMetadataCollectExtendedAttributes(TestCase):
 
         expected_message = "Collection of extended attributes on platform 'Windows' is not supported."
         collector = FileMetadata(parameters={}, parent=None)
-        collector.filepath = "mocked_file_path"
+        collector.source_path = "mocked_file_path"
         with mock.patch('artefact.localhost.file.run_terminal_command',
                         MagicMock(return_value="my.extended.attribute")):
             with mock.patch('artefact.localhost.file.platform.system', MagicMock(return_value='Windows')):
@@ -697,9 +697,9 @@ class TestFileHashDunderInit(TestCase):
 
         expected_filepath = "some_path"
         expected_filehash = "12345"
-        collector = FileHash(parent=None, parameters={'filepath': expected_filepath, 'filehash': expected_filehash})
+        collector = FileHash(parent=None, parameters={'source_path': expected_filepath, 'filehash': expected_filehash})
 
-        self.assertEqual(expected_filepath, collector.filepath)
+        self.assertEqual(expected_filepath, collector.source_path)
         self.assertEqual(expected_filehash, collector.filehash)
 
 
@@ -713,7 +713,7 @@ class TestFileHashCollect(TestCase):
 
         expected_hash = "12345"
         expected_message = f"MD5 hash '{expected_hash}' is invalid."
-        collector = FileHash(parameters={'filehash': expected_hash, 'filepath': ''}, parent=None)
+        collector = FileHash(parameters={'filehash': expected_hash, 'source_path': ''}, parent=None)
         collector._collect()
 
         actual_message = collector.data[0].collecteddata
@@ -730,7 +730,7 @@ class TestFileHashCollect(TestCase):
         expected_hash = "00236a2ae558018ed13b5222ef1bd987"
         expected_file = "IDoNotExist.txt"
         expected_message = f"The file '{expected_file}' does not exist."
-        collector = FileHash(parameters={'filehash': expected_hash, 'filepath': expected_file}, parent=None)
+        collector = FileHash(parameters={'filehash': expected_hash, 'source_path': expected_file}, parent=None)
         collector._collect()
 
         actual_message = collector.data[0].collecteddata
@@ -752,7 +752,7 @@ class TestFileHashCollect(TestCase):
 
         expected_message = f"The hash '{file_hash}' of file '{expected_file}' does not match the provided hash " \
                            f"'{expected_hash}'."
-        collector = FileHash(parameters={'filehash': expected_hash, 'filepath': expected_file}, parent=None)
+        collector = FileHash(parameters={'filehash': expected_hash, 'source_path': expected_file}, parent=None)
         collector._collect()
 
         actual_message = collector.data[0].collecteddata
@@ -777,7 +777,7 @@ class TestFileHashCollect(TestCase):
 
         expected_message = f"The hash '{file_hash}' of file '{expected_file}' matches the provided hash " \
                            f"'{expected_hash}'."
-        collector = FileHash(parameters={'filehash': expected_hash, 'filepath': expected_file}, parent=None)
+        collector = FileHash(parameters={'filehash': expected_hash, 'source_path': expected_file}, parent=None)
         collector._collect()
 
         actual_message = collector.data[0].collecteddata
@@ -905,6 +905,21 @@ class TestTreeCopyDunderInit(TestCase):
 
 
 class TestTreeCopyCollect(TestCase):
+    def test__collect_with_one_folder(self):
+        """
+        Should collect data about any file in the folder before copying.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+
+        expected_path = "./testtree/subdir2"
+        tree = TreeCopy(parameters={}, parent=None)
+        tree.tree_path = expected_path
+        tree._collect()
+
+        self.assertEqual(2, len(tree.data))
+
+
     def test__collect_with_wildcard_in_leaf(self):
         """
         Should copy all files and folders which are on leaf level and below.

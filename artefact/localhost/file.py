@@ -33,11 +33,11 @@ class FileExistence(ArtefactBase, FileClass):
         super().__init__(*args, **kwargs)
 
     def _collect(self) -> None:
-        if path.exists(self.filepath):
-            self.data = f"File '{self.filepath}' exists."
-            self.data[-1].sourcepath = self.filepath
+        if path.exists(self.source_path):
+            self.data = f"File '{self.source_path}' exists."
+            self.data[-1].sourcepath = self.source_path
         else:
-            self.data = f"File '{self.filepath}' does not exist."
+            self.data = f"File '{self.source_path}' does not exist."
 
 
 class FileContent(ArtefactBase, FileClass):
@@ -51,12 +51,12 @@ class FileContent(ArtefactBase, FileClass):
         super().__init__(*args, **kwargs)
 
     def _collect(self) -> None:
-        if path.exists(self.filepath):
-            with open(self.filepath, "r") as filetoload:
-                self._read_file(filetoload, self.filepath)
-            self.data[-1].sourcepath = self.filepath
+        if path.exists(self.source_path):
+            with open(self.source_path, "r") as filetoload:
+                self._read_file(filetoload, self.source_path)
+            self.data[-1].sourcepath = self.source_path
         else:
-            self.data = f"File '{self.filepath}' does not exist."
+            self.data = f"File '{self.source_path}' does not exist."
 
     def _read_file(self, filetoload, filepath) -> None:
         if Path(filepath).stat().st_size > self._max_file_size:
@@ -101,15 +101,15 @@ class FileHash(ArtefactBase, FileClass):
         if not re.compile(r'^[a-f0-9]{32}$').match(self.filehash):
             self.data = f"MD5 hash '{self.filehash}' is invalid."
 
-        if not os.path.exists(self.filepath):
-            self.data = f"The file '{self.filepath}' does not exist."
+        if not os.path.exists(self.source_path):
+            self.data = f"The file '{self.source_path}' does not exist."
         else:
-            file_hash = md5(self.filepath)
+            file_hash = md5(self.source_path)
             if file_hash != self.filehash:
-                self.data = f"The hash '{file_hash}' of file '{self.filepath}' does not match the provided " \
+                self.data = f"The hash '{file_hash}' of file '{self.source_path}' does not match the provided " \
                             f"hash '{self.filehash}'."
             else:
-                self.data = f"The hash '{file_hash}' of file '{self.filepath}' matches the provided " \
+                self.data = f"The hash '{file_hash}' of file '{self.source_path}' matches the provided " \
                             f"hash '{self.filehash}'."
 
 
@@ -127,7 +127,7 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         super().__init__(*args, **kwargs)
 
     def _collect(self) -> None:
-        for file_path in self.filepath.split(self._FILE_PATH_SEPERATOR):
+        for file_path in self.source_path.split(self._FILE_PATH_SEPERATOR):
             self._collect_single(file_path=file_path)
 
     def _collect_single(self, file_path: str = '') -> None:
@@ -177,7 +177,7 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         logger: Logger = logging.getLogger(__name__)
         # Assume, target directory exists.
         # REMARKS: This only works correct on macOS and Linux.
-        filename: str = path.basename(self.filepath)
+        filename: str = path.basename(self.source_path)
         timestamp: str = f"{dt.year}{str(dt.month).zfill(2)}{str(dt.day).zfill(2)}" \
                          f"{str(dt.hour).zfill(2)}{str(dt.minute).zfill(2)}{str(dt.second).zfill(2)}"
 
@@ -248,7 +248,10 @@ class TreeCopy(ArtefactBase):
         if len(self.tree_path) == 0:
             self.data = "Parameter 'tree_path' is empty."
 
-
+        for path_ in self.tree_path:
+            for file_ in [f for f in os.listdir(path_) if path.isfile(path.join(path_, f))]:
+                self.data = f"Copied file '{path.join(path_, file_)}'."
+                self.data[-1].sourcepath = path.join(path_, file_)
 
     @property
     def tree_path(self) -> list:
@@ -289,9 +292,9 @@ class FileMetadata(ArtefactBase, FileClass):
         self._metadata: dict = {}
 
     def _collect(self) -> None:
-        file_exists: bool = os.path.exists(self.filepath)
+        file_exists: bool = os.path.exists(self.source_path)
         if not file_exists:
-            self.data = f"File '{self.filepath}' does not exist."
+            self.data = f"File '{self.source_path}' does not exist."
 
         if file_exists:
             self._collect_timestamps()
@@ -299,47 +302,47 @@ class FileMetadata(ArtefactBase, FileClass):
             self._collect_other()
             self._collect_extended_attributes()
             self.data = self._metadata
-            self.data[-1].sourcehash = md5(fpath=self.filepath)
-            self.data[-1].sourcepath = self.filepath
+            self.data[-1].sourcehash = md5(fpath=self.source_path)
+            self.data[-1].sourcepath = self.source_path
 
     def _collect_extended_attributes(self):
         if platform.system() != "Darwin":
             self.data = f"Collection of extended attributes on platform '{platform.system()}' is not supported."
             return
 
-        extended_attributes = run_terminal_command(['xattr', self.filepath])
+        extended_attributes = run_terminal_command(['xattr', self.source_path])
 
         if extended_attributes is not None and extended_attributes != "":
             self.data = f"Extended Attributes: {extended_attributes}"
 
     def _collect_sizes(self) -> None:
-        stats = Path(self.filepath).stat()
+        stats = Path(self.source_path).stat()
         self._metadata['Size in Bytes'] = stats.st_size
         self._metadata['Used Blocks'] = stats.st_blocks
         self._metadata['Block Size'] = stats.st_blksize
 
     def _collect_other(self) -> None:
-        stats = Path(self.filepath).stat()
+        stats = Path(self.source_path).stat()
         self._metadata['INode Number'] = stats.st_ino
         self._metadata['Owner ID'] = stats.st_uid
         self._metadata['Group ID'] = stats.st_gid
         self._metadata['File Type and Permissions'] = stats.st_mode
 
     def _collect_timestamps(self) -> None:
-        modified_datetime = os.path.getmtime(self.filepath)
+        modified_datetime = os.path.getmtime(self.source_path)
         self._metadata['Modified'] = datetime.datetime.utcfromtimestamp(modified_datetime)\
             .strftime("%Y-%m-%d %H:%M:%S UTC")
 
-        created_datetime = os.path.getctime(self.filepath)
+        created_datetime = os.path.getctime(self.source_path)
         self._metadata['Created'] = datetime.datetime.utcfromtimestamp(created_datetime)\
             .strftime("%Y-%m-%d %H:%M:%S UTC")
 
-        accessd_datetime = os.path.getatime(self.filepath)
+        accessd_datetime = os.path.getatime(self.source_path)
         self._metadata['Accessed'] = datetime.datetime.utcfromtimestamp(accessd_datetime)\
             .strftime("%Y-%m-%d %H:%M:%S UTC")
 
         if platform.system() != "Windows":
-            birth_datetime = Path(self.filepath).stat().st_birthtime
+            birth_datetime = Path(self.source_path).stat().st_birthtime
             self._metadata['Birth'] = datetime.datetime.utcfromtimestamp(birth_datetime).\
                 strftime("%Y-%m-%d %H:%M:%S UTC")
         else:

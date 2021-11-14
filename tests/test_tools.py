@@ -39,7 +39,7 @@ class TestPLUtilCollect(TestCase):
 
         expected_message = "test.txt: Unexpected character T at line 1"
         util = PLUtil(parameters={}, parent=None)
-        util.filepath = "./testfiles/test.txt"
+        util.source_path = "./testfiles/test.txt"
         with patch('artefact.localhost.tools.run_terminal_command',
                   MagicMock(return_value="test.txt: Unexpected character T at line 1")):
             util._collect()
@@ -56,7 +56,7 @@ class TestPLUtilCollect(TestCase):
 
         expected_message = '"0db7d1adf349b912f612c9be06278706"\n'
         util = PLUtil(parameters={}, parent=None)
-        util.filepath = "./testfiles/test.md5"
+        util.source_path = "./testfiles/test.md5"
         #with patch('artefact.localhost.tools.run_terminal_command',
         #           MagicMock(return_value="test.txt: Unexpected character T at line 1")):
         util._collect()
@@ -72,7 +72,7 @@ class TestPLUtilCollect(TestCase):
 
         expected_data = "WARNING: No own copy of 'PLUtil' provided. 'PLUtil' of the live artefact has been used."
         util = PLUtil(parameters={}, parent=None)
-        util.filepath = "./testfiles/test.txt"
+        util.source_path = "./testfiles/test.txt"
         util._tool_path = "plutil"
         with patch('artefact.localhost.tools.path.exists', MagicMock(return_value=True)):
             with patch('artefact.localhost.tools.run_terminal_command', MagicMock(return_value="")):

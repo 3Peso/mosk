@@ -39,103 +39,103 @@
                 <RecentUserItems module="artefact.localhost.user"
                                  mdfind_path="./external_tools/mdfind" />
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="~/Library/Preferences/com.apple.recentitems.plist"
+                        source_path="~/Library/Preferences/com.apple.recentitems.plist"
                         tool_path="./external_tools/plutil"
                         last_supported_mac_os_version="10.10 (Yosemite)"
                         description="Recently opened applications, files, and servers."
                         description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#Recent_Items" />
                 <SudoVersion module="artefact.localhost.osinformation" />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="/System/Library/LaunchAgents/com.apple.Dock.plist"
+                          source_path="/System/Library/LaunchAgents/com.apple.Dock.plist"
                           description="plist files in /System/Library/LaunchAgents/ contains the settings for all &#10; the user agents started up, when the user loggs in. &#10; 'com.apple.Dock.plist' contains the default settings for the Dock app, &#10; which are the apps docked by default."
                           destination_directory="./tests/copydestination/" />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="~/Library/Preferences/com.apple.Dock.plist"
+                          source_path="~/Library/Preferences/com.apple.Dock.plist"
                           description="Contains the apps of the current user, which are docked."
                           destination_directory="./tests/copydestination/" />
                 <!-- Use your own copy of plutil for this collector to ensure it is free of malware, like in the
                  commented out example below. If you do so, provide an md5 hash in the same folder as the copy
                  named 'plutil.md5'.-->
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="~/Library/Preferences/com.apple.Dock.plist"
+                        source_path="~/Library/Preferences/com.apple.Dock.plist"
                         tool_path="./external_tools/plutil" />
                 <!--<PLUtil module="artefact.localhost.tools"
                         filepath="~/Library/Preferences/com.apple.Dock.plist" />-->
                 <FileCopy module="artefact.localhost.file"
-                          filepath="/Library/Preferences/com.apple.Bluetooth.plist"
+                          source_path="/Library/Preferences/com.apple.Bluetooth.plist"
                           description="Bluetooth preferences and paired devices."
                           decription_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences"
                           destination_directory="./tests/copydestination/" />
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="/Library/Preferences/com.apple.Bluetooth.plist"
+                        source_path="/Library/Preferences/com.apple.Bluetooth.plist"
                         tool_path="./external_tools/plutil"
                         description="Bluetooth preferences and paired devices."
                         description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="/Library/Preferences/.GlobalPreferences.plist"
+                          source_path="/Library/Preferences/.GlobalPreferences.plist"
                           description="It contains Global Preferences information such as the local time zone, geographical coordinates, etc."
                           description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences"
                           destination_directory="./tests/copydestination/" />
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="/Library/Preferences/.GlobalPreferences.plist"
+                        source_path="/Library/Preferences/.GlobalPreferences.plist"
                         tool_path="./external_tools/plutil"
                         description="It contains Global Preferences information such as the local time zone, geographical coordinates, etc."
                         description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="/Library/Preferences/com.apple.SoftwareUpdate.plist"
+                          source_path="/Library/Preferences/com.apple.SoftwareUpdate.plist"
                           description="Plist describing last attempt and last successful attempt at updating OS X software."
                           description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences"
                           destination_directory="./tests/copydestination/" />
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="/Library/Preferences/com.apple.SoftwareUpdate.plist"
+                        source_path="/Library/Preferences/com.apple.SoftwareUpdate.plist"
                         tool_path="./external_tools/plutil"
                         description="Plist describing last attempt and last successful attempt at updating OS X software."
                         description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#System_Preferences" />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="~/Library/Preferences/com.apple.loginitems.plist"
+                          source_path="~/Library/Preferences/com.apple.loginitems.plist"
                           last_supported_mac_os_version="10.12 (Sierra)"
                           description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings."
                           description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#USER_ARTIFACTS"
                           destination_directory="./tests/copydestination/" />
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="~/Library/Preferences/com.apple.loginitems.plist"
+                        source_path="~/Library/Preferences/com.apple.loginitems.plist"
                         last_supported_mac_os_version="10.12 (Sierra)"
                         tool_path="./external_tools/plutil"
                         description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings."
                         description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#USER_ARTIFACTS" />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm"
+                          source_path="~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm"
                           first_supported_mac_os_version="10.13 (High Sierra)"
                           description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings."
                           description_url="https://forensicswiki.xyz/wiki/index.php?title=Mac_OS_X_10.9_-_Artifacts_Location#USER_ARTIFACTS"
                           usage_hint="Use a script like https://github.com/mnrkbys/bgiparser/blob/master/bgiparser.py to interpret the contents of this file."
                           destination_directory="./tests/copydestination/" />
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm"
+                        source_path="~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm"
                         first_supported_mac_os_version="10.13 (High Sierra)"
                         tool_path="./external_tools/plutil"
                         description="Plists listing applications that automatically start when the user is logged in. &#10; Managed by the user through settings." />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="~/Library/Preferences/com.apple.recentitems.plist"
+                          source_path="~/Library/Preferences/com.apple.recentitems.plist"
                           last_supported_mac_os_version="10.10 (Yosemite)"
                           description="Recently opened applications, files, and servers."
                           description_url="https://eclecticlight.co/2021/09/16/how-to-run-an-app-or-tool-at-startup/"
                           destination_directory="./tests/copydestination/" />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="/System/Library/CoreServices/SystemVersion.plist"
+                          source_path="/System/Library/CoreServices/SystemVersion.plist"
                           description="PList describing the installed macOS version."
                           destination_directory="./tests/copydestination/" />
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="/System/Library/CoreServices/SystemVersion.plist"
+                        source_path="/System/Library/CoreServices/SystemVersion.plist"
                         tool_path="./external_tools/plutil"
                         description="PList describing the installed macOS version." />
                 <FileCopy module="artefact.localhost.file"
-                          filepath="~/Library/Preferences/com.apple.Safari.plist"
+                          source_path="~/Library/Preferences/com.apple.Safari.plist"
                           last_supported_mac_os_version="10.13 (High Sierra)"
                           description="Contains recent safari search strings and downloads folder location in addition to preferences. &#10; Later versions store this in ~/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari.plist, &#10; which is protected by SIP."
                           destination_directory="./tests/copydestination/" />
                 <PLUtil module="artefact.localhost.tools"
-                        filepath="~/Library/Preferences/com.apple.loginitems.plist"
+                        source_path="~/Library/Preferences/com.apple.loginitems.plist"
                         last_supported_mac_os_version="10.13 (High Sierra)"
                         tool_path="./external_tools/plutil"
                         description="Contains recent safari search strings and downloads folder location in addition to preferences. &#10; Later versions store this in ~/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari.plist, &#10; which is protected by SIP." />
