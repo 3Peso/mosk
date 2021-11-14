@@ -18,7 +18,7 @@ from shutil import copyfile
 
 from baseclasses.artefact import ArtefactBase, MacArtefact, LinuxArtefact, FileClass
 from businesslogic.support import get_userfolders, md5, run_terminal_command
-from businesslogic.errors import MaxDirectoriesReachedError, CollectorParameterError
+from businesslogic.errors import MaxDirectoriesReachedError, CollectorParameterError, TreePathError
 
 
 TermianlHistory = namedtuple('TerminalHistory', ['Path', 'Content'])
@@ -235,16 +235,20 @@ class FileCopy(MacArtefact, LinuxArtefact, FileClass):
         self._destination_directory = value
 
 
-class TreeCopy(MacArtefact, LinuxArtefact):
+class TreeCopy(ArtefactBase):
     """Use this collector to copy complete directories with sub directories in it"""
     _WILDCARD:str = '*'
+    _OS_PATH_SEPERATOR = '/' if platform.system() != 'Windows' else '\\'
 
     def __init__(self, *args, **kwargs) -> None:
         self._tree_path = list()
         super().__init__(*args, **kwargs)
 
     def _collect(self) -> None:
-        pass
+        if len(self.tree_path) == 0:
+            self.data = "Parameter 'tree_path' is empty."
+
+
 
     @property
     def tree_path(self) -> list:
@@ -252,6 +256,12 @@ class TreeCopy(MacArtefact, LinuxArtefact):
 
     @tree_path.setter
     def tree_path(self, value:str) -> None:
+        try:
+            if value.index(self._WILDCARD) < value.rindex(self._OS_PATH_SEPERATOR):
+                raise TreePathError('Wildcards are only supported in leaf nodes.')
+        except ValueError:
+            pass
+
         paths:list = self._expand_path(value)
 
         for path_ in paths:
@@ -265,8 +275,8 @@ class TreeCopy(MacArtefact, LinuxArtefact):
             return [input_path]
 
         path_regex = re.compile(input_path)
-        # Currently only works for wildcard in leaf nodes in Linux and MacOS file systems
-        return [f.path for f in os.scandir(input_path.replace(input_path[input_path.rindex('/'):], ''))
+        return [f.path for f in os.scandir(input_path.replace(
+            input_path[input_path.rindex(self._OS_PATH_SEPERATOR):], ''))
                 if f.is_dir() and path_regex.match(f.path)]
 
 

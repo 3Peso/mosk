@@ -912,20 +912,19 @@ class TestTreeCopyCollect(TestCase):
         """
         self.fail()
 
-    def test__collect_with_wildcard_in_node(self):
-        """
-        Should copy the whole files and folders with directories and folders on the level
-        which fit the wildcard.
-        :return:
-        """
-        self.fail()
-
     def test__collect_with_empty_path(self):
         """
-        Should copy nothing.
+        Should return message in data, stating that the path is missing.
         :return:
         """
-        self.fail()
+        from artefact.localhost.file import TreeCopy
+
+        expected = "Parameter 'tree_path' is empty."
+        tree = TreeCopy(parameters={}, parent=None)
+        tree._collect()
+        actual = tree.data[-1].collecteddata
+
+        self.assertEqual(expected, actual)
 
     def test__collect_with_more_files_folders_sub_folders(self):
         """
@@ -1015,6 +1014,18 @@ class TestTreeCopyTreePathSetter(TestCase):
             actual_path = tree._tree_path
 
         self.assertEqual(expected_path, actual_path)
+
+    def test_tree_path_with_wildcard_in_parent_node(self):
+        """
+        Should raise an excecption.
+        :return:
+        """
+        from artefact.localhost.file import TreeCopy
+        from businesslogic.errors import TreePathError
+
+        tree = TreeCopy(parent=None, parameters={})
+        with self.assertRaises(TreePathError):
+            tree.tree_path = "/not_*_allowed/*"
 
 
 class TestTreeCopyExpandPath(TestCase):

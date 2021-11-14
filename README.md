@@ -174,7 +174,7 @@ mosk does its collection through collectors. There are already several collector
 * CurrentUser
 * [RecentUserItems (macOS)](#RecentUserItems)
 * [PLUtil (macOS)](#PLUtil)
-* [TreeCopy (macOS, Linux)(#TreeCopy)]
+* [TreeCopy (#TreeCopy)]
 
 ##### TreeCopy
 *Under development*
