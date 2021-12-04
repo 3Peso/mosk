@@ -98,7 +98,7 @@ If you want to add a collector to the instructions you have to use the class nam
 
 #### Attributes
 
-There are several attributes, which are [reserved](#reserved%20attributes) for use by mosk itself. But appart from that you can define
+There are several attributes, which are [reserved](#Reserved%20Attributes) for use by mosk itself. But appart from that you can define
 as much attributes for a collector as you want. This, of course mean, that the content of these attributes 
 will not do much, except, it will be logged along side with other information inside the collection 
 protocol. So, you can use this to document things for later. For example:
