@@ -96,6 +96,59 @@ If you want to add a collector to the instructions you have to use the class nam
 ...
 ```
 
+#### Attributes
+
+There are several attributes, which are reserved for use by mosk itself. But appart from that you can define
+as much attributes for a collector as you want. This, of course mean, that the content of these attributes 
+will not do much, except, it will be logged along side with other information inside the collection 
+protocol. So, you can use this to document things for later. For example:
+
+```XML
+<PLUtil module="artefact.localhost.tools"
+        source_path="~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm"
+        first_supported_mac_os_version="10.13 (High Sierra)"
+        tool_path="./external_tools/plutil"
+        description="Plists listing applications that automatically start when the user is logged in. Managed by the user through settings." />
+```
+
+The above collector has two attributes, `first_supported_mac_os_version` and `description`, which will server
+only for documentation purposes. There is no other functionalliy behind them. BUT, you are absolutely free
+to define any attributes you want here.
+
+The result in the text protocol would look something like the following:
+
+```
+*****************************
+Root:0->LocalHost:1->PLUtil:2
+*****************************
+Title: PLUtil
+Description: Lists the contents of a provided plist file.
+Collection Method: Uses the system command 'plutil' with -p
+ 
+-- Collection Data     ----------
+
+{
+    SNIP
+}
+
+
+-- Collection Metadata ----------
+Collection Time Stamp: 2021-12-04 08:36:36.377666
+Source MD5: 1cdeafe9c2c549c796ac8bec07fa0789
+Source path: SNIP 
+Collector: artefact.localhost.tools.PLUtil
+tool_path: './external_tools/plutil'
+source_path: '~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm'
+first_supported_mac_os_version: '10.13 (High Sierra)'
+description: 'Plists listing applications that automatically start when the user is logged in. 
+ Managed by the user through settings.'
+---------------------------------
+```
+
+##### Reserved Attributes
+
+*Has to be initialized*
+
 ### Placeholders
 
 You can define placeholders inside the instructions enclosed by '!@' '@!', 
