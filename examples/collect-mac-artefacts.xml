@@ -143,6 +143,18 @@
                           source_path="~/Library/LaunchAgents"
                           destination_directory="./tests/copydestination/"
                           description="All the launch agent plist files defining which user agents are started at user login time." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="/private/var/db/.AppleSetupDone"
+                          destination_directory="./tests/copydestination/"
+                          description="File created during setup of system. You need admin rights to access / copy this file." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="/private/var/db/.AppleInstallType.plist"
+                          destination_directory="./tests/copydestination/"
+                          description="File created during setup of system. Does not exist on newer macOS versions." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="/private/var/log/install.log"
+                          destination_directory="./tests/copydestination/"
+                          description="File created during setup of system." />
             </LocalHost>
         </Root>
     </Instructions>
