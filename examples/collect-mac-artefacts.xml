@@ -163,6 +163,24 @@
                           source_path="/Library/Preferences/com.apple.preferences.accounts.plist"
                           destination_directory="./tests/copydestination"
                           description="Contains preferences of accounts on the mac, and also a key 'deletedUsers' containing names of deleted user accounts. &#10; Does not exist in newer versions of macOS." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist"
+                          destination_directory="./tests/copydestination"
+                          description="Contains information about the NICs of the mac." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="/Library/Preferences/SystemConfiguration/preferences.plist"
+                          destination_directory="./tests/copydestination"
+                          description="Contains NIC settings." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist"
+                          destination_directory="./tests/copydestination"
+                          description="Contains information about wifi networks for automatic reconnection." />
+                <!-- The following element is a template. Running with this element will result in an exception for the
+                following element but otherwise collection should be fine. -->
+                <FileCopy module="artefact.localhost.file"
+                          source_path=""
+                          destination_directory="./tests/copydestination"
+                          description="" />
             </LocalHost>
         </Root>
     </Instructions>
