@@ -62,3 +62,5 @@
 # doing so. Have seen, that my older copy of "mdfind" or "plutil" was finised from the shell with the output
 # "zsh: killed", which suggests, that the os is protecting itself from "mailicous" applications, disguising them
 # as legit tools.
+
+# BUG: FileCopy can't handle access denied exceptions when copying whole directories

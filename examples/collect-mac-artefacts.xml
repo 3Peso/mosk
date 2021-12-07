@@ -175,6 +175,14 @@
                           source_path="/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist"
                           destination_directory="./tests/copydestination"
                           description="Contains information about wifi networks for automatic reconnection." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="/Library/Keychains/*"
+                          destination_directory="./tests/copydestination"
+                          description="Contains keychain files with passwords, certificates, etc." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Keychains/*"
+                          destination_directory="./tests/copydestination"
+                          description="Contains keychain files with passwords, certificates, etc." />
                 <!-- The following element is a template. Running with this element will result in an exception for the
                 following element but otherwise collection should be fine. -->
                 <FileCopy module="artefact.localhost.file"
