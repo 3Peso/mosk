@@ -159,6 +159,10 @@
                           source_path="/etc/kcpassword"
                           destination_directory="./tests/copydestination"
                           description="In older macOS versions, this file contained the user password only obfusicated by an eleven digit key with XOR. &#10; This was used for auto login." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="/Library/Preferences/com.apple.preferences.accounts.plist"
+                          destination_directory="./tests/copydestination"
+                          description="Contains preferences of accounts on the mac, and also a key 'deletedUsers' containing names of deleted user accounts. &#10; Does not exist in newer versions of macOS." />
             </LocalHost>
         </Root>
     </Instructions>
