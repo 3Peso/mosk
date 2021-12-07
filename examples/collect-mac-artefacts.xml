@@ -155,6 +155,10 @@
                           source_path="/private/var/log/install.log"
                           destination_directory="./tests/copydestination/"
                           description="File created during setup of system." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="/etc/kcpassword"
+                          destination_directory="./tests/copydestination"
+                          description="In older macOS versions, this file contained the user password only obfusicated by an eleven digit key with XOR. &#10; This was used for auto login." />
             </LocalHost>
         </Root>
     </Instructions>
