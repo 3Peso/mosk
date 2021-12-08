@@ -250,6 +250,70 @@
                           source_path="~/Library/Application\ Support/AdressBook/*"
                           destination_directory="./tests/copydestination"
                           description="Contains the contacts stored on the Mac." />
+                <!--Again, there may be a problem with the blank in the name-->
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Calenders/Calender Cache"
+                          destination_directory="./tests/copydestination"
+                          description="Contains the calnders of the user and its items as SQLite db." />
+                <!--Again, there may be a problem with the blank in the name-->
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Calenders/Calender Cache-shm"
+                          destination_directory="./tests/copydestination"
+                          description="Part of the calender SQLite db. Index to the -wal file." />
+                <!--Again, there may be a problem with the blank in the name-->
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Calneders/Calender Cache-wal"
+                          destination_directory="./tests/copydestination"
+                          description="Part of the calender SQLite db. Unwritten entries, like some sort of transaction log." />
+                <!--REMARKS: Currently not working-->
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Mail/*"
+                          destination_directory="./tests/copydestination"
+                          description="Contains all the mailboxes configured by the mail app." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Accounts/*"
+                          destination_directory="./tests/copydestination"
+                          description="Contains an SQLite db with configured internet account settings (for example for mail)." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Containers/com.apple.mail/Data/Library/SyncedPreferences/com.apple.mail.plist"
+                          destination_directory="./tests/copydestination"
+                          description="Contains information about synced email accounts." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail"
+                          destination_directory="./tests/copydestination"
+                          description="Contains additional information, like a field containing searches in the mail app (STMailSuggestionField)." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Preferences/com.apple.Safari.plist"
+                          destination_directory="./tests/copydestination"
+                          description="Contains Safari settings." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Safari/Bookmarks.plist"
+                          destination_directory="./tests/copydestination"
+                          description="Contains bookmarks stored in Safari." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Safari/Downloads.plist"
+                          destination_directory="./tests/copydestination"
+                          description="History about file downloads in Safari of the user." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Safari/History.db"
+                          destination_directory="./tests/copydestination"
+                          first_supported_mac_os_version="10.10 (Yosemite)"
+                          description="Contains the Safari browsing history of the user as SQLite db." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Safari/History.db-wal"
+                          destination_directory="./tests/copydestination"
+                          first_supported_mac_os_version="10.10 (Yosemite)"
+                          description="Contains the Safari browsing history of the user as SQLite db. Transaction log." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Safari/History.db-shm"
+                          destination_directory="./tests/copydestination"
+                          first_supported_mac_os_version="10.10 (Yosemite)"
+                          description="Contains the Safari browsing history of the user as SQLite db. Transaction log index." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Safari/History.plist"
+                          destination_directory="./tests/copydestination"
+                          last_supported_mac_os_version="10.9 (Mountain Lion)"
+                          description="Contains the Safari browsing history." />
                 <!-- The following element is a template. Running with this element will result in an exception for the
                 following element but otherwise collection should be fine. -->
                 <FileCopy module="artefact.localhost.file"
