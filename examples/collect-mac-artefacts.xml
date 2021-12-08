@@ -217,6 +217,15 @@
                           source_path="/Library/Preferences/SystemConfiguration/com.apple.smb.server.plist"
                           destination_directory="./tests/copydestination"
                           description="Contains SMB file sharing settings." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Preferences/com.apple.finder.plist"
+                          destination_directory="./tests/copydestination"
+                          description="Contains paths to recently used items/files by the user. &#10; Also, there is information containing recent moved and copied files." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Preferences/com.apple.recentitems.plist"
+                          destination_directory="./tests/copydestination"
+                          last_supported_mac_os_version="10.10 (Yosemite)"
+                          description="Contains recently used items/files by the user." />
                 <!-- The following element is a template. Running with this element will result in an exception for the
                 following element but otherwise collection should be fine. -->
                 <FileCopy module="artefact.localhost.file"
