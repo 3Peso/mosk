@@ -53,6 +53,20 @@
                           source_path="~/Library/Preferences/com.apple.Dock.plist"
                           description="Contains the apps of the current user, which are docked."
                           destination_directory="./tests/copydestination/" />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Preferences/com.apple.spaces.plist"
+                          destination_directory="./tests/copydestination"
+                          first_supported_mac_os_version="10.5 (Leopard)"
+                          description="Contains settings of all the available Spaces." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Application Support/Dock/desktoppicture.db"
+                          destination_directory="./tests/copydestination"
+                          first_supported_mac_os_version="10.5 (Leopard)"
+                          description="Contains settings for Spaces including their desktop pictures." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/.ssh/known_hosts"
+                          destination_directory="./tests/copydestination"
+                          description="If the user used SSH to connect to other machines this file is created. &#10; Contains things like IP addresses and host names." />
                 <!-- Use your own copy of plutil for this collector to ensure it is free of malware, like in the
                  commented out example below. If you do so, provide an md5 hash in the same folder as the copy
                  named 'plutil.md5'.-->
@@ -226,6 +240,16 @@
                           destination_directory="./tests/copydestination"
                           last_supported_mac_os_version="10.10 (Yosemite)"
                           description="Contains recently used items/files by the user." />
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Application Support/com.apple.sharedfilelist"
+                          destination_directory="./tests/copydestination"
+                          first_supported_mac_os_version="10.11 (El Capitan)"
+                          description="Contains recently used items but in NSKeyedArchiver format (.slf)." />
+                <!--REMARKS: Currently isn't working. Mabye because of the blank in "Application Support"-->
+                <FileCopy module="artefact.localhost.file"
+                          source_path="~/Library/Application\ Support/AdressBook/*"
+                          destination_directory="./tests/copydestination"
+                          description="Contains the contacts stored on the Mac." />
                 <!-- The following element is a template. Running with this element will result in an exception for the
                 following element but otherwise collection should be fine. -->
                 <FileCopy module="artefact.localhost.file"
