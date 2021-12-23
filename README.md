@@ -572,6 +572,35 @@ Collection End
 2021-03-23 06:34:15.365227
 ```
 
+### Enable ewf image collectors
+
+To use the ewf collectors you need to install pytsk3 and libewf-python.
+
+## Install pytsk3
+
+You can get pystk3 from its [github repository](https://github.com/py4n6/pytsk).
+
+Nothing special to consider here. Just install it with `pip`:
+
+```
+pip install pytsk3
+```
+
+### Install libewf-python
+
+For libewf you first have to grep it from its [github repostory](https://github.com/libyal/libewf/releases).
+Then you have to build your install package in the local libewf folder:
+
+```
+sudo python setup.py build
+```
+
+When that is done, install it with the setup script like so:
+
+```
+sudo python setup.py install
+```
+
 # REMINDER
 
 This is currently mostly a training project for me. After all, I am new to Python. Don't expect to much usefullness out of it until further notice ;-)
